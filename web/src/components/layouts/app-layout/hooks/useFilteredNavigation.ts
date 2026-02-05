@@ -15,6 +15,7 @@ import {
   RouteGroup,
   type Route,
 } from "@/src/components/layouts/routes";
+import { useTranslatedRoutes } from "@/src/features/i18n";
 import type { NavigationItem } from "@/src/components/layouts/utilities/routes";
 import { applyNavigationFilters } from "../utils/navigationFilters";
 import type { NavigationFilterContext } from "../utils/navigationFilters.types";
@@ -117,10 +118,13 @@ export function useFilteredNavigation(
     ],
   );
 
+  // Get translated routes
+  const translatedRoutes = useTranslatedRoutes();
+
   // Memoize filtered routes
   const filteredRoutes = useMemo(() => {
-    return applyNavigationFilters(ROUTES, filterContext, organization);
-  }, [filterContext, organization]);
+    return applyNavigationFilters(translatedRoutes, filterContext, organization);
+  }, [translatedRoutes, filterContext, organization]);
 
   // Map filtered routes to NavigationItems with url and isActive
   // This is O(n) - we map directly over filteredRoutes instead of re-iterating ROUTES

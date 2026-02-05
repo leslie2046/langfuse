@@ -1,0 +1,48 @@
+{
+  "navigation": {
+    "goTo": "Go to...",
+    "organizations": "Organizations",
+    "projects": "Projects",
+    "home": "Home",
+    "dashboards": "Dashboards",
+    "tracing": "Tracing",
+    "sessions": "Sessions",
+    "users": "Users",
+    "prompts": "Prompts",
+    "playground": "Playground",
+    "scores": "Scores",
+    "llmAsAJudge": "LLM-as-a-Judge",
+    "humanAnnotation": "Human Annotation",
+    "datasets": "Datasets",
+    "upgrade": "Upgrade",
+    "cloudStatus": "Cloud Status",
+    "v4BetaToggle": "v4 Beta Toggle",
+    "settings": "Settings",
+    "bookACall": "Book a call",
+    "support": "Support"
+  },
+  "groups": {
+    "observability": "Observability",
+    "promptManagement": "Prompt Management",
+    "evaluation": "Evaluation"
+  },
+  "common": {
+    "loading": "Loading",
+    "error": "Error",
+    "signOut": "Sign out",
+    "signIn": "Sign in",
+    "language": "Language"
+  },
+  "errors": {
+    "projectNotFound": "Project Not Found",
+    "projectAccessDenied": "The project you are trying to access does not exist or you do not have access to it.",
+    "goToHome": "Go to Home"
+  },
+  "settings": {
+    "title": "Settings",
+    "general": "General",
+    "language": "Language",
+    "languageDescription": "Select your preferred language",
+    "appearance": "Appearance"
+  }
+}
