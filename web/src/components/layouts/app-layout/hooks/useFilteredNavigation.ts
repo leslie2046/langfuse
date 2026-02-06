@@ -123,7 +123,11 @@ export function useFilteredNavigation(
 
   // Memoize filtered routes
   const filteredRoutes = useMemo(() => {
-    return applyNavigationFilters(translatedRoutes, filterContext, organization);
+    return applyNavigationFilters(
+      translatedRoutes,
+      filterContext,
+      organization,
+    );
   }, [translatedRoutes, filterContext, organization]);
 
   // Map filtered routes to NavigationItems with url and isActive

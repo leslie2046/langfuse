@@ -31,6 +31,7 @@ import { useRouter } from "next/router";
 import { getSafeRedirectPath } from "@/src/utils/redirect";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import useLocalStorage from "@/src/components/useLocalStorage";
+import { useTranslation } from "@/src/features/i18n";
 
 // Use the same getServerSideProps function as src/pages/auth/sign-in.tsx
 export { getServerSideProps } from "@/src/pages/auth/sign-in";
@@ -45,6 +46,7 @@ export default function SignIn({
   const { isLangfuseCloud, region } = useLangfuseCloudRegion();
   const router = useRouter();
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
 
   // Read query params for targetPath and email pre-population
   const queryTargetPath = router.query.targetPath as string | undefined;
@@ -100,7 +102,7 @@ export default function SignIn({
 
     if (!emailResult.success) {
       form.setError("email", {
-        message: "Invalid email address",
+        message: t("errors.invalidEmailAddress"),
       });
       setContinueLoading(false);
       return;
@@ -148,7 +150,7 @@ export default function SignIn({
       }, 100);
     } catch (error) {
       console.error(error);
-      setFormError("Unable to check SSO configuration. Please try again.");
+      setFormError(t("errors.unableToCheckSso"));
     } finally {
       setContinueLoading(false);
     }
@@ -189,7 +191,7 @@ export default function SignIn({
   return (
     <>
       <Head>
-        <title>Sign up | Langfuse</title>
+        <title>{t("common.signUp")} | Langfuse</title>
         <meta
           name="description"
           content="Create an account, no credit card required."
@@ -200,12 +202,12 @@ export default function SignIn({
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <LangfuseIcon className="mx-auto" />
           <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-primary">
-            Create new account
+            {t("auth.signUpTitle")}
           </h2>
         </div>
         {isLangfuseCloud ? (
           <div className="text-center sm:mx-auto sm:w-full sm:max-w-[480px]">
-            No credit card required.
+            {t("auth.noCreditCardRequired")}
           </div>
         ) : null}
 
@@ -230,7 +232,7 @@ export default function SignIn({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>{t("common.name")}</FormLabel>
                       <FormControl>
                         <Input placeholder="Jane Doe" {...field} />
                       </FormControl>
@@ -244,7 +246,7 @@ export default function SignIn({
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("common.email")}</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="jsdoe@example.com"
@@ -263,7 +265,7 @@ export default function SignIn({
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel>{t("common.password")}</FormLabel>
                       <FormControl>
                         <PasswordInput {...field} />
                       </FormControl>
@@ -287,7 +289,7 @@ export default function SignIn({
                 }
                 data-testid="submit-email-password-sign-up-form"
               >
-                {showPasswordStep ? "Sign up" : "Continue"}
+                {showPasswordStep ? t("common.signUp") : t("common.continue")}
               </Button>
               {formError ? (
                 <div className="text-center text-sm font-medium text-destructive">
@@ -303,12 +305,12 @@ export default function SignIn({
             onProviderSelect={setLastUsedAuthMethod}
           />
           <p className="mt-10 text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
+            {t("auth.alreadyHaveAccount")}{" "}
             <Link
               href={`/auth/sign-in${router.asPath.includes("?") ? router.asPath.substring(router.asPath.indexOf("?")) : ""}`}
               className="font-semibold leading-6 text-primary-accent hover:text-hover-primary-accent"
             >
-              Sign in
+              {t("common.signIn")}
             </Link>
           </p>
         </div>
