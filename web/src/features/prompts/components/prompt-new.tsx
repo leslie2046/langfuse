@@ -4,9 +4,12 @@ import useProjectIdFromURL from "@/src/hooks/useProjectIdFromURL";
 import { api } from "@/src/utils/api";
 import Page from "@/src/components/layouts/page";
 
+import { useTranslation } from "@/src/features/i18n";
+
 export const NewPrompt = () => {
   const projectId = useProjectIdFromURL();
   const [initialPromptId] = useQueryParam("promptId", StringParam);
+  const { t } = useTranslation();
 
   const { data: initialPrompt, isInitialLoading } = api.prompts.byId.useQuery(
     {
@@ -26,11 +29,11 @@ export const NewPrompt = () => {
 
   const breadcrumb: { name: string; href?: string }[] = [
     {
-      name: "Prompts",
+      name: t("pages.prompts.title"),
       href: `/project/${projectId}/prompts/`,
     },
     {
-      name: "New prompt",
+      name: t("pages.prompts.newPrompt"),
     },
   ];
 
@@ -41,7 +44,7 @@ export const NewPrompt = () => {
         name: initialPrompt.name,
         href: `/project/${projectId}/prompts/${encodeURIComponent(initialPrompt.name)}`,
       },
-      { name: "New version" },
+      { name: t("pages.prompts.newVersion") },
     );
   }
 
@@ -51,11 +54,10 @@ export const NewPrompt = () => {
       scrollable
       headerProps={{
         title: initialPrompt
-          ? `${initialPrompt.name} \u2014 New version`
-          : "Create new prompt",
+          ? `${initialPrompt.name} \u2014 ${t("pages.prompts.newVersion")}`
+          : t("pages.prompts.form.createPrompt"),
         help: {
-          description:
-            "Manage and version your prompts in Langfuse. Edit and update them via the UI and SDK. Retrieve the production version via the SDKs. Learn more in the docs.",
+          description: t("pages.prompts.helpDescription"),
           href: "https://langfuse.com/docs/prompts",
         },
         breadcrumb: breadcrumb,
@@ -63,8 +65,7 @@ export const NewPrompt = () => {
     >
       {initialPrompt ? (
         <p className="text-sm text-muted-foreground">
-          Prompts are immutable in Langfuse. To update a prompt, create a new
-          version.
+          {t("pages.prompts.immutableNotice")}
         </p>
       ) : null}
       <div className="my-8">

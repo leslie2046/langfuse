@@ -58,7 +58,7 @@ export function LlmApiKeyList(props: { projectId: string }) {
         <Alert>
           <AlertTitle>Access Denied</AlertTitle>
           <AlertDescription>
-            {t("permissions.noAccess")}
+            {t("common.permissions.noAccess")}
           </AlertDescription>
         </Alert>
       </div>

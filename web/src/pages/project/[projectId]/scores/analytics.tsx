@@ -191,11 +191,10 @@ export default function ScoresAnalyticsV2Page() {
   return (
     <Page
       headerProps={{
-        title: "Scores",
-        breadcrumb: [{ name: "Scores", href: `/project/${projectId}/scores` }],
+        title: t("pages.scores.title"),
+        breadcrumb: [{ name: t("pages.scores.title"), href: `/project/${projectId}/scores` }],
         help: {
-          description:
-            "A score is an evaluation of a trace or observation. It can be created from user feedback, model-based evaluations, or manual review. See docs to learn more.",
+          description: t("pages.scores.helpDescription"),
           href: "https://langfuse.com/docs/evaluation/overview",
         },
         tabsProps: {
@@ -221,9 +220,9 @@ export default function ScoresAnalyticsV2Page() {
             <div className="flex flex-col items-center justify-center gap-4 rounded-lg border bg-destructive/10 p-12">
               <BarChart3 className="h-12 w-12 text-destructive" />
               <div className="text-center">
-                <h3 className="text-lg font-semibold">Error Loading Scores</h3>
+                <h3 className="text-lg font-semibold">{t("pages.scores.analytics.errorLoading")}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Failed to load score data. Please try refreshing the page.
+                  {t("pages.scores.analytics.errorLoadingDescription")}
                 </p>
               </div>
             </div>
@@ -231,9 +230,9 @@ export default function ScoresAnalyticsV2Page() {
             <div className="flex flex-col items-center justify-center gap-4 rounded-lg border bg-muted/20 p-12">
               <BarChart3 className="h-12 w-12 text-muted-foreground" />
               <div className="text-center">
-                <h3 className="text-lg font-semibold">{t("scores.analytics.noScoresAvailable")}</h3>
+                <h3 className="text-lg font-semibold">{t("pages.scores.analytics.noScoresAvailable")}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  {t("scores.analytics.noScoresDescription")}
+                  {t("pages.scores.analytics.noScoresDescription")}
                 </p>
               </div>
             </div>
@@ -241,24 +240,23 @@ export default function ScoresAnalyticsV2Page() {
             <div className="flex flex-col items-center justify-center gap-6 rounded-lg border bg-muted/20 p-12">
               <BarChart3 className="h-16 w-16 text-muted-foreground" />
               <div className="max-w-2xl text-center">
-                <h3 className="text-2xl font-semibold">{t("scores.analytics.selectScore")}</h3>
+                <h3 className="text-2xl font-semibold">{t("pages.scores.analytics.selectScore")}</h3>
                 <p className="mt-3 text-base text-muted-foreground">
-                  {t("scores.analytics.selectScoreDescription")}
+                  {t("pages.scores.analytics.selectScoreDescription")}
                 </p>
                 <div className="mt-6 space-y-3 text-sm text-muted-foreground">
                   <div className="rounded-lg bg-background/50 p-4">
                     <p className="mb-1 font-semibold text-foreground">
-                      Single score selected:
+                      {t("pages.scores.analytics.singleScore")}
                     </p>
-                    <p>View distribution and trends over time</p>
+                    <p>{t("pages.scores.analytics.singleScoreDescription")}</p>
                   </div>
                   <div className="rounded-lg bg-background/50 p-4">
                     <p className="mb-1 font-semibold text-foreground">
-                      Two scores selected:
+                      {t("pages.scores.analytics.twoScores")}
                     </p>
                     <p>
-                      Compare scores with heatmaps, correlation analysis, and
-                      statistical metrics
+                      {t("pages.scores.analytics.twoScoresDescription")}
                     </p>
                   </div>
                 </div>
@@ -271,9 +269,9 @@ export default function ScoresAnalyticsV2Page() {
           ) : (
             <div className="flex flex-col items-center justify-center gap-4 rounded-lg border p-12">
               <Loader2 className="h-12 w-12 animate-spin text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">
-                Loading analytics data...
-              </p>
+                <p className="text-sm text-muted-foreground">
+                  {t("pages.scores.analytics.loading")}
+                </p>
             </div>
           )}
         </div>

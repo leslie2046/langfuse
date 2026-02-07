@@ -5,7 +5,6 @@
     "projects": "Projects",
     "home": "Home",
     "dashboards": "Dashboards",
-    "tracing": "Tracing",
     "sessions": "Sessions",
     "users": "Users",
     "prompts": "Prompts",
@@ -153,10 +152,11 @@
       "entitlementRequired": "This feature is not available in your current plan."
     },
     "filters": {
+      "filters": "Filters",
       "search": "Search",
       "datePicker": {
         "pickDate": "Pick a date",
-        "resetDate": "reset date",
+        "resetDate": "Reset date",
         "start": "Start",
         "startTime": "Start time",
         "end": "End",
@@ -167,12 +167,44 @@
       "searchPlaceholder": "Search...",
       "filter": "Filter",
       "addFilter": "Add filter",
-      "clearFilters": "Clear filters",
+      "clearFilters": "Clear all filters",
       "selectColumn": "Select column",
       "selectOperator": "Select operator",
       "enterValue": "Enter value",
       "apply": "Apply",
-      "reset": "Reset"
+      "reset": "Reset",
+      "where": "Where",
+      "and": "And",
+      "column": "Column",
+      "searchColumn": "Search for column",
+      "noOptions": "No options found.",
+      "deselectAll": "Deselect All",
+      "createWithAI": "Create Filter with AI",
+      "cancelAI": "Cancel",
+      "aiDisabled": "AI features are disabled for your organization. Click to enable them in organization settings.",
+      "aiAdminOnly": "AI Filters: Enable in Organization Settings (Admin Only)",
+      "describeFilters": "Describe the filters you want to apply...",
+      "generateFilters": "Generate filters",
+      "loading": "Loading...",
+      "aiTooltip": "We convert natural language into deterministic filters which you can adjust afterwards",
+      "failedToGenerate": "Failed to generate filters, try again",
+      "invalidResponse": "Invalid response format from API"
+    },
+    "dateRange": {
+      "last5Minutes": "Past 5 min",
+      "last30Minutes": "Past 30 min",
+      "last1Hour": "Past 1 hour",
+      "last3Hours": "Past 3 hours",
+      "last6Hours": "Past 6 hours",
+      "last1Day": "Past 1 day",
+      "last3Days": "Past 3 days",
+      "last7Days": "Past 7 days",
+      "last14Days": "Past 14 days",
+      "last30Days": "Past 30 days",
+      "last90Days": "Past 90 days",
+      "last1Year": "Past 1 year",
+      "allTime": "All time",
+      "custom": "Custom"
     },
     "columns": {
       "showColumns": "Columns",
@@ -327,6 +359,16 @@
     "projectSettings": "Project Settings",
     "organizationSettings": "Organization Settings",
     "general": "General",
+    "hostName": {
+      "title": "Host Name",
+      "description": "When connecting to Langfuse, use this hostname / baseurl."
+    },
+    "projectName": {
+      "title": "Project Name",
+      "currentName": "Your Project is currently named",
+      "willBeRenamed": "Your Project will be renamed from",
+      "to": "to"
+    },
     "language": "Language",
     "languageDescription": "Select your preferred language",
     "appearance": "Appearance",
@@ -387,6 +429,23 @@
     "emailCredentials": "Email credentials"
   },
   "dashboard": {
+    "analytics": "Analytics",
+    "tracing": {
+      "configure": "Configure Tracing"
+    },
+    "charts": {
+      "tracesByTime": "Traces by time",
+      "traces": "Traces",
+      "observationsByLevel": "Observations by Level",
+      "tracesTracked": "Traces tracked",
+      "observationsTracked": "Observations tracked",
+      "traceLatencyPercentiles": "Trace latency percentiles",
+      "generationLatencyPercentiles": "Generation latency percentiles",
+      "spanLatencyPercentiles": "Span latency percentiles",
+      "traceName": "Trace Name",
+      "generationName": "Generation Name",
+      "spanName": "Span Name"
+    },
     "userConsumption": "User consumption",
     "tokenCost": "Token cost",
     "countOfTraces": "Count of Traces",
@@ -599,7 +658,10 @@
       "guide": "To start tracking users, you need to add a userId to your traces.",
       "readDocs": "Read the docs"
     },
-    "getStarted": "Get started"
+    "getStarted": "Get started",
+    "permissions": {
+      "noAccess": "You do not have access to this resource."
+    }
   },
   "evaluators": {
     "defaultModel": {
@@ -643,6 +705,77 @@
     "newSplitWindow": "New split window",
     "promptsFromPlaygroundDescription": "Prompts from the playground can only be saved to 'chat' prompts as they include multiple system/user messages."
   },
+  "llmApiKeys": {
+    "title": "LLM API Keys",
+    "description": "Configure API keys for LLM providers used in Langfuse.",
+    "provider": "Provider",
+    "adapter": "Adapter",
+    "baseUrl": "Base URL",
+    "apiKey": "API Key",
+    "extraHeaders": "Extra Headers",
+    "updateTitle": "Update LLM API Key",
+    "deleteTitle": "Delete LLM API Key",
+    "deleteDescription": "Are you sure you want to delete this API key? This action cannot be undone.",
+    "addBtn": "Add API Key",
+    "dialogTitle": "Add LLM API Key",
+    "form": {
+      "adapter": "Adapter",
+      "adapterDescription": "Select the LLM adapter to use.",
+      "adapterPlaceholder": "Select adapter",
+      "provider": "Provider Name",
+      "providerDescription": "Unique name for this provider configuration.",
+      "customModels": "Custom Models",
+      "customModelsDescription": "Define custom models for this provider.",
+      "customModelsAzureWarning": "For Azure OpenAI, custom model names must match deployment names.",
+      "customModelsBedrockWarning": "For Bedrock, use model IDs.",
+      "customModelName": "Model Name",
+      "addCustomModel": "Add Custom Model",
+      "extraHeaders": "Extra Headers",
+      "extraHeadersDescription": "Additional headers to send with requests. Stored {location}.",
+      "onOurServers": "encrypted on our servers",
+      "inYourDatabase": "in your database",
+      "headerName": "Header Name",
+      "headerValue": "Header Value",
+      "addHeader": "Add Header",
+      "awsRegion": "AWS Region",
+      "current": "Current:",
+      "awsAccessKeyId": "AWS Access Key ID",
+      "awsSecretAccessKey": "AWS Secret Access Key",
+      "optional": "(optional)",
+      "bedrockUpdateDescription": "Leave empty to keep existing credentials.",
+      "bedrockCloudDescription": "Required for Langfuse Cloud.",
+      "bedrockSelfHostedDescription": "Optional for self-hosted.",
+      "usingDefaultAwsCredentials": "Using Default AWS Credentials",
+      "preservedIfEmpty": "(preserved if empty)",
+      "awsDefaultChainTitle": "AWS Default Credential Chain",
+      "awsDefaultChainDescription": "Langfuse will attempt to find credentials in standard locations:",
+      "awsEnvVars": "Environment Variables",
+      "awsCredsFile": "Shared Credentials File",
+      "awsIamEc2": "EC2 Instance Metadata",
+      "awsIamEcs": "ECS Container Credentials",
+      "awsLearnMore": "Learn more about AWS credentials in Node.js",
+      "useAdc": "Use Default GCP Credentials (ADC)",
+      "adcDescription": "Use Application Default Credentials from the environment.",
+      "errors": {
+        "providerRequired": "Provider name is required",
+        "providerFormat": "Provider name cannot contain colons",
+        "awsRegionRequired": "AWS Region is required",
+        "bedrockCredentialsRequired": "Bedrock credentials are required",
+        "customModelRequired": "At least one custom model is required",
+        "customModelRequiredWhenDefaultDisabled": "Custom models required when default models are disabled",
+        "gcpKeyRequired": "GCP Service Account Key is required",
+        "gcpKeyOrAdcRequired": "GCP Key or ADC is required",
+        "secretKeyRequired": "Secret Key is required",
+        "azureBaseUrlRequired": "Azure Base URL is required",
+        "verificationFailed": "Verification failed",
+        "providerExists": "Provider usage exists"
+      }
+    }
+  },
+  "apiKeys": {
+    "none": "No API keys found",
+    "permanentlyDelete": "Permanently delete"
+  },
   "pages": {
     "traces": {
       "title": "Tracing",
@@ -677,14 +810,86 @@
       "title": "Datasets",
       "helpDescription": "Datasets in Langfuse are a collection of inputs (and expected outputs) of an LLM application. They are used to benchmark new releases before deployment to production. See docs to learn more."
     },
+    "dashboards": {
+      "title": "Dashboards",
+      "helpDescription": "Manage and create dashboards for your project.",
+      "newDashboard": "New dashboard",
+      "create": {
+        "title": "Create Dashboard",
+        "description": "Create a new dashboard for your project",
+        "cancel": "Cancel",
+        "create": "Create",
+        "nameLabel": "Dashboard Name",
+        "namePlaceholder": "Enter dashboard name",
+        "descLabel": "Description",
+        "descPlaceholder": "Describe the purpose of this dashboard. Optional, but very helpful.",
+        "helpText": "After creating the dashboard, you can add widgets to visualize your data.",
+        "successTitle": "Dashboard created",
+        "successDescription": "Your new dashboard has been created successfully",
+        "errorTitle": "Error creating dashboard",
+        "validationError": "Validation error",
+        "nameRequired": "Dashboard name is required"
+      },
+      "edit": {
+        "title": "Edit Dashboard",
+        "name": "Name",
+        "description": "Description",
+        "cancel": "Cancel",
+        "save": "Save Changes",
+        "successTitle": "Dashboard updated",
+        "successDescription": "The dashboard has been updated successfully"
+      },
+      "table": {
+        "name": "Name",
+        "description": "Description",
+        "owner": "Owner",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At",
+        "actions": "Actions",
+        "clone": "Clone",
+        "edit": "Edit",
+      "delete": "Delete"
+      }
+    },
     "scores": {
       "title": "Scores",
-      "helpDescription": "A scores is an evaluation of a traces or observations. It can be created from user feedback, model-based evaluations, or manual review. See docs to learn more."
+      "helpDescription": "A scores is an evaluation of a traces or observations. It can be created from user feedback, model-based evaluations, or manual review. See docs to learn more.",
+      "analytics": {
+        "noScoresAvailable": "No scores available",
+        "noScoresDescription": "No scores have been created yet.",
+        "selectScore": "Select a score",
+        "selectScoreDescription": "Select a score to view analytics.",
+        "errorLoading": "Error Loading Scores",
+        "errorLoadingDescription": "Failed to load score data. Please try refreshing the page.",
+        "singleScore": "Single score selected:",
+        "singleScoreDescription": "View distribution and trends over time",
+        "twoScores": "Two scores selected:",
+        "twoScoresDescription": "Compare scores with heatmaps, correlation analysis, and statistical metrics",
+        "loading": "Loading analytics data..."
+      }
     },
     "prompts": {
       "title": "Prompts",
       "helpDescription": "Manage and version your prompts in Langfuse. Edit and update them via the UI and SDK. Retrieve the production version via the SDKs. Learn more in the docs.",
-      "newPrompt": "New prompt"
+      "newPrompt": "New prompt",
+      "newVersion": "New version",
+      "immutableNotice": "Prompts are immutable in Langfuse. To update a prompt, create a new version.",
+      "form": {
+        "name": "Name",
+        "nameDescription": "Use slashes '/' in prompt names to organize them into folders.",
+        "namePlaceholder": "your-prompt-name",
+        "prompt": "Prompt",
+        "promptDescription": "Define your prompt template.",
+        "config": "Config",
+        "configDescription": "JSON object to configure the model generation parameters.",
+        "productionLabel": "Active",
+        "commitMessage": "Commit message",
+        "commitMessageDescription": "Optional",
+        "reviewChanges": "Review changes",
+        "saveNewVersion": "Save new version",
+        "createPrompt": "Create prompt",
+        "error": "Error"
+      }
     },
     "annotationQueues": {
       "title": "Annotation Queues",
@@ -694,6 +899,13 @@
       "title": "LLM-as-a-Judge Evaluators",
       "helpDescription": "Configure a langfuse managed or custom evaluator to evaluate incoming traces.",
       "setupEvaluator": "Set up evaluator",
+      "new": {
+        "title": "Set up evaluator",
+        "breadcrumb": "Running Evaluators",
+        "step0": "0. Set up default model",
+        "step1": "1. Select Evaluator",
+        "step2": "2. Run Evaluator"
+      },
       "defaultModel": {
         "title": "Default model",
         "noModelSet": "No default model set",
@@ -913,6 +1125,9 @@
   "scoreConfigs": {
     "title": "Score Configs",
     "description": "Score configs define which scores are available for annotation in your project. Please note that all score configs are immutable.",
+    "description_part1": "Score configs define which scores are available for",
+    "description_part2": "in your project. Please note that all score configs are immutable.",
+    "annotation": "annotation",
     "name": "Name",
     "dataType": "Data Type",
     "range": "Range",
@@ -1075,25 +1290,25 @@
             "description": "The organization has been successfully deleted."
           }
         }
-      },
-      "projectOverview": {
-        "tryDemo": "Try Langfuse Demo",
-        "demoDescription": "We have built a Q&A chatbot that answers questions based on the Langfuse Docs. Interact with it to see traces in Langfuse.",
-        "goToProject": "Go to project",
-        "projectDeleting": "Project is being deleted",
-        "viewDemoProject": "View Demo Project",
-        "newProject": "New project",
-        "demoOrganization": "Demo Organization",
-        "demoOrg": "Demo Org",
-        "searchProjects": "Search projects",
-        "newOrganization": "New Organization",
-        "getStarted": "Get Started",
-        "createOrgDescription": "Create an organization to get started. Alternatively, ask your organization admin to invite you.",
-        "inviteDescription": "You need to get invited to an organization to get started with Langfuse.",
-        "docs": "Docs",
-        "askAi": "Ask AI",
-        "organizationDescription": "Organizations help you manage access to projects. Each organization can have multiple projects and team members with different roles."
       }
+    },
+    "projectOverview": {
+      "tryDemo": "Try Langfuse Demo",
+      "demoDescription": "We have built a Q&A chatbot that answers questions based on the Langfuse Docs. Interact with it to see traces in Langfuse.",
+      "goToProject": "Go to project",
+      "projectDeleting": "Project is being deleted",
+      "viewDemoProject": "View Demo Project",
+      "newProject": "New project",
+      "demoOrganization": "Demo Organization",
+      "demoOrg": "Demo Org",
+      "searchProjects": "Search projects",
+      "newOrganization": "New Organization",
+      "getStarted": "Get Started",
+      "createOrgDescription": "Create an organization to get started. Alternatively, ask your organization admin to invite you.",
+      "inviteDescription": "You need to get invited to an organization to get started with Langfuse.",
+      "docs": "Docs",
+      "askAi": "Ask AI",
+      "organizationDescription": "Organizations help you manage access to projects. Each organization can have multiple projects and team members with different roles."
     }
   },
   "auditLogs": {
@@ -1133,5 +1348,25 @@
     "secretKey": "Secret Key",
     "secretKeyDescription": "This key can only be viewed once. You can always create new keys in the project settings.",
     "publicKey": "Public Key"
+  },
+  "setup": {
+    "title": "Setup",
+    "step1": "1. Create Organization",
+    "step2": "2. Invite Members",
+    "step3": "3. Create Project",
+    "newOrganization": {
+      "title": "New Organization",
+      "description": "Organizations are used to manage your projects and teams."
+    },
+    "organizationMembers": {
+      "title": "Organization Members",
+      "description": "Invite members to your organization to collaborate on projects. You can always add more members later."
+    },
+    "newProject": {
+      "title": "New Project",
+      "description": "Projects are used to group traces, datasets, evals and prompts. Multiple environments are best separated via tags within a project."
+    },
+    "next": "Next",
+    "helpDescription": "Create a new organization. This will be used to manage your projects and teams."
   }
 }

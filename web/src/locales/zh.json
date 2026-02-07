@@ -4,8 +4,7 @@
     "organizations": "组织",
     "projects": "项目",
     "home": "首页",
-    "dashboards": "仪表盘",
-    "tracing": "追踪",
+    "dashboard": "仪表盘",
     "sessions": "会话",
     "users": "用户",
     "prompts": "提示词",
@@ -153,6 +152,7 @@
       "entitlementRequired": "此功能在您当前的计划中不可用。"
     },
     "filters": {
+      "filters": "筛选",
       "search": "搜索",
       "datePicker": {
         "pickDate": "选择日期",
@@ -165,14 +165,44 @@
         "selectTimeRange": "选择时间范围"
       },
       "searchPlaceholder": "搜索...",
-      "filter": "筛选",
       "addFilter": "添加筛选",
-      "clearFilters": "清除筛选",
+      "clearFilters": "清除所有筛选",
       "selectColumn": "选择列",
       "selectOperator": "选择运算符",
       "enterValue": "输入值",
       "apply": "应用",
-      "reset": "重置"
+      "where": "WHERE",
+      "and": "AND",
+      "column": "列",
+      "searchColumn": "搜索列",
+      "noOptions": "未找到选项。",
+      "deselectAll": "取消全选",
+      "createWithAI": "使用 AI 创建筛选",
+      "cancelAI": "取消",
+      "aiDisabled": "您的组织已禁用 AI 功能。点击在组织设置中启用。",
+      "aiAdminOnly": "AI 筛选：在组织设置中启用（仅限管理员）",
+      "describeFilters": "描述您想要应用的筛选...",
+      "generateFilters": "生成筛选",
+      "loading": "加载中...",
+      "aiTooltip": "我们将自然语言转换为确定的筛选条件，您可以稍后进行调整",
+      "failedToGenerate": "生成筛选失败，请重试",
+      "invalidResponse": "API 响应格式无效"
+    },
+    "dateRange": {
+      "last5Minutes": "最近 5 分钟",
+      "last30Minutes": "最近 30 分钟",
+      "last1Hour": "最近 1 小时",
+      "last3Hours": "最近 3 小时",
+      "last6Hours": "最近 6 小时",
+      "last1Day": "最近 1 天",
+      "last3Days": "最近 3 天",
+      "last7Days": "最近 7 天",
+      "last14Days": "最近 14 天",
+      "last30Days": "最近 30 天",
+      "last90Days": "最近 90 天",
+      "last1Year": "最近 1 年",
+      "allTime": "全部时间",
+      "custom": "自定义"
     },
     "columns": {
       "showColumns": "列",
@@ -327,6 +357,16 @@
     "projectSettings": "项目设置",
     "organizationSettings": "组织设置",
     "general": "通用",
+    "hostName": {
+      "title": "主机名",
+      "description": "连接到 Langfuse 时，请使用此主机名 / 基础 URL。"
+    },
+    "projectName": {
+      "title": "项目名称",
+      "currentName": "您的项目当前名称为",
+      "willBeRenamed": "您的项目将重命名，从",
+      "to": "改为"
+    },
     "language": "语言",
     "languageDescription": "选择您偏好的语言",
     "appearance": "外观",
@@ -387,6 +427,23 @@
     "emailCredentials": "邮箱凭证"
   },
   "dashboard": {
+    "analytics": "分析",
+    "tracing": {
+      "configure": "配置追踪"
+    },
+    "charts": {
+      "tracesByTime": "追踪随时间变化",
+      "traces": "追踪",
+      "observationsByLevel": "按级别的观察",
+      "tracesTracked": "已追踪的追踪数",
+      "observationsTracked": "已追踪的观察数",
+      "traceLatencyPercentiles": "追踪延迟百分位数",
+      "generationLatencyPercentiles": "生成延迟百分位数",
+      "spanLatencyPercentiles": "Span延迟百分位数",
+      "traceName": "追踪名称",
+      "generationName": "生成名称",
+      "spanName": "Span名称"
+    },
     "userConsumption": "用户消耗",
     "tokenCost": "Token 成本",
     "countOfTraces": "Trace 数量",
@@ -599,7 +656,10 @@
       "guide": "要开始跟踪用户，您需要在追踪中添加 userId。",
       "readDocs": "阅读文档"
     },
-    "getStarted": "开始使用"
+    "getStarted": "开始使用",
+    "permissions": {
+      "noAccess": "您没有访问此资源的权限。"
+    }
   },
   "evaluators": {
     "defaultModel": {
@@ -643,6 +703,77 @@
     "newSplitWindow": "新建分屏窗口",
     "promptsFromPlaygroundDescription": "体验场中的提示词只能保存为 'chat' 提示词，因为它们包含多个系统/用户消息。"
   },
+  "llmApiKeys": {
+    "title": "LLM API 密钥",
+    "description": "配置 Langfuse 使用的 LLM 提供商 API 密钥。",
+    "provider": "提供商",
+    "adapter": "适配器",
+    "baseUrl": "API 基础地址",
+    "apiKey": "API 密钥",
+    "extraHeaders": "额外请求头",
+    "updateTitle": "更新 LLM API 密钥",
+    "deleteTitle": "删除 LLM API 密钥",
+    "deleteDescription": "您确定要删除此 API 密钥吗？此操作无法撤销。",
+    "addBtn": "添加 API 密钥",
+    "dialogTitle": "添加 LLM API 密钥",
+    "form": {
+      "adapter": "适配器",
+      "adapterDescription": "选择要使用的 LLM 适配器。",
+      "adapterPlaceholder": "选择适配器",
+      "provider": "提供商名称",
+      "providerDescription": "此提供商配置的唯一名称。",
+      "customModels": "自定义模型",
+      "customModelsDescription": "为此提供商定义自定义模型。",
+      "customModelsAzureWarning": "对于 Azure OpenAI，自定义模型名称必须与部署名称匹配。",
+      "customModelsBedrockWarning": "对于 Bedrock，请使用模型 ID。",
+      "customModelName": "模型名称",
+      "addCustomModel": "添加自定义模型",
+      "extraHeaders": "额外请求头",
+      "extraHeadersDescription": "随请求发送的附加头信息。存储在 {location}。",
+      "onOurServers": "我们的服务器上加密存储",
+      "inYourDatabase": "您的数据库中",
+      "headerName": "Header 名称",
+      "headerValue": "Header 值",
+      "addHeader": "添加 Header",
+      "awsRegion": "AWS 区域",
+      "current": "当前：",
+      "awsAccessKeyId": "AWS Access Key ID",
+      "awsSecretAccessKey": "AWS Secret Access Key",
+      "optional": "（可选）",
+      "bedrockUpdateDescription": "留空以保留现有凭证。",
+      "bedrockCloudDescription": "Langfuse Cloud 必需。",
+      "bedrockSelfHostedDescription": "自托管可选。",
+      "usingDefaultAwsCredentials": "正在使用默认 AWS 凭证",
+      "preservedIfEmpty": "（若为空则保留）",
+      "awsDefaultChainTitle": "AWS 默认凭证链",
+      "awsDefaultChainDescription": "Langfuse 将尝试在标准位置查找凭证：",
+      "awsEnvVars": "环境变量",
+      "awsCredsFile": "共享凭证文件",
+      "awsIamEc2": "EC2 实例元数据",
+      "awsIamEcs": "ECS 容器凭证",
+      "awsLearnMore": "了解更多关于 Node.js 中的 AWS 凭证",
+      "useAdc": "使用默认 GCP 凭证 (ADC)",
+      "adcDescription": "从环境中使用应用程序默认凭证。",
+      "errors": {
+        "providerRequired": "提供商名称为必填项",
+        "providerFormat": "提供商名称不能包含冒号",
+        "awsRegionRequired": "AWS 区域为必填项",
+        "bedrockCredentialsRequired": "Bedrock 凭证为必填项",
+        "customModelRequired": "至少需要一个自定义模型",
+        "customModelRequiredWhenDefaultDisabled": "禁用默认模型时需要自定义模型",
+        "gcpKeyRequired": "GCP 服务账户密钥为必填项",
+        "gcpKeyOrAdcRequired": "需要 GCP 密钥或 ADC",
+        "secretKeyRequired": "Secret Key 为必填项",
+        "azureBaseUrlRequired": "Azure Base URL 为必填项",
+        "verificationFailed": "验证失败",
+        "providerExists": "提供商已存在"
+      }
+    }
+  },
+  "apiKeys": {
+    "none": "未找到 API 密钥",
+    "permanentlyDelete": "永久删除"
+  },
   "pages": {
     "traces": {
       "title": "追踪",
@@ -677,14 +808,86 @@
       "title": "数据集",
       "helpDescription": "Langfuse 中的数据集是 LLM 应用的输入（和预期输出）集合。它们用于在部署到生产环境之前对新版本进行基准测试。查看文档了解更多。"
     },
+    "dashboards": {
+      "title": "仪表盘",
+      "helpDescription": "管理和创建项目的仪表盘。",
+      "newDashboard": "新建仪表盘",
+      "create": {
+        "title": "创建仪表盘",
+        "description": "为您的项目创建一个新仪表盘",
+        "cancel": "取消",
+        "create": "创建",
+        "nameLabel": "仪表盘名称",
+        "namePlaceholder": "输入仪表盘名称",
+        "descLabel": "描述",
+        "descPlaceholder": "描述此仪表盘的用途。可选，但很有帮助。",
+        "helpText": "创建仪表盘后，您可以添加小部件以可视化您的数据。",
+        "successTitle": "仪表盘已创建",
+        "successDescription": "您的新仪表盘已成功创建",
+        "errorTitle": "创建仪表盘时出错",
+        "validationError": "验证错误",
+        "nameRequired": "仪表盘名称为必填项"
+      },
+      "edit": {
+        "title": "编辑仪表盘",
+        "name": "名称",
+        "description": "描述",
+        "cancel": "取消",
+        "save": "保存更改",
+        "successTitle": "仪表盘已更新",
+        "successDescription": "仪表盘已成功更新"
+      },
+      "table": {
+        "name": "名称",
+        "description": "描述",
+        "owner": "所有者",
+        "createdAt": "创建时间",
+        "updatedAt": "更新时间",
+        "actions": "操作",
+        "clone": "克隆",
+        "edit": "编辑",
+        "delete": "删除"
+      }
+    },
     "scores": {
       "title": "评分",
-      "helpDescription": "评分是对追踪或观察数据的评估。它可以通过用户反馈、基于模型的评估或人工审核创建。查看文档了解更多。"
+      "helpDescription": "评分是对追踪或观察数据的评估。它可以通过用户反馈、基于模型的评估或人工审核创建。查看文档了解更多。",
+      "analytics": {
+        "noScoresAvailable": "暂无评分",
+        "noScoresDescription": "尚未创建任何评分。",
+        "selectScore": "选择一个评分",
+        "selectScoreDescription": "选择一个评分以查看分析。",
+        "errorLoading": "加载评分出错",
+        "errorLoadingDescription": "加载评分数据失败。请尝试刷新页面。",
+        "singleScore": "选择单个评分：",
+        "singleScoreDescription": "查看分布和随时间变化的趋势",
+        "twoScores": "选择两个评分：",
+        "twoScoresDescription": "通过热图、相关性分析和统计指标比较评分",
+        "loading": "正在加载分析数据..."
+      }
     },
     "prompts": {
       "title": "Prompts",
       "helpDescription": "在 Langfuse 中管理和版本控制您的 Prompts。通过 UI 和 SDK 编辑和更新。通过 SDK 获取生产版本。查看文档了解更多。",
-      "newPrompt": "新建 Prompt"
+      "newPrompt": "新建 Prompt",
+      "newVersion": "新版本",
+      "immutableNotice": "Langfuse 中的 Prompt 是不可变的。要更新 Prompt，请创建一个新版本。",
+      "form": {
+        "name": "名称",
+        "nameDescription": "在 Prompt 名称中使用斜杠 '/' 将它们组织到文件夹中。",
+        "namePlaceholder": "您的提示词名",
+        "prompt": "提示词",
+        "promptDescription": "定义您的提示词模板。",
+        "config": "配置",
+        "configDescription": "用于配置模型生成参数的 JSON 对象。",
+        "productionLabel": "激活",
+        "commitMessage": "提交信息",
+        "commitMessageDescription": "可选",
+        "reviewChanges": "审查变更",
+        "saveNewVersion": "保存新版本",
+        "createPrompt": "创建 Prompt",
+        "error": "错误"
+      }
     },
     "annotationQueues": {
       "title": "标注队列",
@@ -694,6 +897,13 @@
       "title": "LLM-as-a-Judge 评估器",
       "helpDescription": "配置 Langfuse 管理的或自定义的评估器来评估传入的追踪。",
       "setupEvaluator": "设置评估器",
+      "new": {
+        "title": "设置评估器",
+        "breadcrumb": "运行中的评估器",
+        "step0": "0. 设置默认模型",
+        "step1": "1. 选择评估器",
+        "step2": "2. 运行评估器"
+      },
       "defaultModel": {
         "title": "默认模型",
         "noModelSet": "未设置默认模型",
@@ -913,6 +1123,9 @@
   "scoreConfigs": {
     "title": "评分配置",
     "description": "评分配置定义了项目中可用于标注的评分。请注意，所有评分配置都是不可变的。",
+    "description_part1": "评分配置定义了系统中可用于",
+    "description_part2": "的评分。请注意，所有评分配置都是不可变的。",
+    "annotation": "标注",
     "name": "名称",
     "dataType": "数据类型",
     "range": "范围",
@@ -1075,25 +1288,25 @@
             "description": "组织已成功删除。"
           }
         }
-      },
-      "projectOverview": {
-        "tryDemo": "试用 Langfuse 演示",
-        "demoDescription": "我们构建了一个基于 Langfuse 文档回答问题的问答机器人。与它互动以在 Langfuse 中查看追踪。",
-        "goToProject": "前往项目",
-        "projectDeleting": "项目正在删除中",
-        "viewDemoProject": "查看演示项目",
-        "newProject": "新建项目",
-        "demoOrganization": "演示组织",
-        "demoOrg": "演示组织",
-        "searchProjects": "搜索项目",
-        "newOrganization": "新建组织",
-        "getStarted": "开始使用",
-        "createOrgDescription": "创建一个组织以开始使用。或者，请您的组织管理员邀请您。",
-        "inviteDescription": "您需要被邀请加入一个组织才能开始使用 Langfuse。",
-        "docs": "文档",
-        "askAi": "咨询 AI",
-        "organizationDescription": "组织帮助您管理对项目的访问权限。每个组织可以拥有多个项目和具有不同角色的团队成员。"
       }
+    },
+    "projectOverview": {
+      "tryDemo": "试用 Langfuse 演示",
+      "demoDescription": "我们构建了一个基于 Langfuse 文档回答问题的问答机器人。与它互动以在 Langfuse 中查看追踪。",
+      "goToProject": "前往项目",
+      "projectDeleting": "项目正在删除中",
+      "viewDemoProject": "查看演示项目",
+      "newProject": "新建项目",
+      "demoOrganization": "演示组织",
+      "demoOrg": "演示组织",
+      "searchProjects": "搜索项目",
+      "newOrganization": "新建组织",
+      "getStarted": "开始使用",
+      "createOrgDescription": "创建一个组织以开始使用。或者，请您的组织管理员邀请您。",
+      "inviteDescription": "您需要被邀请加入一个组织才能开始使用 Langfuse。",
+      "docs": "文档",
+      "askAi": "咨询 AI",
+      "organizationDescription": "组织帮助您管理对项目的访问权限。每个组织可以拥有多个项目和具有不同角色的团队成员。"
     }
   },
   "auditLogs": {
@@ -1133,5 +1346,25 @@
     "secretKey": "Secret Key",
     "secretKeyDescription": "此密钥只能查看一次。您随时可以在项目设置中创建新密钥。",
     "publicKey": "Public Key"
+  },
+  "setup": {
+    "title": "设置",
+    "step1": "1. 创建组织",
+    "step2": "2. 邀请成员",
+    "step3": "3. 创建项目",
+    "newOrganization": {
+      "title": "新建组织",
+      "description": "组织用于管理您的项目和团队。"
+    },
+    "organizationMembers": {
+      "title": "组织成员",
+      "description": "邀请成员加入您的组织以在项目上进行协作。您以后可以随时添加更多成员。"
+    },
+    "newProject": {
+      "title": "新建项目",
+      "description": "项目用于对 Trace、数据集、评估和提示词进行分组。多个环境最好通过项目内的标签进行区分。"
+    },
+    "next": "下一步",
+    "helpDescription": "创建一个新组织。这将用于管理您的项目和团队。"
   }
 }

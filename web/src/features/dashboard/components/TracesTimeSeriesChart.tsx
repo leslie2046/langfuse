@@ -15,6 +15,7 @@ import {
   type QueryType,
   mapLegacyUiTableFilterToView,
 } from "@/src/features/query";
+import { useTranslation } from "@/src/features/i18n";
 
 export const TracesAndObservationsTimeSeriesChart = ({
   className,
@@ -33,6 +34,7 @@ export const TracesAndObservationsTimeSeriesChart = ({
   agg: DashboardDateRangeAggregationOption;
   isLoading?: boolean;
 }) => {
+  const { t } = useTranslation();
   const tracesQuery: QueryType = {
     view: "traces",
     dimensions: [],
@@ -68,7 +70,7 @@ export const TracesAndObservationsTimeSeriesChart = ({
           ts: new Date(item.time_dimension as any).getTime(),
           values: [
             {
-              label: "Traces",
+              label: t("dashboard.charts.traces"),
               value: Number(item.count_count),
             },
           ],
@@ -143,23 +145,23 @@ export const TracesAndObservationsTimeSeriesChart = ({
 
   const data = [
     {
-      tabTitle: "Traces",
+      tabTitle: t("dashboard.charts.traces"),
       data: transformedTraces,
       totalMetric: total,
-      metricDescription: `Traces tracked`,
+      metricDescription: t("dashboard.charts.tracesTracked"),
     },
     {
-      tabTitle: "Observations by Level",
+      tabTitle: t("dashboard.charts.observationsByLevel"),
       data: transformedObservations,
       totalMetric: totalObservations,
-      metricDescription: `Observations tracked`,
+      metricDescription: t("dashboard.charts.observationsTracked"),
     },
   ];
 
   return (
     <DashboardCard
       className={className}
-      title="Traces by time"
+      title={t("dashboard.charts.tracesByTime")}
       isLoading={isLoading || traces.isPending}
       cardContentClassName="flex flex-col content-end "
     >

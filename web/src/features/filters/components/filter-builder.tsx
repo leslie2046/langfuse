@@ -61,6 +61,7 @@ import {
 } from "@/src/components/ui/input-command";
 import { useQueryProject } from "@/src/features/projects/hooks";
 import { useLangfuseCloudRegion } from "@/src/features/organizations/hooks";
+import { useTranslation } from "@/src/features/i18n";
 
 // Has WipFilterState, passes all valid filters to parent onChange
 export function PopoverFilterBuilder({
@@ -80,6 +81,7 @@ export function PopoverFilterBuilder({
   filterWithAI?: boolean;
   buttonType?: "default" | "icon";
 }) {
+  const { t } = useTranslation();
   const capture = usePostHogClientCapture();
   const [wipFilterState, _setWipFilterState] =
     useState<WipFilterState>(filterState);
@@ -155,7 +157,7 @@ export function PopoverFilterBuilder({
         <PopoverTrigger asChild>
           {buttonType === "default" ? (
             <Button variant="outline" type="button">
-              <span>Filters</span>
+              <span>{t("common.filters.filters")}</span>
               {filterState.length > 0 && filterState.length < 3 ? (
                 <InlineFilterState
                   filterState={filterState}
@@ -222,7 +224,7 @@ export function PopoverFilterBuilder({
                 <X className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Clear all filters</TooltipContent>
+            <TooltipContent>{t("common.filters.clearFilters")}</TooltipContent>
           </Tooltip>
         ) : (
           <Tooltip>
@@ -237,7 +239,7 @@ export function PopoverFilterBuilder({
                 <X className="h-3 w-3" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Clear all filters</TooltipContent>
+            <TooltipContent>{t("common.filters.clearFilters")}</TooltipContent>
           </Tooltip>
         )
       ) : null}
@@ -378,6 +380,7 @@ function FilterBuilderForm({
   columnsWithCustomSelect?: string[];
   filterWithAI?: boolean;
 }) {
+  const { t } = useTranslation();
   const { isLangfuseCloud } = useLangfuseCloudRegion();
   const [showAiFilter, setShowAiFilter] = useState(false);
   const [aiPrompt, setAiPrompt] = useState("");
@@ -427,23 +430,19 @@ function FilterBuilderForm({
 
         if (result && Array.isArray(result.filters)) {
           if (result.filters.length === 0) {
-            setAiError("Failed to generate filters, try again");
+            setAiError(t("common.filters.failedToGenerate"));
             return;
           }
 
-          // Set the filters from the API response
-          onChange(result.filters as WipFilterState);
-          setAiPrompt("");
+          onChange((prev) => [...prev, ...result.filters]);
           setShowAiFilter(false);
+          setAiPrompt("");
         } else {
-          console.error(result);
-          setAiError("Invalid response format from API");
+          setAiError(t("common.filters.invalidResponse"));
         }
       } catch (error) {
-        console.error("Error calling tRPC API:", error);
-        setAiError(
-          error instanceof Error ? error.message : "Failed to generate filters",
-        );
+        console.error(error);
+        setAiError(t("common.filters.failedToGenerate"));
       }
     }
   };
@@ -470,7 +469,7 @@ function FilterBuilderForm({
             disabled={false}
             title={
               !organization?.aiFeaturesEnabled
-                ? "AI features are disabled for your organization. Click to enable them in organization settings."
+                ? t("common.filters.aiDisabled")
                 : undefined
             }
             className="w-full justify-start text-muted-foreground"
@@ -478,13 +477,13 @@ function FilterBuilderForm({
             <WandSparkles className="mr-2 h-4 w-4" />
             {!organization?.aiFeaturesEnabled ? (
               <>
-                AI Filters: Enable in Organization Settings (Admin Only)
+                {t("common.filters.aiAdminOnly")}
                 <ExternalLink className="ml-2 h-4 w-4" />
               </>
             ) : showAiFilter ? (
-              "Cancel"
+              t("common.filters.cancelAI")
             ) : (
-              "Create Filter with AI"
+              t("common.filters.createWithAI")
             )}
           </Button>
           {showAiFilter && (
@@ -495,7 +494,7 @@ function FilterBuilderForm({
                   setAiPrompt(e.target.value);
                   if (aiError) setAiError(null); // Clear error when user starts typing
                 }}
-                placeholder="Describe the filters you want to apply..."
+                placeholder={t("common.filters.describeFilters")}
                 className="min-h-[80px] min-w-[28rem] resize-none"
                 disabled={createFilterMutation.isPending}
                 onKeyDown={(e) => {
@@ -510,26 +509,37 @@ function FilterBuilderForm({
               />
               <div className="flex items-center gap-2">
                 <Button
-                  onClick={handleAiFilterSubmit}
-                  type="button"
-                  variant="default"
+                  variant="ghost"
                   size="sm"
-                  disabled={createFilterMutation.isPending || !aiPrompt.trim()}
+                  onClick={() => setShowAiFilter(false)}
+                  disabled={createFilterMutation.isPending}
                 >
-                  {createFilterMutation.isPending
-                    ? "Loading..."
-                    : "Generate filters"}
+                  {t("common.filters.cancelAI")}
                 </Button>
-                <Tooltip>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => void handleAiFilterSubmit()}
+                  disabled={
+                    !aiPrompt.trim() ||
+                    createFilterMutation.isPending ||
+                    !isLangfuseCloud
+                  }
+                >
+                  <Sparkles className="mr-2 h-3 w-3" />
+                  {createFilterMutation.isPending
+                    ? t("common.filters.loading")
+                    : t("common.filters.generateFilters")}
+                </Button>
+        <Tooltip>
                   <TooltipTrigger asChild>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p className="text-xs">
-                      We convert natural language into deterministic filters
-                      which you can adjust afterwards
-                    </p>
-                  </TooltipContent>
+                  <p className="max-w-xs">
+                    {t("common.filters.aiTooltip")}
+                  </p>
+                </TooltipContent>
                 </Tooltip>
               </div>
               {aiError && (
@@ -553,7 +563,7 @@ function FilterBuilderForm({
                 );
                 return (
                   <tr key={i}>
-                    <td className="p-1 text-sm">{i === 0 ? "Where" : "And"}</td>
+                    <td className="p-1 text-sm">{i === 0 ? t("common.filters.where") : t("common.filters.and")}</td>
                     <td className="flex gap-2 p-1">
                       {/* selector of the column to be filtered */}
                       <Popover>
@@ -566,7 +576,7 @@ function FilterBuilderForm({
                             className="flex w-full min-w-32 items-center justify-between gap-2"
                           >
                             <span className="truncate">
-                              {column ? column.name : "Column"}
+                              {column ? column.name : t("common.filters.column")}
                             </span>
                             <ChevronDown className="h-4 w-4 flex-shrink-0 opacity-50" />
                           </Button>
@@ -582,12 +592,12 @@ function FilterBuilderForm({
                         >
                           <InputCommand>
                             <InputCommandInput
-                              placeholder="Search for column"
+                              placeholder={t("common.filters.searchColumn")}
                               variant="bottom"
                             />
                             <InputCommandList>
                               <InputCommandEmpty>
-                                No options found.
+                                {t("common.filters.noOptions")}
                               </InputCommandEmpty>
                               <InputCommandGroup>
                                 {columns.map((option) => (
@@ -941,7 +951,7 @@ function FilterBuilderForm({
               size="sm"
             >
               <Plus className="mr-2 h-4 w-4" />
-              Add filter
+              {t("common.filters.addFilter")}
             </Button>
           ) : null}
         </>

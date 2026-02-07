@@ -22,12 +22,14 @@ import { cn } from "@/src/utils/tailwind";
 import { Check } from "lucide-react";
 import { useRouter } from "next/router";
 import { StringParam, useQueryParam } from "use-query-params";
+import { useTranslation } from "@/src/features/i18n";
 
 // Multi-step setup process
 // 1. Create Organization: /setup
 // 2. Invite Members: /organization/:orgId/setup
 // 3. Create Project: /organization/:orgId/setup?step=create-project
 export function SetupPage() {
+  const { t } = useTranslation();
   const { project, organization } = useQueryProjectOrOrganization();
   const router = useRouter();
   const [orgStep] = useQueryParam("orgstep", StringParam); // "invite-members" | "create-project"
@@ -44,15 +46,14 @@ export function SetupPage() {
   return (
     <ContainerPage
       headerProps={{
-        title: "Setup",
+        title: t("setup.title"),
         help: {
-          description:
-            "Create a new organization. This will be used to manage your projects and teams.",
+          description: t("setup.helpDescription"),
         },
         ...(stepInt === 1 && {
           breadcrumb: [
             {
-              name: "Organizations",
+              name: t("navigation.organizations"),
               href: "/",
             },
           ],
@@ -69,7 +70,7 @@ export function SetupPage() {
                   : "font-semibold text-foreground",
               )}
             >
-              1. Create Organization
+              {t("setup.step1")}
               {stepInt > 1 && <Check className="ml-1 inline-block h-3 w-3" />}
             </BreadcrumbPage>
           </BreadcrumbItem>
@@ -82,7 +83,7 @@ export function SetupPage() {
                   : "font-semibold text-foreground",
               )}
             >
-              2. Invite Members
+              {t("setup.step2")}
               {stepInt > 2 && <Check className="ml-1 inline-block h-3 w-3" />}
             </BreadcrumbPage>
           </BreadcrumbItem>
@@ -95,7 +96,7 @@ export function SetupPage() {
                   : "font-semibold text-foreground",
               )}
             >
-              3. Create Project
+              {t("setup.step3")}
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
@@ -105,9 +106,9 @@ export function SetupPage() {
           // 1. Create Org
           stepInt === 1 && (
             <div>
-              <Header title="New Organization" />
+              <Header title={t("setup.newOrganization.title")} />
               <p className="mb-4 text-sm text-muted-foreground">
-                Organizations are used to manage your projects and teams.
+                {t("setup.newOrganization.description")}
               </p>
               <NewOrganizationForm
                 onSuccess={(orgId) => {
@@ -122,10 +123,9 @@ export function SetupPage() {
           stepInt === 2 && organization && (
             <div className="flex flex-col gap-10">
               <div>
-                <Header title="Organization Members" />
+                <Header title={t("setup.organizationMembers.title")} />
                 <p className="mb-4 text-sm text-muted-foreground">
-                  Invite members to your organization to collaborate on
-                  projects. You can always add more members later.
+                  {t("setup.organizationMembers.description")}
                 </p>
                 <MembersTable orgId={organization.id} />
               </div>
@@ -139,11 +139,9 @@ export function SetupPage() {
           // 3. Create Project
           stepInt === 3 && organization && (
             <div>
-              <Header title="New Project" />
+              <Header title={t("setup.newProject.title")} />
               <p className="mb-4 text-sm text-muted-foreground">
-                Projects are used to group traces, datasets, evals and prompts.
-                Multiple environments are best separated via tags within a
-                project.
+                {t("setup.newProject.description")}
               </p>
               <NewProjectForm
                 orgId={organization.id}
@@ -162,7 +160,7 @@ export function SetupPage() {
           data-testid="btn-skip-add-members"
           onClick={() => router.push(createProjectRoute(organization.id))}
         >
-          Next
+          {t("setup.next")}
         </Button>
       )}
     </ContainerPage>

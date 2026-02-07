@@ -27,6 +27,7 @@ import { DeleteDashboardButton } from "@/src/components/deleteButton";
 import { EditDashboardDialog } from "@/src/features/dashboard/components/EditDashboardDialog";
 import { User as UserIcon } from "lucide-react";
 import { useRouter } from "next/router";
+import { useTranslation } from "@/src/features/i18n";
 
 type DashboardTableRow = {
   id: string;
@@ -47,6 +48,7 @@ function CloneDashboardButton({
   const utils = api.useUtils();
   const hasAccess = useHasProjectAccess({ projectId, scope: "dashboards:CUD" });
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
 
   const mutCloneDashboard = api.dashboard.cloneDashboard.useMutation({
     onSuccess: () => {
@@ -82,7 +84,7 @@ function CloneDashboardButton({
       onClick={handleCloneDashboard}
     >
       <Copy className="mr-2 h-4 w-4" />
-      Clone
+      {t("pages.dashboards.table.clone")}
     </Button>
   );
 }
@@ -100,6 +102,7 @@ function EditDashboardButton({
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const hasAccess = useHasProjectAccess({ projectId, scope: "dashboards:CUD" });
+  const { t } = useTranslation();
 
   return (
     <>
@@ -110,7 +113,7 @@ function EditDashboardButton({
         onClick={() => setIsDialogOpen(true)}
       >
         <Edit className="mr-2 h-4 w-4" />
-        Edit
+        {t("pages.dashboards.table.edit")}
       </Button>
 
       <EditDashboardDialog
@@ -124,6 +127,7 @@ function EditDashboardButton({
     </>
   );
 }
+
 
 export function DashboardTable() {
   const projectId = useProjectIdFromURL() as string;
@@ -166,10 +170,12 @@ export function DashboardTable() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboards.isSuccess, dashboards.data]);
 
+  const { t } = useTranslation();
+
   const columnHelper = createColumnHelper<DashboardTableRow>();
   const dashboardColumns = [
     columnHelper.accessor("name", {
-      header: "Name",
+      header: t("pages.dashboards.table.name"),
       id: "name",
       enableSorting: true,
       size: 200,
@@ -184,7 +190,7 @@ export function DashboardTable() {
       },
     }),
     columnHelper.accessor("description", {
-      header: "Description",
+      header: t("pages.dashboards.table.description"),
       id: "description",
       size: 300,
       cell: (row) => {
@@ -193,7 +199,7 @@ export function DashboardTable() {
     }),
     columnHelper.display({
       id: "ownerTag",
-      header: "Owner",
+      header: t("pages.dashboards.table.owner"),
       size: 80,
       cell: (row) => {
         return row.row.original.owner === "LANGFUSE" ? (
@@ -211,7 +217,7 @@ export function DashboardTable() {
       },
     }),
     columnHelper.accessor("createdAt", {
-      header: "Created At",
+      header: t("pages.dashboards.table.createdAt"),
       id: "createdAt",
       enableSorting: true,
       size: 150,
@@ -221,7 +227,7 @@ export function DashboardTable() {
       },
     }),
     columnHelper.accessor("updatedAt", {
-      header: "Updated At",
+      header: t("pages.dashboards.table.updatedAt"),
       id: "updatedAt",
       enableSorting: true,
       size: 150,
@@ -232,7 +238,7 @@ export function DashboardTable() {
     }),
     columnHelper.display({
       id: "actions",
-      header: "Actions",
+      header: t("pages.dashboards.table.actions"),
       size: 70,
       cell: (row) => {
         const id = row.row.original.id;

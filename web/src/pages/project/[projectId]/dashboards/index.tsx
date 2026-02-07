@@ -9,11 +9,13 @@ import {
   getDashboardTabs,
   DASHBOARD_TABS,
 } from "@/src/features/navigation/utils/dashboard-tabs";
+import { useTranslation } from "@/src/features/i18n";
 
 export default function Dashboards() {
   const router = useRouter();
   const { projectId } = router.query as { projectId: string };
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
   const hasCUDAccess = useHasProjectAccess({
     projectId,
     scope: "dashboards:CUD",
@@ -22,9 +24,9 @@ export default function Dashboards() {
   return (
     <Page
       headerProps={{
-        title: "Dashboards",
+        title: t("pages.dashboards.title"),
         help: {
-          description: "Manage and create dashboards for your project.",
+          description: t("pages.dashboards.helpDescription"),
           href: "https://langfuse.com/docs/metrics/features/custom-dashboards",
         },
         tabsProps: {
@@ -41,7 +43,7 @@ export default function Dashboards() {
               capture("dashboard:new_dashboard_form_open");
             }}
           >
-            New dashboard
+            {t("pages.dashboards.newDashboard")}
           </ActionButton>
         ),
       }}

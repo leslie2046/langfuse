@@ -243,13 +243,13 @@ export const NewPromptForm: React.FC<NewPromptFormProps> = (props) => {
               return (
                 <div>
                   <FormItem>
-                    <FormLabel>{t("prompts.form.name")}</FormLabel>
+                    <FormLabel>{t("pages.prompts.form.name")}</FormLabel>
                     <FormDescription>
-                      {t("prompts.form.nameDescription")}
+                      {t("pages.prompts.form.nameDescription")}
                     </FormDescription>
                     <FormControl>
                       <Input
-                        placeholder={t("prompts.form.namePlaceholder")}
+                        placeholder={t("pages.prompts.form.namePlaceholder")}
                         {...field}
                       />
                     </FormControl>
@@ -280,9 +280,9 @@ export const NewPromptForm: React.FC<NewPromptFormProps> = (props) => {
         {/* Prompt content field - text vs. chat */}
         <>
           <FormItem>
-            <FormLabel>{t("prompts.form.prompt")}</FormLabel>
+            <FormLabel>{t("pages.prompts.form.prompt")}</FormLabel>
             <FormDescription>
-              {t("prompts.form.promptDescription")}
+              {t("pages.prompts.form.promptDescription")}
             </FormDescription>
             <Tabs
               value={form.watch("type")}
@@ -382,9 +382,9 @@ export const NewPromptForm: React.FC<NewPromptFormProps> = (props) => {
           name="config"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("prompts.form.config")}</FormLabel>
+              <FormLabel>{t("pages.prompts.form.config")}</FormLabel>
               <FormDescription>
-                {t("prompts.form.configDescription")}
+                {t("pages.prompts.form.configDescription")}
               </FormDescription>
               <CodeMirrorEditor
                 value={field.value}
@@ -413,7 +413,7 @@ export const NewPromptForm: React.FC<NewPromptFormProps> = (props) => {
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>{t("prompts.form.productionLabel")}</FormLabel>
+                  <FormLabel>{t("pages.prompts.form.productionLabel")}</FormLabel>
                 </div>
               </div>
             </FormItem>
@@ -425,9 +425,9 @@ export const NewPromptForm: React.FC<NewPromptFormProps> = (props) => {
           name="commitMessage"
           render={({ field }) => (
             <FormItem className="relative">
-              <FormLabel>{t("prompts.form.commitMessage")}</FormLabel>
+              <FormLabel>{t("pages.prompts.form.commitMessage")}</FormLabel>
               <FormDescription>
-                {t("prompts.form.commitMessageDescription")}
+                {t("pages.prompts.form.commitMessageDescription")}
               </FormDescription>
               <FormControl>
                 <Textarea
@@ -454,7 +454,7 @@ export const NewPromptForm: React.FC<NewPromptFormProps> = (props) => {
                 variant="secondary"
                 className="w-full"
               >
-                {t("prompts.form.reviewChanges")}
+                {t("pages.prompts.form.reviewChanges")}
               </Button>
             </ReviewPromptDialog>
 
@@ -464,7 +464,7 @@ export const NewPromptForm: React.FC<NewPromptFormProps> = (props) => {
               className="w-full"
               disabled={!form.formState.isValid}
             >
-              {t("prompts.form.saveNewVersion")}
+              {t("pages.prompts.form.saveNewVersion")}
             </Button>
           </div>
         ) : (
@@ -476,7 +476,7 @@ export const NewPromptForm: React.FC<NewPromptFormProps> = (props) => {
               !initialPrompt && form.formState.errors.name?.message,
             )} // Disable button if prompt name already exists. Check is dynamic and not part of zod schema
           >
-            {t("prompts.form.createPrompt")}
+            {t("pages.prompts.form.createPrompt")}
           </Button>
         )}
       </form>

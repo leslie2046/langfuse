@@ -17,16 +17,16 @@ export function ScoreConfigSettings({ projectId }: { projectId: string }) {
     <div id="score-configs">
       <Header title={t("scoreConfigs.title")} />
       <p className="mb-2 text-sm">
-        Score configs define which scores are available for{" "}
+        {t("scoreConfigs.description_part1")}{" "}
         <a
           href="https://langfuse.com/docs/evaluation/evaluation-methods/annotation"
           className="underline"
           target="_blank"
           rel="noopener noreferrer"
         >
-          annotation
+          {t("scoreConfigs.annotation")}
         </a>{" "}
-        in your project. Please note that all score configs are immutable.
+        {t("scoreConfigs.description_part2")}
       </p>
       <ScoreConfigsTable projectId={projectId} />
     </div>

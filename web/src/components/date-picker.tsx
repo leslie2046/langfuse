@@ -421,7 +421,11 @@ export function TimeRangePicker({
           <span className="h-5 w-10 rounded bg-muted px-1.5 text-center text-xs leading-5">
             {setting?.abbreviation || namedRangeValue}
           </span>
-          <span>{setting?.label || namedRangeValue}</span>
+          <span>
+            {setting
+              ? t(`common.dateRange.${namedRangeValue}`)
+              : namedRangeValue}
+          </span>
         </div>
       );
     } else {
@@ -505,7 +509,7 @@ export function TimeRangePicker({
                     <span className="h-5 w-10 rounded bg-muted px-1.5 text-center text-xs leading-5">
                       {setting.abbreviation}
                     </span>
-                    <span>{setting.label}</span>
+                    <span>{t(`common.dateRange.${presetKey}`)}</span>
                   </div>
                 );
               })}
