@@ -3,7 +3,7 @@ import { useTranslation } from "@/src/features/i18n";
 import {
   ROUTES,
   type Route,
-  RouteGroup,
+  type RouteGroup,
 } from "@/src/components/layouts/routes";
 
 // Map route titles to translation keys

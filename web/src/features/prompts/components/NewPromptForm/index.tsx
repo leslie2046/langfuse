@@ -248,7 +248,10 @@ export const NewPromptForm: React.FC<NewPromptFormProps> = (props) => {
                       {t("prompts.form.nameDescription")}
                     </FormDescription>
                     <FormControl>
-                      <Input placeholder={t("prompts.form.namePlaceholder")} {...field} />
+                      <Input
+                        placeholder={t("prompts.form.namePlaceholder")}
+                        {...field}
+                      />
                     </FormControl>
                     {/* Custom form message to include a link to the already existing prompt */}
                     {form.getFieldState("name").error ? (

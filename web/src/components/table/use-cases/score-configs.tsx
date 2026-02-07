@@ -170,7 +170,9 @@ export function ScoreConfigsTable({ projectId }: { projectId: string }) {
       enableHiding: true,
       cell: ({ row }) => {
         const { isArchived } = row.original;
-        return isArchived ? t("scoreConfigs.archived") : t("scoreConfigs.active");
+        return isArchived
+          ? t("scoreConfigs.archived")
+          : t("scoreConfigs.active");
       },
     },
     {

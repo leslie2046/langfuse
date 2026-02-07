@@ -153,13 +153,17 @@ export function UpsertScoreConfigDialog({
         <DialogTrigger asChild>
           <Button variant="secondary" loading={createScoreConfig.isPending}>
             <PlusIcon className="-ml-0.5 mr-1.5 h-4 w-4" aria-hidden="true" />
-            {id ? t("scoreConfigs.upsert.updateButton") : t("scoreConfigs.upsert.createButton")}
+            {id
+              ? t("scoreConfigs.upsert.updateButton")
+              : t("scoreConfigs.upsert.createButton")}
           </Button>
         </DialogTrigger>
         <DialogContent className="max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              {id ? t("scoreConfigs.upsert.updateTitle") : t("scoreConfigs.upsert.createTitle")}
+              {id
+                ? t("scoreConfigs.upsert.updateTitle")
+                : t("scoreConfigs.upsert.createTitle")}
             </DialogTitle>
           </DialogHeader>
           <Form {...form}>
@@ -216,7 +220,11 @@ export function UpsertScoreConfigDialog({
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={t("scoreConfigs.upsert.dataTypePlaceholder")} />
+                            <SelectValue
+                              placeholder={t(
+                                "scoreConfigs.upsert.dataTypePlaceholder",
+                              )}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -240,7 +248,9 @@ export function UpsertScoreConfigDialog({
                       name="minValue"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{t("scoreConfigs.upsert.minValue")}</FormLabel>
+                          <FormLabel>
+                            {t("scoreConfigs.upsert.minValue")}
+                          </FormLabel>
                           <FormControl>
                             <Input
                               {...field}
@@ -264,7 +274,9 @@ export function UpsertScoreConfigDialog({
                       name="maxValue"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{t("scoreConfigs.upsert.maxValue")}</FormLabel>
+                          <FormLabel>
+                            {t("scoreConfigs.upsert.maxValue")}
+                          </FormLabel>
                           <FormControl>
                             <Input
                               {...field}
@@ -305,7 +317,9 @@ export function UpsertScoreConfigDialog({
                                   } label is mapped to an integer value internally.`}
                                 />
                               </FormLabel>
-                              <FormLabel>{t("scoreConfigs.upsert.label")}</FormLabel>
+                              <FormLabel>
+                                {t("scoreConfigs.upsert.label")}
+                              </FormLabel>
                             </div>
                           )}
                           {fields.map((category, index) => (
@@ -403,11 +417,15 @@ export function UpsertScoreConfigDialog({
                   render={({ field }) => (
                     <>
                       <FormItem>
-                        <FormLabel>{t("scoreConfigs.upsert.description")}</FormLabel>
+                        <FormLabel>
+                          {t("scoreConfigs.upsert.description")}
+                        </FormLabel>
                         <FormControl>
                           <Textarea
                             {...field}
-                            placeholder={t("scoreConfigs.upsert.descriptionPlaceholder")}
+                            placeholder={t(
+                              "scoreConfigs.upsert.descriptionPlaceholder",
+                            )}
                             value={field.value ?? undefined}
                           />
                         </FormControl>

@@ -342,9 +342,7 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
       if (props.mode !== "delete") return;
 
       if (deleteConfirmationInput !== props.datasetName) {
-        setFormError(
-          t("common.deleteAction.incorrectConfirmation"),
-        );
+        setFormError(t("common.deleteAction.incorrectConfirmation"));
         return;
       }
 

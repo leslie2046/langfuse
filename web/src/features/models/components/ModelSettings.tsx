@@ -7,9 +7,7 @@ export function ModelsSettings(props: { projectId: string }) {
   return (
     <>
       <Header title={t("models.title")} />
-      <p className="mb-2 text-sm">
-        {t("models.description")}
-      </p>
+      <p className="mb-2 text-sm">{t("models.description")}</p>
       <ModelTable projectId={props.projectId} />
     </>
   );

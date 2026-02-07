@@ -11,13 +11,7 @@ import Link from "next/link";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import { useTranslation } from "@/src/features/i18n";
 
-const BUTTON_STATE_MESSAGES = {
-  limitReached: (current: number, max: number) =>
-    `You have reached the limit (${current}/${max}) for this resource at your current plan. Upgrade your plan to increase the limit.`,
-  noAccess:
-    "You do not have access to this resource, please ask your admin to grant you access.",
-  entitlement: "This feature is not available in your current plan.",
-} as const;
+
 
 interface ActionButtonProps extends ButtonProps {
   icon?: React.ReactNode;

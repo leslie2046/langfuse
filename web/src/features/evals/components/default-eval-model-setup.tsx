@@ -85,7 +85,9 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
     <>
       <Card className="mt-3 flex flex-col gap-6">
         <CardContent>
-          <p className="my-2 text-lg font-semibold">{t("evaluators.defaultModel.title")}</p>
+          <p className="my-2 text-lg font-semibold">
+            {t("evaluators.defaultModel.title")}
+          </p>
           <ManageDefaultEvalModel
             projectId={projectId}
             variant="color-coded"
@@ -121,7 +123,9 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
               }}
             >
               <Pencil className="mr-2 h-4 w-4" />
-              {selectedModel ? t("common.edit") : t("evaluators.defaultModel.setUp")}
+              {selectedModel
+                ? t("common.edit")
+                : t("evaluators.defaultModel.setUp")}
             </Button>
           </DialogTrigger>
           <DialogContent className="px-3 py-10">

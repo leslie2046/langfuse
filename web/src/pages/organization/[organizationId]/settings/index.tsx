@@ -21,7 +21,10 @@ import { env } from "@/src/env.mjs";
 import { OrgAuditLogsSettingsPage } from "@/src/ee/features/audit-log-viewer/OrgAuditLogsSettingsPage";
 import { useTranslation } from "@/src/features/i18n"; // Import useTranslation
 // Define minimal TFunction type
-type TFunction = (key: string, variables?: Record<string, string | number>) => string;
+type TFunction = (
+  key: string,
+  variables?: Record<string, string | number>,
+) => string;
 
 type OrganizationSettingsPage = {
   title: string;

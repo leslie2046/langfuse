@@ -68,9 +68,7 @@ export function LlmApiKeyList(props: { projectId: string }) {
   return (
     <div id="llm-api-keys">
       <Header title={t("llmApiKeys.title")} />
-      <p className="mb-4 text-sm">
-        {t("llmApiKeys.description")}
-      </p>
+      <p className="mb-4 text-sm">{t("llmApiKeys.description")}</p>
       <Card className="mb-4 overflow-auto">
         <Table>
           <TableHeader>
@@ -84,9 +82,13 @@ export function LlmApiKeyList(props: { projectId: string }) {
               <TableHead className="text-primary md:table-cell">
                 {t("llmApiKeys.baseUrl")}
               </TableHead>
-              <TableHead className="text-primary">{t("llmApiKeys.apiKey")}</TableHead>
+              <TableHead className="text-primary">
+                {t("llmApiKeys.apiKey")}
+              </TableHead>
               {hasExtraHeaderKeys ? (
-                <TableHead className="text-primary">{t("llmApiKeys.extraHeaders")}</TableHead>
+                <TableHead className="text-primary">
+                  {t("llmApiKeys.extraHeaders")}
+                </TableHead>
               ) : null}
               <TableHead />
             </TableRow>
@@ -181,7 +183,9 @@ function DeleteApiKeyButton(props: { projectId: string; apiKeyId: string }) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="mb-5">{t("llmApiKeys.deleteTitle")}</DialogTitle>
+          <DialogTitle className="mb-5">
+            {t("llmApiKeys.deleteTitle")}
+          </DialogTitle>
           <DialogDescription>
             {t("llmApiKeys.deleteDescription")}
           </DialogDescription>

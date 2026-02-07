@@ -28,7 +28,6 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 import { TrashIcon } from "lucide-react";
 import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
-import startCase from "lodash/startCase";
 import { useLangfuseEnvCode } from "@/src/features/public-api/hooks/useLangfuseEnvCode";
 import { useTranslation } from "@/src/features/i18n";
 
@@ -77,7 +76,7 @@ export function ApiKeyList(props: { entityId: string; scope: ApiKeyScope }) {
         <Alert>
           <AlertTitle>Access Denied</AlertTitle>
           <AlertDescription>
-           {t("permissions.noAccess")}
+            {t("permissions.noAccess")}
           </AlertDescription>
         </Alert>
       </div>
@@ -109,9 +108,15 @@ export function ApiKeyList(props: { entityId: string; scope: ApiKeyScope }) {
               <TableHead className="hidden text-primary md:table-cell">
                 {t("apiKeys.created")}
               </TableHead>
-              <TableHead className="text-primary">{t("apiKeys.note")}</TableHead>
-              <TableHead className="text-primary">{t("apiKeys.publicKey")}</TableHead>
-              <TableHead className="text-primary">{t("apiKeys.secretKey")}</TableHead>
+              <TableHead className="text-primary">
+                {t("apiKeys.note")}
+              </TableHead>
+              <TableHead className="text-primary">
+                {t("apiKeys.publicKey")}
+              </TableHead>
+              <TableHead className="text-primary">
+                {t("apiKeys.secretKey")}
+              </TableHead>
               {/* <TableHead className="text-primary">{t("common.lastUsed")}</TableHead> */}
               <TableHead />
             </TableRow>

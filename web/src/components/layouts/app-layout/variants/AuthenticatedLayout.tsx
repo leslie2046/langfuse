@@ -97,7 +97,11 @@ export function AuthenticatedLayout({
     items: [
       { name: t("navigation.settings"), href: "/account/settings" },
       { name: t("common.theme"), onClick: () => {}, content: <ThemeToggle /> },
-      { name: t("common.language"), onClick: () => {}, content: <LanguageToggle /> },
+      {
+        name: t("common.language"),
+        onClick: () => {},
+        content: <LanguageToggle />,
+      },
       { name: t("common.signOut"), onClick: onSignOut },
     ],
   };

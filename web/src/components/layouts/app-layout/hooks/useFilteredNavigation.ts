@@ -10,7 +10,6 @@ import { useEntitlements } from "@/src/features/entitlements/hooks";
 import { useUiCustomization } from "@/src/ee/features/ui-customization/useUiCustomization";
 import { useLangfuseCloudRegion } from "@/src/features/organizations/hooks";
 import {
-  ROUTES,
   RouteSection,
   RouteGroup,
   type Route,
