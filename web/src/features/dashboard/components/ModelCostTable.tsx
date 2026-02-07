@@ -29,7 +29,7 @@ export const ModelCostTable = ({
   fromTimestamp: Date;
   toTimestamp: Date;
   isLoading?: boolean;
-  isLoading?: boolean;
+
 }) => {
   const { t } = useTranslation();
   const modelCostQuery: QueryType = {
