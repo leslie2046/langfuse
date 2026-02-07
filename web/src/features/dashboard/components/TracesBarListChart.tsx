@@ -27,7 +27,6 @@ export const TracesBarListChart = ({
   fromTimestamp: Date;
   toTimestamp: Date;
   isLoading?: boolean;
-  isLoading?: boolean;
 }) => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
