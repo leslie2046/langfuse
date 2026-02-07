@@ -67,6 +67,7 @@ export const NewPromptForm: React.FC<NewPromptFormProps> = (props) => {
   const [initialMessages, setInitialMessages] = useState<unknown>([]);
 
   const { t } = useTranslation();
+  const capture = usePostHogClientCapture();
   const utils = api.useUtils();
   // The following lines were in the provided diff but seem to be incomplete or conflicting with existing code.
   // Keeping the original `projectId` and not adding `hasAccess` as it's incomplete.

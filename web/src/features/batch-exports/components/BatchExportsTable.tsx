@@ -114,7 +114,11 @@ export function BatchExportsTable(props: { projectId: string }) {
           return null;
         }
         if (url === "expired") {
-          return <span className="text-muted-foreground">{t("batchExports.table.expired")}</span>;
+          return (
+            <span className="text-muted-foreground">
+              {t("batchExports.table.expired")}
+            </span>
+          );
         }
         return (
           <ActionButton href={url} icon={<DownloadIcon size={16} />} size="sm">
@@ -200,13 +204,17 @@ export function BatchExportsTable(props: { projectId: string }) {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>{t("batchExports.table.cancelDialog.title")}</AlertDialogTitle>
+                <AlertDialogTitle>
+                  {t("batchExports.table.cancelDialog.title")}
+                </AlertDialogTitle>
                 <AlertDialogDescription>
                   {t("batchExports.table.cancelDialog.description")}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>{t("batchExports.table.cancelDialog.keep")}</AlertDialogCancel>
+                <AlertDialogCancel>
+                  {t("batchExports.table.cancelDialog.keep")}
+                </AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => {
                     cancelBatchExport.mutate({

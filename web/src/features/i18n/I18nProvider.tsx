@@ -48,9 +48,7 @@ function getNestedValue(
   let current: unknown = obj;
 
   for (const key of keys) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (current && typeof current === "object" && key in current) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       current = (current as any)[key];
     } else {
       return path; // Return key if not found
@@ -83,7 +81,6 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   const t = useCallback(
     (key: string, variables?: Record<string, string | number>): string => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return getNestedValue(
         messages[locale] as unknown as Record<string, unknown>,
         key,

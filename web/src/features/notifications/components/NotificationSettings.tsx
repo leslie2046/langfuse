@@ -70,7 +70,9 @@ export function NotificationSettings() {
       <Card className="mt-4">
         <CardContent className="space-y-6 p-6">
           <div>
-            <h3 className="text-lg font-medium">{t("notifications.email.title")}</h3>
+            <h3 className="text-lg font-medium">
+              {t("notifications.email.title")}
+            </h3>
             <p className="text-sm text-muted-foreground">
               {t("notifications.email.description")}
             </p>

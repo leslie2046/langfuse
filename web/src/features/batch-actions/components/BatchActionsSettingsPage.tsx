@@ -15,9 +15,7 @@ export function BatchActionsSettingsPage(props: { projectId: string }) {
   return (
     <>
       <Header title={t("batchActions.title")} />
-      <p className="mb-4 text-sm">
-        {t("batchActions.description")}
-      </p>
+      <p className="mb-4 text-sm">{t("batchActions.description")}</p>
       {hasAccess ? (
         <SettingsTableCard>
           <BatchActionsTable projectId={props.projectId} />

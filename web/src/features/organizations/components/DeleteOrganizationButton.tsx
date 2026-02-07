@@ -38,7 +38,9 @@ export function DeleteOrganizationButton() {
 
   const formSchema = z.object({
     name: z.string().includes(confirmMessage, {
-      message: t("organization.dangerZone.delete.dialog.description", { confirmMessage }),
+      message: t("organization.dangerZone.delete.dialog.description", {
+        confirmMessage,
+      }),
     }),
   });
 
@@ -66,7 +68,9 @@ export function DeleteOrganizationButton() {
       capture("organization_settings:delete_organization");
       showSuccessToast({
         title: t("organization.dangerZone.delete.dialog.success.title"),
-        description: t("organization.dangerZone.delete.dialog.success.description"),
+        description: t(
+          "organization.dangerZone.delete.dialog.success.description",
+        ),
       });
       await new Promise((resolve) => setTimeout(resolve, 5000)); // Delay for 5 seconds
       window.location.href = env.NEXT_PUBLIC_BASE_PATH ?? "/"; // Browser reload to refresh jwt
@@ -90,7 +94,9 @@ export function DeleteOrganizationButton() {
           <DialogDescription>
             {hasProjects
               ? t("organization.dangerZone.delete.dialog.hasProjects")
-              : t("organization.dangerZone.delete.dialog.description", { confirmMessage })}
+              : t("organization.dangerZone.delete.dialog.description", {
+                  confirmMessage,
+                })}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

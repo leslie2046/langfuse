@@ -170,7 +170,12 @@ export function CreateProjectMemberButton(props: {
                     <FormItem>
                       <FormLabel>{t("organization.members.email")}</FormLabel>
                       <FormControl>
-                        <Input placeholder={t("organization.members.emailPlaceholder")} {...field} />
+                        <Input
+                          placeholder={t(
+                            "organization.members.emailPlaceholder",
+                          )}
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -193,7 +198,11 @@ export function CreateProjectMemberButton(props: {
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder={t("organization.members.selectOrgRole")} />
+                              <SelectValue
+                                placeholder={t(
+                                  "organization.members.selectOrgRole",
+                                )}
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -224,7 +233,11 @@ export function CreateProjectMemberButton(props: {
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder={t("organization.members.selectProjectRole")} />
+                              <SelectValue
+                                placeholder={t(
+                                  "organization.members.selectProjectRole",
+                                )}
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -245,7 +258,9 @@ export function CreateProjectMemberButton(props: {
                         </Select>
                         {!hasOnlySingleProjectAccess && (
                           <FormDescription>
-                           {t("organization.members.projectRoleDescription", { currentProject: props.project!.name })}
+                            {t("organization.members.projectRoleDescription", {
+                              currentProject: props.project!.name,
+                            })}
                           </FormDescription>
                         )}
                         <FormMessage />
