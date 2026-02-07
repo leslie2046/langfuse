@@ -15,6 +15,7 @@ import { NewDatasetItemForm } from "@/src/features/datasets/components/NewDatase
 import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAccess";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import { cn } from "@/src/utils/tailwind";
+import { useTranslation } from "@/src/features/i18n";
 
 interface DatasetItemEntryPointRowProps {
   icon: React.ReactNode;
@@ -23,6 +24,7 @@ interface DatasetItemEntryPointRowProps {
   onClick?: () => void;
   hasAccess?: boolean;
   comingSoon?: boolean;
+  noAccessTitle?: string;
   docPopup?: {
     description: string;
     href: string;
@@ -36,6 +38,7 @@ const DatasetItemEntryPointRow = ({
   onClick,
   hasAccess = true,
   comingSoon = false,
+  noAccessTitle,
   docPopup,
 }: DatasetItemEntryPointRowProps) => {
   const disabled = !hasAccess || comingSoon;
@@ -52,7 +55,7 @@ const DatasetItemEntryPointRow = ({
       onClick={!disabled ? onClick : undefined}
       title={
         !hasAccess
-          ? "You don't have access to this feature, please contact your administrator"
+          ? noAccessTitle
           : undefined
       }
     >
@@ -77,6 +80,7 @@ export const DatasetItemsOnboarding = ({
   projectId: string;
   datasetId: string;
 }) => {
+  const { t } = useTranslation();
   const capture = usePostHogClientCapture();
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
   const [isNewItemDialogOpen, setIsNewItemDialogOpen] = useState(false);
@@ -88,8 +92,8 @@ export const DatasetItemsOnboarding = ({
 
   return (
     <SplashScreen
-      title="Add items to your dataset"
-      description="Datasets are collections of specific edge cases and underrepresented patterns used to evaluate your application."
+      title={t("onboarding.datasetItems.title")}
+      description={t("onboarding.datasetItems.description")}
     >
       <div className="flex flex-col gap-4">
         <CsvUploadDialog
@@ -101,14 +105,15 @@ export const DatasetItemsOnboarding = ({
           <DialogTrigger asChild disabled={!hasProjectAccess}>
             <DatasetItemEntryPointRow
               icon={<Upload className="h-5 w-5" />}
-              title="Upload CSV"
-              description="Import dataset items from a CSV file"
+              title={t("onboarding.datasetItems.uploadCsv.title")}
+              description={t("onboarding.datasetItems.uploadCsv.description")}
               onClick={() => {
                 if (hasProjectAccess) {
                   capture("dataset_item:upload_csv_button_click");
                 }
               }}
               hasAccess={hasProjectAccess}
+              noAccessTitle={t("onboarding.datasetItems.noAccess")}
             />
           </DialogTrigger>
         </CsvUploadDialog>
@@ -120,19 +125,20 @@ export const DatasetItemsOnboarding = ({
           <DialogTrigger asChild disabled={!hasProjectAccess}>
             <DatasetItemEntryPointRow
               icon={<Braces className="h-5 w-5" />}
-              title="Add Manually"
-              description="Manually input a single item"
+              title={t("onboarding.datasetItems.addManually.title")}
+              description={t("onboarding.datasetItems.addManually.description")}
               onClick={() => {
                 if (hasProjectAccess) {
                   capture("dataset_item:new_form_open");
                 }
               }}
               hasAccess={hasProjectAccess}
+              noAccessTitle={t("onboarding.datasetItems.noAccess")}
             />
           </DialogTrigger>
           <DialogContent size="lg">
             <DialogHeader>
-              <DialogTitle>Create dataset item</DialogTitle>
+              <DialogTitle>{t("onboarding.datasetItems.createDatasetItem")}</DialogTitle>
             </DialogHeader>
             <NewDatasetItemForm
               projectId={projectId}
@@ -149,19 +155,18 @@ export const DatasetItemsOnboarding = ({
         >
           <DatasetItemEntryPointRow
             icon={<Code className="h-5 w-5" />}
-            title="Add via Code"
-            description="Use our Python/TS/JS SDKs or custom API"
+            title={t("onboarding.datasetItems.addViaCode.title")}
+            description={t("onboarding.datasetItems.addViaCode.description")}
           />
         </Link>
 
         <DatasetItemEntryPointRow
           icon={<ListTree className="h-5 w-5" />}
-          title="Select Traces"
-          description="Coming soon!"
+          title={t("onboarding.datasetItems.selectTraces.title")}
+          description={t("onboarding.datasetItems.selectTraces.description")}
           comingSoon
           docPopup={{
-            description:
-              "Creating items from production data is supported on single trace level. Click to view docs for more details.",
+            description: t("onboarding.datasetItems.selectTraces.docDescription"),
             href: "https://langfuse.com/docs/evaluation/experiments/datasets#create-items-from-production-data",
           }}
         />

@@ -10,6 +10,7 @@ import Page from "@/src/components/layouts/page";
 import MultiWindowPlayground from "@/src/features/playground/page/components/MultiWindowPlayground";
 import { NoModelConfiguredAlert } from "@/src/features/playground/page/components/NoModelConfiguredAlert";
 import useProjectIdFromURL from "@/src/hooks/useProjectIdFromURL";
+import { useTranslation } from "@/src/features/i18n";
 
 /**
  * PlaygroundPage Component
@@ -34,6 +35,7 @@ import useProjectIdFromURL from "@/src/hooks/useProjectIdFromURL";
  */
 export default function PlaygroundPage() {
   const projectId = useProjectIdFromURL();
+  const { t } = useTranslation();
   const { windowIds, isLoaded, addWindowWithCopy, removeWindowId } =
     usePersistedWindowIds();
 
@@ -89,10 +91,9 @@ export default function PlaygroundPage() {
       <Page
         withPadding={false}
         headerProps={{
-          title: "Playground",
+          title: t("playground.title"),
           help: {
-            description:
-              "A sandbox to test and iterate your prompts across multiple windows",
+            description: t("playground.helpDescription"),
             href: "https://langfuse.com/docs/prompt-management/features/playground",
           },
         }}
@@ -121,10 +122,9 @@ export default function PlaygroundPage() {
       scrollable={false}
       withPadding={false}
       headerProps={{
-        title: "Playground",
+        title: t("playground.title"),
         help: {
-          description:
-            "A sandbox to test and iterate your prompts across multiple windows",
+          description: t("playground.helpDescription"),
           href: "https://langfuse.com/docs/prompt-management/features/playground",
         },
         actionButtonsRight: (
@@ -132,8 +132,7 @@ export default function PlaygroundPage() {
             {/* Window Count Display - Hidden on mobile */}
             <div className="hidden items-center gap-2 text-sm text-muted-foreground md:flex">
               <span className="whitespace-nowrap">
-                {windowIds.length} window
-                {windowIds.length === 1 ? "" : "s"}
+                {windowIds.length} {windowIds.length === 1 ? t("playground.window") : t("playground.windows")}
               </span>
               {executionStatus && (
                 <>
@@ -156,8 +155,8 @@ export default function PlaygroundPage() {
               className="hidden flex-shrink-0 gap-1 md:flex"
               title={
                 !hasAnyModelConfigured
-                  ? "Please configure a model in Project Settings first"
-                  : "Execute all playground windows simultaneously"
+                  ? t("playground.configureModelFirst")
+                  : t("playground.executeAllWindows")
               }
             >
               {globalIsExecutingAll ? (
@@ -165,7 +164,7 @@ export default function PlaygroundPage() {
               ) : (
                 <Play className="h-3 w-3" />
               )}
-              <span className="hidden lg:inline">Run All (Ctrl + Enter)</span>
+              <span className="hidden lg:inline">{t("playground.runAll")}</span>
             </Button>
 
             {/* Reset Playground Button */}

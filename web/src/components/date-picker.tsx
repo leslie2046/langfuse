@@ -26,6 +26,7 @@ import {
   type TimeRange,
 } from "@/src/utils/date-range-utils";
 import { combineDateAndTime } from "@/src/components/ui/time-picker-utils";
+import { useTranslation } from "@/src/features/i18n";
 
 export function DatePicker({
   date,
@@ -42,6 +43,7 @@ export function DatePicker({
   disabled?: boolean;
   includeTimePicker?: boolean;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-row gap-2 align-middle">
       <Popover>
@@ -59,7 +61,7 @@ export function DatePicker({
             {date ? (
               format(date, includeTimePicker ? "PPP pp" : "PPP")
             ) : (
-              <span>Pick a date</span>
+              <span>{t("common.datePicker.pickDate")}</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -80,7 +82,7 @@ export function DatePicker({
           variant="ghost"
           size="icon"
           onClick={() => onChange(undefined)}
-          title="reset date"
+          title={t("common.datePicker.resetDate")}
         >
           <X size={14} />
         </Button>
@@ -107,6 +109,7 @@ export function DatePickerWithRange({
   setDateRangeAndOption,
   disabled,
 }: DatePickerWithRangeProps) {
+  const { t } = useTranslation();
   const [internalDateRange, setInternalDateRange] = useState<
     RDPDateRange | undefined
   >(dateRange);
@@ -206,7 +209,7 @@ export function DatePickerWithRange({
                 format(internalDateRange.from, "LLL dd, y")
               )
             ) : (
-              <span>Pick a date</span>
+              <span>{t("common.datePicker.pickDate")}</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -224,7 +227,7 @@ export function DatePickerWithRange({
           <div className="flex flex-col gap-2 border-t-2 py-1.5 sm:flex-row sm:gap-0">
             <div className="px-3">
               <p className="px-1 text-sm font-medium">
-                Start<span className="hidden sm:inline"> time</span>
+                {t("common.datePicker.start")}<span className="hidden sm:inline"> time</span>
               </p>
               <TimePicker
                 date={internalDateRange?.from}
@@ -234,7 +237,7 @@ export function DatePickerWithRange({
             </div>
             <div className="px-3">
               <p className="px-1 text-sm font-medium">
-                End<span className="hidden sm:inline"> time</span>
+                {t("common.datePicker.end")}<span className="hidden sm:inline"> time</span>
               </p>
               <TimePicker
                 date={internalDateRange?.to}
@@ -268,6 +271,7 @@ export function TimeRangePicker({
   onTimeRangeChange,
   disabled,
 }: TimeRangePickerProps) {
+  const { t } = useTranslation();
   // Determine the range type
   const rangeType: "named" | "custom" | null = timeRange
     ? "from" in timeRange
@@ -403,7 +407,7 @@ export function TimeRangePicker({
           <span>
             {dateRange
               ? formatDateRange(dateRange.from, dateRange.to)
-              : "Select from calendar"}
+              : t("common.datePicker.selectFromCalendar")}
           </span>
         </div>
       );
@@ -423,7 +427,7 @@ export function TimeRangePicker({
       return (
         <div className="flex items-center gap-2">
           <CalendarIcon className="h-4 w-4" />
-          <span>Select time range</span>
+          <span>{t("common.datePicker.selectTimeRange")}</span>
         </div>
       );
     }
@@ -460,7 +464,7 @@ export function TimeRangePicker({
               />
               <div className="flex flex-col gap-3 border-t p-3">
                 <div className="flex flex-col gap-1">
-                  <p className="px-1 text-sm font-medium">Start time</p>
+                  <p className="px-1 text-sm font-medium">{t("common.datePicker.startTime")}</p>
                   <TimePicker
                     date={internalDateRange?.from}
                     setDate={onStartTimeSelection}
@@ -468,7 +472,7 @@ export function TimeRangePicker({
                   />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <p className="px-1 text-sm font-medium">End time</p>
+                  <p className="px-1 text-sm font-medium">{t("common.datePicker.endTime")}</p>
                   <TimePicker
                     date={internalDateRange?.to}
                     setDate={onEndTimeSelection}
@@ -508,7 +512,7 @@ export function TimeRangePicker({
                 <span className="leading flex h-5 w-10 items-center justify-center rounded bg-muted px-1.5 text-center text-xs">
                   <CalendarIcon className="h-3 w-3" />
                 </span>
-                <span>Select from calendar</span>
+                <span>{t("common.datePicker.selectFromCalendar")}</span>
               </div>
             </div>
           )}

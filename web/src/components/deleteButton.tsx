@@ -15,6 +15,7 @@ import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
 import { showSuccessToast } from "@/src/features/notifications/showSuccessToast";
 import { useHasEntitlement } from "@/src/features/entitlements/hooks";
+import { useTranslation } from "@/src/features/i18n";
 
 export type DeleteButtonProps = {
   itemId: string;
@@ -68,6 +69,7 @@ export function DeleteButton({
   const [isDeleted, setIsDeleted] = useState(false);
   const router = useRouter();
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
   const [deleteConfirmationInput, setDeleteConfirmationInput] = useState("");
 
   const hasAccess = useHasProjectAccess({ projectId, scope: scope });
@@ -110,22 +112,21 @@ export function DeleteButton({
               ) : (
                 <LockIcon className="mr-2 h-4 w-4" />
               )}
-              Delete
+              {t("common.delete")}
             </>
           )}
         </Button>
       </PopoverTrigger>
       <PopoverContent onClick={(e) => e.stopPropagation()}>
-        <h2 className="text-md mb-3 font-semibold">Please confirm</h2>
+        <h2 className="text-md mb-3 font-semibold">{t("common.deleteAction.pleaseConfirm")}</h2>
         <p className="mb-3 max-w-72 text-sm">
           {customDeletePrompt ??
-            `This action cannot be undone and removes all the data associated with
-            this ${entityToDeleteName}.`}
+            `${t("common.deleteAction.cannotBeUndone")} ${entityToDeleteName}.`}
         </p>
         {deleteConfirmation && (
           <div className="mb-4 grid w-full gap-1.5">
             <Label htmlFor="delete-confirmation">
-              Type &quot;{deleteConfirmation}&quot; to confirm
+              {t("common.deleteAction.typeToConfirm").replace("{confirmation}", deleteConfirmation)}
             </Label>
             <Input
               id="delete-confirmation"
@@ -144,13 +145,13 @@ export function DeleteButton({
                 deleteConfirmation &&
                 deleteConfirmationInput !== deleteConfirmation
               ) {
-                alert("Please type the correct confirmation");
+                alert(t("common.deleteAction.incorrectConfirmation"));
                 return;
               }
               void executeDeleteMutation(onDeleteSuccess);
             }}
           >
-            Delete {entityToDeleteName}
+            {t("common.delete")} {entityToDeleteName}
           </Button>
         </div>
       </PopoverContent>

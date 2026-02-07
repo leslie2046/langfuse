@@ -5,11 +5,13 @@ import { DatasetActionButton } from "@/src/features/datasets/components/DatasetA
 import { api } from "@/src/utils/api";
 import { DatasetsOnboarding } from "@/src/components/onboarding/DatasetsOnboarding";
 import { useQueryParam, StringParam } from "use-query-params";
+import { useTranslation } from "@/src/features/i18n";
 
 export default function Datasets() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
   const [currentFolderPath] = useQueryParam("folder", StringParam);
+  const { t } = useTranslation();
 
   // Check if the project has any datasets
   const { data: hasAnyDataset, isLoading } = api.datasets.hasAny.useQuery(
@@ -30,10 +32,9 @@ export default function Datasets() {
     return (
       <Page
         headerProps={{
-          title: "Datasets",
+          title: t("pages.datasets.title"),
           help: {
-            description:
-              "Datasets in Langfuse are a collection of inputs (and expected outputs) of an LLM application. They are used to benchmark new releases before deployment to production. See docs to learn more.",
+            description: t("pages.datasets.helpDescription"),
             href: "https://langfuse.com/docs/evaluation/dataset-runs/datasets",
           },
         }}
@@ -47,10 +48,9 @@ export default function Datasets() {
   return (
     <Page
       headerProps={{
-        title: "Datasets",
+        title: t("pages.datasets.title"),
         help: {
-          description:
-            "Datasets in Langfuse are a collection of inputs (and expected outputs) of an LLM application. They are used to benchmark new releases before deployment to production. See docs to learn more.",
+          description: t("pages.datasets.helpDescription"),
           href: "https://langfuse.com/docs/evaluation/dataset-runs/datasets",
         },
         actionButtonsRight: (

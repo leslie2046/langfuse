@@ -31,7 +31,7 @@ import { Slack } from "lucide-react";
 import { ScoreConfigSettings } from "@/src/features/score-configs/components/ScoreConfigSettings";
 import { env } from "@/src/env.mjs";
 import { NotificationSettings } from "@/src/features/notifications/components/NotificationSettings";
-import { AppearanceSettings, useTranslation } from "@/src/features/i18n";
+import { useTranslation } from "@/src/features/i18n";
 
 type ProjectSettingsPage = {
   title: string;
@@ -229,19 +229,6 @@ export const getProjectSettingsPages = ({
     slug: "notifications",
     cmdKKeywords: ["inbox", "email", "mention", "alert"],
     content: <NotificationSettings />,
-  },
-  {
-    title: t("settings.appearance"),
-    slug: "appearance",
-    cmdKKeywords: [
-      "language",
-      "theme",
-      "display",
-      "locale",
-      "chinese",
-      "english",
-    ],
-    content: <AppearanceSettings />,
   },
   {
     title: t("settings.billing"),

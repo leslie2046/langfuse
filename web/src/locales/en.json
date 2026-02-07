@@ -69,7 +69,102 @@
     "active": "Active",
     "inactive": "Inactive",
     "configure": "Configure",
-    "integrationDocs": "Integration Docs"
+    "integrationDocs": "Integration Docs",
+    "buttons": {
+      "edit": "Edit",
+      "save": "Save",
+      "create": "Create",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "new": "New",
+      "processing": "Processing...",
+      "submit": "Submit",
+      "confirm": "Confirm"
+    },
+    "form": {
+      "name": "Name",
+      "descriptionField": "Description",
+      "descriptionOptional": "Description (optional)",
+      "addDescription": "Add description..."
+    },
+    "annotationQueue": {
+      "newQueue": "New queue",
+      "editQueue": "Edit",
+      "newAnnotationQueue": "New annotation queue",
+      "editAnnotationQueue": "Edit annotation queue",
+      "createDescription": "Create a new queue to manage your annotation workflows.",
+      "editDescription": "Edit queue to manage your annotation workflows.",
+      "scoreConfigs": "Score Configs",
+      "scoreConfigsDescription": "Define which dimensions annotators should score for the given queue.",
+      "manageScoreConfigs": "Manage score configs",
+      "advancedSettings": "Advanced Settings",
+      "userAssignment": "User Assignment",
+      "createQueue": "Create queue",
+      "saveQueue": "Save queue"
+    },
+    "table": {
+      "noData": "No data available",
+      "loading": "Loading...",
+      "error": "Error loading data",
+      "rows": "Rows",
+      "rowsPerPage": "Rows per page",
+      "page": "Page",
+      "pageOf": "of",
+      "goToFirstPage": "Go to first page",
+      "goToLastPage": "Go to last page",
+      "goToPreviousPage": "Go to previous page",
+      "goToNextPage": "Go to next page"
+    },
+    "deleteAction": {
+      "button": "Delete",
+      "pleaseConfirm": "Please confirm",
+      "cannotBeUndone": "This action cannot be undone and removes all the data associated with this",
+      "typeToConfirm": "Type \"{confirmation}\" to confirm",
+      "incorrectConfirmation": "Please type the correct confirmation"
+    },
+    "success": {
+      "traceDeleted": "Trace deleted",
+      "traceDeletedDescription": "Selected trace will be deleted. Traces are removed asynchronously and may continue to be visible for up to 24 hours.",
+      "dashboardDeleted": "Dashboard deleted",
+      "dashboardDeletedDescription": "The dashboard has been deleted successfully",
+      "evaluatorDeleted": "Running evaluator deleted",
+      "evaluatorDeletedDescription": "The running evaluator has been deleted successfully",
+      "defaultModelDeleted": "Default evaluation model deleted",
+      "defaultModelDeletedDescription": "The default evaluation model has been deleted. Any running evaluations relying on the default model will be inactivated. Queued jobs will fail."
+    },
+    "permissions": {
+      "noAccess": "You do not have access to this resource, please ask your admin to grant you access.",
+      "limitReached": "You have reached the limit ({current}/{max}) for this resource at your current plan. Upgrade your plan to increase the limit.",
+      "entitlementRequired": "This feature is not available in your current plan."
+    },
+    "filters": {
+      "search": "Search",
+      "datePicker": {
+        "pickDate": "Pick a date",
+        "resetDate": "reset date",
+        "start": "Start",
+        "startTime": "Start time",
+        "end": "End",
+        "endTime": "End time",
+        "selectFromCalendar": "Select from calendar",
+        "selectTimeRange": "Select time range"
+      },
+      "searchPlaceholder": "Search...",
+      "filter": "Filter",
+      "addFilter": "Add filter",
+      "clearFilters": "Clear filters",
+      "selectColumn": "Select column",
+      "selectOperator": "Select operator",
+      "enterValue": "Enter value",
+      "apply": "Apply",
+      "reset": "Reset"
+    },
+    "columns": {
+      "showColumns": "Columns",
+      "hideColumn": "Hide column",
+      "showAllColumns": "Show all columns",
+      "resetColumns": "Reset columns"
+    }
   },
   "errors": {
     "projectNotFound": "Project Not Found",
@@ -85,7 +180,106 @@
     "unableToCheckSso": "Unable to check SSO configuration. Please try again.",
     "notAvailable": "Not available",
     "passwordResetNotConfigured": "Password reset is not configured on this instance",
-    "passwordsDoNotMatch": "Passwords do not match"
+    "passwordsDoNotMatch": "Passwords do not match",
+    "traceNotFound": "Trace not found",
+    "traceNotFoundMessage": "The trace is either still being processed or has been deleted.",
+    "noObservationsFound": "No observations found for this trace. The trace may still be processing or has been deleted.",
+    "noAccessToTrace": "You do not have access to this trace.",
+    "retry": "Retry"
+  },
+  "trace": {
+    "public": "Public",
+    "signIn": "Sign in",
+    "backToLangfuse": "Back to Langfuse",
+    "shared": "Shared",
+    "private": "Private",
+    "sharedDescription": "This {item} is public. Anyone with the link can view this {item}.",
+    "privateDescription": "This {item} is private. Only authorized project members can view this {item}.",
+    "share": "Share",
+    "unshare": "Unshare",
+    "copyLink": "Copy",
+    "copied": "Copied"
+  },
+  "session": {
+    "sessionUsers": "Session Users",
+    "totalTraces": "Total traces",
+    "totalCost": "Total cost",
+    "moreUsers": "+{count} more users",
+    "userId": "User ID",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {current} of {total}",
+    "notFound": "Session not found",
+    "notFoundMessage": "The session is either still being processed or has been deleted.",
+    "noAccess": "You do not have access to this session.",
+    "downloadAs": "Download session as JSON",
+    "showCorrections": "Show corrections"
+  },
+  "prompts": {
+    "table": {
+      "name": "Name",
+      "versions": "Versions",
+      "type": "Type",
+      "latestVersionCreatedAt": "Latest Version Created At",
+      "numberOfObservations": "Number of Observations",
+      "tags": "Tags",
+      "actions": "Actions"
+    },
+    "search": {
+      "namesTags": "Names, Tags",
+      "fullText": "Full Text"
+    },
+    "newVersion": "New version",
+    "runExperiment": "Run experiment",
+    "tabs": {
+      "prompt": "Prompt",
+      "config": "Config",
+      "linkedGenerations": "Linked Generations",
+      "usePrompt": "Use Prompt"
+    },
+    "resolvedPrompt": "Resolved prompt",
+    "taggedPrompt": "Tagged prompt",
+    "experimentTriggeredSuccess": "Experiment triggered successfully",
+    "experimentWaiting": "Waiting for experiment to complete...",
+    "viewExperiment": "View experiment"
+  },
+  "scores": {
+    "annotate": {
+      "title": "Annotate",
+      "discardChanges": "Discard Changes",
+      "saveChanges": "Save Changes",
+      "saving": "Saving score data",
+      "saved": "Score data saved",
+      "manageConfigs": "Manage score configs",
+      "apiEvalVisible": "API and eval scores visible on left. Add manual annotations above.",
+      "placeholders": {
+        "value": "Value",
+        "selectCategory": "Select category",
+        "searchCategories": "Search categories...",
+        "noCategory": "No category found."
+      },
+      "errors": {
+        "delete": "Failed to delete score",
+        "update": "Failed to update score",
+        "create": "Failed to create score",
+        "updateComment": "Failed to update comment"
+      }
+    }
+  },
+  "comments": {
+    "addComment": "Add comment",
+    "title": "Comments",
+    "searchPlaceholder": "Search comments...",
+    "showingComments": "Showing {filtered} of {total} comments",
+    "noMatches": "No comments match your search",
+    "totalComments": "{count} comments",
+    "loading": "Loading comments...",
+    "addPlaceholder": "Add a comment...",
+    "markdownSupport": "Markdown and @-mentions support",
+    "delete": "Delete comment",
+    "submit": "Submit comment",
+    "send": "Send comment",
+    "deleteConfirm": "Are you sure you want to delete this comment?"
   },
   "settings": {
     "title": "Settings",
@@ -150,5 +344,267 @@
     "signUpWith": "Sign up with",
     "continueWith": "Continue with",
     "emailCredentials": "Email credentials"
+  },
+  "dashboard": {
+    "traces": "Traces",
+    "totalTracesTracked": "Total traces tracked",
+    "modelCosts": "Model costs",
+    "totalCost": "Total cost",
+    "scores": "Scores",
+    "totalScoresTracked": "Total scores tracked",
+    "columns": {
+      "model": "Model",
+      "tokens": "Tokens",
+      "usd": "USD",
+      "name": "Name",
+      "traceName": "Trace Name",
+      "tags": "Tags",
+      "user": "User",
+      "release": "Release",
+      "version": "Version"
+    },
+    "env": "Env",
+    "environment": "Environment",
+    "requestChart": "Request Chart",
+    "feedbackDescription": "Your feedback matters! Let the Langfuse team know what additional data or metrics you'd like to see in your dashboard.",
+    "modelCostDescription": "Calculated multiplying the number of tokens with cost per token for each model.",
+    "emptyState": {
+      "traces": "Traces contain details about LLM applications and can be created using the SDK.",
+      "scores": "Scores evaluate LLM quality and can be created manually or using the SDK."
+    },
+    "showTop": "Show top",
+    "showAll": "Show all"
+  },
+  "onboarding": {
+    "traces": {
+      "title": "You don't have any traces yet",
+      "description": "Traces show you how your LLM calls behave in your application: what they cost, how they perform, and where things go wrong. It's the first step towards improving the behavior of your app."
+    },
+    "sessions": {
+      "title": "You aren't using sessions yet",
+      "description": "Sessions let you group traces that belong to the same workflow, or conversation.",
+      "startUsing": "Start using sessions",
+      "guide": "To start using sessions, you need to add a sessionId to your traces.",
+      "readDocs": "Read the docs"
+    },
+    "prompts": {
+      "title": "Get Started with Prompt Management",
+      "description": "Langfuse Prompt Management helps you centrally manage, version control, and collaboratively iterate on your prompts. Start using prompt management to improve your LLM application's performance and maintainability.",
+      "createPrompt": "Create Prompt",
+      "learnMore": "Learn More",
+      "propositions": {
+        "decoupled": {
+          "title": "Decoupled from code",
+          "description": "Deploy new prompts without application redeployment, making updates faster and easier"
+        },
+        "editInUi": {
+          "title": "Edit in UI or programmatically",
+          "description": "Non-technical users can easily edit prompts in the UI. Developers can optionally update prompts programmatically via the API and SDKs"
+        },
+        "performance": {
+          "title": "Performance optimized",
+          "description": "Client-side caching prevents latency or availability issues for your applications"
+        },
+        "compare": {
+          "title": "Compare metrics",
+          "description": "Track latency, cost, and evaluation metrics across different prompt versions"
+        }
+      }
+    },
+    "scores": {
+      "title": "Get Started with Scores",
+      "description": "Scores allow you to evaluate the quality/safety of your LLM application through user feedback, model-based evaluations, or manual review. Scores can be used programmatically via the API and SDKs to track custom metrics.",
+      "learnMore": "Learn More",
+      "propositions": {
+        "collect": {
+          "title": "Collect user feedback",
+          "description": "Gather thumbs up/down feedback from users to identify high and low quality outputs"
+        },
+        "modelBased": {
+          "title": "Run model-based evaluations",
+          "description": "Use LLMs to automatically evaluate your application's outputs"
+        },
+        "track": {
+          "title": "Track quality metrics",
+          "description": "Monitor quality metrics over time to identify trends and issues"
+        },
+        "custom": {
+          "title": "Use custom metrics",
+          "description": "Langfuse's scores are flexible and can be used to track any metric that's associated with an LLM application"
+        }
+      }
+    },
+    "evaluators": {
+      "title": "Get Started with LLM-as-a-Judge Evaluations",
+      "description": "Create evaluation templates and evaluators to automatically score your traces with LLM-as-a-judge. Set up custom evaluation criteria and let AI help you measure the quality of your outputs.",
+      "createEvaluator": "Create Evaluator",
+      "learnMore": "Learn More",
+      "propositions": {
+        "automate": {
+          "title": "Automate evaluations",
+          "description": "Use LLM-as-a-judge to automatically evaluate your traces without manual review"
+        },
+        "measure": {
+          "title": "Measure quality",
+          "description": "Create custom evaluation criteria to measure the quality of your LLM outputs"
+        },
+        "scale": {
+          "title": "Scale efficiently",
+          "description": "Evaluate thousands of traces automatically with customizable sampling rates"
+        },
+        "track": {
+          "title": "Track performance",
+          "description": "Monitor evaluation metrics over time to identify trends and improvements"
+        }
+      }
+    },
+    "annotationQueues": {
+      "title": "Get Started with Annotation Queues",
+      "description": "Annotation queues help you manage manual annotation/labeling for your LLM projects. Create queues, define annotation metrics, and track progress.",
+      "createQueue": "Create Annotation Queue",
+      "learnMore": "Learn More",
+      "propositions": {
+        "manage": {
+          "title": "Manage scoring workflows",
+          "description": "Create and manage annotation queues to streamline your scoring workflows"
+        },
+        "collaborate": {
+          "title": "Collaborate with annotators",
+          "description": "Invite team members to annotate and evaluate your LLM outputs"
+        },
+        "track": {
+          "title": "Track annotation metrics",
+          "description": "Monitor annotation progress and quality metrics across your team"
+        },
+        "baseline": {
+          "title": "Baseline evaluation efforts",
+          "description": "Use annotation data as a baseline to evaluate your other evaluation metrics"
+        }
+      }
+    },
+    "datasets": {
+      "title": "Get Started with Datasets & Experiments",
+      "description": "Datasets in Langfuse are collections of inputs (and expected outputs) for your LLM application. You can run Experiments against these datasets to test new releases before deployment to production.",
+      "createDataset": "Create Dataset",
+      "learnMore": "Learn More",
+      "propositions": {
+        "continuous": {
+          "title": "Continuous improvement",
+          "description": "Create datasets from production edge cases to improve your application"
+        },
+        "preDeployment": {
+          "title": "Pre-deployment testing",
+          "description": "Benchmark new releases before deploying to production"
+        },
+        "structured": {
+          "title": "Structured testing",
+          "description": "Run experiments on collections of inputs and expected outputs"
+        },
+        "custom": {
+          "title": "Custom workflows",
+          "description": "Build custom workflows around your datasets via the API and SDKs, e.g. for fine-tuning, few-shotting"
+        }
+      }
+    },
+    "datasetItems": {
+      "title": "Add items to your dataset",
+      "description": "Datasets are collections of specific edge cases and underrepresented patterns used to evaluate your application.",
+      "uploadCsv": {
+        "title": "Upload CSV",
+        "description": "Import dataset items from a CSV file"
+      },
+      "addManually": {
+        "title": "Add Manually",
+        "description": "Manually input a single item"
+      },
+      "addViaCode": {
+        "title": "Add via Code",
+        "description": "Use our Python/TS/JS SDKs or custom API"
+      },
+      "selectTraces": {
+        "title": "Select Traces",
+        "description": "Coming soon!",
+        "docDescription": "Creating items from production data is supported on single trace level. Click to view docs for more details."
+      },
+      "createDatasetItem": "Create dataset item",
+      "noAccess": "You don't have access to this feature, please contact your administrator"
+    },
+    "users": {
+      "title": "You aren't tracking users yet",
+      "description": "Once you add a user ID to your traces, you can correlate costs, evaluations and other LLM Application metrics to better understand how they interact with your LLM applications.",
+      "startTracking": "Start tracking users",
+      "guide": "To start tracking users, you need to add a userId to your traces.",
+      "readDocs": "Read the docs"
+    },
+    "getStarted": "Get started"
+  },
+  "playground": {
+    "title": "Playground",
+    "helpDescription": "A sandbox to test and iterate your prompts across multiple windows",
+    "window": "window",
+    "windows": "windows",
+    "runAll": "Run All (Ctrl + Enter)",
+    "configureModelFirst": "Please configure a model in Project Settings first",
+    "executeAllWindows": "Execute all playground windows simultaneously",
+    "executingWindows": "Executing",
+    "noModelConfigured": {
+      "title": "No Model Configured",
+      "descriptionPart1": "To use the playground, you need to configure a model first. Go to",
+      "llmConnectionSettings": "LLM Connection Settings",
+      "descriptionPart2": "to add an LLM API key and configure your models."
+    }
+  },
+  "pages": {
+    "traces": {
+      "title": "Tracing",
+      "helpDescription": "A trace represents a single function/api invocation. Traces contain observations. See docs to learn more.",
+      "docs": "docs"
+    },
+    "sessions": {
+      "title": "Sessions",
+      "helpDescription": "A session is a collection of related traces, such as a conversation or thread. To begin, add a sessionId to the trace. See docs to learn more."
+    },
+    "users": {
+      "title": "Users",
+      "helpDescription": "Attribute data in Langfuse to a user by adding a userId to your traces. See docs to learn more.",
+      "columns": {
+        "userId": "User ID",
+        "userIdTooltip": "The unique identifier for the user that was logged in Langfuse. See docs for more details on how to set this up.",
+        "environment": "Environment",
+        "firstEvent": "First Event",
+        "firstEventTooltip": "The earliest trace recorded for this user.",
+        "lastEvent": "Last Event",
+        "lastEventTooltip": "The latest trace recorded for this user.",
+        "totalEvents": "Total Events",
+        "totalEventsTooltip": "Total number of events for the user, includes traces and observations. See data model for more details.",
+        "totalTokens": "Total Tokens",
+        "totalTokensTooltip": "Total number of tokens used for the user across all generations.",
+        "totalCost": "Total Cost",
+        "totalCostTooltip": "Total cost for the user across all generations.",
+        "noEventYet": "No event yet"
+      }
+    },
+    "datasets": {
+      "title": "Datasets",
+      "helpDescription": "Datasets in Langfuse are a collection of inputs (and expected outputs) of an LLM application. They are used to benchmark new releases before deployment to production. See docs to learn more."
+    },
+    "scores": {
+      "title": "Scores",
+      "helpDescription": "A scores is an evaluation of a traces or observations. It can be created from user feedback, model-based evaluations, or manual review. See docs to learn more."
+    },
+    "prompts": {
+      "title": "Prompts",
+      "helpDescription": "Manage and version your prompts in Langfuse. Edit and update them via the UI and SDK. Retrieve the production version via the SDKs. Learn more in the docs.",
+      "newPrompt": "New prompt"
+    },
+    "annotationQueues": {
+      "title": "Annotation Queues",
+      "helpDescription": "Annotation queues are used to manage scoring workflows for your LLM projects. See docs to learn more."
+    },
+    "evaluators": {
+      "title": "LLM-as-a-Judge Evaluators",
+      "helpDescription": "Configure a langfuse managed or custom evaluator to evaluate incoming traces.",
+      "setupEvaluator": "Set up evaluator"
+    }
   }
 }

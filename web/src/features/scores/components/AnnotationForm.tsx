@@ -69,6 +69,7 @@ import { useScoreConfigSelection } from "@/src/features/scores/hooks/useScoreCon
 import { useRouter } from "next/router";
 import { useAnnotationScoreConfigs } from "@/src/features/scores/hooks/useScoreConfigs";
 import { Skeleton } from "@/src/components/ui/skeleton";
+import { useTranslation } from "@/src/features/i18n";
 
 const CHAR_CUTOFF = 6;
 
@@ -84,6 +85,7 @@ function CommentField({
   onSave: (comment: string | null) => void;
 }) {
   const [localValue, setLocalValue] = useState(savedComment || "");
+  const { t } = useTranslation();
 
   // Reset local value when saved comment changes (after mutation completes)
   useEffect(() => {
@@ -133,7 +135,7 @@ function CommentField({
                 setLocalValue(savedComment || "");
               }}
             >
-              Discard Changes
+              {t("scores.annotate.discardChanges")}
             </Button>
           </PopoverClose>
           <PopoverClose asChild>
@@ -147,7 +149,7 @@ function CommentField({
                 onSave(localValue);
               }}
             >
-              Save Changes
+              {t("scores.annotate.saveChanges")}
             </Button>
           </PopoverClose>
         </div>
@@ -177,9 +179,10 @@ function AnnotateHeader({
   actionButtons: React.ReactNode;
   description: string;
 }) {
+  const { t } = useTranslation();
   return (
     <Header
-      title="Annotate"
+      title={t("scores.annotate.title")}
       help={{
         description,
         href: "https://langfuse.com/docs/evaluation/evaluation-methods/annotation",
@@ -195,7 +198,7 @@ function AnnotateHeader({
             )}
           </div>
           <span className="text-xs text-muted-foreground">
-            {showSaving ? "Saving score data" : "Score data saved"}
+            {showSaving ? t("scores.annotate.saving") : t("scores.annotate.saved")}
           </span>
         </div>,
         actionButtons,
@@ -219,6 +222,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
   const capture = usePostHogClientCapture();
   const router = useRouter();
   const { configs, allowManualSelection } = configControl;
+  const { t } = useTranslation();
 
   // Initialize form with initial data (never updates)
   const form = useForm({
@@ -297,7 +301,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
     form.setValue(`scoreData.${index}.timestamp`, previousScore.timestamp);
     form.setError(`scoreData.${index}.value`, {
       type: "server",
-      message: "Failed to delete score",
+      message: t("scores.annotate.errors.delete"),
     });
   };
 
@@ -351,7 +355,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
     form.setValue(`scoreData.${index}.stringValue`, previousStringValue);
     form.setError(`scoreData.${index}.value`, {
       type: "server",
-      message: "Failed to update score",
+      message: t("scores.annotate.errors.update"),
     });
   };
 
@@ -368,7 +372,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
     form.setValue(`scoreData.${index}.stringValue`, previousStringValue);
     form.setError(`scoreData.${index}.value`, {
       type: "server",
-      message: "Failed to create score",
+      message: t("scores.annotate.errors.create"),
     });
   };
 
@@ -498,7 +502,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
     });
     form.setError(`scoreData.${index}.comment`, {
       type: "server",
-      message: "Failed to update comment",
+      message: t("scores.annotate.errors.updateComment"),
     });
   };
 
@@ -539,7 +543,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
         {allowManualSelection ? (
           <div className="grid grid-flow-col items-center">
             <MultiSelectKeyValues
-              placeholder="Value"
+              placeholder={t("scores.annotate.placeholders.value")}
               align="end"
               items="empty scores"
               className="grid grid-cols-[auto,1fr,auto,auto] gap-2"
@@ -566,7 +570,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
                     );
                   }}
                 >
-                  Manage score configs
+                  {t("scores.annotate.manageConfigs")}
                 </DropdownMenuItem>
               }
             />
@@ -722,9 +726,9 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
                                         value: category.label,
                                         disabled: category.isOutdated,
                                       }))}
-                                      placeholder="Select category"
-                                      searchPlaceholder="Search categories..."
-                                      emptyText="No category found."
+                                      placeholder={t("scores.annotate.placeholders.selectCategory")}
+                                      searchPlaceholder={t("scores.annotate.placeholders.searchCategories")}
+                                      emptyText={t("scores.annotate.placeholders.noCategory")}
                                     />
                                   </FormControl>
                                   <FormMessage className="text-xs" />

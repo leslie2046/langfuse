@@ -11,11 +11,13 @@ import {
 } from "@/src/features/navigation/utils/tracing-tabs";
 import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
 import ObservationsEventsTable from "@/src/features/events/components/EventsTable";
+import { useTranslation } from "@/src/features/i18n";
 
 export default function Traces() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
   const { isBetaEnabled } = useV4Beta();
+  const { t } = useTranslation();
   const [, setQueryParams] = useQueryParams({ viewMode: StringParam });
 
   // Clear viewMode query when beta is turned off (e.g. from sidebar)
@@ -46,10 +48,9 @@ export default function Traces() {
     return (
       <Page
         headerProps={{
-          title: "Tracing",
+          title: t("pages.traces.title"),
           help: {
-            description:
-              "A trace represents a single function/api invocation. Traces contain observations. See [docs](https://langfuse.com/docs/observability/data-model) to learn more.",
+            description: t("pages.traces.helpDescription"),
             href: "https://langfuse.com/docs/observability/data-model",
           },
         }}
@@ -63,12 +64,11 @@ export default function Traces() {
   return (
     <Page
       headerProps={{
-        title: "Tracing",
+        title: t("pages.traces.title"),
         help: {
           description: (
             <>
-              A trace represents a single function/api invocation. Traces
-              contain observations. See{" "}
+              {t("pages.traces.helpDescription").split(t("pages.traces.docs"))[0]}
               <a
                 href="https://langfuse.com/docs/observability/data-model"
                 target="_blank"
@@ -76,9 +76,9 @@ export default function Traces() {
                 className="underline decoration-primary/30 hover:decoration-primary"
                 onClick={(e) => e.stopPropagation()}
               >
-                docs
-              </a>{" "}
-              to learn more.
+                {t("pages.traces.docs")}
+              </a>
+              {t("pages.traces.helpDescription").split(t("pages.traces.docs"))[1] || ""}
             </>
           ),
           href: "https://langfuse.com/docs/observability/data-model",

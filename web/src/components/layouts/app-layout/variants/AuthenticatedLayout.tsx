@@ -12,6 +12,7 @@ import { Toaster } from "@/src/components/ui/sonner";
 import { PaymentBannerProvider } from "@/src/features/payment-banner";
 import { ResizableContent } from "../components/ResizableContent";
 import { ThemeToggle } from "@/src/features/theming/ThemeToggle";
+import { LanguageToggle } from "@/src/features/i18n";
 import type { Session } from "next-auth";
 import type { NavigationItem } from "@/src/components/layouts/utilities/routes";
 import type { RouteGroup } from "@/src/components/layouts/routes";
@@ -94,6 +95,7 @@ export function AuthenticatedLayout({
     items: [
       { name: "Account Settings", href: "/account/settings" },
       { name: "Theme", onClick: () => {}, content: <ThemeToggle /> },
+      { name: "Language", onClick: () => {}, content: <LanguageToggle /> },
       { name: "Sign out", onClick: onSignOut },
     ],
   };

@@ -51,6 +51,7 @@ import { MENTION_USER_PREFIX } from "@/src/features/comments/lib/mentionParser";
 import { type SelectionData } from "./contexts/InlineCommentSelectionContext";
 import { Badge } from "@/src/components/ui/badge";
 import { useTheme } from "next-themes";
+import { useTranslation } from "@/src/features/i18n";
 
 // IO field background colors - same as IOPreviewJSON.tsx
 const IO_FIELD_COLORS = {
@@ -103,6 +104,7 @@ export function CommentList({
   const session = useSession();
   const router = useRouter();
   const { resolvedTheme } = useTheme();
+  const { t } = useTranslation();
   const isDark = resolvedTheme === "dark";
   const [cursorPosition, setCursorPosition] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
@@ -478,7 +480,7 @@ export function CommentList({
       >
         <LoaderCircle className="mr-1.5 h-4 w-4 animate-spin text-muted-foreground" />
         <span className="text-sm text-muted-foreground opacity-60">
-          Loading comments...
+          {t("comments.loading")}
         </span>
       </div>
     );
@@ -493,20 +495,20 @@ export function CommentList({
     >
       {cardView && (
         <div className="flex-shrink-0 border-b px-2 py-1 text-sm font-medium">
-          Comments ({comments.data?.length ?? 0})
+          {t("comments.title")} ({comments.data?.length ?? 0})
         </div>
       )}
       <div className="flex min-h-0 flex-1 flex-col">
         {!cardView && (
           <div className="flex-shrink-0 border-b">
             <div className="flex items-center justify-between gap-2 px-2 py-1.5">
-              <div className="text-sm font-medium">Comments</div>
+              <div className="text-sm font-medium">{t("comments.title")}</div>
               <div className="relative max-w-xs flex-1">
                 <Search className="absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   ref={searchInputRef}
                   type="text"
-                  placeholder="Search comments..."
+                  placeholder={t("comments.searchPlaceholder")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="h-7 pl-7 pr-7 text-xs"
@@ -539,9 +541,9 @@ export function CommentList({
             <div className="px-2 pb-1 text-xs text-muted-foreground">
               {searchQuery.trim()
                 ? filteredComments && filteredComments.length > 0
-                  ? `Showing ${filteredComments.length} of ${comments.data?.length ?? 0} comments`
-                  : "No comments match your search"
-                : `${comments.data?.length ?? 0} comments`}
+                  ? t("comments.showingComments", { filtered: filteredComments.length, total: comments.data?.length ?? 0 })
+                  : t("comments.noMatches")
+                : t("comments.totalComments", { count: comments.data?.length ?? 0 })}
             </div>
           </div>
         )}
@@ -668,12 +670,12 @@ export function CommentList({
                       type="button"
                       size="icon-xs"
                       variant="ghost"
-                      title="Delete comment"
+                      title={t("comments.delete")}
                       loading={deleteCommentMutation.isPending}
                       onClick={() => {
                         if (
                           confirm(
-                            "Are you sure you want to delete this comment?",
+                            t("comments.deleteConfirm"),
                           )
                         )
                           deleteCommentMutation.mutateAsync({
@@ -698,7 +700,7 @@ export function CommentList({
             <div className="relative ml-2.5 mr-4 mt-2 flex flex-row items-center justify-between text-xs text-muted-foreground">
               <span className="sr-only">New comment</span>
               <span></span>
-              <span>Markdown and @-mentions support</span>
+              <span>{t("comments.markdownSupport")}</span>
             </div>
             <div className="relative mb-2 ml-2 mr-3 mt-0.5 min-h-[70px] flex-shrink-0 rounded-lg border border-border/60 pt-1">
               {/* Visually hidden header for accessibility */}
@@ -713,7 +715,7 @@ export function CommentList({
                         <div>
                           <FormControl>
                             <Textarea
-                              placeholder="Add a comment..."
+                              placeholder={t("comments.addPlaceholder")}
                               {...field}
                               ref={(el) => {
                                 if (textareaRef.current !== el) {
@@ -773,7 +775,7 @@ export function CommentList({
                           type="submit"
                           size="icon-xs"
                           variant="outline"
-                          title="Submit comment"
+                          title={t("comments.submit")}
                           loading={createCommentMutation.isPending}
                           onClick={() => {
                             form.handleSubmit(onSubmit)();
@@ -789,7 +791,7 @@ export function CommentList({
                         className="w-auto p-2"
                       >
                         <div className="flex items-center gap-2 text-sm">
-                          <span>Send comment</span>
+                          <span>{t("comments.send")}</span>
                           <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
                             <span className="text-xs">⌘</span>Enter
                           </kbd>

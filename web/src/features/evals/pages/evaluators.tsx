@@ -14,11 +14,13 @@ import { useEntitlementLimit } from "@/src/features/entitlements/hooks";
 import { SupportOrUpgradePage } from "@/src/ee/features/billing/components/SupportOrUpgradePage";
 import { EvaluatorsOnboarding } from "@/src/components/onboarding/EvaluatorsOnboarding";
 import { ManageDefaultEvalModel } from "@/src/features/evals/components/manage-default-eval-model";
+import { useTranslation } from "@/src/features/i18n";
 
 export default function EvaluatorsPage() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
 
   const evaluatorLimit = useEntitlementLimit(
     "model-based-evaluations-count-evaluators",
@@ -60,10 +62,9 @@ export default function EvaluatorsPage() {
     return (
       <Page
         headerProps={{
-          title: "LLM-as-a-Judge Evaluators",
+          title: t("pages.evaluators.title"),
           help: {
-            description:
-              "Configure a langfuse managed or custom evaluator to evaluate incoming traces.",
+            description: t("pages.evaluators.helpDescription"),
             href: "https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge",
           },
         }}
@@ -78,10 +79,9 @@ export default function EvaluatorsPage() {
     <>
       <Page
         headerProps={{
-          title: "LLM-as-a-Judge Evaluators",
+          title: t("pages.evaluators.title"),
           help: {
-            description:
-              "Configure a langfuse managed or custom evaluator to evaluate incoming traces.",
+            description: t("pages.evaluators.helpDescription"),
             href: "https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge",
           },
           tabsProps: {
@@ -102,7 +102,7 @@ export default function EvaluatorsPage() {
                 limitValue={countsQuery.data?.configActiveCount ?? 0}
                 limit={evaluatorLimit}
               >
-                Set up evaluator
+                {t("pages.evaluators.setupEvaluator")}
               </ActionButton>
             </>
           ),

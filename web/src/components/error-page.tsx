@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { captureException } from "@sentry/nextjs";
 import { stripBasePath } from "@/src/utils/redirect";
+import { useTranslation } from "@/src/features/i18n";
 
 export const ErrorPage = ({
   title = "Error",
@@ -32,6 +33,7 @@ export const ErrorPage = ({
     newTargetPath !== "/"
       ? `?targetPath=${encodeURIComponent(newTargetPath)}`
       : "";
+  const { t } = useTranslation();
 
   return (
     <div className="flex h-full flex-col items-center justify-center">
@@ -43,7 +45,7 @@ export const ErrorPage = ({
           <Button
             onClick={() => void router.push(`/auth/sign-in${targetPathQuery}`)}
           >
-            Sign In
+            {t("trace.signIn")}
           </Button>
         ) : null}
         {additionalButton ? (

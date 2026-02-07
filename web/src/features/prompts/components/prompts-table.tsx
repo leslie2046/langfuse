@@ -28,6 +28,7 @@ import { useFolderPagination } from "@/src/features/folders/hooks/useFolderPagin
 import { buildFullPath } from "@/src/features/folders/utils";
 import { FolderBreadcrumb } from "@/src/features/folders/components/FolderBreadcrumb";
 import { FolderBreadcrumbLink } from "@/src/features/folders/components/FolderBreadcrumbLink";
+import { useTranslation } from "@/src/features/i18n";
 
 type PromptTableRow = {
   id: string;
@@ -62,6 +63,7 @@ function createRow(
 export function PromptTable() {
   const projectId = useProjectIdFromURL();
   const { setDetailPageList } = useDetailPageLists();
+  const { t } = useTranslation();
 
   const [filterState] = useQueryFilterState([], "prompts", projectId);
 
@@ -246,7 +248,7 @@ export function PromptTable() {
   const columnHelper = createColumnHelper<PromptTableRow>();
   const promptColumns = [
     columnHelper.accessor("name", {
-      header: "Name",
+      header: t("prompts.table.name"),
       id: "name",
       enableSorting: true,
       size: 250,
@@ -273,7 +275,7 @@ export function PromptTable() {
       },
     }),
     columnHelper.accessor("version", {
-      header: "Versions",
+      header: t("prompts.table.versions"),
       id: "version",
       enableSorting: true,
       size: 70,
@@ -283,7 +285,7 @@ export function PromptTable() {
       },
     }),
     columnHelper.accessor("type", {
-      header: "Type",
+      header: t("prompts.table.type"),
       id: "type",
       enableSorting: true,
       size: 60,
@@ -292,7 +294,7 @@ export function PromptTable() {
       },
     }),
     columnHelper.accessor("createdAt", {
-      header: "Latest Version Created At",
+      header: t("prompts.table.latestVersionCreatedAt"),
       id: "createdAt",
       enableSorting: true,
       size: 200,
@@ -303,7 +305,7 @@ export function PromptTable() {
       },
     }),
     columnHelper.accessor("numberOfObservations", {
-      header: "Number of Observations",
+      header: t("prompts.table.numberOfObservations"),
       size: 170,
       cell: (row) => {
         if (row.row.original.type === "folder") return null;
@@ -325,7 +327,7 @@ export function PromptTable() {
       },
     }),
     columnHelper.accessor("tags", {
-      header: "Tags",
+      header: t("prompts.table.tags"),
       id: "tags",
       enableSorting: true,
       size: 120,
@@ -355,7 +357,7 @@ export function PromptTable() {
     }),
     columnHelper.display({
       id: "actions",
-      header: "Actions",
+      header: t("prompts.table.actions"),
       size: 70,
       cell: (row) => {
         if (row.row.original.type === "folder") return null;
@@ -391,8 +393,8 @@ export function PromptTable() {
             setSearchType,
             searchType,
             customDropdownLabels: {
-              metadata: "Names, Tags",
-              fullText: "Full Text",
+              metadata: t("prompts.search.namesTags"),
+              fullText: t("prompts.search.fullText"),
             },
             hidePerformanceWarning: true,
           }}

@@ -9,6 +9,7 @@ import {
 import { HoverCardPortal } from "@radix-ui/react-hover-card";
 import Link from "next/link";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
+import { useTranslation } from "@/src/features/i18n";
 
 const BUTTON_STATE_MESSAGES = {
   limitReached: (current: number, max: number) =>
@@ -54,6 +55,7 @@ export const ActionButton = React.forwardRef<
   ref,
 ) {
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
   const hasReachedLimit =
     typeof limit === "number" &&
     limitValue !== undefined &&
@@ -62,14 +64,14 @@ export const ActionButton = React.forwardRef<
     disabled || !hasAccess || !hasEntitlement || hasReachedLimit;
 
   const getMessage = () => {
-    if (!hasAccess) return BUTTON_STATE_MESSAGES.noAccess;
-    if (!hasEntitlement) return BUTTON_STATE_MESSAGES.entitlement;
+    if (!hasAccess) return t("common.permissions.noAccess");
+    if (!hasEntitlement) return t("common.permissions.entitlementRequired");
     if (
       hasReachedLimit &&
       typeof limit === "number" &&
       limitValue !== undefined
     ) {
-      return BUTTON_STATE_MESSAGES.limitReached(limitValue, limit);
+      return t("common.permissions.limitReached").replace("{current}", String(limitValue)).replace("{max}", String(limit));
     }
     return null;
   };

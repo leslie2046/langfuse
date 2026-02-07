@@ -30,6 +30,7 @@ import {
   convertSelectedEnvironmentsToFilter,
 } from "@/src/hooks/use-environment-filter";
 import { Badge } from "@/src/components/ui/badge";
+import { useTranslation } from "@/src/features/i18n";
 
 type RowData = {
   userId: string;
@@ -45,6 +46,7 @@ export default function UsersPage() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
   const { isBetaEnabled } = useV4Beta();
+  const { t } = useTranslation();
 
   // Check if the user has any users
   const { data: hasAnyUser, isLoading } = api.users.hasAny.useQuery(
@@ -81,24 +83,9 @@ export default function UsersPage() {
   return (
     <Page
       headerProps={{
-        title: "Users",
+        title: t("pages.users.title"),
         help: {
-          description: (
-            <>
-              Attribute data in Langfuse to a user by adding a userId to your
-              traces. See{" "}
-              <a
-                href="https://langfuse.com/docs/observability/features/users"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline decoration-primary/30 hover:decoration-primary"
-                onClick={(e) => e.stopPropagation()}
-              >
-                docs
-              </a>{" "}
-              to learn more.
-            </>
-          ),
+          description: t("pages.users.helpDescription"),
           href: "https://langfuse.com/docs/observability/features/users",
         },
       }}

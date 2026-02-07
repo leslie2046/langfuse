@@ -62,6 +62,7 @@ import { Command, CommandInput } from "@/src/components/ui/command";
 import { renderRichPromptContent } from "@/src/features/prompts/components/prompt-content-utils";
 import { PromptVariableListPreview } from "@/src/features/prompts/components/PromptVariableListPreview";
 import { createBreadcrumbItems } from "@/src/features/folders/utils";
+import { useTranslation } from "@/src/features/i18n";
 
 const getPythonCode = (
   name: string,
@@ -109,6 +110,7 @@ export const PromptDetail = ({
   const projectId = useProjectIdFromURL();
   const capture = usePostHogClientCapture();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const promptName =
     promptNameProp ||
@@ -198,10 +200,10 @@ export const PromptDetail = ({
     void utils.datasets.baseRunDataByDatasetId.invalidate();
     void utils.datasets.runsByDatasetId.invalidate();
     showSuccessToast({
-      title: "Experiment triggered successfully",
-      description: "Waiting for experiment to complete...",
+      title: t("prompts.experimentTriggeredSuccess"),
+      description: t("prompts.experimentWaiting"),
       link: {
-        text: "View experiment",
+        text: t("prompts.viewExperiment"),
         href: `/project/${projectId}/datasets/${data.datasetId}/compare?runs=${data.runId}`,
       },
     });
@@ -356,7 +358,7 @@ export const PromptDetail = ({
                 href={`/project/${projectId}/prompts/new?promptId=${encodeURIComponent(prompt.id)}`}
               >
                 <Plus className="h-4 w-4 md:mr-2" />
-                <span className="hidden lg:inline">New version</span>
+                <span className="hidden lg:inline">{t("prompts.newVersion")}</span>
               </Link>
             </Button>
           </div>
@@ -427,7 +429,7 @@ export const PromptDetail = ({
                       >
                         <FlaskConical className="h-4 w-4" />
                         <span className="hidden md:ml-2 md:inline">
-                          Run experiment
+                          {t("prompts.runExperiment")}
                         </span>
                       </Button>
                     </DialogTrigger>
@@ -483,12 +485,12 @@ export const PromptDetail = ({
             onValueChange={(value) => setCurrentTab(value)}
           >
             <TabsBarList className="min-w-0 max-w-full justify-start overflow-x-auto">
-              <TabsBarTrigger value="prompt">Prompt</TabsBarTrigger>
-              <TabsBarTrigger value="config">Config</TabsBarTrigger>
+              <TabsBarTrigger value="prompt">{t("prompts.tabs.prompt")}</TabsBarTrigger>
+              <TabsBarTrigger value="config">{t("prompts.tabs.config")}</TabsBarTrigger>
               <TabsBarTrigger value="linked-generations">
-                Linked Generations
+                {t("prompts.tabs.linkedGenerations")}
               </TabsBarTrigger>
-              <TabsBarTrigger value="use-prompt">Use Prompt</TabsBarTrigger>
+              <TabsBarTrigger value="use-prompt">{t("prompts.tabs.usePrompt")}</TabsBarTrigger>
             </TabsBarList>
             <TabsBarContent
               value="linked-generations"
@@ -521,13 +523,13 @@ export const PromptDetail = ({
                           value="resolved"
                           className="h-fit px-1 text-xs"
                         >
-                          Resolved prompt
+                          {t("prompts.resolvedPrompt")}
                         </TabsTrigger>
                         <TabsTrigger
                           value="tagged"
                           className="h-fit px-1 text-xs"
                         >
-                          Tagged prompt
+                          {t("prompts.taggedPrompt")}
                         </TabsTrigger>
                       </TabsList>
                     </Tabs>

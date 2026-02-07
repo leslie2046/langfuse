@@ -69,7 +69,102 @@
     "active": "活动",
     "inactive": "非活动",
     "configure": "配置",
-    "integrationDocs": "集成文档"
+    "integrationDocs": "集成文档",
+    "buttons": {
+      "edit": "编辑",
+      "save": "保存",
+      "create": "创建",
+      "cancel": "取消",
+      "delete": "删除",
+      "new": "新建",
+      "processing": "处理中...",
+      "submit": "提交",
+      "confirm": "确认"
+    },
+    "form": {
+      "name": "名称",
+      "descriptionField": "描述",
+      "descriptionOptional": "描述（可选）",
+      "addDescription": "添加描述..."
+    },
+    "annotationQueue": {
+      "newQueue": "新建队列",
+      "editQueue": "编辑",
+      "newAnnotationQueue": "新建标注队列",
+      "editAnnotationQueue": "编辑标注队列",
+      "createDescription": "创建新队列来管理您的标注工作流。",
+      "editDescription": "编辑队列来管理您的标注工作流。",
+      "scoreConfigs": "评分配置",
+      "scoreConfigsDescription": "定义标注人员应该为给定队列评分的维度。",
+      "manageScoreConfigs": "管理评分配置",
+      "advancedSettings": "高级设置",
+      "userAssignment": "用户分配",
+      "createQueue": "创建队列",
+      "saveQueue": "保存队列"
+    },
+    "table": {
+      "noData": "无可用数据",
+      "loading": "加载中...",
+      "error": "加载数据出错",
+      "rows": "行数",
+      "rowsPerPage": "每页行数",
+      "page": "页",
+      "pageOf": "共",
+      "goToFirstPage": "跳转到第一页",
+      "goToLastPage": "跳转到最后一页",
+      "goToPreviousPage": "跳转到上一页",
+      "goToNextPage": "跳转到下一页"
+    },
+    "deleteAction": {
+      "button": "删除",
+      "pleaseConfirm": "请确认",
+      "cannotBeUndone": "此操作无法撤销，将删除与此相关的所有数据",
+      "typeToConfirm": "输入 \"{confirmation}\" 以确认",
+      "incorrectConfirmation": "请输入正确的确认文字"
+    },
+    "success": {
+      "traceDeleted": "追踪已删除",
+      "traceDeletedDescription": "选定的追踪将被删除。追踪是异步删除的，可能在 24 小时内仍然可见。",
+      "dashboardDeleted": "仪表盘已删除",
+      "dashboardDeletedDescription": "仪表盘已成功删除",
+      "evaluatorDeleted": "运行中的评估器已删除",
+      "evaluatorDeletedDescription": "运行中的评估器已成功删除",
+      "defaultModelDeleted": "默认评估模型已删除",
+      "defaultModelDeletedDescription": "默认评估模型已删除。任何依赖默认模型的运行中评估将被停用。排队的任务将失败。"
+    },
+    "permissions": {
+      "noAccess": "您没有访问此资源的权限，请联系管理员授予您访问权限。",
+      "limitReached": "您已达到当前计划的该资源限制 ({current}/{max})。升级您的计划以增加限制。",
+      "entitlementRequired": "此功能在您当前的计划中不可用。"
+    },
+    "filters": {
+      "search": "搜索",
+      "datePicker": {
+        "pickDate": "选择日期",
+        "resetDate": "重置日期",
+        "start": "开始",
+        "startTime": "开始时间",
+        "end": "结束",
+        "endTime": "结束时间",
+        "selectFromCalendar": "从日历选择",
+        "selectTimeRange": "选择时间范围"
+      },
+      "searchPlaceholder": "搜索...",
+      "filter": "筛选",
+      "addFilter": "添加筛选",
+      "clearFilters": "清除筛选",
+      "selectColumn": "选择列",
+      "selectOperator": "选择运算符",
+      "enterValue": "输入值",
+      "apply": "应用",
+      "reset": "重置"
+    },
+    "columns": {
+      "showColumns": "列",
+      "hideColumn": "隐藏列",
+      "showAllColumns": "显示所有列",
+      "resetColumns": "重置列"
+    }
   },
   "errors": {
     "projectNotFound": "项目未找到",
@@ -82,10 +177,109 @@
     "contactSupportIfUnexpected": "如果此错误非预期，请联系支持团队。",
     "ensureCorrectRegion": "请确保您使用的是正确的云数据区域。",
     "invalidEmailAddress": "无效的邮箱地址",
-    "unableToCheckSso": "无法检查 SSO 配置，请重试。",
+    "unableToCheckSso": "无法检查 SSO 配置。请重试。",
     "notAvailable": "不可用",
-    "passwordResetNotConfigured": "此实例未配置密码重置功能",
-    "passwordsDoNotMatch": "两次输入的密码不一致"
+    "passwordResetNotConfigured": "此实例未配置密码重置",
+    "passwordsDoNotMatch": "密码不匹配",
+    "traceNotFound": "追踪未找到",
+    "traceNotFoundMessage": "该追踪正在处理中或已被删除。",
+    "noObservationsFound": "未找到此追踪的观察记录。追踪可能仍在处理中或已被删除。",
+    "noAccessToTrace": "您没有访问此追踪的权限。",
+    "retry": "重试"
+  },
+  "trace": {
+    "public": "公开",
+    "signIn": "登录",
+    "backToLangfuse": "返回 Langfuse",
+    "shared": "已分享",
+    "private": "私有",
+    "sharedDescription": "此{item}是公开的。任何拥有链接的人都可以查看此{item}。",
+    "privateDescription": "此{item}是私有的。只有授权的项目成员可以查看此{item}。",
+    "share": "分享",
+    "unshare": "取消分享",
+    "copyLink": "复制",
+    "copied": "已复制"
+  },
+  "session": {
+    "sessionUsers": "会话用户",
+    "totalTraces": "追踪总数",
+    "totalCost": "总成本",
+    "moreUsers": "+{count} 更多用户",
+    "userId": "用户 ID",
+    "previous": "上一页",
+    "next": "下一页",
+    "pageOf": "第 {current} 页，共 {total} 页",
+    "notFound": "会话未找到",
+    "notFoundMessage": "该会话正在处理中或已被删除。",
+    "noAccess": "您没有访问此会话的权限。",
+    "downloadAs": "下载会话为 JSON",
+    "showCorrections": "显示修正"
+  },
+  "prompts": {
+    "table": {
+      "name": "名称",
+      "versions": "版本",
+      "type": "类型",
+      "latestVersionCreatedAt": "最新版本创建时间",
+      "numberOfObservations": "观察数量",
+      "tags": "标签",
+      "actions": "操作"
+    },
+    "search": {
+      "namesTags": "名称，标签",
+      "fullText": "全文"
+    },
+    "newVersion": "新版本",
+    "runExperiment": "运行实验",
+    "tabs": {
+      "prompt": "Prompt",
+      "config": "配置",
+      "linkedGenerations": "关联生成",
+      "usePrompt": "使用 Prompt"
+    },
+    "resolvedPrompt": "已解析 Prompt",
+    "taggedPrompt": "带标签 Prompt",
+    "experimentTriggeredSuccess": "实验触发成功",
+    "experimentWaiting": "等待实验完成...",
+    "viewExperiment": "查看实验"
+  },
+  "scores": {
+    "annotate": {
+      "title": "标注",
+      "discardChanges": "放弃更改",
+      "saveChanges": "保存更改",
+      "saving": "正在保存评分数据",
+      "saved": "评分数据已保存",
+      "manageConfigs": "管理评分配置",
+      "apiEvalVisible": "API 和评估评分在左侧可见。在上方添加手动标注。",
+      "placeholders": {
+        "value": "值",
+        "selectCategory": "选择类别",
+        "searchCategories": "搜索类别...",
+        "noCategory": "未找到类别。"
+      },
+      "errors": {
+        "delete": "删除评分失败",
+        "update": "更新评分失败",
+        "create": "创建评分失败",
+        "updateComment": "更新评论失败"
+      }
+    }
+  },
+  "comments": {
+    "addComment": "添加评论",
+    "title": "评论",
+    "searchPlaceholder": "搜索评论...",
+    "showingComments": "显示 {total} 条评论中的 {filtered} 条",
+    "noMatches": "没有匹配的评论",
+    "totalComments": "{count} 条评论",
+    "loading": "正在加载评论...",
+    "addPlaceholder": "添加评论...",
+    "markdownSupport": "支持 Markdown 和 @提及",
+    "delete": "删除评论",
+    "submit": "提交评论",
+    "send": "发送评论",
+    "deleteConfirm": "您确定要删除此评论吗？"
   },
   "settings": {
     "title": "设置",
@@ -150,5 +344,267 @@
     "signUpWith": "使用以下方式注册",
     "continueWith": "继续使用",
     "emailCredentials": "邮箱凭证"
+  },
+  "dashboard": {
+    "traces": "追踪",
+    "totalTracesTracked": "已追踪总次数",
+    "modelCosts": "模型成本",
+    "totalCost": "总成本",
+    "scores": "评分",
+    "totalScoresTracked": "已评分总数",
+    "columns": {
+      "model": "模型",
+      "tokens": "Tokens",
+      "usd": "USD",
+      "name": "名称",
+      "traceName": "追踪名称",
+      "tags": "标签",
+      "user": "用户",
+      "release": "发布版本",
+      "version": "版本"
+    },
+    "env": "环境",
+    "environment": "环境",
+    "requestChart": "请求图表",
+    "feedbackDescription": "您的反馈很重要！请告诉 Langfuse 团队您希望在仪表板中看到哪些额外的数据或指标。",
+    "modelCostDescription": "通过将 token 数量乘以每个模型的单价计算得出。",
+    "emptyState": {
+      "traces": "追踪包含关于 LLM 应用的详细信息，可以使用 SDK 创建。",
+      "scores": "评分用于评估 LLM 质量，可以手动创建或使用 SDK 创建。"
+    },
+    "showTop": "显示前",
+    "showAll": "显示全部"
+  },
+  "onboarding": {
+    "traces": {
+      "title": "您还没有任何追踪记录",
+      "description": "追踪显示了 LLM 调用在您的应用中的表现：成本是多少，性能如何，以及哪里出错了。这是改进应用行为的第一步。"
+    },
+    "sessions": {
+      "title": "您还没有使用会话功能",
+      "description": "会话允许您将属于同一工作流或对话的追踪分组。",
+      "startUsing": "开始使用会话",
+      "guide": "要开始使用会话，您需要在追踪中添加 sessionId。",
+      "readDocs": "阅读文档"
+    },
+    "prompts": {
+      "title": "开始使用 Prompt 管理",
+      "description": "Langfuse Prompt 管理帮助您集中管理、版本控制并协同迭代您的 Prompt。开始使用 Prompt 管理以提高您的 LLM 应用的性能和可维护性。",
+      "createPrompt": "创建 Prompt",
+      "learnMore": "了解更多",
+      "propositions": {
+        "decoupled": {
+          "title": "与代码解耦",
+          "description": "无需重新部署应用即可部署新 Prompt，使得更新更快更容易"
+        },
+        "editInUi": {
+          "title": "在 UI 中编辑或通过程序编辑",
+          "description": "非技术用户可以在 UI 中轻松编辑 Prompt。开发者也可以通过 API 和 SDK 以编程方式更新 Prompt"
+        },
+        "performance": {
+          "title": "性能优化",
+          "description": "客户端缓存可防止应用的延迟或可用性问题"
+        },
+        "compare": {
+          "title": "对比指标",
+          "description": "跟踪不同 Prompt 版本的延迟、成本和评估指标"
+        }
+      }
+    },
+    "scores": {
+      "title": "开始使用评分功能",
+      "description": "评分允许您通过用户反馈、基于模型的评估或手动审核来评估 LLM 应用的质量/安全性。可以通过 API 和 SDK 以编程方式使用评分来跟踪自定义指标。",
+      "learnMore": "了解更多",
+      "propositions": {
+        "collect": {
+          "title": "收集用户反馈",
+          "description": "收集用户的点赞/点踩反馈，以识别高质量和低质量的输出"
+        },
+        "modelBased": {
+          "title": "运行基于模型的评估",
+          "description": "使用 LLM 自动评估您的应用输出"
+        },
+        "track": {
+          "title": "跟踪质量指标",
+          "description": "监控质量指标随时间的变化，以识别趋势和问题"
+        },
+        "custom": {
+          "title": "使用自定义指标",
+          "description": "Langfuse 的评分非常灵活，可用于跟踪与 LLM 应用相关的任何指标"
+        }
+      }
+    },
+    "evaluators": {
+      "title": "开始使用 LLM-as-a-Judge 评估",
+      "description": "创建评估模板和评估器，使用 LLM-as-a-judge 自动为您的追踪评分。设置自定义评估标准，让 AI 帮助您衡量输出质量。",
+      "createEvaluator": "创建评估器",
+      "learnMore": "了解更多",
+      "propositions": {
+        "automate": {
+          "title": "自动化评估",
+          "description": "使用 LLM-as-a-judge 自动评估您的追踪，无需通过人工审核"
+        },
+        "measure": {
+          "title": "衡量质量",
+          "description": "创建自定义评估标准来衡量您的 LLM 输出质量"
+        },
+        "scale": {
+          "title": "高效扩展",
+          "description": "通过可自定义的采样率自动评估成千上万条追踪"
+        },
+        "track": {
+          "title": "跟踪性能",
+          "description": "监控评估指标随时间的变化，以识别趋势和改进点"
+        }
+      }
+    },
+    "annotationQueues": {
+      "title": "开始使用标注队列",
+      "description": "标注队列帮助您管理 LLM 项目的人工标注/标签工作。创建队列、定义标注指标并跟踪进度。",
+      "createQueue": "创建标注队列",
+      "learnMore": "了解更多",
+      "propositions": {
+        "manage": {
+          "title": "管理评分工作流",
+          "description": "创建并管理标注队列以简化您的评分工作流程"
+        },
+        "collaborate": {
+          "title": "与标注员协作",
+          "description": "邀请团队成员来标注和评估您的 LLM 输出"
+        },
+        "track": {
+          "title": "跟踪标注指标",
+          "description": "监控整个团队的标注进度和质量指标"
+        },
+        "baseline": {
+          "title": "基准评估工作",
+          "description": "使用标注数据作为基准来评估您的其他评估指标"
+        }
+      }
+    },
+    "datasets": {
+      "title": "开始使用数据集与实验",
+      "description": "Langfuse 中的数据集是用于 LLM 应用的输入（和预期输出）集合。您可以针对这些数据集运行实验，以便在部署到生产环境之前测试新版本。",
+      "createDataset": "创建数据集",
+      "learnMore": "了解更多",
+      "propositions": {
+        "continuous": {
+          "title": "持续改进",
+          "description": "从生产环境的边缘案例中创建数据集以改进您的应用"
+        },
+        "preDeployment": {
+          "title": "部署前测试",
+          "description": "在部署到生产环境之前对新版本进行基准测试"
+        },
+        "structured": {
+          "title": "结构化测试",
+          "description": "对输入和预期输出的集合运行实验"
+        },
+        "custom": {
+          "title": "自定义工作流",
+          "description": "通过 API 和 SDK 围绕您的数据集构建自定义工作流，例如用于微调、少样本学习"
+        }
+      }
+    },
+    "datasetItems": {
+      "title": "向您的数据集添加项目",
+      "description": "数据集是用于评估您的应用的特定边缘案例和代表性不足的模式的集合。",
+      "uploadCsv": {
+        "title": "上传 CSV",
+        "description": "从 CSV 文件导入数据集项目"
+      },
+      "addManually": {
+        "title": "手动添加",
+        "description": "手动输入单个项目"
+      },
+      "addViaCode": {
+        "title": "通过代码添加",
+        "description": "使用我们的 Python/TS/JS SDK 或自定义 API"
+      },
+      "selectTraces": {
+        "title": "选择追踪",
+        "description": "即将推出！",
+        "docDescription": "从生产数据创建项目支持单个追踪级别。点击查看文档了解更多详情。"
+      },
+      "createDatasetItem": "创建数据集项目",
+      "noAccess": "您没有权限访问此功能，请联系您的管理员"
+    },
+    "users": {
+      "title": "您还没有跟踪用户",
+      "description": "一旦您在追踪中添加用户 ID，您就可以将成本、评估和其他 LLM 应用指标与用户关联，以更好地了解他们如何与您的 LLM 应用交互。",
+      "startTracking": "开始跟踪用户",
+      "guide": "要开始跟踪用户，您需要在追踪中添加 userId。",
+      "readDocs": "阅读文档"
+    },
+    "getStarted": "开始使用"
+  },
+  "playground": {
+    "title": "Playground",
+    "helpDescription": "一个用于在多个窗口中测试和迭代您的 Prompt 的沙箱",
+    "window": "窗口",
+    "windows": "窗口",
+    "runAll": "全部运行 (Ctrl + Enter)",
+    "configureModelFirst": "请先在项目设置中配置模型",
+    "executeAllWindows": "同时执行所有 Playground 窗口",
+    "executingWindows": "正在执行",
+    "noModelConfigured": {
+      "title": "未配置模型",
+      "descriptionPart1": "要使用 Playground，您需要先配置模型。前往",
+      "llmConnectionSettings": "LLM 连接设置",
+      "descriptionPart2": "添加 LLM API 密钥并配置您的模型。"
+    }
+  },
+  "pages": {
+    "traces": {
+      "title": "追踪",
+      "helpDescription": "追踪表示单个函数/API 调用。追踪包含观察数据。查看文档了解更多。",
+      "docs": "文档"
+    },
+    "sessions": {
+      "title": "会话",
+      "helpDescription": "会话是相关追踪的集合，例如对话或线程。要开始，请向追踪添加 sessionId。查看文档了解更多。"
+    },
+    "users": {
+      "title": "用户",
+      "helpDescription": "通过向追踪添加 userId 来将 Langfuse 中的数据归属到用户。查看文档了解更多。",
+      "columns": {
+        "userId": "用户 ID",
+        "userIdTooltip": "在 Langfuse 中记录的用户唯一标识符。查看文档了解如何设置。",
+        "environment": "环境",
+        "firstEvent": "首次事件",
+        "firstEventTooltip": "该用户最早的追踪记录。",
+        "lastEvent": "最近事件",
+        "lastEventTooltip": "该用户最新的追踪记录。",
+        "totalEvents": "总事件数",
+        "totalEventsTooltip": "用户的总事件数，包括追踪和观察数据。查看数据模型了解更多详情。",
+        "totalTokens": "总 Token 数",
+        "totalTokensTooltip": "用户在所有生成中使用的总 Token 数。",
+        "totalCost": "总成本",
+        "totalCostTooltip": "用户在所有生成中的总成本。",
+        "noEventYet": "暂无事件"
+      }
+    },
+    "datasets": {
+      "title": "数据集",
+      "helpDescription": "Langfuse 中的数据集是 LLM 应用的输入（和预期输出）集合。它们用于在部署到生产环境之前对新版本进行基准测试。查看文档了解更多。"
+    },
+    "scores": {
+      "title": "评分",
+      "helpDescription": "评分是对追踪或观察数据的评估。它可以通过用户反馈、基于模型的评估或人工审核创建。查看文档了解更多。"
+    },
+    "prompts": {
+      "title": "Prompts",
+      "helpDescription": "在 Langfuse 中管理和版本控制您的 Prompts。通过 UI 和 SDK 编辑和更新。通过 SDK 获取生产版本。查看文档了解更多。",
+      "newPrompt": "新建 Prompt"
+    },
+    "annotationQueues": {
+      "title": "标注队列",
+      "helpDescription": "标注队列用于管理 LLM 项目的评分工作流。查看文档了解更多。"
+    },
+    "evaluators": {
+      "title": "LLM-as-a-Judge 评估器",
+      "helpDescription": "配置 Langfuse 管理的或自定义的评估器来评估传入的追踪。",
+      "setupEvaluator": "设置评估器"
+    }
   }
 }

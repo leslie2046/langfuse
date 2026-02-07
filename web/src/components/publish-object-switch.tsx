@@ -11,6 +11,7 @@ import { api } from "@/src/utils/api";
 import { copyTextToClipboard } from "@/src/utils/clipboard";
 import { CheckIcon, Globe, Link, Share2 } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "@/src/features/i18n";
 
 export const PublishTraceSwitch = (props: {
   traceId: string;
@@ -94,6 +95,7 @@ const Base = (props: {
   size?: "icon" | "icon-xs";
 }) => {
   const [isCopied, setIsCopied] = useState(false);
+  const { t } = useTranslation();
 
   const copyUrl = () => {
     setIsCopied(true);
@@ -134,23 +136,22 @@ const Base = (props: {
             {props.isPublic ? (
               <>
                 <Label className="text-base capitalize">
-                  {props.itemName} Shared
+                  {props.itemName} {t("trace.shared")}
                 </Label>
                 <span className="text-sm text-muted-foreground">
-                  This {props.itemName} is public. Anyone with the link can view
-                  this {props.itemName}.
+                  {t("trace.sharedDescription").replace(/\{item\}/g, props.itemName)}
                 </span>
                 <div className="mr-2 flex items-center justify-end gap-2 text-sm">
                   <Button variant="outline" size="sm" onClick={copyUrl}>
                     {isCopied ? (
                       <>
                         <CheckIcon size={12} className="mr-1" />
-                        Copied
+                        {t("trace.copied")}
                       </>
                     ) : (
                       <>
                         <Link size={12} className="mr-1" />
-                        Copy
+                        {t("trace.copyLink")}
                       </>
                     )}
                   </Button>
@@ -160,18 +161,17 @@ const Base = (props: {
                     loading={props.isLoading}
                     onClick={handleOnClick}
                   >
-                    Unshare
+                    {t("trace.unshare")}
                   </Button>
                 </div>
               </>
             ) : (
               <>
                 <Label className="text-base capitalize">
-                  {props.itemName} Private
+                  {props.itemName} {t("trace.private")}
                 </Label>
                 <span className="text-sm text-muted-foreground">
-                  This {props.itemName} is private. Only authorized project
-                  members can view this {props.itemName}.
+                  {t("trace.privateDescription").replace(/\{item\}/g, props.itemName)}
                 </span>
                 <div className="mr-2 flex items-center justify-end gap-2 text-sm">
                   <Button
@@ -180,7 +180,7 @@ const Base = (props: {
                     loading={props.isLoading}
                     onClick={handleOnClick}
                   >
-                    Share
+                    {t("trace.share")}
                   </Button>
                 </div>
               </>
