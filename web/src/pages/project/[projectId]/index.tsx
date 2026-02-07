@@ -35,7 +35,6 @@ import { MultiSelect } from "@/src/features/filters/components/multi-select";
 import {
   convertSelectedEnvironmentsToFilter,
   useEnvironmentFilter,
-  useEnvironmentFilter,
 } from "@/src/hooks/use-environment-filter";
 import { useTranslation } from "@/src/features/i18n";
 

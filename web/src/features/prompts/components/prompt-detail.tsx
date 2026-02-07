@@ -153,10 +153,10 @@ export const PromptDetail = ({
   );
   const prompt = currentPromptVersion
     ? promptHistory.data?.promptVersions.find(
-        (prompt) => prompt.version === currentPromptVersion,
+        (prompt: any) => prompt.version === currentPromptVersion,
       )
     : currentPromptLabel
-      ? promptHistory.data?.promptVersions.find((prompt) =>
+      ? promptHistory.data?.promptVersions.find((prompt: any) =>
           prompt.labels.includes(currentPromptLabel),
         )
       : promptHistory.data?.promptVersions[0];
@@ -227,10 +227,10 @@ export const PromptDetail = ({
         staleTime: Infinity,
       },
     ).data?.tags ?? []
-  ).map((t) => t.value);
+  ).map((tag: any) => tag.value);
 
   const promptIds = useMemo(
-    () => promptHistory.data?.promptVersions.map((p) => p.id) ?? [],
+    () => promptHistory.data?.promptVersions.map((p: any) => p.id) ?? [],
     [promptHistory.data?.promptVersions],
   );
 
@@ -371,7 +371,7 @@ export const PromptDetail = ({
                 setCurrentPromptLabel(null);
               }}
               totalCount={promptHistory.data.totalCount}
-              commentCounts={commentCounts.data}
+              commentCounts={commentCounts.data as Map<string, number> | undefined}
             />
           </div>
         </Command>

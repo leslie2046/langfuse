@@ -64,7 +64,6 @@ export function AnnotateDrawer<Target extends ScoreTarget>({
               }
             />
           )}
-          )}
           <span>{t("scores.annotate.title")}</span>
         </Button>
       </DrawerTrigger>

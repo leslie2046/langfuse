@@ -483,7 +483,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
     if (!config || !field) return;
 
     const numericCategoryValue = config.categories?.find(
-      ({ label }) => label === stringValue,
+      ({ label }: any) => label === stringValue,
     )?.value;
 
     if (!isPresent(numericCategoryValue)) return;

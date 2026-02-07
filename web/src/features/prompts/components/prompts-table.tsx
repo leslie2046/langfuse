@@ -113,7 +113,7 @@ export function PromptTable() {
     {
       projectId: projectId as string,
       promptNames:
-        prompts.data?.prompts.map((p) =>
+        prompts.data?.prompts.map((p: any) =>
           buildFullPath(currentFolderPath, p.name),
         ) ?? [],
     },
@@ -134,11 +134,11 @@ export function PromptTable() {
   type MetricType = Omit<MetricsOutput, "promptName"> & { id: string };
 
   const promptsRowData = joinTableCoreAndMetrics<CoreType, MetricType>(
-    prompts.data?.prompts.map((p) => ({
+    prompts.data?.prompts.map((p: any) => ({
       ...p,
       id: buildFullPath(currentFolderPath, p.name),
     })),
-    promptMetrics.data?.map((pm) => ({
+    promptMetrics.data?.map((pm: any) => ({
       ...pm,
       id: pm.promptName,
     })),
@@ -199,14 +199,14 @@ export function PromptTable() {
     },
   );
   const filterOptionTags = promptFilterOptions.data?.tags ?? [];
-  const allTags = filterOptionTags.map((t) => t.value);
+  const allTags = filterOptionTags.map((tag: any) => tag.value);
   const totalCount = prompts.data?.totalCount ?? null;
 
   const newFilterOptions = useMemo(
     () => ({
       type: ["text", "chat"],
       labels:
-        promptFilterOptions.data?.labels?.map((l) => {
+        promptFilterOptions.data?.labels?.map((l: any) => {
           // API type says { value: string }[], but for some items, there is an optional count
           const item = l as { value: string; count?: number };
           return {
@@ -215,9 +215,9 @@ export function PromptTable() {
           };
         }) ?? undefined,
       tags:
-        promptFilterOptions.data?.tags?.map((t) => {
+        promptFilterOptions.data?.tags?.map((tag: any) => {
           // API type says { value: string }[], but for some items, there is an optional count
-          const item = t as { value: string; count?: number };
+          const item = tag as { value: string; count?: number };
           return {
             value: item.value,
             count: item.count !== undefined ? Number(item.count) : undefined,
@@ -239,7 +239,7 @@ export function PromptTable() {
     if (prompts.isSuccess) {
       setDetailPageList(
         "prompts",
-        prompts.data.prompts.map((t) => ({ id: t.name })),
+        prompts.data.prompts.map((p: any) => ({ id: p.name })),
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
