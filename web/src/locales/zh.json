@@ -17,6 +17,8 @@
     "upgrade": "升级",
     "cloudStatus": "云端状态",
     "v4BetaToggle": "v4 Beta 开关",
+    "v4Beta": "v4 Beta",
+    "v4BetaTooltip": "切换以使用基于 v4 架构的新事件。",
     "settings": "设置",
     "bookACall": "预约通话",
     "support": "支持",
@@ -28,6 +30,8 @@
     "evaluation": "评估"
   },
   "common": {
+    "organization": "组织",
+    "project": "项目",
     "loading": "加载中",
     "error": "错误",
     "signOut": "退出登录",
@@ -668,7 +672,14 @@
     "delete": "删除 API 密钥",
     "deleteDescription": "您确定要删除此 API 密钥吗？此操作无法撤销。",
     "permanentlyDelete": "永久删除",
-    "clickToAddNote": "点击添加备注"
+    "clickToAddNote": "点击添加备注",
+    "createBtn": "创建新 API 密钥",
+    "createDialog": {
+      "title": "创建 API 密钥",
+      "noteLabel": "备注 (可选)",
+      "notePlaceholder": "生产环境密钥",
+      "submit": "创建 API 密钥"
+    }
   },
   "llmApiKeys": {
     "title": "LLM 连接",
@@ -679,7 +690,9 @@
     "apiKey": "API 密钥",
     "extraHeaders": "额外 Headers",
     "deleteTitle": "删除 LLM 连接",
-    "deleteDescription": "您确定要删除此连接吗？此操作无法撤销。"
+    "deleteDescription": "您确定要删除此连接吗？此操作无法撤销。",
+    "addBtn": "添加 LLM 连接",
+    "dialogTitle": "新建 LLM 连接"
   },
   "models": {
     "title": "模型定义",
@@ -702,7 +715,27 @@
     "actions": "操作",
     "addModelDefinition": "添加模型定义",
     "langfuseMaintained": "Langfuse 维护",
-    "userMaintained": "用户维护"
+    "userMaintained": "用户维护",
+    "testMatch": {
+      "btn": "测试模型匹配",
+      "title": "测试模型匹配",
+      "description": "测试您的输入数据将匹配哪个模型和定价层级。",
+      "modelName": "模型名称 *",
+      "modelNameDesc": "生成中的模型名称。",
+      "submit": "测试匹配"
+    },
+    "upsert": {
+      "createTitle": "创建模型",
+      "cloneTitle": "克隆模型",
+      "editTitle": "编辑模型",
+      "createDescription": "创建一个新的模型配置以跟踪生成成本。",
+      "modelName": "模型名称",
+      "modelNameDesc": "模型的名称。这将用于在 API 中引用模型。您可以通过使用相同的名称和匹配模式来跟踪模型的价格变化。",
+      "matchPattern": "匹配模式",
+      "matchPatternDesc": "正则表达式（Postgres 语法），用于将摄取的生成（模型属性）与此模型定义进行匹配。要对模型名称进行精确、不区分大小写的匹配，请使用表达式：(?i)^(modelname)$",
+      "submit": "提交",
+      "cancel": "取消"
+    }
   },
   "scoreConfigs": {
     "title": "评分配置",
@@ -771,10 +804,13 @@
       "log": "日志"
     }
   },
+
   "organization": {
     "members": {
+      "title": "组织成员",
       "addMember": "添加新成员",
       "addProjectMember": "添加项目成员",
+      "addMemberToTarget": "添加新成员到{{target}}",
       "addMemberTo": "添加新成员到",
       "project": "项目",
       "organization": "组织",
@@ -785,7 +821,50 @@
       "projectRole": "项目角色",
       "selectProjectRole": "选择项目角色",
       "projectRoleDescription": "此项目角色将覆盖当前项目 ({currentProject}) 的默认角色。",
-      "grantAccess": "授予访问权限"
+      "grantAccess": "授予访问权限",
+      "name": "姓名",
+      "ssoProvider": "SSO 提供商",
+      "memberSince": "加入时间",
+      "actionsColumn": "操作",
+      "pendingInvites": "成员邀请",
+      "invitedOn": "邀请时间",
+      "invitedBy": "邀请人",
+      "table": {
+        "searchPlaceholder": "搜索 ({{fields}})"
+      },
+      "roles": {
+        "owner": "所有者",
+        "admin": "管理员",
+        "member": "成员",
+        "viewer": "访客",
+        "none": "无",
+        "keepDefault": "保持默认角色"
+      },
+      "tooltips": {
+        "orgRole": "组织角色是该用户在此组织中的默认角色，适用于该组织及其所有项目。",
+        "projectRole": "该用户在此特定项目中的角色。此角色覆盖默认项目角色。",
+        "editOrgRole": "组织级角色可以在组织设置中编辑。",
+        "projectNoneRole": "除非拥有授予访问权限的组织角色，否则用户无法访问此项目。",
+        "orgNoneRole": "用户无法访问此组织。",
+        "orgScopes": "组织权限",
+        "projectScopes": "项目权限",
+        "inheritedScopes": "灰色权限",
+        "editOrgRolePre": "组织级角色可以在",
+        "editOrgRoleLink": "组织设置",
+        "editOrgRolePost": "中编辑。"
+      },
+      "naOnPlan": "当前计划不可用",
+      "userAvatar": "用户头像",
+      "actions": {
+         "leaveOrg": "您确定要离开该组织吗？",
+         "removeMember": "您确定要将此成员从组织中移除吗？",
+         "changeOrgRole": "您确定要更改自己的组织角色吗？",
+         "changeProjectRole": "您确定要更改自己的项目角色吗？",
+         "cancelInvite": "您确定要取消此邀请吗？",
+         "saved": "已保存",
+         "orgRoleUpdated": "组织角色已成功更新",
+         "projectRoleUpdated": "项目角色已成功更新"
+      }
     },
     "settings": {
       "title": "组织设置",
@@ -823,6 +902,24 @@
             "description": "组织已成功删除。"
           }
         }
+      },
+      "projectOverview": {
+        "tryDemo": "试用 Langfuse 演示",
+        "demoDescription": "我们构建了一个基于 Langfuse 文档回答问题的问答机器人。与它互动以在 Langfuse 中查看追踪。",
+        "goToProject": "前往项目",
+        "projectDeleting": "项目正在删除中",
+        "viewDemoProject": "查看演示项目",
+        "newProject": "新建项目",
+        "demoOrganization": "演示组织",
+        "demoOrg": "演示组织",
+        "searchProjects": "搜索项目",
+        "newOrganization": "新建组织",
+        "getStarted": "开始使用",
+        "createOrgDescription": "创建一个组织以开始使用。或者，请您的组织管理员邀请您。",
+        "inviteDescription": "您需要被邀请加入一个组织才能开始使用 Langfuse。",
+        "docs": "文档",
+        "askAi": "咨询 AI",
+        "organizationDescription": "组织帮助您管理对项目的访问权限。每个组织可以拥有多个项目和具有不同角色的团队成员。"
       }
     }
   },

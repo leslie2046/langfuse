@@ -43,6 +43,7 @@ import { useRouter } from "next/router";
 
 import { showSuccessToast } from "@/src/features/notifications/showSuccessToast";
 import { PricingSection } from "./pricing-tiers/PricingSection";
+import { useTranslation } from "@/src/features/i18n";
 
 type UpsertModelDialogProps =
   | {
@@ -72,6 +73,7 @@ export const UpsertModelFormDialog = (({
   const [formError, setFormError] = useState<string | null>(null);
   const utils = api.useUtils();
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   // Initialize form default values
   const defaultValues: FormUpsertModel = useMemo(() => {
@@ -294,17 +296,17 @@ export const UpsertModelFormDialog = (({
         <DialogHeader>
           <DialogTitle>
             {props.action === "create"
-              ? "Create Model"
+              ? t("models.upsert.createTitle")
               : props.action === "clone"
-                ? "Clone Model"
-                : "Edit Model"}
+                ? t("models.upsert.cloneTitle")
+                : t("models.upsert.editTitle")}
           </DialogTitle>
           {props.action === "edit" && (
             <DialogDescription>{props.modelData.modelName}</DialogDescription>
           )}
           {props.action === "create" && (
             <DialogDescription>
-              Create a new model configuration to track generation costs.
+              {t("models.upsert.createDescription")}
             </DialogDescription>
           )}
         </DialogHeader>
@@ -320,11 +322,9 @@ export const UpsertModelFormDialog = (({
                 disabled={props.action === "edit"}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Model Name</FormLabel>
+                    <FormLabel>{t("models.upsert.modelName")}</FormLabel>
                     <FormDescription>
-                      The name of the model. This will be used to reference the
-                      model in the API. You can track price changes of models by
-                      using the same name and match pattern.
+                      {t("models.upsert.modelNameDesc")}
                     </FormDescription>
                     <FormControl>
                       <Input {...field} />
@@ -338,12 +338,9 @@ export const UpsertModelFormDialog = (({
                 name="matchPattern"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Match pattern</FormLabel>
+                    <FormLabel>{t("models.upsert.matchPattern")}</FormLabel>
                     <FormDescription>
-                      Regular expression (Postgres syntax) to match ingested
-                      generations (model attribute) to this model definition.
-                      For an exact, case-insensitive match to a model name, use
-                      the expression: (?i)^(modelname)$
+                      {t("models.upsert.matchPatternDesc")}
                     </FormDescription>
                     <FormControl>
                       <Input {...field} />
@@ -366,7 +363,7 @@ export const UpsertModelFormDialog = (({
                 name="tokenizerId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Tokenizer</FormLabel>
+                    <FormLabel>{t("models.tokenizer")}</FormLabel>
                     <Select
                       onValueChange={(tokenizerId) => {
                         field.onChange(tokenizerId);
@@ -413,7 +410,7 @@ export const UpsertModelFormDialog = (({
                   name="tokenizerConfig"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tokenizer Config</FormLabel>
+                      <FormLabel>{t("models.tokenizerConfig")}</FormLabel>
                       <CodeMirrorEditor
                         mode="json"
                         value={field.value ?? "{}"}
@@ -445,11 +442,11 @@ export const UpsertModelFormDialog = (({
                 variant="outline"
                 onClick={() => setOpen(false)}
               >
-                Cancel
+                {t("models.upsert.cancel")}
               </Button>
 
               <Button type="submit" loading={upsertModelMutation.isPending}>
-                Submit
+                {t("models.upsert.submit")}
               </Button>
             </DialogFooter>
           </form>

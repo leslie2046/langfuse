@@ -121,7 +121,7 @@ export const getOrganizationSettingsPages = ({
     content: (
       <div className="flex flex-col gap-6">
         <div>
-          <Header title="Organization Members" />
+          <Header title={t("organization.members.title")} />
           <MembersTable orgId={organization.id} />
         </div>
         <div>

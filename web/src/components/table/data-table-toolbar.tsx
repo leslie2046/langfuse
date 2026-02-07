@@ -64,6 +64,7 @@ export interface MultiSelect {
 
 interface SearchConfig {
   metadataSearchFields?: string[];
+  placeholder?: string;
   updateQuery: (event: string) => void;
   currentQuery?: string;
   tableAllowsFullTextSearch?: boolean;
@@ -209,9 +210,10 @@ export function DataTableToolbar<TData, TValue>({
               <Input
                 autoFocus
                 placeholder={
-                  searchConfig.tableAllowsFullTextSearch
+                  searchConfig.placeholder ??
+                  (searchConfig.tableAllowsFullTextSearch
                     ? "Search..."
-                    : `Search (${searchConfig.metadataSearchFields?.join(", ")})`
+                    : `Search (${searchConfig.metadataSearchFields?.join(", ")})`)
                 }
                 value={searchString}
                 onChange={(event) => {

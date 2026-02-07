@@ -16,6 +16,8 @@ import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAcces
 import Header from "@/src/components/layouts/header";
 import useSessionStorage from "@/src/components/useSessionStorage";
 
+import { useTranslation } from "@/src/features/i18n";
+
 export type tmp = Organization;
 export type InvitesTableRow = {
   email: string;
@@ -38,6 +40,7 @@ export function MembershipInvitesPage({
   orgId: string;
   projectId?: string;
 }) {
+  const { t } = useTranslation();
   const paginationKey = projectId
     ? `projectInvites_${projectId}_pagination`
     : `orgInvites_${orgId}_pagination`;
@@ -99,17 +102,17 @@ export function MembershipInvitesPage({
     {
       accessorKey: "email",
       id: "email",
-      header: "Email",
+      header: t("organization.members.email"),
     },
     {
       accessorKey: "orgRole",
       id: "orgRole",
-      header: "Organization Role",
+      header: t("organization.members.orgRole"),
     },
     {
       accessorKey: "createdAt",
       id: "createdAt",
-      header: "Invited On",
+      header: t("organization.members.invitedOn"),
       cell: ({ row }) => {
         const value = row.getValue("createdAt") as InvitesTableRow["createdAt"];
         return value ? new Date(value).toLocaleString() : undefined;
@@ -120,14 +123,14 @@ export function MembershipInvitesPage({
           {
             accessorKey: "projectRole",
             id: "projectRole",
-            header: "Project Role",
+            header: t("organization.members.projectRole"),
           },
         ]
       : []),
     {
       accessorKey: "invitedByUser",
       id: "invitedByUser",
-      header: "Invited By",
+      header: t("organization.members.invitedBy"),
       cell: ({ row }) => {
         const invitedByUser = row.getValue(
           "invitedByUser",
@@ -158,7 +161,7 @@ export function MembershipInvitesPage({
     {
       accessorKey: "meta",
       id: "meta",
-      header: "Actions",
+      header: t("organization.members.actionsColumn"),
       cell: ({ row }) => {
         const { inviteId } = row.getValue("meta") as InvitesTableRow["meta"];
         return hasCudAccess ? (
@@ -166,7 +169,7 @@ export function MembershipInvitesPage({
             <button
               onClick={() => {
                 if (
-                  confirm("Are you sure you want to cancel this invitation?")
+                  confirm(t("organization.members.actions.cancelInvite"))
                 ) {
                   mutDeleteInvite.mutate({ inviteId, orgId });
                 }
@@ -207,7 +210,7 @@ export function MembershipInvitesPage({
   return (
     <>
       {/* Header included in order to hide it when there are not invites yet */}
-      <Header title="Membership Invites" />
+      <Header title={t("organization.members.pendingInvites")} />
       <DataTableToolbar columns={columns} />
       <DataTable
         tableName={"membershipInvites"}

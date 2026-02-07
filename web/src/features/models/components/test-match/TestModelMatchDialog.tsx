@@ -16,6 +16,7 @@ import { MatchedModelCard } from "./MatchedModelCard";
 import { MatchedTierCard } from "./MatchedTierCard";
 import { NoMatchDisplay } from "./NoMatchDisplay";
 import { Loader2, CheckCircle, SquareArrowOutUpRight } from "lucide-react";
+import { useTranslation } from "@/src/features/i18n";
 
 type TestModelMatchDialogProps = {
   projectId: string;
@@ -33,6 +34,7 @@ export function TestModelMatchDialog({
   const [modelName, setModelName] = useState("");
   const [usageDetails, setUsageDetails] = useState<Record<string, number>>({});
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const { t } = useTranslation();
 
   // Query for match result - only enabled after submit
   const { data, isLoading, error, refetch } = api.models.testMatch.useQuery(
@@ -69,10 +71,9 @@ export function TestModelMatchDialog({
       <DialogContent size="lg" className="min-h-[62vh] overflow-y-auto">
         <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
           <DialogHeader>
-            <DialogTitle>Test Model Match</DialogTitle>
+            <DialogTitle>{t("models.testMatch.title")}</DialogTitle>
             <DialogDescription className="mt-1">
-              Test which model and pricing tier your ingestion data would match
-              against.
+              {t("models.testMatch.description")}
             </DialogDescription>
           </DialogHeader>
 
@@ -82,9 +83,11 @@ export function TestModelMatchDialog({
               <div className="space-y-6">
                 {/* Model Name Input */}
                 <div className="space-y-2">
-                  <div className="text-sm font-medium">Model Name *</div>
+                  <div className="text-sm font-medium">
+                    {t("models.testMatch.modelName")}
+                  </div>
                   <div className="text-sm text-muted-foreground">
-                    The model name on your generations.
+                    {t("models.testMatch.modelNameDesc")}
                   </div>
                   <Input
                     placeholder="e.g. gpt-4-turbo"
@@ -117,7 +120,7 @@ export function TestModelMatchDialog({
                   disabled={!modelName.trim() || isLoading}
                   className="flex-1"
                 >
-                  Test Match
+                  {t("models.testMatch.submit")}
                 </Button>
               </div>
             </div>

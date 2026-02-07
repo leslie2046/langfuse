@@ -156,8 +156,11 @@ export function CreateProjectMemberButton(props: {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {t("organization.members.addMemberTo")}{" "}
-              {hasOnlySingleProjectAccess ? t("organization.members.project") : t("organization.members.organization")}
+              {t("organization.members.addMemberToTarget", {
+                target: hasOnlySingleProjectAccess
+                  ? t("organization.members.project")
+                  : t("organization.members.organization"),
+              })}
             </DialogTitle>
           </DialogHeader>
           <Form {...form}>

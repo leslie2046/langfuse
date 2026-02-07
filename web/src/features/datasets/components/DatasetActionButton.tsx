@@ -13,6 +13,7 @@ import { DatasetForm } from "@/src/features/datasets/components/DatasetForm";
 import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAccess";
 import { type Prisma } from "@langfuse/shared";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
+import { useTranslation } from "@/src/features/i18n";
 
 interface BaseDatasetButtonProps {
   mode: "create" | "update" | "delete";
@@ -54,6 +55,7 @@ export const DatasetActionButton = forwardRef<
   DatasetActionButtonProps
 >((props, ref) => {
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const hasAccess = useHasProjectAccess({
     projectId: props.projectId,
@@ -136,7 +138,7 @@ export const DatasetActionButton = forwardRef<
             ) : (
               <LockIcon className="-ml-0.5 mr-1.5 h-3 w-3" aria-hidden="true" />
             )}
-            New dataset
+            {t("datasetActionButton.create")}
           </Button>
         )}
       </DialogTrigger>
@@ -144,15 +146,14 @@ export const DatasetActionButton = forwardRef<
         <DialogHeader>
           <DialogTitle className="mb-4">
             {props.mode === "create"
-              ? "Create new dataset"
+              ? t("datasetActionButton.create")
               : props.mode === "delete"
-                ? "Please confirm"
-                : "Update dataset"}
+                ? t("datasetActionButton.confirmDelete")
+                : t("datasetActionButton.update")}
           </DialogTitle>
           {props.mode === "delete" && (
             <DialogDescription className="text-md p-0">
-              This action cannot be undone and removes all the data associated
-              with this dataset.
+              {t("datasetActionButton.deleteDescription")}
             </DialogDescription>
           )}
         </DialogHeader>
