@@ -129,6 +129,7 @@ const formatRole = (role: Role, t: any) => {
     case Role.NONE:
       return t("organization.members.roles.none");
     default:
-      return role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();
+      const roleStr = String(role);
+      return roleStr.charAt(0).toUpperCase() + roleStr.slice(1).toLowerCase();
   }
 };
