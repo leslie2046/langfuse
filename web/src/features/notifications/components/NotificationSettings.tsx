@@ -6,11 +6,13 @@ import { Card, CardContent } from "@/src/components/ui/card";
 import { Label } from "@/src/components/ui/label";
 import { Switch } from "@/src/components/ui/switch";
 import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAccess";
+import { useTranslation } from "@/src/features/i18n";
 
 export function NotificationSettings() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
   const [isSaving, setIsSaving] = useState(false);
+  const { t } = useTranslation();
 
   const hasAccess = useHasProjectAccess({
     projectId,
@@ -46,11 +48,11 @@ export function NotificationSettings() {
   if (isLoading || !preferences) {
     return (
       <div>
-        <Header title="Notification Settings" />
+        <Header title={t("notifications.title")} />
         <Card className="mt-4">
           <CardContent className="p-6">
             <p className="text-sm text-muted-foreground">
-              Loading preferences...
+              {t("notifications.loading")}
             </p>
           </CardContent>
         </Card>
@@ -64,13 +66,13 @@ export function NotificationSettings() {
 
   return (
     <div>
-      <Header title="Notification Settings" />
+      <Header title={t("notifications.title")} />
       <Card className="mt-4">
         <CardContent className="space-y-6 p-6">
           <div>
-            <h3 className="text-lg font-medium">Email Notifications</h3>
+            <h3 className="text-lg font-medium">{t("notifications.email.title")}</h3>
             <p className="text-sm text-muted-foreground">
-              Manage your email notification preferences for this project.
+              {t("notifications.email.description")}
             </p>
           </div>
 
@@ -78,10 +80,10 @@ export function NotificationSettings() {
             <div className="flex items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">
                 <Label htmlFor="comment-mention" className="text-base">
-                  Comment Mentions
+                  {t("notifications.email.commentMentions.title")}
                 </Label>
                 <p className="text-sm text-muted-foreground">
-                  Receive an email when someone mentions you in a comment
+                  {t("notifications.email.commentMentions.description")}
                 </p>
               </div>
               <Switch
@@ -98,7 +100,7 @@ export function NotificationSettings() {
       {updatePreference.isError && (
         <div className="mt-4 rounded-lg border border-destructive bg-destructive/10 p-4">
           <p className="text-sm text-destructive">
-            Failed to update notification preference. Please try again.
+            {t("notifications.updateError")}
           </p>
         </div>
       )}

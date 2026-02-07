@@ -4,6 +4,7 @@ import { api } from "@/src/utils/api";
 import { cn } from "@/src/utils/tailwind";
 import { Check, Pencil, TriangleAlert } from "lucide-react";
 import Link from "next/link";
+import { useTranslation } from "@/src/features/i18n";
 
 export function ManageDefaultEvalModel({
   projectId,
@@ -26,6 +27,7 @@ export function ManageDefaultEvalModel({
     projectId,
     scope: "evalDefaultModel:CUD",
   });
+  const { t } = useTranslation();
 
   const { data: defaultModel } = api.defaultLlmModel.fetchDefaultModel.useQuery(
     { projectId },
@@ -48,7 +50,7 @@ export function ManageDefaultEvalModel({
             className,
           )}
         >
-          {"Current default model: "}
+          {t("evaluators.defaultModel.currentDefault")}
           {defaultModel.provider} / {defaultModel.model}
         </span>
       ) : (
@@ -59,7 +61,7 @@ export function ManageDefaultEvalModel({
             className,
           )}
         >
-          {setUpMessage ?? "No default model set"}
+          {setUpMessage ?? t("evaluators.defaultModel.noModelSet")}
         </span>
       )}
       {showEditButton && (

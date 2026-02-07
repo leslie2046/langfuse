@@ -34,6 +34,7 @@ import { useUniqueNameValidation } from "@/src/hooks/useUniqueNameValidation";
 import { DialogBody, DialogFooter } from "@/src/components/ui/dialog";
 import { DatasetSchemaInput } from "./DatasetSchemaInput";
 import { DatasetSchemaValidationError } from "./DatasetSchemaValidationError";
+import { useTranslation } from "@/src/features/i18n";
 
 type ServerSideSchemaValidationErrors = {
   datasetItemId: string;
@@ -142,6 +143,7 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
     ] = useState<ServerSideSchemaValidationErrors | null>(null);
     const capture = usePostHogClientCapture();
     const [deleteConfirmationInput, setDeleteConfirmationInput] = useState("");
+    const { t } = useTranslation();
 
     const inputSchemaString =
       props.mode === "update" && props.datasetInputSchema
@@ -200,7 +202,7 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
       currentName: form.watch("name"),
       allNames: allDatasetNames,
       form,
-      errorMessage: "Dataset name already exists.",
+      errorMessage: "Dataset name already exists.", // This might need a separate key or generic error key
       whitelistedName: props.mode === "update" ? props.datasetName : undefined,
     });
 
@@ -341,7 +343,7 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
 
       if (deleteConfirmationInput !== props.datasetName) {
         setFormError(
-          "Please type the correct dataset name to confirm deletion",
+          t("common.deleteAction.incorrectConfirmation"),
         );
         return;
       }
@@ -376,7 +378,10 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
             {props.mode === "delete" ? (
               <div className="mb-8 grid w-full gap-1.5">
                 <Label htmlFor="delete-confirmation">
-                  Type &quot;{props.datasetName}&quot; to confirm deletion
+                  {t("datasets.form.deleteConfirmation").replace(
+                    "{name}",
+                    props.datasetName,
+                  )}
                 </Label>
                 <Input
                   id="delete-confirmation"
@@ -391,10 +396,9 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>{t("datasets.form.name")}</FormLabel>
                       <FormDescription>
-                        Use slashes &apos;/&apos; in dataset names to organize
-                        them into <em>folders</em>.
+                        {t("datasets.form.slugDescription")}
                       </FormDescription>
                       <FormControl>
                         <Input {...field} />
@@ -408,7 +412,7 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description (optional)</FormLabel>
+                      <FormLabel>{t("datasets.form.description")}</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -421,7 +425,7 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
                   name="metadata"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Metadata (optional)</FormLabel>
+                      <FormLabel>{t("datasets.form.metadata")}</FormLabel>
                       <FormControl>
                         <CodeMirrorEditor
                           mode="json"
@@ -441,8 +445,8 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
                   name="inputSchema"
                   render={({ field }) => (
                     <DatasetSchemaInput
-                      label="Input schema"
-                      description="Validate dataset item inputs against a JSON Schema. All new and existing items must conform to this schema."
+                      label={t("datasets.form.inputSchema")}
+                      description={t("datasets.form.inputSchemaDescription")}
                       value={field.value}
                       onChange={field.onChange}
                       initialValue={inputSchemaString}
@@ -454,8 +458,8 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
                   name="expectedOutputSchema"
                   render={({ field }) => (
                     <DatasetSchemaInput
-                      label="Expected output schema"
-                      description="Validate dataset item expected outputs against a JSON Schema. All new and existing items must conform to this schema."
+                      label={t("datasets.form.outputSchema")}
+                      description={t("datasets.form.outputSchemaDescription")}
                       value={field.value}
                       onChange={field.onChange}
                       initialValue={expectedOutputSchemaString}
@@ -491,10 +495,10 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
                   className="w-full"
                 >
                   {props.mode === "create"
-                    ? "Create dataset"
+                    ? t("datasets.form.createDataset")
                     : props.mode === "delete"
-                      ? "Delete Dataset"
-                      : "Update dataset"}
+                      ? t("datasets.form.deleteDataset")
+                      : t("datasets.form.updateDataset")}
                 </Button>
                 {formError && (
                   <p className="mt-4 text-center text-sm text-red-500">

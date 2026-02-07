@@ -30,6 +30,7 @@ import {
 } from "@/src/components/ui/dropdown-menu";
 import { ArchiveScoreConfigButton } from "@/src/features/score-configs/components/ArchiveScoreConfigButton";
 import { UpsertScoreConfigDialog } from "@/src/features/score-configs/components/UpsertScoreConfigDialog";
+import { useTranslation } from "@/src/features/i18n";
 
 type ScoreConfigTableRow = {
   id: string;
@@ -74,6 +75,7 @@ function getConfigRange(
 export function ScoreConfigsTable({ projectId }: { projectId: string }) {
   const [editConfigId, setEditConfigId] = useState<string | null>(null);
   const [createConfigOpen, setCreateConfigOpen] = useState(false);
+  const { t } = useTranslation();
   const [paginationState, setPaginationState] = useQueryParams({
     pageIndex: withDefault(NumberParam, 0),
     pageSize: withDefault(NumberParam, 50),
@@ -109,20 +111,20 @@ export function ScoreConfigsTable({ projectId }: { projectId: string }) {
     {
       accessorKey: "name",
       id: "name",
-      header: "Name",
+      header: t("scoreConfigs.name"),
       enableHiding: true,
     },
     {
       accessorKey: "dataType",
       id: "dataType",
-      header: "Data Type",
+      header: t("scoreConfigs.dataType"),
       size: 80,
       enableHiding: true,
     },
     {
       accessorKey: "range",
       id: "range",
-      header: "Range",
+      header: t("scoreConfigs.range"),
       enableHiding: true,
       size: 300,
       cell: ({ row }) => {
@@ -136,7 +138,7 @@ export function ScoreConfigsTable({ projectId }: { projectId: string }) {
     {
       accessorKey: "description",
       id: "description",
-      header: "Description",
+      header: t("common.form.descriptionField"),
       enableHiding: true,
       cell: ({ row }) => {
         const value = row.original.description;
@@ -156,24 +158,24 @@ export function ScoreConfigsTable({ projectId }: { projectId: string }) {
     {
       accessorKey: "createdAt",
       id: "createdAt",
-      header: "Created At",
+      header: t("scoreConfigs.createdAt"),
       enableHiding: true,
       defaultHidden: true,
     },
     {
       accessorKey: "isArchived",
       id: "isArchived",
-      header: "Status",
+      header: t("scoreConfigs.status"),
       size: 80,
       enableHiding: true,
       cell: ({ row }) => {
         const { isArchived } = row.original;
-        return isArchived ? "Archived" : "Active";
+        return isArchived ? t("scoreConfigs.archived") : t("scoreConfigs.active");
       },
     },
     {
       accessorKey: "action",
-      header: "Action",
+      header: t("scoreConfigs.action"),
       size: 70,
       isFixedPosition: true,
       enableHiding: true,
@@ -194,7 +196,7 @@ export function ScoreConfigsTable({ projectId }: { projectId: string }) {
                 onClick={() => setEditConfigId(configId)}
               >
                 <Edit className="mr-2 h-4 w-4" />
-                Edit
+                {t("scoreConfigs.edit")}
               </DropdownMenuItem>
               <DropdownMenuItem asChild key="archive">
                 <ArchiveScoreConfigButton

@@ -26,9 +26,11 @@ import { useQueryOrganization } from "@/src/features/organizations/hooks";
 import { useHasOrganizationAccess } from "@/src/features/rbac/utils/checkOrganizationAccess";
 import { showSuccessToast } from "@/src/features/notifications/showSuccessToast"; // Import success toast function
 import { env } from "@/src/env.mjs";
+import { useTranslation } from "@/src/features/i18n";
 
 export function DeleteOrganizationButton() {
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
 
   const organization = useQueryOrganization();
   const confirmMessage =
@@ -36,7 +38,7 @@ export function DeleteOrganizationButton() {
 
   const formSchema = z.object({
     name: z.string().includes(confirmMessage, {
-      message: `Please confirm with "${confirmMessage}"`,
+      message: t("organization.dangerZone.delete.dialog.description", { confirmMessage }),
     }),
   });
 
@@ -63,8 +65,8 @@ export function DeleteOrganizationButton() {
       });
       capture("organization_settings:delete_organization");
       showSuccessToast({
-        title: "Organization Deleted",
-        description: "The organization has been successfully deleted.",
+        title: t("organization.dangerZone.delete.dialog.success.title"),
+        description: t("organization.dangerZone.delete.dialog.success.description"),
       });
       await new Promise((resolve) => setTimeout(resolve, 5000)); // Delay for 5 seconds
       window.location.href = env.NEXT_PUBLIC_BASE_PATH ?? "/"; // Browser reload to refresh jwt
@@ -77,18 +79,18 @@ export function DeleteOrganizationButton() {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="destructive-secondary" disabled={!hasAccess}>
-          Delete Organization
+          {t("organization.dangerZone.delete.button")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
-            Delete Organization
+            {t("organization.dangerZone.delete.title")}
           </DialogTitle>
           <DialogDescription>
             {hasProjects
-              ? "You can only delete an organization if it has no projects associated with it. Please delete or transfer all projects first. Deleting projects may take a few minutes."
-              : `To confirm, type "${confirmMessage}" in the input box `}
+              ? t("organization.dangerZone.delete.dialog.hasProjects")
+              : t("organization.dangerZone.delete.dialog.description", { confirmMessage })}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -117,7 +119,7 @@ export function DeleteOrganizationButton() {
                 disabled={hasProjects}
                 className="w-full"
               >
-                Delete Organization
+                {t("organization.dangerZone.delete.button")}
               </Button>
             </DialogFooter>
           </form>

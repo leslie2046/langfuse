@@ -19,7 +19,8 @@
     "v4BetaToggle": "v4 Beta 开关",
     "settings": "设置",
     "bookACall": "预约通话",
-    "support": "支持"
+    "support": "支持",
+    "accountSettings": "账户设置"
   },
   "groups": {
     "observability": "可观测性",
@@ -34,6 +35,7 @@
     "signUp": "注册",
     "continue": "继续",
     "language": "语言",
+    "theme": "主题",
     "email": "邮箱",
     "password": "密码",
     "name": "姓名",
@@ -224,6 +226,21 @@
       "numberOfObservations": "观察数量",
       "tags": "标签",
       "actions": "操作"
+    },
+    "form": {
+      "nameDescription": "在提示词名称中使用斜杠 '/' 将它们组织到文件夹中。",
+      "namePlaceholder": "为您的提示词命名",
+      "prompt": "提示词",
+      "promptDescription": "定义您的提示词模板。",
+      "config": "配置",
+      "configDescription": "提示词可用的任意 JSON 配置。使用此项跟踪 LLM 参数、函数定义或任何其他元数据。",
+      "productionLabel": "设置 \"production\" 标签",
+      "commitMessage": "提交信息",
+      "commitMessageDescription": "提供有关此版本更改的信息。有助于保持清晰的提示词迭代历史。",
+      "reviewChanges": "审查更改",
+      "saveNewVersion": "保存新提示词版本",
+      "createPrompt": "创建提示词",
+      "createVersionLink": "在此处为它创建一个新版本。"
     },
     "search": {
       "namesTags": "名称，标签",
@@ -604,7 +621,231 @@
     "evaluators": {
       "title": "LLM-as-a-Judge 评估器",
       "helpDescription": "配置 Langfuse 管理的或自定义的评估器来评估传入的追踪。",
-      "setupEvaluator": "设置评估器"
+      "setupEvaluator": "设置评估器",
+      "defaultModel": {
+        "title": "默认模型",
+        "noModelSet": "未设置默认模型",
+        "setUp": "设置",
+        "setUpMessage": "未设置默认模型。设置默认评估模型",
+        "currentDefault": "当前默认模型： ",
+        "configuration": "默认模型配置",
+        "functionCalling": "选择支持函数调用的模型。",
+        "update": "更新",
+        "updateConfirmationTitle": "请确认",
+        "updateConfirmationDescription": "更新默认模型将影响所有正在使用它的运行中评估器。请确认您要继续此更改。",
+        "typeToConfirm": "输入 \"{confirmation}\" 以确认",
+        "confirm": "确认",
+        "updatedToastTitle": "默认评估模型已更新",
+        "updatedToastDescription": "所有运行中的评估器将使用新模型。"
+      }
     }
+  },
+  "datasets": {
+    "form": {
+      "create": "创建新数据集",
+      "name": "名称",
+      "slugDescription": "在数据集名称中使用斜杠 '/' 将它们组织到文件夹中。",
+      "description": "描述（可选）",
+      "metadata": "元数据（可选）",
+      "inputSchema": "输入 Schema",
+      "inputSchemaDescription": "针对 JSON Schema 验证数据集项目输入。所有新项目和现有项目都必须符合此 Schema。",
+      "outputSchema": "预期输出 Schema",
+      "outputSchemaDescription": "针对 JSON Schema 验证数据集项目预期输出。所有新项目和现有项目都必须符合此 Schema。",
+      "deleteConfirmation": "输入 \"{name}\" 以确认删除",
+      "createDataset": "创建数据集",
+      "updateDataset": "更新数据集",
+      "deleteDataset": "删除数据集"
+    }
+  },
+  "apiKeys": {
+    "projectApiKeys": "项目 API 密钥",
+    "organizationApiKeys": "组织 API 密钥",
+    "created": "创建时间",
+    "note": "备注",
+    "publicKey": "公钥",
+    "secretKey": "私钥",
+    "none": "无",
+    "delete": "删除 API 密钥",
+    "deleteDescription": "您确定要删除此 API 密钥吗？此操作无法撤销。",
+    "permanentlyDelete": "永久删除",
+    "clickToAddNote": "点击添加备注"
+  },
+  "llmApiKeys": {
+    "title": "LLM 连接",
+    "description": "连接您的 LLM 服务以启用评估和 Playground 功能。您的提供商将根据使用量收费。",
+    "provider": "提供商",
+    "adapter": "适配器",
+    "baseUrl": "Base URL",
+    "apiKey": "API 密钥",
+    "extraHeaders": "额外 Headers",
+    "deleteTitle": "删除 LLM 连接",
+    "deleteDescription": "您确定要删除此连接吗？此操作无法撤销。"
+  },
+  "models": {
+    "title": "模型定义",
+    "description": "存储 LLM 模型定价信息的配置。模型定义指定每个输入和输出 Token 的成本，使 Langfuse 能够根据 Token 使用情况自动计算生成价格。",
+    "modelNameDescription": "标准化模型名称。如果生成内容在摄取时匹配 `matchPattern`，则会分配给此模型名称。",
+    "matchPatternDescription": "用于匹配生成内容的 `model` 参数以应用模型定价的正则表达式模式",
+    "startDateDescription": "开始为模型定价的日期。如果未设置，除非存在更新的版本，否则模型处于活动状态。",
+    "pricesDescription": "每种使用类型的价格",
+    "tokenizerIdDescription": "用于计算 Token 数量的分词器（如果未摄取 Token 数量）。从支持的分词器列表中选择。",
+    "configDescription": "某些分词器需要额外的配置（例如 openai tiktoken）。详情请参阅文档。",
+    "maintainerDescription": "模型的维护者。Langfuse 维护的模型可以克隆，用户维护的模型可以编辑和删除。要取代 Langfuse 维护的模型，请将自定义模型名称设置为 Langfuse 模型名称。",
+    "lastUsedDescription": "使用此模型的最新生成的开始时间",
+    "modelName": "模型名称",
+    "maintainer": "维护者",
+    "matchPattern": "匹配模式",
+    "prices": "价格",
+    "tokenizer": "分词器",
+    "tokenizerConfig": "分词器配置",
+    "lastUsed": "上次使用",
+    "actions": "操作",
+    "addModelDefinition": "添加模型定义",
+    "langfuseMaintained": "Langfuse 维护",
+    "userMaintained": "用户维护"
+  },
+  "scoreConfigs": {
+    "title": "评分配置",
+    "description": "评分配置定义了项目中可用于标注的评分。请注意，所有评分配置都是不可变的。",
+    "name": "名称",
+    "dataType": "数据类型",
+    "range": "范围",
+    "createdAt": "创建时间",
+    "status": "状态",
+    "archived": "已归档",
+    "active": "活动",
+    "action": "操作",
+    "edit": "编辑",
+    "upsert": {
+      "createTitle": "添加新评分配置",
+      "updateTitle": "更新评分配置",
+      "createButton": "添加新评分配置",
+      "updateButton": "更新评分配置",
+      "name": "名称",
+      "dataType": "数据类型",
+      "dataTypePlaceholder": "选择数据类型",
+      "minValue": "最小值（可选）",
+      "maxValue": "最大值（可选）",
+      "description": "描述（可选）",
+      "descriptionPlaceholder": "提供评分配置的可选描述...",
+      "value": "值",
+      "label": "标签",
+      "addCategory": "添加类别",
+      "submit": "提交"
+    }
+  },
+  "batchExports": {
+    "title": "导出",
+    "description": "通过 Langfuse 中的导出按钮以您喜欢的格式导出大型数据集。导出在后台异步处理，并在一小时内可供下载。导出准备就绪后，您将收到电子邮件通知。",
+    "table": {
+      "name": "名称",
+      "status": "状态",
+      "downloadUrl": "下载链接",
+      "download": "下载",
+      "expired": "已过期",
+      "format": "格式",
+      "createdBy": "创建者",
+      "log": "日志",
+      "actions": "操作",
+      "cancel": "取消",
+      "cancelDialog": {
+        "title": "取消批量导出？",
+        "description": "您确定要取消此批量导出吗？此操作无法撤销。",
+        "keep": "不，保留",
+        "cancel": "是，取消导出"
+      }
+    }
+  },
+  "batchActions": {
+    "title": "批量操作",
+    "description": "跟踪对表执行的批量操作的状态，例如向数据集添加观测值、删除 Trace 和向标注队列添加项目。操作在后台异步处理。",
+    "table": {
+      "actionType": "操作类型",
+      "table": "表",
+      "status": "状态",
+      "progress": "进度",
+      "failed": "失败",
+      "created": "创建时间",
+      "finished": "完成时间",
+      "createdBy": "创建者",
+      "log": "日志"
+    }
+  },
+  "organization": {
+    "members": {
+      "addMember": "添加新成员",
+      "addProjectMember": "添加项目成员",
+      "addMemberTo": "添加新成员到",
+      "project": "项目",
+      "organization": "组织",
+      "email": "邮件",
+      "emailPlaceholder": "jsdoe@example.com",
+      "orgRole": "组织角色",
+      "selectOrgRole": "选择组织角色",
+      "projectRole": "项目角色",
+      "selectProjectRole": "选择项目角色",
+      "projectRoleDescription": "此项目角色将覆盖当前项目 ({currentProject}) 的默认角色。",
+      "grantAccess": "授予访问权限"
+    },
+    "settings": {
+      "title": "组织设置",
+      "general": "通用",
+      "billing": "账单",
+      "sso": "SSO",
+      "projects": "项目",
+      "members": "成员",
+      "apiKeys": "API 密钥",
+      "auditLogs": "审计日志"
+    },
+    "rename": {
+      "title": "组织名称",
+      "currentName": "您的组织当前名称为",
+      "willBeRenamed": "您的组织将重命名，从",
+      "to": "改为",
+      "save": "保存"
+    },
+    "debug": {
+      "title": "调试信息",
+      "metadata": "元数据"
+    },
+    "dangerZone": {
+      "title": "危险区域",
+      "delete": {
+        "title": "删除此组织",
+        "description": "一旦删除组织，将无法恢复。请务必确定。",
+        "button": "删除组织",
+        "dialog": {
+          "title": "删除组织",
+          "description": "要确认，请在输入框中输入 “{confirmMessage}”",
+          "hasProjects": "只有当组织没有关联项目时才能删除。请先删除或转移所有项目。删除项目可能需要几分钟时间。",
+          "success": {
+            "title": "组织已删除",
+            "description": "组织已成功删除。"
+          }
+        }
+      }
+    }
+  },
+  "auditLogs": {
+    "title": "审计日志",
+    "description": "跟踪谁在何时更改了项目中的什么内容。随时监控设置、配置和数据更改。如果您需要更详细/过滤的审计日志，请联系 Langfuse 团队。",
+    "enterprise": "审计日志是一项企业功能。升级您的计划以跟踪对项目所做的所有更改。",
+    "accessDenied": {
+      "title": "访问被拒绝",
+      "description": "请联系您的项目管理员请求访问权限。"
+    }
+  },
+  "notifications": {
+    "title": "通知设置",
+    "email": {
+      "title": "邮件通知",
+      "description": "管理此项目的邮件通知首选项。",
+      "commentMentions": {
+        "title": "评论提及",
+        "description": "当有人在评论中提及您时收到邮件"
+      }
+    },
+    "loading": "正在加载首选项...",
+    "updateError": "更新通知首选项失败。请重试。"
   }
 }

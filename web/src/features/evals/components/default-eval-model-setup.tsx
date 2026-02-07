@@ -22,11 +22,13 @@ import {
 } from "@/src/components/ui/popover";
 import { Label } from "@/src/components/ui/label";
 import { Input } from "@/src/components/ui/input";
+import { useTranslation } from "@/src/features/i18n";
 
 export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
   const utils = api.useUtils();
   const [isEditing, setIsEditing] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const hasWriteAccess = useHasProjectAccess({
     projectId,
@@ -52,8 +54,8 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
     api.defaultLlmModel.upsertDefaultModel.useMutation({
       onSuccess: () => {
         showSuccessToast({
-          title: "Default evaluation model updated",
-          description: "All running evaluators will use the new model.",
+          title: t("evaluators.defaultModel.updatedToastTitle"),
+          description: t("evaluators.defaultModel.updatedToastDescription"),
         });
 
         utils.defaultLlmModel.fetchDefaultModel.invalidate({ projectId });
@@ -83,11 +85,11 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
     <>
       <Card className="mt-3 flex flex-col gap-6">
         <CardContent>
-          <p className="my-2 text-lg font-semibold">Default model</p>
+          <p className="my-2 text-lg font-semibold">{t("evaluators.defaultModel.title")}</p>
           <ManageDefaultEvalModel
             projectId={projectId}
             variant="color-coded"
-            setUpMessage="No default model set. Set up default evaluation model"
+            setUpMessage={t("evaluators.defaultModel.setUpMessage")}
             className="text-sm font-normal"
             showEditButton={false}
           />
@@ -119,14 +121,14 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
               }}
             >
               <Pencil className="mr-2 h-4 w-4" />
-              {selectedModel ? "Edit" : "Set up"}
+              {selectedModel ? t("common.edit") : t("evaluators.defaultModel.setUp")}
             </Button>
           </DialogTrigger>
           <DialogContent className="px-3 py-10">
             <ModelParameters
               customHeader={
                 <p className="font-medium leading-none">
-                  Default model configuration
+                  {t("evaluators.defaultModel.configuration")}
                 </p>
               }
               {...{
@@ -137,15 +139,15 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
                 updateModelParamValue,
                 setModelParamEnabled,
               }}
-              formDisabled={!hasWriteAccess}
+                formDisabled={!hasWriteAccess}
             />
             <div className="my-2 text-xs text-muted-foreground">
-              Select a model which supports function calling.
+              {t("evaluators.defaultModel.functionCalling")}
             </div>
             <div className="flex flex-col gap-2">
               <div className="mt-2 flex justify-end gap-2">
                 <Button variant="outline" onClick={() => setIsEditing(false)}>
-                  Cancel
+                  {t("common.cancel")}
                 </Button>
                 {selectedModel ? (
                   <UpdateButton
@@ -158,13 +160,13 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
                     disabled={!hasWriteAccess || !modelParams.provider.value}
                     onClick={executeUpsertMutation}
                   >
-                    Save
+                    {t("common.save")}
                   </Button>
                 )}
               </div>
               {formError ? (
                 <p className="text-red w-full text-center">
-                  <span className="font-bold">Error:</span> {formError}
+                  <span className="font-bold">{t("common.error")}:</span> {formError}
                 </p>
               ) : null}
             </div>
@@ -189,6 +191,7 @@ function UpdateButton({
     projectId,
     scope: "evalDefaultModel:CUD",
   });
+  const { t } = useTranslation();
 
   const CONFIRMATION = "update";
 
@@ -201,22 +204,20 @@ function UpdateButton({
             e.stopPropagation();
           }}
         >
-          Update
+          {t("evaluators.defaultModel.update")}
         </Button>
       </PopoverTrigger>
       <PopoverContent
         onClick={(e) => e.stopPropagation()}
         className="w-fit max-w-[500px]"
       >
-        <h2 className="text-md mb-3 font-semibold">Please confirm</h2>
+        <h2 className="text-md mb-3 font-semibold">{t("evaluators.defaultModel.updateConfirmationTitle")}</h2>
         <p className="mb-3 text-sm">
-          Updating the default model will impact any currently running
-          evaluators that use it. Please confirm that you want to proceed with
-          this change.
+          {t("evaluators.defaultModel.updateConfirmationDescription")}
         </p>
         <div className="mb-4 grid w-full gap-1.5">
           <Label htmlFor="update-confirmation">
-            Type &quot;{CONFIRMATION}&quot; to confirm
+            {t("evaluators.defaultModel.typeToConfirm", { confirmation: CONFIRMATION })}
           </Label>
           <Input
             id="update-confirmation"
@@ -236,7 +237,7 @@ function UpdateButton({
               executeUpsertMutation();
             }}
           >
-            Confirm
+            {t("evaluators.defaultModel.confirm")}
           </Button>
         </div>
       </PopoverContent>

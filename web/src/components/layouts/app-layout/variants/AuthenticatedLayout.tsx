@@ -13,6 +13,7 @@ import { PaymentBannerProvider } from "@/src/features/payment-banner";
 import { ResizableContent } from "../components/ResizableContent";
 import { ThemeToggle } from "@/src/features/theming/ThemeToggle";
 import { LanguageToggle } from "@/src/features/i18n";
+import { useTranslation } from "@/src/features/i18n";
 import type { Session } from "next-auth";
 import type { NavigationItem } from "@/src/components/layouts/utilities/routes";
 import type { RouteGroup } from "@/src/components/layouts/routes";
@@ -86,6 +87,7 @@ export function AuthenticatedLayout({
   }
 
   // User navigation items for sidebar dropdown
+  const { t } = useTranslation();
   const userNavProps = {
     user: {
       name: user.name ?? "",
@@ -93,10 +95,10 @@ export function AuthenticatedLayout({
       avatar: user.image ?? "",
     },
     items: [
-      { name: "Account Settings", href: "/account/settings" },
-      { name: "Theme", onClick: () => {}, content: <ThemeToggle /> },
-      { name: "Language", onClick: () => {}, content: <LanguageToggle /> },
-      { name: "Sign out", onClick: onSignOut },
+      { name: t("navigation.settings"), href: "/account/settings" },
+      { name: t("common.theme"), onClick: () => {}, content: <ThemeToggle /> },
+      { name: t("common.language"), onClick: () => {}, content: <LanguageToggle /> },
+      { name: t("common.signOut"), onClick: onSignOut },
     ],
   };
 

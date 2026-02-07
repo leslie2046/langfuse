@@ -19,11 +19,13 @@ import { useQueryOrganization } from "@/src/features/organizations/hooks";
 import { Card } from "@/src/components/ui/card";
 import { LockIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useTranslation } from "@/src/features/i18n";
 
 export default function RenameOrganization() {
   const { update: updateSession } = useSession();
   const capture = usePostHogClientCapture();
   const organization = useQueryOrganization();
+  const { t } = useTranslation();
   const hasAccess = useHasOrganizationAccess({
     organizationId: organization?.id,
     scope: "organization:update",
@@ -63,18 +65,18 @@ export default function RenameOrganization() {
 
   return (
     <div>
-      <Header title="Organization Name" />
+      <Header title={t("organization.rename.title")} />
       <Card className="mb-4 p-3">
         {form.getValues().name !== "" ? (
           <p className="mb-4 text-sm text-primary">
-            Your Organization will be renamed from &quot;
+            {t("organization.rename.willBeRenamed")} &quot;
             {orgName}
-            &quot; to &quot;
+            &quot; {t("organization.rename.to")} &quot;
             <b>{form.watch().name}</b>&quot;.
           </p>
         ) : (
           <p className="mb-4 text-sm">
-            Your Organization is currently named &quot;<b>{orgName}</b>
+            {t("organization.rename.currentName")} &quot;<b>{orgName}</b>
             &quot;.
           </p>
         )}
@@ -116,7 +118,7 @@ export default function RenameOrganization() {
                 disabled={form.getValues().name === "" || !hasAccess}
                 className="mt-4"
               >
-                Save
+                {t("organization.rename.save")}
               </Button>
             )}
           </form>

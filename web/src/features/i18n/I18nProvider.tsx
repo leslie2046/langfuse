@@ -25,24 +25,42 @@ const messages: Record<Locale, Messages> = {
 interface I18nContextType {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: string) => string;
+  t: (key: string, variables?: Record<string, string | number>) => string;
 }
 
 const I18nContext = createContext<I18nContextType | null>(null);
 
-function getNestedValue(obj: Record<string, unknown>, path: string): string {
+function interpolate(
+  template: string,
+  variables: Record<string, string | number>,
+): string {
+  return template.replace(/{(\w+)}/g, (_, key) => {
+    return String(variables[key] ?? `{${key}}`);
+  });
+}
+
+function getNestedValue(
+  obj: Record<string, unknown>,
+  path: string,
+  variables?: Record<string, string | number>,
+): string {
   const keys = path.split(".");
   let current: unknown = obj;
 
   for (const key of keys) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (current && typeof current === "object" && key in current) {
-      current = (current as Record<string, unknown>)[key];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      current = (current as any)[key];
     } else {
       return path; // Return key if not found
     }
   }
 
-  return typeof current === "string" ? current : path;
+  if (typeof current === "string") {
+    return variables ? interpolate(current, variables) : current;
+  }
+  return path;
 }
 
 export function I18nProvider({ children }: { children: ReactNode }) {
@@ -64,8 +82,13 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const t = useCallback(
-    (key: string): string => {
-      return getNestedValue(messages[locale] as Record<string, unknown>, key);
+    (key: string, variables?: Record<string, string | number>): string => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return getNestedValue(
+        messages[locale] as unknown as Record<string, unknown>,
+        key,
+        variables,
+      );
     },
     [locale],
   );
@@ -82,10 +105,11 @@ export function I18nProvider({ children }: { children: ReactNode }) {
         value={{
           locale: defaultLocale,
           setLocale,
-          t: (key: string) =>
+          t: (key: string, variables?: Record<string, string | number>) =>
             getNestedValue(
-              messages[defaultLocale] as Record<string, unknown>,
+              messages[defaultLocale] as unknown as Record<string, unknown>,
               key,
+              variables,
             ),
         }}
       >

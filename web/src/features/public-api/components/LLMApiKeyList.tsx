@@ -26,10 +26,12 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
 import { CreateLLMApiKeyDialog } from "./CreateLLMApiKeyDialog";
 import { UpdateLLMApiKeyDialog } from "./UpdateLLMApiKeyDialog";
+import { useTranslation } from "@/src/features/i18n";
 
 export function LlmApiKeyList(props: { projectId: string }) {
   const [editingKeyId, setEditingKeyId] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   const hasAccess = useHasProjectAccess({
     projectId: props.projectId,
@@ -52,11 +54,11 @@ export function LlmApiKeyList(props: { projectId: string }) {
   if (!hasAccess) {
     return (
       <div>
-        <Header title="LLM Connections" />
+        <Header title={t("llmApiKeys.title")} />
         <Alert>
           <AlertTitle>Access Denied</AlertTitle>
           <AlertDescription>
-            You do not have permission to view LLM API keys for this project.
+            {t("permissions.noAccess")}
           </AlertDescription>
         </Alert>
       </div>
@@ -65,27 +67,26 @@ export function LlmApiKeyList(props: { projectId: string }) {
 
   return (
     <div id="llm-api-keys">
-      <Header title="LLM Connections" />
+      <Header title={t("llmApiKeys.title")} />
       <p className="mb-4 text-sm">
-        Connect your LLM services to enable evaluations and playground features.
-        Your provider will charge based on usage.
+        {t("llmApiKeys.description")}
       </p>
       <Card className="mb-4 overflow-auto">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="text-primary md:table-cell">
-                Provider
+                {t("llmApiKeys.provider")}
               </TableHead>
               <TableHead className="text-primary md:table-cell">
-                Adapter
+                {t("llmApiKeys.adapter")}
               </TableHead>
               <TableHead className="text-primary md:table-cell">
-                Base URL
+                {t("llmApiKeys.baseUrl")}
               </TableHead>
-              <TableHead className="text-primary">API Key</TableHead>
+              <TableHead className="text-primary">{t("llmApiKeys.apiKey")}</TableHead>
               {hasExtraHeaderKeys ? (
-                <TableHead className="text-primary">Extra headers</TableHead>
+                <TableHead className="text-primary">{t("llmApiKeys.extraHeaders")}</TableHead>
               ) : null}
               <TableHead />
             </TableRow>
@@ -94,7 +95,7 @@ export function LlmApiKeyList(props: { projectId: string }) {
             {apiKeys.data?.data.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center">
-                  None
+                  {t("apiKeys.none")}
                 </TableCell>
               </TableRow>
             ) : (
@@ -167,6 +168,7 @@ function DeleteApiKeyButton(props: { projectId: string; apiKeyId: string }) {
     onSuccess: () => utils.llmApiKey.invalidate(),
   });
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   if (!hasAccess) return null;
 
@@ -179,10 +181,9 @@ function DeleteApiKeyButton(props: { projectId: string; apiKeyId: string }) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="mb-5">Delete LLM Connection</DialogTitle>
+          <DialogTitle className="mb-5">{t("llmApiKeys.deleteTitle")}</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this connection? This action cannot
-            be undone.
+            {t("llmApiKeys.deleteDescription")}
           </DialogDescription>
         </DialogHeader>
 
@@ -205,10 +206,10 @@ function DeleteApiKeyButton(props: { projectId: string; apiKeyId: string }) {
             }}
             loading={mutDeleteApiKey.isPending}
           >
-            Permanently delete
+            {t("apiKeys.permanentlyDelete")}
           </Button>
           <Button variant="ghost" onClick={() => setOpen(false)}>
-            Cancel
+            {t("common.cancel")}
           </Button>
         </DialogFooter>
       </DialogContent>

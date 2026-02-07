@@ -30,6 +30,7 @@ import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
 import startCase from "lodash/startCase";
 import { useLangfuseEnvCode } from "@/src/features/public-api/hooks/useLangfuseEnvCode";
+import { useTranslation } from "@/src/features/i18n";
 
 type ApiKeyScope = "project" | "organization";
 type ApiKeyEntity = { id: string; note: string | null };
@@ -37,6 +38,7 @@ type ApiKeyEntity = { id: string; note: string | null };
 export function ApiKeyList(props: { entityId: string; scope: ApiKeyScope }) {
   const { entityId, scope } = props;
   const envCode = useLangfuseEnvCode();
+  const { t } = useTranslation();
 
   if (!entityId) {
     throw new Error(
@@ -71,11 +73,11 @@ export function ApiKeyList(props: { entityId: string; scope: ApiKeyScope }) {
   if (!hasAccess) {
     return (
       <div>
-        <Header title="API Keys" />
+        <Header title={t("settings.apiKeys")} />
         <Alert>
           <AlertTitle>Access Denied</AlertTitle>
           <AlertDescription>
-            You do not have permission to view API keys for this {scope}.
+           {t("permissions.noAccess")}
           </AlertDescription>
         </Alert>
       </div>
@@ -85,7 +87,11 @@ export function ApiKeyList(props: { entityId: string; scope: ApiKeyScope }) {
   return (
     <div className="space-y-4">
       <Header
-        title={startCase(`${scope} API keys`)}
+        title={
+          scope === "project"
+            ? t("apiKeys.projectApiKeys")
+            : t("apiKeys.organizationApiKeys")
+        }
         help={{
           description: `Learn more about ${scope} API keys`,
           href:
@@ -101,12 +107,12 @@ export function ApiKeyList(props: { entityId: string; scope: ApiKeyScope }) {
           <TableHeader>
             <TableRow>
               <TableHead className="hidden text-primary md:table-cell">
-                Created
+                {t("apiKeys.created")}
               </TableHead>
-              <TableHead className="text-primary">Note</TableHead>
-              <TableHead className="text-primary">Public Key</TableHead>
-              <TableHead className="text-primary">Secret Key</TableHead>
-              {/* <TableHead className="text-primary">Last used</TableHead> */}
+              <TableHead className="text-primary">{t("apiKeys.note")}</TableHead>
+              <TableHead className="text-primary">{t("apiKeys.publicKey")}</TableHead>
+              <TableHead className="text-primary">{t("apiKeys.secretKey")}</TableHead>
+              {/* <TableHead className="text-primary">{t("common.lastUsed")}</TableHead> */}
               <TableHead />
             </TableRow>
           </TableHeader>
@@ -114,7 +120,7 @@ export function ApiKeyList(props: { entityId: string; scope: ApiKeyScope }) {
             {apiKeysQuery.data?.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="text-center">
-                  None
+                  {t("apiKeys.none")}
                 </TableCell>
               </TableRow>
             ) : (
@@ -182,6 +188,7 @@ function DeleteApiKeyButton(props: {
 
   const hasAccess =
     props.scope === "project" ? hasProjectAccess : hasOrganizationAccess;
+  const { t } = useTranslation();
 
   const utils = api.useUtils();
 
@@ -235,10 +242,9 @@ function DeleteApiKeyButton(props: {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="mb-5">Delete API key</DialogTitle>
+          <DialogTitle className="mb-5">{t("apiKeys.delete")}</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this API key? This action cannot be
-            undone.
+            {t("apiKeys.deleteDescription")}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -249,10 +255,10 @@ function DeleteApiKeyButton(props: {
               mutDeleteOrgApiKey.isPending || mutDeleteProjectApiKey.isPending
             }
           >
-            Permanently delete
+            {t("apiKeys.permanentlyDelete")}
           </Button>
           <Button variant="ghost" onClick={() => setOpen(false)}>
-            Cancel
+            {t("common.cancel")}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -281,6 +287,7 @@ function ApiKeyNote({
   });
   const hasEditAccess =
     scope === "project" ? hasProjectAccess : hasOrganizationAccess;
+  const { t } = useTranslation();
 
   const mutUpdateProjectApiKey = api.projectApiKeys.updateNote.useMutation({
     onSuccess: () => utils.projectApiKeys.invalidate(),
@@ -330,7 +337,7 @@ function ApiKeyNote({
       onClick={() => setIsEditing(true)}
       className="-mx-2 cursor-pointer rounded px-2 py-1 hover:bg-secondary/50"
     >
-      {note || "Click to add note"}
+      {note || t("apiKeys.clickToAddNote")}
     </div>
   );
 }

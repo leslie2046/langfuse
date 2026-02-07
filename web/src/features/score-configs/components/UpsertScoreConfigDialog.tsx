@@ -46,6 +46,7 @@ import {
 } from "@/src/features/score-configs/lib/upsertFormTypes";
 import { validateScoreConfigUpsertFormInput } from "@/src/features/score-configs/lib/validateScoreConfigUpsertFormInput";
 import { ScoreConfigDataType } from "@langfuse/shared";
+import { useTranslation } from "@/src/features/i18n";
 
 export function UpsertScoreConfigDialog({
   projectId,
@@ -62,6 +63,7 @@ export function UpsertScoreConfigDialog({
 }) {
   const [formError, setFormError] = useState<string | null>(null);
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
 
   const hasAccess = useHasProjectAccess({
     projectId: projectId,
@@ -151,13 +153,13 @@ export function UpsertScoreConfigDialog({
         <DialogTrigger asChild>
           <Button variant="secondary" loading={createScoreConfig.isPending}>
             <PlusIcon className="-ml-0.5 mr-1.5 h-4 w-4" aria-hidden="true" />
-            {id ? "Update score config" : "Add new score config"}
+            {id ? t("scoreConfigs.upsert.updateButton") : t("scoreConfigs.upsert.createButton")}
           </Button>
         </DialogTrigger>
         <DialogContent className="max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              {id ? "Update score config" : "Add new score config"}
+              {id ? t("scoreConfigs.upsert.updateTitle") : t("scoreConfigs.upsert.createTitle")}
             </DialogTitle>
           </DialogHeader>
           <Form {...form}>
@@ -168,7 +170,7 @@ export function UpsertScoreConfigDialog({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>{t("scoreConfigs.upsert.name")}</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
@@ -187,7 +189,7 @@ export function UpsertScoreConfigDialog({
                   name="dataType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Data type</FormLabel>
+                      <FormLabel>{t("scoreConfigs.upsert.dataType")}</FormLabel>
                       <Select
                         disabled={!!id}
                         defaultValue={field.value}
@@ -214,7 +216,7 @@ export function UpsertScoreConfigDialog({
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a data type" />
+                            <SelectValue placeholder={t("scoreConfigs.upsert.dataTypePlaceholder")} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -238,7 +240,7 @@ export function UpsertScoreConfigDialog({
                       name="minValue"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Minimum (optional) </FormLabel>
+                          <FormLabel>{t("scoreConfigs.upsert.minValue")}</FormLabel>
                           <FormControl>
                             <Input
                               {...field}
@@ -262,7 +264,7 @@ export function UpsertScoreConfigDialog({
                       name="maxValue"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Maximum (optional)</FormLabel>
+                          <FormLabel>{t("scoreConfigs.upsert.maxValue")}</FormLabel>
                           <FormControl>
                             <Input
                               {...field}
@@ -292,7 +294,7 @@ export function UpsertScoreConfigDialog({
                           {fields.length > 0 && (
                             <div className="mb-2 grid grid-cols-[1fr,3fr] items-center gap-2 text-left sm:grid-cols-[1fr,7fr]">
                               <FormLabel className="grid grid-flow-col">
-                                Value
+                                {t("scoreConfigs.upsert.value")}
                                 <DocPopup
                                   description={`This is how the ${
                                     isCategoricalDataType(
@@ -303,7 +305,7 @@ export function UpsertScoreConfigDialog({
                                   } label is mapped to an integer value internally.`}
                                 />
                               </FormLabel>
-                              <FormLabel>Label</FormLabel>
+                              <FormLabel>{t("scoreConfigs.upsert.label")}</FormLabel>
                             </div>
                           )}
                           {fields.map((category, index) => (
@@ -386,7 +388,7 @@ export function UpsertScoreConfigDialog({
                                   append({ label: "", value: fields.length })
                                 }
                               >
-                                Add category
+                                {t("scoreConfigs.upsert.addCategory")}
                               </Button>
                             </div>
                           )}
@@ -401,11 +403,11 @@ export function UpsertScoreConfigDialog({
                   render={({ field }) => (
                     <>
                       <FormItem>
-                        <FormLabel>Description (optional)</FormLabel>
+                        <FormLabel>{t("scoreConfigs.upsert.description")}</FormLabel>
                         <FormControl>
                           <Textarea
                             {...field}
-                            placeholder="Provide an optional description of the score config..."
+                            placeholder={t("scoreConfigs.upsert.descriptionPlaceholder")}
                             value={field.value ?? undefined}
                           />
                         </FormControl>
@@ -428,7 +430,7 @@ export function UpsertScoreConfigDialog({
                       createScoreConfig.isPending || updateScoreConfig.isPending
                     }
                   >
-                    Submit
+                    {t("scoreConfigs.upsert.submit")}
                   </Button>
                 </div>
               </DialogFooter>

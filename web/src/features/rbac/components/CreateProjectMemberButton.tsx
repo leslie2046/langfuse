@@ -40,6 +40,7 @@ import {
 import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAccess";
 import { RoleSelectItem } from "@/src/features/rbac/components/RoleSelectItem";
 import { ActionButton } from "@/src/components/ActionButton";
+import { useTranslation } from "@/src/features/i18n";
 
 const formSchema = z.object({
   email: z.string().trim().email(),
@@ -53,6 +54,7 @@ export function CreateProjectMemberButton(props: {
 }) {
   const capture = usePostHogClientCapture();
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
   const hasOrgAccess = useHasOrganizationAccess({
     organizationId: props.orgId,
     scope: "organizationMembers:CUD",
@@ -147,15 +149,15 @@ export function CreateProjectMemberButton(props: {
             icon={<PlusIcon className="h-5 w-5" aria-hidden="true" />}
           >
             {hasOnlySingleProjectAccess
-              ? "Add project member"
-              : "Add new member"}
+              ? t("organization.members.addProjectMember")
+              : t("organization.members.addMember")}
           </ActionButton>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              Add new member to the{" "}
-              {hasOnlySingleProjectAccess ? "project" : "organization"}
+              {t("organization.members.addMemberTo")}{" "}
+              {hasOnlySingleProjectAccess ? t("organization.members.project") : t("organization.members.organization")}
             </DialogTitle>
           </DialogHeader>
           <Form {...form}>
@@ -166,9 +168,9 @@ export function CreateProjectMemberButton(props: {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t("organization.members.email")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="jsdoe@example.com" {...field} />
+                        <Input placeholder={t("organization.members.emailPlaceholder")} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -180,7 +182,7 @@ export function CreateProjectMemberButton(props: {
                     name="orgRole"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Organization Role</FormLabel>
+                        <FormLabel>{t("organization.members.orgRole")}</FormLabel>
                         <Select
                           defaultValue={field.value}
                           onValueChange={(value) =>
@@ -191,7 +193,7 @@ export function CreateProjectMemberButton(props: {
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select an organization role" />
+                              <SelectValue placeholder={t("organization.members.selectOrgRole")} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -211,7 +213,7 @@ export function CreateProjectMemberButton(props: {
                     name="projectRole"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Project Role</FormLabel>
+                        <FormLabel>{t("organization.members.projectRole")}</FormLabel>
                         <Select
                           defaultValue={field.value}
                           onValueChange={(value) =>
@@ -222,7 +224,7 @@ export function CreateProjectMemberButton(props: {
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select a project role" />
+                              <SelectValue placeholder={t("organization.members.selectProjectRole")} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -243,8 +245,7 @@ export function CreateProjectMemberButton(props: {
                         </Select>
                         {!hasOnlySingleProjectAccess && (
                           <FormDescription>
-                            This project role will override the default role for
-                            this current project ({props.project!.name}).
+                           {t("organization.members.projectRoleDescription", { currentProject: props.project!.name })}
                           </FormDescription>
                         )}
                         <FormMessage />
@@ -259,7 +260,7 @@ export function CreateProjectMemberButton(props: {
                   className="w-full"
                   loading={form.formState.isSubmitting}
                 >
-                  Grant access
+                  {t("organization.members.grantAccess")}
                 </Button>
                 <FormMessage />
               </DialogFooter>

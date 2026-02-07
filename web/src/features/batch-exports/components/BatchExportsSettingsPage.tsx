@@ -3,8 +3,10 @@ import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
 import { BatchExportsTable } from "@/src/features/batch-exports/components/BatchExportsTable";
 import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAccess";
 import { SettingsTableCard } from "@/src/components/layouts/settings-table-card";
+import { useTranslation } from "@/src/features/i18n";
 
 export function BatchExportsSettingsPage(props: { projectId: string }) {
+  const { t } = useTranslation();
   const hasAccess = useHasProjectAccess({
     projectId: props.projectId,
     scope: "batchExports:read",
@@ -12,12 +14,9 @@ export function BatchExportsSettingsPage(props: { projectId: string }) {
 
   return (
     <>
-      <Header title="Exports" />
+      <Header title={t("batchExports.title")} />
       <p className="mb-4 text-sm">
-        Export large datasets in your preferred format via the export buttons
-        across Langfuse. Exports are processed asynchronously and remain
-        available for download for one hour. You will receive an email
-        notification once your export is ready.
+        {t("batchExports.description")}
       </p>
       {hasAccess ? (
         <SettingsTableCard>
