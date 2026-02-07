@@ -260,7 +260,7 @@ export const CreateOrEditAnnotationQueueButton = ({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>{t("common.form.name")}</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
@@ -280,11 +280,11 @@ export const CreateOrEditAnnotationQueueButton = ({
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description (optional)</FormLabel>
+                      <FormLabel>{t("common.form.descriptionOptional")}</FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
-                          placeholder="Add description..."
+                          placeholder={t("common.form.addDescription")}
                           className="text-xs focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 active:ring-0"
                         />
                       </FormControl>
@@ -297,10 +297,9 @@ export const CreateOrEditAnnotationQueueButton = ({
                   name="scoreConfigIds"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Score Configs</FormLabel>
+                      <FormLabel>{t("common.annotationQueue.scoreConfigs")}</FormLabel>
                       <FormDescription>
-                        Define which dimensions annotators should score for the
-                        given queue.
+                        {t("common.annotationQueue.scoreConfigsDescription")}
                       </FormDescription>
                       <FormControl>
                         <MultiSelectKeyValues
@@ -339,7 +338,7 @@ export const CreateOrEditAnnotationQueueButton = ({
                                 );
                               }}
                             >
-                              Manage score configs
+                              {t("common.annotationQueue.manageScoreConfigs")}
                             </DropdownMenuItem>
                           }
                         />
@@ -355,7 +354,7 @@ export const CreateOrEditAnnotationQueueButton = ({
                   name="newAssignmentUserIds"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Advanced Settings</FormLabel>
+                      <FormLabel>{t("common.annotationQueue.advancedSettings")}</FormLabel>
                       <div className="mt-1 rounded-md border">
                         <Collapsible
                           open={isAdvancedOpen && hasQueueAssignmentsReadAccess}
@@ -380,7 +379,7 @@ export const CreateOrEditAnnotationQueueButton = ({
                                   <ChevronRight className="h-4 w-4 text-muted-foreground" />
                                 )}
                                 <span className="text-sm font-medium">
-                                  User Assignment
+                                  {t("common.annotationQueue.userAssignment")}
                                 </span>
                               </div>
                             </Button>

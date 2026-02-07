@@ -6,6 +6,7 @@ import { PromptSelectionDialog } from "@/src/features/prompts/components/PromptS
 import useProjectIdFromURL from "@/src/hooks/useProjectIdFromURL";
 import { type ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { Plus } from "lucide-react";
+import { useTranslation } from "@/src/features/i18n";
 
 type PromptLinkingEditorProps = {
   value: string;
@@ -22,6 +23,7 @@ export function PromptLinkingEditor({
   minHeight,
   className,
 }: PromptLinkingEditorProps) {
+  const { t } = useTranslation();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const projectId = useProjectIdFromURL();
   const editorRef = useRef<ReactCodeMirrorRef>(null);
@@ -71,7 +73,7 @@ export function PromptLinkingEditor({
         onClick={() => setIsDialogOpen(true)}
       >
         <Plus className="mr-2 h-4 w-4" />
-        <span className="text-xs">Add prompt reference</span>
+        <span className="text-xs">{t("prompts.form.addReference")}</span>
       </Button>
 
       {projectId && (

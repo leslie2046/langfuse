@@ -5,6 +5,7 @@ import { FormLabel } from "@/src/components/ui/form";
 import { PricePreview } from "../PricePreview";
 import type { UseFormReturn } from "react-hook-form";
 import type { FormUpsertModel } from "../../validation";
+import { useTranslation } from "@/src/features/i18n";
 
 type TierPriceEditorProps = {
   tierIndex: number;
@@ -19,19 +20,20 @@ export function TierPriceEditor({
   form,
   isDefault,
 }: TierPriceEditorProps) {
+  const { t } = useTranslation();
   const prices = form.watch(`pricingTiers.${tierIndex}.prices`) || {};
 
   return (
     <div className="space-y-3">
-      <FormLabel>Prices</FormLabel>
+      <FormLabel>{t("models.upsert.pricing.prices")}</FormLabel>
       <div className="grid grid-cols-2 gap-1 text-sm text-muted-foreground">
-        <span>Usage type</span>
-        <span>Price</span>
+        <span>{t("models.upsert.pricing.usageType")}</span>
+        <span>{t("models.upsert.pricing.price")}</span>
       </div>
       {Object.entries(prices).map(([key, value], priceIndex) => (
         <div key={priceIndex} className="grid grid-cols-2 gap-1">
           <Input
-            placeholder="Key (e.g. input, output)"
+            placeholder={t("models.upsert.pricing.keyPlaceholder")}
             value={key}
             disabled={!isDefault}
             onChange={(e) => {
@@ -46,7 +48,7 @@ export function TierPriceEditor({
           <div className="flex gap-1">
             <Input
               type="number"
-              placeholder="Price per unit"
+              placeholder={t("models.upsert.pricing.pricePlaceholder")}
               value={value as number}
               step="0.000001"
               onChange={(e) => {
@@ -60,7 +62,7 @@ export function TierPriceEditor({
               <Button
                 type="button"
                 variant="outline"
-                title="Remove price"
+                title={t("models.upsert.pricing.removePrice")}
                 size="icon"
                 onClick={() => {
                   const newPrices = { ...prices };
@@ -94,7 +96,7 @@ export function TierPriceEditor({
           className="flex items-center gap-1"
         >
           <PlusCircle className="h-4 w-4" />
-          <span>Add Price</span>
+          <span>{t("models.upsert.pricing.addPrice")}</span>
         </Button>
       )}
       <PricePreview prices={prices} />

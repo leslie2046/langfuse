@@ -138,7 +138,7 @@ export const DatasetActionButton = forwardRef<
             ) : (
               <LockIcon className="-ml-0.5 mr-1.5 h-3 w-3" aria-hidden="true" />
             )}
-            {t("datasetActionButton.create")}
+            {t("common.datasetActionButton.create")}
           </Button>
         )}
       </DialogTrigger>
@@ -146,14 +146,14 @@ export const DatasetActionButton = forwardRef<
         <DialogHeader>
           <DialogTitle className="mb-4">
             {props.mode === "create"
-              ? t("datasetActionButton.create")
+              ? t("common.datasetActionButton.create")
               : props.mode === "delete"
-                ? t("datasetActionButton.confirmDelete")
-                : t("datasetActionButton.update")}
+                ? t("common.datasetActionButton.confirmDelete")
+                : t("common.datasetActionButton.update")}
           </DialogTitle>
           {props.mode === "delete" && (
             <DialogDescription className="text-md p-0">
-              {t("datasetActionButton.deleteDescription")}
+              {t("common.datasetActionButton.deleteDescription")}
             </DialogDescription>
           )}
         </DialogHeader>

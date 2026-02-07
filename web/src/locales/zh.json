@@ -68,6 +68,9 @@
     "back": "返回",
     "next": "下一步",
     "previous": "上一步",
+    "docs": "文档",
+    "default": "默认",
+    "more": "更多",
     "yes": "是",
     "no": "否",
     "enabled": "已启用",
@@ -137,6 +140,12 @@
       "evaluatorDeletedDescription": "运行中的评估器已成功删除",
       "defaultModelDeleted": "默认评估模型已删除",
       "defaultModelDeletedDescription": "默认评估模型已删除。任何依赖默认模型的运行中评估将被停用。排队的任务将失败。"
+    },
+    "datasetActionButton": {
+      "create": "创建数据集",
+      "update": "更新数据集",
+      "confirmDelete": "删除数据集",
+      "deleteDescription": "此操作无法撤销。所有与此数据集相关的数据将永久删除。"
     },
     "permissions": {
       "noAccess": "您没有访问此资源的权限，请联系管理员授予您访问权限。",
@@ -232,6 +241,7 @@
       "actions": "操作"
     },
     "form": {
+      "name": "名称",
       "nameDescription": "在提示词名称中使用斜杠 '/' 将它们组织到文件夹中。",
       "namePlaceholder": "为您的提示词命名",
       "prompt": "提示词",
@@ -244,7 +254,11 @@
       "reviewChanges": "审查更改",
       "saveNewVersion": "保存新提示词版本",
       "createPrompt": "创建提示词",
-      "createVersionLink": "在此处为它创建一个新版本。"
+      "createVersionLink": "在此处为它创建一个新版本。",
+      "addReference": "添加提示词引用",
+      "backToPromptList": "返回提示词列表",
+      "chat": "对话",
+      "text": "文本"
     },
     "search": {
       "namesTags": "名称，标签",
@@ -285,6 +299,12 @@
         "create": "创建评分失败",
         "updateComment": "更新评论失败"
       }
+    },
+    "analytics": {
+      "noScoresAvailable": "无分数可用",
+      "noScoresDescription": "通过向您的追踪和观察添加评估来创建分数。",
+      "selectScore": "选择分数",
+      "selectScoreDescription": "从上面的下拉菜单中选择一个或两个分数以查看分析"
     }
   },
   "comments": {
@@ -367,6 +387,28 @@
     "emailCredentials": "邮箱凭证"
   },
   "dashboard": {
+    "userConsumption": "用户消耗",
+    "tokenCost": "Token 成本",
+    "countOfTraces": "Trace 数量",
+    "totalTraces": "总 Trace 数",
+    "movingAveragePerScore": "每个评分的移动平均值",
+    "modelLatencies": "模型延迟",
+    "latenciesDescription": "每次 LLM 生成的延迟（秒）",
+    "percentiles": {
+      "50": "P50",
+      "75": "P75",
+      "90": "P90",
+      "95": "P95",
+      "99": "P99"
+    },
+    "modelUsage": "模型使用情况",
+    "costByModel": "按模型成本",
+    "costByType": "按类型成本",
+    "usageByModel": "按模型使用量",
+    "usageByType": "按类型使用量",
+    "cost": "成本",
+    "units": "单位",
+    "allModels": "所有模型",
     "traces": "追踪",
     "totalTracesTracked": "已追踪总次数",
     "modelCosts": "模型成本",
@@ -559,6 +601,23 @@
     },
     "getStarted": "开始使用"
   },
+  "evaluators": {
+    "defaultModel": {
+      "title": "默认评估模型",
+      "setUpMessage": "设置运行评估的默认模型。",
+      "setUp": "设置",
+      "configuration": "配置",
+      "functionCalling": "支持函数调用。",
+      "updatedToastTitle": "模型已更新",
+      "updatedToastDescription": "默认评估模型更新成功。",
+      "update": "更新",
+      "updateConfirmationTitle": "确认更新",
+      "updateConfirmationDescription": "您确定要更新默认模型吗？",
+      "typeToConfirm": "输入 \"{confirmation}\" 以确认",
+      "confirm": "确认",
+      "noModelSet": "未设置默认评估模型"
+    }
+  },
   "playground": {
     "title": "Playground",
     "helpDescription": "一个用于在多个窗口中测试和迭代您的 Prompt 的沙箱",
@@ -573,7 +632,16 @@
       "descriptionPart1": "要使用 Playground，您需要先配置模型。前往",
       "llmConnectionSettings": "LLM 连接设置",
       "descriptionPart2": "添加 LLM API 密钥并配置您的模型。"
-    }
+    },
+    "model": "模型",
+    "noLlmApiKey": "项目中未设置 LLM API 密钥。",
+    "saveAsPrompt": "另存为提示词",
+    "saveAsNewPrompt": "另存为新提示词",
+    "saveAsNewPromptVersion": "另存为新提示词版本",
+    "searchChatPrompts": "搜索聊天提示词...",
+    "noChatPromptFound": "未找到聊天提示词",
+    "newSplitWindow": "新建分屏窗口",
+    "promptsFromPlaygroundDescription": "体验场中的提示词只能保存为 'chat' 提示词，因为它们包含多个系统/用户消息。"
   },
   "pages": {
     "traces": {
@@ -666,18 +734,19 @@
     "organizationApiKeys": "组织 API 密钥",
     "created": "创建时间",
     "note": "备注",
-    "publicKey": "公钥",
-    "secretKey": "私钥",
-    "none": "无",
+    "publicKey": "Public Key",
+    "secretKey": "Secret Key",
+    "secretKeyDescription": "此密钥只能查看一次。您随时可以在{{scope}}设置中创建新密钥。",
+    "none": "尚未创建 API 密钥。",
     "delete": "删除 API 密钥",
-    "deleteDescription": "您确定要删除此 API 密钥吗？此操作无法撤销。",
+    "deleteDescription": "此操作无法撤销。API 密钥将被永久删除。",
     "permanentlyDelete": "永久删除",
     "clickToAddNote": "点击添加备注",
     "createBtn": "创建新 API 密钥",
     "createDialog": {
-      "title": "创建 API 密钥",
-      "noteLabel": "备注 (可选)",
-      "notePlaceholder": "生产环境密钥",
+      "title": "创建新 API 密钥",
+      "noteLabel": "备注",
+      "notePlaceholder": "例如：有效期至...",
       "submit": "创建 API 密钥"
     }
   },
@@ -692,7 +761,87 @@
     "deleteTitle": "删除 LLM 连接",
     "deleteDescription": "您确定要删除此连接吗？此操作无法撤销。",
     "addBtn": "添加 LLM 连接",
-    "dialogTitle": "新建 LLM 连接"
+    "dialogTitle": "新建 LLM 连接",
+    "updateTitle": "更新 LLM 连接",
+    "form": {
+      "adapter": "LLM adapter",
+      "adapterDescription": "该提供商端点接受的 Schema。",
+      "adapterPlaceholder": "选择 LLM 提供商",
+      "provider": "提供商名称",
+      "providerDescription": "在 Langfuse 中标识此连接的键。不能包含冒号。",
+      "customModels": "自定义模型",
+      "customModelsDescription": "给定端点接受的自定义模型名称。",
+      "customModelName": "自定义模型名称",
+      "customModelsAzureWarning": "对于 Azure OpenAI，请使用部署名称作为模型名称。",
+      "customModelsBedrockWarning": "对于 Bedrock，请使用模型 ID 作为模型名称。",
+      "addCustomModel": "添加自定义模型名称",
+      "extraHeaders": "额外 Headers",
+      "extraHeadersDescription": "包含在发往 LLM 提供商请求中的可选附加 HTTP header。所有 header 值都加密存储在{{location}}。",
+      "headerName": "Header 名称",
+      "headerValue": "Header 值",
+      "addHeader": "添加 Header",
+      "baseUrl": "API Base URL",
+      "baseUrlDescription": "留空以使用给定 LLM adapter 的默认 base URL。",
+      "baseUrlOpenAI": "OpenAI 默认:",
+      "baseUrlAnthropic": "Anthropic 默认:",
+      "enableDefaultModels": "启用默认模型",
+      "enableDefaultModelsDescription": "选定 adapter 的默认模型将在 Langfuse 功能中可用。",
+      "createConnection": "创建连接",
+      "saveChanges": "保存更改",
+      "hideAdvanced": "隐藏高级设置",
+      "showAdvanced": "显示高级设置",
+      "errors": {
+        "providerRequired": "请添加标识此连接的提供商名称。",
+        "providerFormat": "提供商名称不能包含冒号。请使用类似 'OpenRouter_Mistral' 的格式。",
+        "providerExists": "该提供商已存在 API 密钥。",
+        "secretKeyRequired": "私钥为必填项。",
+        "azureBaseUrlRequired": "Azure 连接需要 API Base URL。",
+        "awsRegionRequired": "AWS Region 为必填项。",
+        "bedrockCredentialsRequired": "Bedrock 需要 AWS 凭证。",
+        "customModelRequired": "此 adapter 至少需要一个自定义模型。",
+        "customModelRequiredWhenDefaultDisabled": "禁用默认模型时，至少需要一个自定义模型名称。",
+        "gcpKeyRequired": "Vertex AI 需要 GCP 服务账户 JSON 密钥。",
+        "gcpKeyOrAdcRequired": "需要 GCP 服务账户 JSON 密钥或 Application Default Credentials。",
+        "verificationFailed": "无法验证 API 密钥。"
+      },
+      "awsRegion": "AWS Region",
+      "awsAccessKeyId": "AWS Access Key ID",
+      "awsSecretAccessKey": "AWS Secret Access Key",
+      "optional": "(可选)",
+      "useAdc": "使用 Application Default Credentials (ADC)",
+      "adcDescription": "启用后，身份验证将使用 GCP 环境的默认凭证而不是服务账户密钥。",
+      "gcpKey": "GCP Service Account Key (JSON)",
+      "encryptedStored": "您的 API 密钥加密存储{{location}}。",
+      "onOurServers": "在我们的服务器上",
+      "inYourDatabase": "在您的数据库中",
+      "gcpKeyDescription": "在此粘贴您的 GCP 服务账户 JSON 密钥。该服务账户必须具有 `Vertex AI User` 角色权限。",
+      "apiKey": "API Key",
+      "azureBaseUrlDescription": "请按以下格式添加 Base URL (或兼容的 API): https://{instanceName}.openai.azure.com/openai/deployments",
+      "locationGlobal": "位置 (可选)",
+      "locationGlobalDescription": "Google Cloud 区域 (例如 global, us-central1, europe-west4)。默认为 global，这是 Gemini 3 模型所必需的。",
+      "current": "当前:",
+      "bedrockUpdateDescription": "留空以保留现有凭证。如需更新，请同时提供 Access Key ID 和 Secret Access Key。",
+      "bedrockCloudDescription": "这应该是具有 `bedrock:InvokeModel` 权限的 AWS 用户的长期凭证。",
+      "bedrockSelfHostedDescription": "对于自托管部署，AWS 凭证是可选的。如果省略，身份验证将使用 AWS SDK 默认凭证提供程序链。",
+      "usingDefaultAwsCredentials": "使用默认 AWS 凭证",
+      "preservedIfEmpty": "(如果为空则保留现有凭证)",
+      "awsDefaultChainTitle": "默认凭证提供程序链:",
+      "awsDefaultChainDescription": "省略 AWS 凭证时，系统将按以下顺序自动检查凭证:",
+      "awsEnvVars": "环境变量 (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)",
+      "awsCredsFile": "AWS 凭证文件 (~/.aws/credentials)",
+      "awsIamEc2": "EC2 实例的 IAM 角色",
+      "awsIamEcs": "ECS 任务的 IAM 角色",
+      "awsLearnMore": "了解有关 AWS 凭证提供程序的更多信息 →",
+      "exampleJson": "示例 JSON:",
+      "adcTitle": "Application Default Credentials (ADC):",
+      "adcCheckDescription": "启用后，系统将按以下顺序自动检查凭证:",
+      "adcEnvVar": "环境变量 (GOOGLE_APPLICATION_CREDENTIALS)",
+      "adcGcloud": "gcloud CLI 凭证 (gcloud auth application-default login)",
+      "adcGke": "GKE Workload Identity",
+      "adcCloudRun": "Cloud Run 服务账户",
+      "adcComputeEngine": "Compute Engine 服务账户",
+      "adcLearnMore": "了解有关 ADC 的更多信息 →"
+    }
   },
   "models": {
     "title": "模型定义",
@@ -734,7 +883,31 @@
       "matchPattern": "匹配模式",
       "matchPatternDesc": "正则表达式（Postgres 语法），用于将摄取的生成（模型属性）与此模型定义进行匹配。要对模型名称进行精确、不区分大小写的匹配，请使用表达式：(?i)^(modelname)$",
       "submit": "提交",
-      "cancel": "取消"
+      "cancel": "取消",
+      "selectUnit": "选择单位",
+      "pricing": {
+        "prices": "价格",
+        "pricesDescription": "为此模型设置每种使用类型的价格。使用类型必须与摄入的使用详情的键完全匹配。",
+        "tierTitle": "定价层级",
+        "tierDescription": "定义按优先级顺序评估的定价规则。层级从上到下检查，直到条件匹配。",
+        "addCustomPricingTier": "添加自定义定价层级",
+        "addCustomTier": "添加自定义层级",
+        "usageType": "使用类型",
+        "price": "价格",
+        "keyPlaceholder": "键 (例如 input, output)",
+        "pricePlaceholder": "单价",
+        "removePrice": "移除价格",
+        "addPrice": "添加价格",
+        "prefillFromTemplate": "从模板预填充使用类型:",
+        "preview": {
+          "title": "价格预览",
+          "usageType": "使用类型",
+          "perUnit": "单价",
+          "per1K": "每 1K",
+          "per1M": "每 1M",
+          "invalidInput": "无效的价格条目。请检查您的输入格式。"
+        }
+      }
     }
   },
   "scoreConfigs": {
@@ -944,5 +1117,21 @@
     },
     "loading": "正在加载首选项...",
     "updateError": "更新通知首选项失败。请重试。"
+  },
+  "tracing": {
+    "setup": "Tracing 设置",
+    "setupDescription": "设置 Tracing 以跟踪和分析您的 LLM 调用。您可以创建 API Key 并将 Langfuse 集成到您的应用程序中。",
+    "getApiKeys": "1. 获取 API Key",
+    "getApiKeysDescription": "您需要创建一个 API Key 来开始跟踪您的应用程序。您稍后可以在项目设置中创建更多密钥。",
+    "createApiKey": "创建新 API Key",
+    "manageApiKeys": "管理 API Key",
+    "addTracing": "2. 将 Tracing 添加到您的应用程序",
+    "addTracingDescription": "Langfuse 依赖 OpenTelemetry 来检测您的应用程序并将 LLM 应用程序/Agent Trace 导出到 Langfuse。您可以使用我们的 SDK 或 50 多个框架集成之一。请按照文档中的快速入门将 Langfuse 添加到您的应用程序。",
+    "quickstart": "快速入门指南",
+    "pending": "待处理",
+    "active": "活动",
+    "secretKey": "Secret Key",
+    "secretKeyDescription": "此密钥只能查看一次。您随时可以在项目设置中创建新密钥。",
+    "publicKey": "Public Key"
   }
 }

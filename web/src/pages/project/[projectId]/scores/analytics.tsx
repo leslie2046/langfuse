@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useMemo, useEffect, useRef } from "react";
+import { useTranslation } from "@/src/features/i18n";
 import Page from "@/src/components/layouts/page";
 import {
   getScoresTabs,
@@ -38,6 +39,7 @@ import { ScoreAnalyticsDashboard } from "@/src/features/score-analytics/componen
 export default function ScoresAnalyticsV2Page() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
+  const { t } = useTranslation();
 
   const urlStateHook = useAnalyticsUrlState();
   const { state: urlState, setScore2 } = urlStateHook;
@@ -229,10 +231,9 @@ export default function ScoresAnalyticsV2Page() {
             <div className="flex flex-col items-center justify-center gap-4 rounded-lg border bg-muted/20 p-12">
               <BarChart3 className="h-12 w-12 text-muted-foreground" />
               <div className="text-center">
-                <h3 className="text-lg font-semibold">No Scores Available</h3>
+                <h3 className="text-lg font-semibold">{t("scores.analytics.noScoresAvailable")}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Create scores by adding evaluations to your traces and
-                  observations.
+                  {t("scores.analytics.noScoresDescription")}
                 </p>
               </div>
             </div>
@@ -240,10 +241,9 @@ export default function ScoresAnalyticsV2Page() {
             <div className="flex flex-col items-center justify-center gap-6 rounded-lg border bg-muted/20 p-12">
               <BarChart3 className="h-16 w-16 text-muted-foreground" />
               <div className="max-w-2xl text-center">
-                <h3 className="text-2xl font-semibold">Select a Score</h3>
+                <h3 className="text-2xl font-semibold">{t("scores.analytics.selectScore")}</h3>
                 <p className="mt-3 text-base text-muted-foreground">
-                  Choose one or two scores from the dropdowns above to view
-                  analytics
+                  {t("scores.analytics.selectScoreDescription")}
                 </p>
                 <div className="mt-6 space-y-3 text-sm text-muted-foreground">
                   <div className="rounded-lg bg-background/50 p-4">

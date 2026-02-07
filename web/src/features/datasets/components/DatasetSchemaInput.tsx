@@ -18,6 +18,8 @@ type DatasetSchemaInputProps = {
   disabled?: boolean;
 };
 
+import { useTranslation } from "@/src/features/i18n";
+
 export const DatasetSchemaInput: React.FC<DatasetSchemaInputProps> = ({
   label,
   description,
@@ -26,6 +28,7 @@ export const DatasetSchemaInput: React.FC<DatasetSchemaInputProps> = ({
   onChange,
   disabled = false,
 }) => {
+  const { t } = useTranslation();
   // Track if schema enforcement is enabled based on whether value is empty
   const [isEnabled, setIsEnabled] = useState(value !== "");
 
@@ -58,7 +61,7 @@ export const DatasetSchemaInput: React.FC<DatasetSchemaInputProps> = ({
         <FormLabel>{label}</FormLabel>
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground">
-            {isEnabled ? "Enabled" : "Disabled"}
+            {isEnabled ? t("common.enabled") : t("common.disabled")}
           </span>
           <Switch
             checked={isEnabled}

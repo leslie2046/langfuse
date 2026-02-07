@@ -375,7 +375,7 @@ export const UpsertModelFormDialog = (({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a unit" />
+                          <SelectValue placeholder={t("models.upsert.selectUnit")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -386,24 +386,22 @@ export const UpsertModelFormDialog = (({
                         ))}
                       </SelectContent>
                     </Select>
-                    <FormDescription>
-                      Optionally, Langfuse can tokenize the input and output of
-                      a generation if no unit counts are ingested. This is
-                      useful for e.g. streamed OpenAI completions. For details
-                      on the supported tokenizers, see the{" "}
-                      <Link
-                        href="https://langfuse.com/docs/model-usage-and-cost"
-                        className="underline"
-                        target="_blank"
-                      >
-                        docs
-                      </Link>
-                      .
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      <FormDescription>
+                        {t("models.tokenizerIdDescription")}{" "}
+                        <Link
+                          href="https://langfuse.com/docs/model-usage-and-cost"
+                          className="underline"
+                          target="_blank"
+                        >
+                          {t("common.docs")}
+                        </Link>
+                        .
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
               {tokenizerId && tokenizerId !== "None" && (
                 <FormField
                   control={form.control}
@@ -418,16 +416,15 @@ export const UpsertModelFormDialog = (({
                         minHeight="none"
                       />
                       <FormDescription>
-                        The config for the tokenizer. Required for openai. See
-                        the{" "}
+                        {t("models.configDescription")}{" "}
                         <Link
                           href="https://langfuse.com/docs/model-usage-and-cost"
                           className="underline"
                           target="_blank"
                         >
-                          docs
+                          {t("common.docs")}
                         </Link>{" "}
-                        for details.
+                        {t("models.configDescriptionSuffix")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

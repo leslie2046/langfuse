@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "@/src/features/i18n";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import {
@@ -67,6 +68,7 @@ export const ModelParameters: React.FC<ModelParamsContext> = ({
   layout = "vertical",
   isEmbedded = false,
 }) => {
+  const { t } = useTranslation();
   const projectId = useProjectIdFromURL();
   const [modelSettingsOpen, setModelSettingsOpen] = useState(false);
   const [modelSettingsUsed, setModelSettingsUsed] = useState(false);
@@ -97,10 +99,10 @@ export const ModelParameters: React.FC<ModelParamsContext> = ({
           customHeader
         ) : (
           <div className="flex items-center justify-between">
-            <p className="font-semibold">Model</p>
+            <p className="font-semibold">{t("playground.model")}</p>
           </div>
         )}
-        <p className="text-xs">No LLM API key set in project. </p>
+        <p className="text-xs">{t("playground.noLlmApiKey")} </p>
         <CreateLLMApiKeyDialog
           open={createLlmApiKeyDialogOpen}
           setOpen={setCreateLlmApiKeyDialogOpen}
@@ -283,7 +285,7 @@ export const ModelParameters: React.FC<ModelParamsContext> = ({
     >
       {!isEmbedded ? (
         <div className="flex items-center justify-between">
-          {customHeader ? customHeader : <p className="font-semibold">Model</p>}
+          {customHeader ? customHeader : <p className="font-semibold">{t("playground.model")}</p>}
           {SettingsButton}
         </div>
       ) : (

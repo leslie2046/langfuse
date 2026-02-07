@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback, useRef, useEffect } from "react";
+import { useTranslation } from "@/src/features/i18n";
 import { PlaygroundProvider } from "../context";
 import { SaveToPromptButton } from "./SaveToPromptButton";
 import { Button } from "@/src/components/ui/button";
@@ -153,6 +154,7 @@ function PlaygroundWindowContent({
   isMobile?: boolean;
 }) {
   const playgroundContext = usePlaygroundContext();
+  const { t } = useTranslation();
 
   const handleRemove = useCallback(() => {
     onRemove(windowId);
@@ -186,11 +188,11 @@ function PlaygroundWindowContent({
                         className="h-7 gap-1.5 px-2.5 text-xs @xl:hidden"
                       >
                         <Plus size={14} />
-                        <span className="sr-only">New split window</span>
+                        <span className="sr-only">{t("playground.newSplitWindow")}</span>
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent className="text-xs">
-                      New split window
+                      {t("playground.newSplitWindow")}
                     </TooltipContent>
                   </Tooltip>
                   <Button
@@ -199,7 +201,7 @@ function PlaygroundWindowContent({
                     className="hidden h-7 gap-1.5 px-2.5 text-xs @xl:flex"
                   >
                     <Plus size={14} />
-                    <span>New split window</span>
+                    <span>{t("playground.newSplitWindow")}</span>
                   </Button>
                 </>
               )}

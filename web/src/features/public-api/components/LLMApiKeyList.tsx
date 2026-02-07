@@ -110,7 +110,7 @@ export function LlmApiKeyList(props: { projectId: string }) {
                   <TableCell className="font-mono">{apiKey.provider}</TableCell>
                   <TableCell className="font-mono">{apiKey.adapter}</TableCell>
                   <TableCell className="max-w-md overflow-auto font-mono">
-                    {apiKey.baseURL ?? "default"}
+                    {apiKey.baseURL ?? t("common.default")}
                   </TableCell>
                   <TableCell className="font-mono">
                     {apiKey.displaySecretKey}

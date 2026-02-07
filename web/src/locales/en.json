@@ -68,6 +68,9 @@
     "back": "Back",
     "next": "Next",
     "previous": "Previous",
+    "docs": "Docs",
+    "default": "Default",
+    "more": "More",
     "yes": "Yes",
     "no": "No",
     "enabled": "Enabled",
@@ -137,6 +140,12 @@
       "evaluatorDeletedDescription": "The running evaluator has been deleted successfully",
       "defaultModelDeleted": "Default evaluation model deleted",
       "defaultModelDeletedDescription": "The default evaluation model has been deleted. Any running evaluations relying on the default model will be inactivated. Queued jobs will fail."
+    },
+    "datasetActionButton": {
+      "create": "Create dataset",
+      "update": "Update dataset",
+      "confirmDelete": "Delete dataset",
+      "deleteDescription": "This action cannot be undone. All data associated with this dataset will be permanently removed."
     },
     "permissions": {
       "noAccess": "You do not have access to this resource, please ask your admin to grant you access.",
@@ -232,6 +241,7 @@
       "actions": "Actions"
     },
     "form": {
+      "name": "Name",
       "nameDescription": "Use slashes '/' in prompt names to organize them into folders.",
       "namePlaceholder": "Name your prompt",
       "prompt": "Prompt",
@@ -244,7 +254,11 @@
       "reviewChanges": "Review changes",
       "saveNewVersion": "Save new prompt version",
       "createPrompt": "Create prompt",
-      "createVersionLink": "Create a new version for it here."
+      "createVersionLink": "Create a new version for it here.",
+      "addReference": "Add prompt reference",
+      "backToPromptList": "Back to prompts",
+      "chat": "Chat",
+      "text": "Text"
     },
     "search": {
       "namesTags": "Names, Tags",
@@ -285,6 +299,12 @@
         "create": "Failed to create score",
         "updateComment": "Failed to update comment"
       }
+    },
+    "analytics": {
+      "noScoresAvailable": "No Scores Available",
+      "noScoresDescription": "Create scores by adding evaluations to your traces and observations.",
+      "selectScore": "Select a Score",
+      "selectScoreDescription": "Choose one or two scores from the dropdowns above to view analytics"
     }
   },
   "comments": {
@@ -367,6 +387,28 @@
     "emailCredentials": "Email credentials"
   },
   "dashboard": {
+    "userConsumption": "User consumption",
+    "tokenCost": "Token cost",
+    "countOfTraces": "Count of Traces",
+    "totalTraces": "Total traces",
+    "movingAveragePerScore": "Moving average per score",
+    "modelLatencies": "Model latencies",
+    "latenciesDescription": "Latencies (seconds) per LLM generation",
+    "percentiles": {
+      "50": "50th Percentile",
+      "75": "75th Percentile",
+      "90": "90th Percentile",
+      "95": "95th Percentile",
+      "99": "99th Percentile"
+    },
+    "modelUsage": "Model Usage",
+    "costByModel": "Cost by model",
+    "costByType": "Cost by type",
+    "usageByModel": "Usage by model",
+    "usageByType": "Usage by type",
+    "cost": "Cost",
+    "units": "Units",
+    "allModels": "All models",
     "traces": "Traces",
     "totalTracesTracked": "Total traces tracked",
     "modelCosts": "Model costs",
@@ -559,6 +601,23 @@
     },
     "getStarted": "Get started"
   },
+  "evaluators": {
+    "defaultModel": {
+      "title": "Default Evaluation Model",
+      "setUpMessage": "Set up a default model to run evaluations.",
+      "setUp": "Set up",
+      "configuration": "Configuration",
+      "functionCalling": "Function calling is supported.",
+      "updatedToastTitle": "Model updated",
+      "updatedToastDescription": "Default evaluation model updated successfully.",
+      "update": "Update",
+      "updateConfirmationTitle": "Confirm Update",
+      "updateConfirmationDescription": "Are you sure you want to update the default model?",
+      "typeToConfirm": "Type \"{confirmation}\" to confirm",
+      "confirm": "Confirm",
+      "noModelSet": "No default evaluation model set"
+    }
+  },
   "playground": {
     "title": "Playground",
     "helpDescription": "A sandbox to test and iterate your prompts across multiple windows",
@@ -573,7 +632,16 @@
       "descriptionPart1": "To use the playground, you need to configure a model first. Go to",
       "llmConnectionSettings": "LLM Connection Settings",
       "descriptionPart2": "to add an LLM API key and configure your models."
-    }
+    },
+    "model": "Model",
+    "noLlmApiKey": "No LLM API key set in project.",
+    "saveAsPrompt": "Save as prompt",
+    "saveAsNewPrompt": "Save as new prompt",
+    "saveAsNewPromptVersion": "Save as new prompt version",
+    "searchChatPrompts": "Search chat prompts...",
+    "noChatPromptFound": "No chat prompt found",
+    "newSplitWindow": "New split window",
+    "promptsFromPlaygroundDescription": "Prompts from the playground can only be saved to 'chat' prompts as they include multiple system/user messages."
   },
   "pages": {
     "traces": {
@@ -668,17 +736,18 @@
     "note": "Note",
     "publicKey": "Public Key",
     "secretKey": "Secret Key",
-    "none": "None",
+    "secretKeyDescription": "This key can only be viewed once. You can always create new keys in the {{scope}} settings.",
+    "none": "No API keys created yet.",
     "delete": "Delete API key",
-    "deleteDescription": "Are you sure you want to delete this API key? This action cannot be undone.",
+    "deleteDescription": "This action cannot be undone. The API key will be permanently deleted.",
     "permanentlyDelete": "Permanently delete",
     "clickToAddNote": "Click to add note",
-    "createBtn": "Create new API keys",
+    "createBtn": "Create new API Key",
     "createDialog": {
-      "title": "Create API Keys",
-      "noteLabel": "Note (optional)",
-      "notePlaceholder": "Production key",
-      "submit": "Create API keys"
+      "title": "Create new API Key",
+      "noteLabel": "Note",
+      "notePlaceholder": "e.g. valid until ...",
+      "submit": "Create API Key"
     }
   },
   "llmApiKeys": {
@@ -692,7 +761,87 @@
     "deleteTitle": "Delete LLM Connection",
     "deleteDescription": "Are you sure you want to delete this connection? This action cannot be undone.",
     "addBtn": "Add LLM Connection",
-    "dialogTitle": "New LLM Connection"
+    "dialogTitle": "New LLM Connection",
+    "updateTitle": "Update LLM Connection",
+    "form": {
+      "adapter": "LLM adapter",
+      "adapterDescription": "Schema that is accepted at that provider endpoint.",
+      "adapterPlaceholder": "Select a LLM provider",
+      "provider": "Provider name",
+      "providerDescription": "Key to identify the connection within Langfuse. Cannot contain colons.",
+      "customModels": "Custom models",
+      "customModelsDescription": "Custom model names that are accepted at that given endpoint.",
+      "customModelName": "Custom model name",
+      "customModelsAzureWarning": "For Azure OpenAI, use the deployment name as model name.",
+      "customModelsBedrockWarning": "For Bedrock, use the model ID as model name.",
+      "addCustomModel": "Add custom model name",
+      "extraHeaders": "Extra Headers",
+      "extraHeadersDescription": "Optional additional HTTP headers to include with requests towards LLM provider. All header values stored encrypted {{location}}.",
+      "headerName": "Header name",
+      "headerValue": "Header value",
+      "addHeader": "Add Header",
+      "baseUrl": "API Base URL",
+      "baseUrlDescription": "Leave blank to use the default base URL for the given LLM adapter.",
+      "baseUrlOpenAI": "OpenAI default:",
+      "baseUrlAnthropic": "Anthropic default:",
+      "enableDefaultModels": "Enable default models",
+      "enableDefaultModelsDescription": "Default models for the selected adapter will be available in Langfuse features.",
+      "createConnection": "Create connection",
+      "saveChanges": "Save changes",
+      "hideAdvanced": "Hide advanced settings",
+      "showAdvanced": "Show advanced settings",
+      "errors": {
+        "providerRequired": "Please add a provider name that identifies this connection.",
+        "providerFormat": "Provider name cannot contain colons. Use a format like 'OpenRouter_Mistral' instead.",
+        "providerExists": "There already exists an API key for this provider.",
+        "secretKeyRequired": "Secret key is required.",
+        "azureBaseUrlRequired": "API Base URL is required for Azure connections.",
+        "awsRegionRequired": "AWS region is required.",
+        "bedrockCredentialsRequired": "AWS credentials are required for Bedrock.",
+        "customModelRequired": "At least one custom model is required for this adapter.",
+        "customModelRequiredWhenDefaultDisabled": "At least one custom model name is required when default models are disabled.",
+        "gcpKeyRequired": "GCP service account JSON key is required for Vertex AI.",
+        "gcpKeyOrAdcRequired": "GCP service account JSON key or Application Default Credentials is required.",
+        "verificationFailed": "Could not verify the API key."
+      },
+      "awsRegion": "AWS Region",
+      "awsAccessKeyId": "AWS Access Key ID",
+      "awsSecretAccessKey": "AWS Secret Access Key",
+      "optional": "(optional)",
+      "useAdc": "Use Application Default Credentials (ADC)",
+      "adcDescription": "When enabled, authentication uses the GCP environment's default credentials instead of a service account key.",
+      "gcpKey": "GCP Service Account Key (JSON)",
+      "encryptedStored": "Your API keys are stored encrypted {{location}}.",
+      "onOurServers": "on our servers",
+      "inYourDatabase": "in your database",
+      "gcpKeyDescription": "Paste your GCP service account JSON key here. The service account must have `Vertex AI User` role permissions.",
+      "apiKey": "API Key",
+      "azureBaseUrlDescription": "Please add the base URL in the following format (or compatible API): https://{instanceName}.openai.azure.com/openai/deployments",
+      "locationGlobal": "Location (Optional)",
+      "locationGlobalDescription": "Google Cloud region (e.g., global, us-central1, europe-west4). Defaults to global as required for Gemini 3 models.",
+      "current": "Current:",
+      "bedrockUpdateDescription": "Leave empty to keep existing credentials. To update, provide both Access Key ID and Secret Access Key.",
+      "bedrockCloudDescription": "These should be long-lived credentials for an AWS user with `bedrock:InvokeModel` permission.",
+      "bedrockSelfHostedDescription": "For self-hosted deployments, AWS credentials are optional. When omitted, authentication will use the AWS SDK default credential provider chain.",
+      "usingDefaultAwsCredentials": "Using default AWS credentials",
+      "preservedIfEmpty": "(existing credentials preserved if empty)",
+      "awsDefaultChainTitle": "Default credential provider chain:",
+      "awsDefaultChainDescription": "When AWS credentials are omitted, the system will automatically check for credentials in this order:",
+      "awsEnvVars": "Environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)",
+      "awsCredsFile": "AWS credentials file (~/.aws/credentials)",
+      "awsIamEc2": "IAM roles for EC2 instances",
+      "awsIamEcs": "IAM roles for ECS tasks",
+      "awsLearnMore": "Learn more about AWS credential providers →",
+      "exampleJson": "Example JSON:",
+      "adcTitle": "Application Default Credentials (ADC):",
+      "adcCheckDescription": "When enabled, the system will automatically check for credentials in this order:",
+      "adcEnvVar": "Environment variable (GOOGLE_APPLICATION_CREDENTIALS)",
+      "adcGcloud": "gcloud CLI credentials (gcloud auth application-default login)",
+      "adcGke": "GKE Workload Identity",
+      "adcCloudRun": "Cloud Run service account",
+      "adcComputeEngine": "Compute Engine service account",
+      "adcLearnMore": "Learn more about ADC →"
+    }
   },
   "models": {
     "title": "Model Definitions",
@@ -734,7 +883,31 @@
       "matchPattern": "Match pattern",
       "matchPatternDesc": "Regular expression (Postgres syntax) to match ingested generations (model attribute) to this model definition. For an exact, case-insensitive match to a model name, use the expression: (?i)^(modelname)$",
       "submit": "Submit",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "selectUnit": "Select a unit",
+      "pricing": {
+        "prices": "Prices",
+        "pricesDescription": "Set prices per usage type for this model. Usage types must exactly match the keys of the ingested usage details.",
+        "tierTitle": "Pricing Tiers",
+        "tierDescription": "Define pricing rules evaluated in priority order. Tiers are checked from top to bottom until conditions match.",
+        "addCustomPricingTier": "Add Custom Pricing Tier",
+        "addCustomTier": "Add Custom Tier",
+        "usageType": "Usage type",
+        "price": "Price",
+        "keyPlaceholder": "Key (e.g. input, output)",
+        "pricePlaceholder": "Price per unit",
+        "removePrice": "Remove price",
+        "addPrice": "Add Price",
+        "prefillFromTemplate": "Prefill usage types from template:",
+        "preview": {
+          "title": "Price Preview",
+          "usageType": "Usage Type",
+          "perUnit": "per unit",
+          "per1K": "per 1K",
+          "per1M": "per 1M",
+          "invalidInput": "Invalid price entries. Please check your input format."
+        }
+      }
     }
   },
   "scoreConfigs": {
@@ -944,5 +1117,21 @@
     },
     "loading": "Loading preferences...",
     "updateError": "Failed to update notification preference. Please try again."
+  },
+  "tracing": {
+    "setup": "Tracing Setup",
+    "setupDescription": "Setup tracing to track and analyze your LLM calls. You can create API keys and integrate Langfuse with your application.",
+    "getApiKeys": "1. Get API keys",
+    "getApiKeysDescription": "You need to create an API key to start tracing your application. You can create more keys later in the project settings.",
+    "createApiKey": "Create new API key",
+    "manageApiKeys": "Manage API keys",
+    "addTracing": "2. Add tracing to your application",
+    "addTracingDescription": "Langfuse relies on OpenTelemetry to instrument your application and export LLM application/agent traces to Langfuse. You can use one of our SDKs or 50+ framework integrations. Please follow the quickstart in the documentation to add Langfuse to your application.",
+    "quickstart": "Quickstart guide",
+    "pending": "Pending",
+    "active": "Active",
+    "secretKey": "Secret Key",
+    "secretKeyDescription": "This key can only be viewed once. You can always create new keys in the project settings.",
+    "publicKey": "Public Key"
   }
 }

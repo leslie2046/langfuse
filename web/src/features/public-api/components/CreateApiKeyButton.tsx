@@ -169,24 +169,24 @@ export const ApiKeyRender = ({
   className?: string;
 }) => {
   const envCode = useLangfuseEnvCode(generatedKeys);
+  const { t } = useTranslation();
 
   return (
     <div className={cn("space-y-6", className)}>
       <div>
-        <SubHeader title="Secret Key" />
+        <SubHeader title={t("apiKeys.secretKey")} />
         <div className="text-sm text-muted-foreground">
-          This key can only be viewed once. You can always create new keys in
-          the {scope} settings.
+          {t("apiKeys.secretKeyDescription", { scope })}
         </div>
         <CodeView
-          content={generatedKeys?.secretKey ?? "Loading ..."}
+          content={generatedKeys?.secretKey ?? t("common.loading")}
           className="mt-2"
         />
       </div>
       <div>
-        <SubHeader title="Public Key" />
+        <SubHeader title={t("apiKeys.publicKey")} />
         <CodeView
-          content={generatedKeys?.publicKey ?? "Loading ..."}
+          content={generatedKeys?.publicKey ?? t("common.loading")}
           className="mt-2"
         />
       </div>

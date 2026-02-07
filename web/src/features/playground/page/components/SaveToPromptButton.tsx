@@ -1,6 +1,7 @@
 import { Check, Save } from "lucide-react";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useTranslation } from "@/src/features/i18n";
 
 import { Button } from "@/src/components/ui/button";
 import {
@@ -45,6 +46,8 @@ export const SaveToPromptButton: React.FC<SaveToPromptButtonProps> = ({
   const router = useRouter();
   const projectId = useProjectIdFromURL();
   const { setPlaygroundCache } = usePlaygroundCache();
+
+  const { t } = useTranslation();
 
   const allChatPromptNamesWithIds =
     api.prompts.allNames
@@ -104,11 +107,11 @@ export const SaveToPromptButton: React.FC<SaveToPromptButtonProps> = ({
                 )}
               >
                 <Save size={14} />
-                <span className="sr-only">Save as prompt</span>
+                <span className="sr-only">{t("playground.saveAsPrompt")}</span>
               </Button>
             </PopoverTrigger>
           </TooltipTrigger>
-          <TooltipContent className="text-xs">Save as prompt</TooltipContent>
+          <TooltipContent className="text-xs">{t("playground.saveAsPrompt")}</TooltipContent>
         </Tooltip>
         <PopoverTrigger asChild>
           <Button
@@ -119,22 +122,22 @@ export const SaveToPromptButton: React.FC<SaveToPromptButtonProps> = ({
             )}
           >
             <Save size={14} />
-            <span>Save as prompt</span>
+            <span>{t("playground.saveAsPrompt")}</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent>
           <Button className="mt-2 w-full" onClick={handleNewPrompt}>
-            Save as new prompt
+            {t("playground.saveAsNewPrompt")}
           </Button>
           <Divider />
           <InputCommand className="min-h-[8rem]">
             <InputCommandInput
-              placeholder="Search chat prompts..."
+              placeholder={t("playground.searchChatPrompts")}
               variant="bottom"
             />
             <InputCommandEmpty>
-              No chat prompt found
-              <DocPopup description="Prompts from the playground can only be saved to 'chat' prompts as they include multiple system/user messages." />
+              {t("playground.noChatPromptFound")}
+              <DocPopup description={t("playground.promptsFromPlaygroundDescription")} />
             </InputCommandEmpty>
             <InputCommandGroup className="mt-2">
               <InputCommandList>
@@ -175,7 +178,7 @@ export const SaveToPromptButton: React.FC<SaveToPromptButtonProps> = ({
             disabled={!Boolean(selectedPromptId)}
             onClick={handleNewPromptVersion}
           >
-            Save as new prompt version
+            {t("playground.saveAsNewPromptVersion")}
           </Button>
         </PopoverContent>
       </Popover>
