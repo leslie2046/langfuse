@@ -541,9 +541,14 @@ export function CommentList({
             <div className="px-2 pb-1 text-xs text-muted-foreground">
               {searchQuery.trim()
                 ? filteredComments && filteredComments.length > 0
-                  ? t("comments.showingComments", { filtered: filteredComments.length, total: comments.data?.length ?? 0 })
+                  ? t("comments.showingComments")
+                      .replace("{filtered}", String(filteredComments.length))
+                      .replace("{total}", String(comments.data?.length ?? 0))
                   : t("comments.noMatches")
-                : t("comments.totalComments", { count: comments.data?.length ?? 0 })}
+                : t("comments.totalComments").replace(
+                    "{count}",
+                    String(comments.data?.length ?? 0),
+                  )}
             </div>
           </div>
         )}
