@@ -53,8 +53,6 @@ export const ScoresTable = ({
   projectId: string;
   globalFilterState: FilterState;
   isLoading?: boolean;
-  globalFilterState: FilterState;
-  isLoading?: boolean;
 }) => {
   const { t } = useTranslation();
   const localFilters = createTracesTimeFilter(
