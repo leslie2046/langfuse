@@ -53,11 +53,7 @@ const DatasetItemEntryPointRow = ({
           : "cursor-pointer bg-card hover:bg-accent/50",
       )}
       onClick={!disabled ? onClick : undefined}
-      title={
-        !hasAccess
-          ? noAccessTitle
-          : undefined
-      }
+      title={!hasAccess ? noAccessTitle : undefined}
     >
       <div className="flex items-center">{icon}</div>
       <div className="flex flex-1 flex-col gap-1">
@@ -138,7 +134,9 @@ export const DatasetItemsOnboarding = ({
           </DialogTrigger>
           <DialogContent size="lg">
             <DialogHeader>
-              <DialogTitle>{t("onboarding.datasetItems.createDatasetItem")}</DialogTitle>
+              <DialogTitle>
+                {t("onboarding.datasetItems.createDatasetItem")}
+              </DialogTitle>
             </DialogHeader>
             <NewDatasetItemForm
               projectId={projectId}
@@ -166,7 +164,9 @@ export const DatasetItemsOnboarding = ({
           description={t("onboarding.datasetItems.selectTraces.description")}
           comingSoon
           docPopup={{
-            description: t("onboarding.datasetItems.selectTraces.docDescription"),
+            description: t(
+              "onboarding.datasetItems.selectTraces.docDescription",
+            ),
             href: "https://langfuse.com/docs/evaluation/experiments/datasets#create-items-from-production-data",
           }}
         />

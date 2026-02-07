@@ -147,7 +147,9 @@ export function SessionUsers({
           rel="noopener noreferrer"
         >
           <Badge className="max-w-[300px]">
-            <span className="truncate">{t("session.userId")}: {userId}</span>
+            <span className="truncate">
+              {t("session.userId")}: {userId}
+            </span>
             <ExternalLinkIcon className="ml-1 h-3 w-3" />
           </Badge>
         </Link>
@@ -157,11 +159,16 @@ export function SessionUsers({
         <Popover modal>
           <PopoverTrigger asChild>
             <Button variant="outline" size="sm" className="mt-0.5">
-              {t("session.moreUsers").replace("{count}", String(remainingUsers.length))}
+              {t("session.moreUsers").replace(
+                "{count}",
+                String(remainingUsers.length),
+              )}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[300px]">
-            <Label className="text-base capitalize">{t("session.sessionUsers")}</Label>
+            <Label className="text-base capitalize">
+              {t("session.sessionUsers")}
+            </Label>
             <ScrollArea className="h-[300px]">
               <div className="flex flex-col gap-2 p-2">
                 {remainingUsers
@@ -178,7 +185,9 @@ export function SessionUsers({
                       rel="noopener noreferrer"
                     >
                       <Badge className="max-w-[260px]">
-                        <span className="truncate">{t("session.userId")}: {userId}</span>
+                        <span className="truncate">
+                          {t("session.userId")}: {userId}
+                        </span>
                         <ExternalLinkIcon className="ml-1 h-3 w-3" />
                       </Badge>
                     </Link>
@@ -196,7 +205,16 @@ export function SessionUsers({
                   {t("session.previous")}
                 </Button>
                 <span className="text-sm text-muted-foreground">
-                  {t("session.pageOf").replace("{current}", String(page + 1)).replace("{total}", String(Math.ceil(remainingUsers.length / USERS_PER_PAGE_IN_POPOVER)))}
+                  {t("session.pageOf")
+                    .replace("{current}", String(page + 1))
+                    .replace(
+                      "{total}",
+                      String(
+                        Math.ceil(
+                          remainingUsers.length / USERS_PER_PAGE_IN_POPOVER,
+                        ),
+                      ),
+                    )}
                 </span>
                 <Button
                   variant="outline"
@@ -482,7 +500,8 @@ export const SessionPage: React.FC<{
           </Badge>
           {session.data && (
             <Badge variant="outline">
-              {t("session.totalCost")}: {usdFormatter(session.data.totalCost, 2)}
+              {t("session.totalCost")}:{" "}
+              {usdFormatter(session.data.totalCost, 2)}
             </Badge>
           )}
           <SessionScores scores={session.data?.scores ?? []} />

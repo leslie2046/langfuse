@@ -7,6 +7,7 @@ that would take too long to run in a standard migration.
 A good threshold is something that takes more than 5 minutes to run or is not an atomic operation.
 
 You can execute a background migration locally using
+
 ```bash
 $ cd worker
 $ dotenv -e ../.env -- npx ts-node src/backgroundMigrations/<script-name>.ts
@@ -20,7 +21,7 @@ $ dotenv -e ../.env -- npx ts-node src/backgroundMigrations/addGenerationsCostBa
 - The background migration must be recoverable at all times, i.e. it can be interrupted and must be resumed at any stage of the operation.
   We can achieve this by making them either idempotent for cross-system migrations or by making each change atomic if it's in a single database.
 - Only one background migration can run at a time. This is not a technical limitation, but makes reasoning about them easier.
-- We must highlight in the changelog and potentially another page if the code relies on some background migration having finished. 
+- We must highlight in the changelog and potentially another page if the code relies on some background migration having finished.
   See GitLab's [upgrade stops](https://docs.gitlab.com/ee/update/upgrade_paths.html) for an example on how to communicate this.
 - The migration name must be sortable, as we run migrations in order. Preferably, we prefix with a date.
 - Background migrations must assume that the worker instance continues processing events while migrations run, i.e. they should avoid the application code.

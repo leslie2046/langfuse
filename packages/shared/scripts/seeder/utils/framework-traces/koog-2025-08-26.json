@@ -231,9 +231,7 @@
           "gen_ai.conversation.id": "6f8d2449-33ed-4c7c-82e7-5410e34ee4e6",
           "gen_ai.prompt.0.content": "You are a nice and polite assistant.",
           "gen_ai.prompt.1.role": "user",
-          "gen_ai.response.finish_reasons": [
-            "stop"
-          ],
+          "gen_ai.response.finish_reasons": ["stop"],
           "gen_ai.prompt.1.content": "Greet and say goodbye to the user in the same message. Use provided tools to generate a proper greeting. The user name is Bob.",
           "gen_ai.system": "openai",
           "gen_ai.prompt.2.content": [
@@ -687,9 +685,7 @@
           "gen_ai.completion.0.finish_reason": "tool_calls",
           "gen_ai.prompt.0.content": "You are a nice and polite assistant.",
           "gen_ai.prompt.1.role": "user",
-          "gen_ai.response.finish_reasons": [
-            "tool_calls"
-          ],
+          "gen_ai.response.finish_reasons": ["tool_calls"],
           "gen_ai.prompt.1.content": "Greet and say goodbye to the user in the same message. Use provided tools to generate a proper greeting. The user name is Bob.",
           "gen_ai.completion.1.finish_reason": "tool_calls",
           "gen_ai.system": "openai",

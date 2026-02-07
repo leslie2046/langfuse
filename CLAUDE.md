@@ -7,7 +7,9 @@ The main feature areas are tracing, evals and prompt management. Langfuse consis
 This repo contains the web application, worker, and supporting packages but notably not the JS nor Python client SDKs.
 
 ## Repository Structure
+
 High level structure. There are more folders (eg for hooks etc).
+
 ```
 langfuse/
 ├── web/                     # Next.js 14 frontend/backend application
@@ -34,14 +36,17 @@ langfuse/
 ```
 
 ## Repository Architecture
+
 This is a **pnpm + Turbo monorepo** with the following key packages:
 
 ### Core Applications
+
 - **`/web/`** - Next.js 14 application (Pages Router) providing both frontend UI and backend APIs
 - **`/worker/`** - Express.js background job processing server
 - **`/packages/shared/`** - Shared database schema, types, and utilities
 
 ### Supporting Packages
+
 - **`/ee/`** - Enterprise Edition features (separate licensing)
 - **`/packages/config-eslint/`** - Shared ESLint configuration
 - **`/packages/config-typescript/`** - Shared TypeScript configuration
@@ -49,6 +54,7 @@ This is a **pnpm + Turbo monorepo** with the following key packages:
 ## Development Commands
 
 ### Development
+
 ```sh
 pnpm i               # Install dependencies
 pnpm run dev         # Start all services (web + worker)
@@ -58,7 +64,9 @@ pnpm run dx          # Full initial setup: install deps, reset DBs, resets node 
 ```
 
 ### Database Management
+
 database commands are to be run in the `packages/shared/` folder.
+
 ```sh
 pnpm run db:generate       # Build prisma models
 pnpm run db:migrate        # Run Prisma migrations
@@ -67,12 +75,14 @@ pnpm run db:seed           # Seed with example data
 ```
 
 ### Infrastructure
+
 ```sh
 pnpm run infra:dev:up      # Start Docker services (PostgreSQL, ClickHouse, Redis, MinIO)
 pnpm run infra:dev:down    # Stop Docker services
 ```
 
 ### Building & Type Checking
+
 ```sh
 pnpm --filter=PACKAGE_NAME run build  # Runs the build command, will show real typescript errors etc.
 pnpm tc                               # Fast typecheck across all packages (alias for pnpm typecheck)
@@ -80,9 +90,11 @@ pnpm build:check                      # Full Next.js build to alternate dir (can
 ```
 
 ### Testing in Web Package
+
 The web package uses JEST for unit tests.
 Depending on the file location (sync, async)
 `web` related tests must go into the `web/src/__tests__/` folder.
+
 ```sh
 pnpm test-sync --testPathPatterns="$FILE_LOCATION_PATTERN" --testNamePattern="$TEST_NAME_PATTERN"
 # For tests in the async folder:
@@ -92,12 +104,15 @@ pnpm test-client --testPathPatterns="buildStepData" --testNamePattern="buildStep
 ```
 
 ### Testing in the Worker Package
+
 The worker uses `vitest` for unit tests.
+
 ```sh
 pnpm run test --filter=worker -- $TEST_FILE_NAME -t "$TEST_NAME"
 ```
 
 ### Utilities
+
 ```bash
 pnpm run format            # Format code across entire project
 pnpm run nuke              # Remove all node_modules, build files, wipe database, docker containers. **USE WITH CAUTION**
@@ -106,6 +121,7 @@ pnpm run nuke              # Remove all node_modules, build files, wipe database
 ## Technology Stack
 
 ### Web Application (`/web/`)
+
 - **Framework**: Next.js 14 (Pages Router)
 - **APIs**: tRPC (type-safe client-server communication) + REST APIs for public access
 - **Authentication**: NextAuth.js/Auth.js
@@ -118,11 +134,13 @@ pnpm run nuke              # Remove all node_modules, build files, wipe database
 - **Charts**: Tremor, Recharts
 
 ### Worker Application (`/worker/`)
+
 - **Framework**: Express.js
 - **Queue System**: BullMQ with Redis
 - **Purpose**: Async processing (data ingestion, evaluations, exports, integrations)
 
 ### Infrastructure
+
 - **Primary Database**: PostgreSQL (via Prisma ORM)
 - **Analytics Database**: ClickHouse
 - **Cache/Queues**: Redis
@@ -131,6 +149,7 @@ pnpm run nuke              # Remove all node_modules, build files, wipe database
 ## Development Guidelines
 
 ### Frontend Features
+
 - All new features go in `/web/src/features/[feature-name]/`
 - Use tRPC for full-stack features (entry point: `web/src/server/api/root.ts`)
 - Follow existing feature structure for consistency
@@ -138,6 +157,7 @@ pnpm run nuke              # Remove all node_modules, build files, wipe database
 - Custom reusable components go in `@/src/components`
 
 ### Public API Development
+
 - All public API routes in `/web/src/pages/api/public`
 - Use `withMiddlewares.ts` wrapper
 - Define types in `/web/src/features/public-api/types` with strict Zod v4 objects
@@ -145,23 +165,27 @@ pnpm run nuke              # Remove all node_modules, build files, wipe database
 - Manually update Fern API specs in `/fern/`, then regenerate OpenAPI spec via Fern CLI
 
 ### Authorization & RBAC
+
 - Check `/web/src/features/rbac/README.md` for authorization patterns
 - Implement proper entitlements checking (see `/web/src/features/entitlements/README.md`)
 
 ### Database
+
 - **Dual database system**: PostgreSQL (primary) + ClickHouse (analytics)
 - Use `golang-migrate` CLI for database migrations
 - All database operations go through Prisma ORM for PostgreSQL
 - Foreign key relationships may not be enforced in schema to allow unordered ingestion
 
 ### Testing
+
 - Jest for API tests, Playwright for E2E tests
 - For backend/API changes, tests must pass before pushes
 - Add tests for new API endpoints and features
 - When writing tests, focus on decoupling each `it` or `test` block to ensure that they can run independently and concurrently. Tests must never depend on the action or outcome of previous or subsequent tests.
-- When writing tests, especially in the __tests__/async directory, ensure that you avoid `pruneDatabase` calls.
+- When writing tests, especially in the **tests**/async directory, ensure that you avoid `pruneDatabase` calls.
 
 ### Code Conventions
+
 - **Pages Router** (not App Router)
 - Follow conventional commits on main branch
 - Use CSS variables for theming (supports auto dark/light mode)
@@ -178,21 +202,26 @@ pnpm run nuke              # Remove all node_modules, build files, wipe database
 ## Login for Development
 
 When running locally with seed data:
+
 - Username: `demo@langfuse.com`
 - Password: `password`
 - Demo project URL: `http://localhost:3000/project/7a88fb47-b4e2-43b8-a06c-a5ce950dc53a`
 
 ## Linear MCP
+
 To get a project, use the `get_project` capability with the full project name as it is in the title.
+
 - bad: message-placeholder-in-chat-messages-2beb6f02ec48
 - good: Message placeholder in chat messages
 
 ## Front-end Tips
 
 ### Window Location Handling
+
 - Whenever you want to use or do use window.location..., ensure that you also add proper handling for a custom basePath
 
 ## TypeScript Best Practices
+
 - In TypeScript, if possible, don't use the `any` type
 - **Use a single params object for functions with multiple arguments** - This makes code more readable at call sites and prevents bugs when arguments of the same type are accidentally swapped:
 
@@ -204,14 +233,24 @@ function sendMessage(userId: string, sessionId: string, projectId: string) {
 sendMessage(someString, someOtherString, anotherString); // Which is which?
 
 // ✅ Good - params object makes intent clear and prevents argument swapping
-function sendMessage(params: { userId: string; sessionId: string; projectId: string }) {
+function sendMessage(params: {
+  userId: string;
+  sessionId: string;
+  projectId: string;
+}) {
   // ...
 }
-sendMessage({ userId: someString, sessionId: someOtherString, projectId: anotherString });
+sendMessage({
+  userId: someString,
+  sessionId: someOtherString,
+  projectId: anotherString,
+});
 ```
 
 ## General Coding Guidelines
+
 - For easier code reviews, prefer not to move functions etc around within a file unless necessary or instructed to do so
 
 ## Development Tips
+
 - Before trying to build the package, try running the linter once first

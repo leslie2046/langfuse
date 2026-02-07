@@ -227,7 +227,8 @@ export function DatePickerWithRange({
           <div className="flex flex-col gap-2 border-t-2 py-1.5 sm:flex-row sm:gap-0">
             <div className="px-3">
               <p className="px-1 text-sm font-medium">
-                {t("common.datePicker.start")}<span className="hidden sm:inline"> time</span>
+                {t("common.datePicker.start")}
+                <span className="hidden sm:inline"> time</span>
               </p>
               <TimePicker
                 date={internalDateRange?.from}
@@ -237,7 +238,8 @@ export function DatePickerWithRange({
             </div>
             <div className="px-3">
               <p className="px-1 text-sm font-medium">
-                {t("common.datePicker.end")}<span className="hidden sm:inline"> time</span>
+                {t("common.datePicker.end")}
+                <span className="hidden sm:inline"> time</span>
               </p>
               <TimePicker
                 date={internalDateRange?.to}
@@ -464,7 +466,9 @@ export function TimeRangePicker({
               />
               <div className="flex flex-col gap-3 border-t p-3">
                 <div className="flex flex-col gap-1">
-                  <p className="px-1 text-sm font-medium">{t("common.datePicker.startTime")}</p>
+                  <p className="px-1 text-sm font-medium">
+                    {t("common.datePicker.startTime")}
+                  </p>
                   <TimePicker
                     date={internalDateRange?.from}
                     setDate={onStartTimeSelection}
@@ -472,7 +476,9 @@ export function TimeRangePicker({
                   />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <p className="px-1 text-sm font-medium">{t("common.datePicker.endTime")}</p>
+                  <p className="px-1 text-sm font-medium">
+                    {t("common.datePicker.endTime")}
+                  </p>
                   <TimePicker
                     date={internalDateRange?.to}
                     setDate={onEndTimeSelection}

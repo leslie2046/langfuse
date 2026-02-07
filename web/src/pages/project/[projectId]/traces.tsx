@@ -68,7 +68,11 @@ export default function Traces() {
         help: {
           description: (
             <>
-              {t("pages.traces.helpDescription").split(t("pages.traces.docs"))[0]}
+              {
+                t("pages.traces.helpDescription").split(
+                  t("pages.traces.docs"),
+                )[0]
+              }
               <a
                 href="https://langfuse.com/docs/observability/data-model"
                 target="_blank"
@@ -78,7 +82,9 @@ export default function Traces() {
               >
                 {t("pages.traces.docs")}
               </a>
-              {t("pages.traces.helpDescription").split(t("pages.traces.docs"))[1] || ""}
+              {t("pages.traces.helpDescription").split(
+                t("pages.traces.docs"),
+              )[1] || ""}
             </>
           ),
           href: "https://langfuse.com/docs/observability/data-model",

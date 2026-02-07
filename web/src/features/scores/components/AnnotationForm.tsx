@@ -198,7 +198,9 @@ function AnnotateHeader({
             )}
           </div>
           <span className="text-xs text-muted-foreground">
-            {showSaving ? t("scores.annotate.saving") : t("scores.annotate.saved")}
+            {showSaving
+              ? t("scores.annotate.saving")
+              : t("scores.annotate.saved")}
           </span>
         </div>,
         actionButtons,
@@ -726,9 +728,15 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
                                         value: category.label,
                                         disabled: category.isOutdated,
                                       }))}
-                                      placeholder={t("scores.annotate.placeholders.selectCategory")}
-                                      searchPlaceholder={t("scores.annotate.placeholders.searchCategories")}
-                                      emptyText={t("scores.annotate.placeholders.noCategory")}
+                                      placeholder={t(
+                                        "scores.annotate.placeholders.selectCategory",
+                                      )}
+                                      searchPlaceholder={t(
+                                        "scores.annotate.placeholders.searchCategories",
+                                      )}
+                                      emptyText={t(
+                                        "scores.annotate.placeholders.noCategory",
+                                      )}
                                     />
                                   </FormControl>
                                   <FormMessage className="text-xs" />

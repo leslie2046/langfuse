@@ -96,9 +96,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "location"
-                  ],
+                  "required": ["location"],
                   "title": "get_weather_input",
                   "type": "object"
                 }
@@ -236,9 +234,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "location"
-                  ],
+                  "required": ["location"],
                   "title": "get_weather_input",
                   "type": "object"
                 }
@@ -369,9 +365,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "location"
-                  ],
+                  "required": ["location"],
                   "title": "get_weather_input",
                   "type": "object"
                 }

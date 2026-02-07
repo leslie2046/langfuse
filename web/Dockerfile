@@ -84,7 +84,10 @@ ENV NEXT_MANUAL_SIG_HANDLE true
 # set the CI flag to true to get CI specific logs
 ENV CI true
 
-RUN NODE_OPTIONS='--max-old-space-size-percentage=75' turbo run build --filter=web...
+#RUN NODE_OPTIONS='--max-old-space-size-percentage=75' turbo run build --filter=web...
+RUN NODE_OPTIONS="--max-old-space-size=4096" \
+    turbo run build --filter=web... --concurrency=1
+
 
 # Production image, copy all the files and run next
 FROM --platform=${TARGETPLATFORM:-linux/amd64} base AS runner
@@ -123,9 +126,20 @@ RUN if [ -n "$NEXT_PUBLIC_LANGFUSE_CLOUD_REGION" ]; then \
     npm install --no-package-lock --no-save dd-trace@5.65.0; \
     fi
 
-RUN MIGRATE_TARGET_ARCH=$(echo ${TARGETPLATFORM:-linux/amd64} | sed 's/\//-/g') && \
-    wget -q -O- https://github.com/golang-migrate/migrate/releases/download/v4.19.1/migrate.$MIGRATE_TARGET_ARCH.tar.gz | tar xvz && \
-    mv migrate /usr/bin/migrate
+#RUN MIGRATE_TARGET_ARCH=$(echo ${TARGETPLATFORM:-linux/amd64} | sed 's/\//-/g') && \
+#    wget -q -O- https://github.com/golang-migrate/migrate/releases/download/v4.19.1/migrate.$MIGRATE_TARGET_ARCH.tar.gz | tar xvz && \
+#    mv migrate /usr/bin/migrate
+RUN apk add --no-cache curl tar ca-certificates
+RUN set -eux; \
+    MIGRATE_TARGET_ARCH=$(echo ${TARGETPLATFORM:-linux/amd64} | sed 's/\//-/g'); \
+    curl -fL \
+      https://github.com/golang-migrate/migrate/releases/download/v4.19.1/migrate.${MIGRATE_TARGET_ARCH}.tar.gz \
+      -o /tmp/migrate.tar.gz; \
+    tar -xzf /tmp/migrate.tar.gz -C /tmp; \
+    mv /tmp/migrate /usr/bin/migrate; \
+    chmod +x /usr/bin/migrate; \
+    rm -f /tmp/migrate.tar.gz
+
 
 COPY --from=builder --chown=nextjs:nodejs /app/web/next.config.mjs .
 COPY --from=builder --chown=nextjs:nodejs /app/web/package.json .

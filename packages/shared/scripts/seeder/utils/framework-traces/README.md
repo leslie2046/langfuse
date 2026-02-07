@@ -4,6 +4,7 @@ This folder contains real traces produced through framework instrumentation.
 Most of them stem from here: https://langfuse.com/integrations/frameworks/agno-agents and so on.
 
 ## How to add further traces
+
 1. Generate a trace
 2. Download the trace from the UI using the download button. This **excludes** the `input`/`output`/`metadata` fields of the observations
 3. In the trace, click `Log View (Beta)` and switch to `JSON` format. Click the copy all button and save this to a file in this folder.

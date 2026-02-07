@@ -132,7 +132,10 @@ export default function PlaygroundPage() {
             {/* Window Count Display - Hidden on mobile */}
             <div className="hidden items-center gap-2 text-sm text-muted-foreground md:flex">
               <span className="whitespace-nowrap">
-                {windowIds.length} {windowIds.length === 1 ? t("playground.window") : t("playground.windows")}
+                {windowIds.length}{" "}
+                {windowIds.length === 1
+                  ? t("playground.window")
+                  : t("playground.windows")}
               </span>
               {executionStatus && (
                 <>

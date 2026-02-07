@@ -39,14 +39,8 @@
             "description": "Get all organizations",
             "url": {
               "raw": "{{baseUrl}}/api/admin/organizations",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "admin",
-                "organizations"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "organizations"],
               "query": [],
               "variable": []
             },
@@ -64,14 +58,8 @@
             "description": "Create a new organization",
             "url": {
               "raw": "{{baseUrl}}/api/admin/organizations",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "admin",
-                "organizations"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "organizations"],
               "query": [],
               "variable": []
             },
@@ -97,15 +85,8 @@
             "description": "Get organization by ID",
             "url": {
               "raw": "{{baseUrl}}/api/admin/organizations/:organizationId",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "admin",
-                "organizations",
-                ":organizationId"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "organizations", ":organizationId"],
               "query": [],
               "variable": [
                 {
@@ -129,15 +110,8 @@
             "description": "Update an organization",
             "url": {
               "raw": "{{baseUrl}}/api/admin/organizations/:organizationId",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "admin",
-                "organizations",
-                ":organizationId"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "organizations", ":organizationId"],
               "query": [],
               "variable": [
                 {
@@ -169,15 +143,8 @@
             "description": "Delete an organization",
             "url": {
               "raw": "{{baseUrl}}/api/admin/organizations/:organizationId",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "admin",
-                "organizations",
-                ":organizationId"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "organizations", ":organizationId"],
               "query": [],
               "variable": [
                 {
@@ -201,9 +168,7 @@
             "description": "Get all API keys for an organization",
             "url": {
               "raw": "{{baseUrl}}/api/admin/organizations/:organizationId/apiKeys",
-              "host": [
-                "{{baseUrl}}"
-              ],
+              "host": ["{{baseUrl}}"],
               "path": [
                 "api",
                 "admin",
@@ -234,9 +199,7 @@
             "description": "Create a new API key for an organization",
             "url": {
               "raw": "{{baseUrl}}/api/admin/organizations/:organizationId/apiKeys",
-              "host": [
-                "{{baseUrl}}"
-              ],
+              "host": ["{{baseUrl}}"],
               "path": [
                 "api",
                 "admin",
@@ -275,9 +238,7 @@
             "description": "Delete an API key for an organization",
             "url": {
               "raw": "{{baseUrl}}/api/admin/organizations/:organizationId/apiKeys/:apiKeyId",
-              "host": [
-                "{{baseUrl}}"
-              ],
+              "host": ["{{baseUrl}}"],
               "path": [
                 "api",
                 "admin",

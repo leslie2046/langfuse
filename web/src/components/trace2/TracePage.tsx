@@ -107,7 +107,8 @@ export function TracePage({
       />
     );
 
-  if (!trace.data) return <div className="p-3">{t("common.table.loading")}</div>;
+  if (!trace.data)
+    return <div className="p-3">{t("common.table.loading")}</div>;
 
   const isSharedTrace = trace.data.public;
   const showPublicIndicators = isSharedTrace && !hasProjectAccess;

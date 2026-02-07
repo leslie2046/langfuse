@@ -358,7 +358,9 @@ export const PromptDetail = ({
                 href={`/project/${projectId}/prompts/new?promptId=${encodeURIComponent(prompt.id)}`}
               >
                 <Plus className="h-4 w-4 md:mr-2" />
-                <span className="hidden lg:inline">{t("prompts.newVersion")}</span>
+                <span className="hidden lg:inline">
+                  {t("prompts.newVersion")}
+                </span>
               </Link>
             </Button>
           </div>
@@ -371,7 +373,9 @@ export const PromptDetail = ({
                 setCurrentPromptLabel(null);
               }}
               totalCount={promptHistory.data.totalCount}
-              commentCounts={commentCounts.data as Map<string, number> | undefined}
+              commentCounts={
+                commentCounts.data as Map<string, number> | undefined
+              }
             />
           </div>
         </Command>
@@ -485,12 +489,18 @@ export const PromptDetail = ({
             onValueChange={(value) => setCurrentTab(value)}
           >
             <TabsBarList className="min-w-0 max-w-full justify-start overflow-x-auto">
-              <TabsBarTrigger value="prompt">{t("prompts.tabs.prompt")}</TabsBarTrigger>
-              <TabsBarTrigger value="config">{t("prompts.tabs.config")}</TabsBarTrigger>
+              <TabsBarTrigger value="prompt">
+                {t("prompts.tabs.prompt")}
+              </TabsBarTrigger>
+              <TabsBarTrigger value="config">
+                {t("prompts.tabs.config")}
+              </TabsBarTrigger>
               <TabsBarTrigger value="linked-generations">
                 {t("prompts.tabs.linkedGenerations")}
               </TabsBarTrigger>
-              <TabsBarTrigger value="use-prompt">{t("prompts.tabs.usePrompt")}</TabsBarTrigger>
+              <TabsBarTrigger value="use-prompt">
+                {t("prompts.tabs.usePrompt")}
+              </TabsBarTrigger>
             </TabsBarList>
             <TabsBarContent
               value="linked-generations"

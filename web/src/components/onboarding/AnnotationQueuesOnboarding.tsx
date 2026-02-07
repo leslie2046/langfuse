@@ -17,22 +17,30 @@ export function AnnotationQueuesOnboarding({
   const valuePropositions: ValueProposition[] = [
     {
       title: t("onboarding.annotationQueues.propositions.manage.title"),
-      description: t("onboarding.annotationQueues.propositions.manage.description"),
+      description: t(
+        "onboarding.annotationQueues.propositions.manage.description",
+      ),
       icon: <ClipboardCheck className="h-4 w-4" />,
     },
     {
       title: t("onboarding.annotationQueues.propositions.collaborate.title"),
-      description: t("onboarding.annotationQueues.propositions.collaborate.description"),
+      description: t(
+        "onboarding.annotationQueues.propositions.collaborate.description",
+      ),
       icon: <Users className="h-4 w-4" />,
     },
     {
       title: t("onboarding.annotationQueues.propositions.track.title"),
-      description: t("onboarding.annotationQueues.propositions.track.description"),
+      description: t(
+        "onboarding.annotationQueues.propositions.track.description",
+      ),
       icon: <BarChart4 className="h-4 w-4" />,
     },
     {
       title: t("onboarding.annotationQueues.propositions.baseline.title"),
-      description: t("onboarding.annotationQueues.propositions.baseline.description"),
+      description: t(
+        "onboarding.annotationQueues.propositions.baseline.description",
+      ),
       icon: <GitMerge className="h-4 w-4" />,
     },
   ];

@@ -678,11 +678,7 @@ export function CommentList({
                       title={t("comments.delete")}
                       loading={deleteCommentMutation.isPending}
                       onClick={() => {
-                        if (
-                          confirm(
-                            t("comments.deleteConfirm"),
-                          )
-                        )
+                        if (confirm(t("comments.deleteConfirm")))
                           deleteCommentMutation.mutateAsync({
                             commentId: comment.id,
                             projectId,

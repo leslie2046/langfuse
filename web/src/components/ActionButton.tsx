@@ -71,7 +71,9 @@ export const ActionButton = React.forwardRef<
       typeof limit === "number" &&
       limitValue !== undefined
     ) {
-      return t("common.permissions.limitReached").replace("{current}", String(limitValue)).replace("{max}", String(limit));
+      return t("common.permissions.limitReached")
+        .replace("{current}", String(limitValue))
+        .replace("{max}", String(limit));
     }
     return null;
   };

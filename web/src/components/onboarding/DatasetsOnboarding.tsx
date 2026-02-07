@@ -18,7 +18,9 @@ export function DatasetsOnboarding({ projectId }: { projectId: string }) {
     },
     {
       title: t("onboarding.datasets.propositions.preDeployment.title"),
-      description: t("onboarding.datasets.propositions.preDeployment.description"),
+      description: t(
+        "onboarding.datasets.propositions.preDeployment.description",
+      ),
       icon: <Beaker className="h-4 w-4" />,
     },
     {

@@ -139,7 +139,10 @@ const Base = (props: {
                   {props.itemName} {t("trace.shared")}
                 </Label>
                 <span className="text-sm text-muted-foreground">
-                  {t("trace.sharedDescription").replace(/\{item\}/g, props.itemName)}
+                  {t("trace.sharedDescription").replace(
+                    /\{item\}/g,
+                    props.itemName,
+                  )}
                 </span>
                 <div className="mr-2 flex items-center justify-end gap-2 text-sm">
                   <Button variant="outline" size="sm" onClick={copyUrl}>
@@ -171,7 +174,10 @@ const Base = (props: {
                   {props.itemName} {t("trace.private")}
                 </Label>
                 <span className="text-sm text-muted-foreground">
-                  {t("trace.privateDescription").replace(/\{item\}/g, props.itemName)}
+                  {t("trace.privateDescription").replace(
+                    /\{item\}/g,
+                    props.itemName,
+                  )}
                 </span>
                 <div className="mr-2 flex items-center justify-end gap-2 text-sm">
                   <Button

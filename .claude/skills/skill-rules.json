@@ -67,10 +67,7 @@
           "packages/shared/src/**/*.ts",
           "web/src/**/*.ts"
         ],
-        "pathExclusions": [
-          "**/*.test.ts",
-          "**/*.spec.ts"
-        ],
+        "pathExclusions": ["**/*.test.ts", "**/*.spec.ts"],
         "contentPatterns": [
           "router\\.",
           "app\\.(get|post|put|delete|patch)",

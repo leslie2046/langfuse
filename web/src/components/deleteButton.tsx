@@ -118,7 +118,9 @@ export function DeleteButton({
         </Button>
       </PopoverTrigger>
       <PopoverContent onClick={(e) => e.stopPropagation()}>
-        <h2 className="text-md mb-3 font-semibold">{t("common.deleteAction.pleaseConfirm")}</h2>
+        <h2 className="text-md mb-3 font-semibold">
+          {t("common.deleteAction.pleaseConfirm")}
+        </h2>
         <p className="mb-3 max-w-72 text-sm">
           {customDeletePrompt ??
             `${t("common.deleteAction.cannotBeUndone")} ${entityToDeleteName}.`}
@@ -126,7 +128,10 @@ export function DeleteButton({
         {deleteConfirmation && (
           <div className="mb-4 grid w-full gap-1.5">
             <Label htmlFor="delete-confirmation">
-              {t("common.deleteAction.typeToConfirm").replace("{confirmation}", deleteConfirmation)}
+              {t("common.deleteAction.typeToConfirm").replace(
+                "{confirmation}",
+                deleteConfirmation,
+              )}
             </Label>
             <Input
               id="delete-confirmation"

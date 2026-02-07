@@ -5,10 +5,7 @@
     "name": "llama-index-trace",
     "timestamp": "2025-06-05T15:45:52.971Z",
     "environment": "default",
-    "tags": [
-      "llama-index",
-      "rag"
-    ],
+    "tags": ["llama-index", "rag"],
     "bookmarked": false,
     "release": null,
     "version": "1.0.0",
@@ -99,14 +96,10 @@
           "llm.provider": "openai",
           "llm.system": "openai",
           "input.value": {
-            "args": [
-              "What is Langfuse?"
-            ]
+            "args": ["What is Langfuse?"]
           },
           "input.mime_type": "application/json",
-          "llm.prompts": [
-            "What is Langfuse?"
-          ],
+          "llm.prompts": ["What is Langfuse?"],
           "output.value": "Langfuse is a tool designed to help developers monitor and debug applications that utilize large language models (LLMs). It provides features for tracking and analyzing the performance of LLMs, enabling developers to gain insights into how these models are functioning within their applications. Langfuse can be particularly useful for identifying issues, optimizing performance, and ensuring that the integration of language models into applications is smooth and effective.",
           "llm.token_count.prompt": "13",
           "llm.token_count.prompt_details.cache_read": "0",
@@ -172,9 +165,7 @@
       "outputUsage": 81,
       "totalUsage": 94,
       "input": {
-        "args": [
-          "What is Langfuse?"
-        ]
+        "args": ["What is Langfuse?"]
       },
       "output": "Langfuse is a tool designed to help developers monitor and debug applications that utilize large language models (LLMs). It provides features for tracking and analyzing the performance of LLMs, enabling developers to gain insights into how these models are functioning within their applications. Langfuse can be particularly useful for identifying issues, optimizing performance, and ensuring that the integration of language models into applications is smooth and effective."
     }

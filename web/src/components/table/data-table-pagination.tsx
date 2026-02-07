@@ -147,7 +147,9 @@ export function DataTablePagination<TData>({
           {!hideTotalCount && (
             <>
               {pageCount !== -1 ? (
-                <span>{t("common.table.pageOf")} {pageCount}</span>
+                <span>
+                  {t("common.table.pageOf")} {pageCount}
+                </span>
               ) : (
                 <span>
                   {t("common.table.pageOf")}{" "}
@@ -190,7 +192,9 @@ export function DataTablePagination<TData>({
             }}
             disabled={!table.getCanPreviousPage()}
           >
-            <span className="sr-only">{t("common.table.goToPreviousPage")}</span>
+            <span className="sr-only">
+              {t("common.table.goToPreviousPage")}
+            </span>
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <Button

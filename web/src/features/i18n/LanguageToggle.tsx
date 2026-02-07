@@ -8,11 +8,13 @@ export function LanguageToggle() {
   return (
     <div className="flex items-center space-x-1">
       <span className="mr-2 text-sm">Language</span>
-      <div 
+      <div
         title="English"
         className={cn(
-          locale === "en" ? "bg-accent text-accent-foreground" : "text-muted-foreground",
-          "cursor-pointer rounded-sm px-2 py-1 text-xs hover:bg-accent hover:text-accent-foreground"
+          locale === "en"
+            ? "bg-accent text-accent-foreground"
+            : "text-muted-foreground",
+          "cursor-pointer rounded-sm px-2 py-1 text-xs hover:bg-accent hover:text-accent-foreground",
         )}
         onClick={(e) => {
           e.preventDefault();
@@ -21,11 +23,13 @@ export function LanguageToggle() {
       >
         EN
       </div>
-      <div 
+      <div
         title="中文"
         className={cn(
-          locale === "zh" ? "bg-accent text-accent-foreground" : "text-muted-foreground",
-          "cursor-pointer rounded-sm px-2 py-1 text-xs hover:bg-accent hover:text-accent-foreground"
+          locale === "zh"
+            ? "bg-accent text-accent-foreground"
+            : "text-muted-foreground",
+          "cursor-pointer rounded-sm px-2 py-1 text-xs hover:bg-accent hover:text-accent-foreground",
         )}
         onClick={(e) => {
           e.preventDefault();

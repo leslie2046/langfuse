@@ -28,7 +28,8 @@ export function NoModelConfiguredAlert({
             href={`/project/${projectId}/settings/llm-connections`}
             className="font-medium underline underline-offset-4 hover:text-yellow-900 dark:hover:text-yellow-300"
           >
-            <Settings className="inline h-3 w-3" /> {t("playground.noModelConfigured.llmConnectionSettings")}
+            <Settings className="inline h-3 w-3" />{" "}
+            {t("playground.noModelConfigured.llmConnectionSettings")}
           </Link>{" "}
           {t("playground.noModelConfigured.descriptionPart2")}
         </AlertDescription>

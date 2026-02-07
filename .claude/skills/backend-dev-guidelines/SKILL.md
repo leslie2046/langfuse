@@ -327,8 +327,8 @@ const traces = await getTracesTable({
 ```typescript
 // Import observability utilities
 import {
-  logger,          // Winston logger with OpenTelemetry/DataDog context
-  traceException,  // Record exceptions to OpenTelemetry spans
+  logger, // Winston logger with OpenTelemetry/DataDog context
+  traceException, // Record exceptions to OpenTelemetry spans
   instrumentAsync, // Create instrumented spans
 } from "@langfuse/shared/src/server";
 
@@ -430,12 +430,12 @@ When modifying public API types in `web/src/features/public-api/types/`, the cor
 
 **Zod to Fern Type Mapping:**
 
-| Zod Type | Fern Type | Example |
-| -------- | --------- | ------- |
-| `.nullish()` | `optional<nullable<T>>` | `z.string().nullish()` → `optional<nullable<string>>` |
-| `.nullable()` | `nullable<T>` | `z.string().nullable()` → `nullable<string>` |
-| `.optional()` | `optional<T>` | `z.string().optional()` → `optional<string>` |
-| Always present | `T` | `z.string()` → `string` |
+| Zod Type       | Fern Type               | Example                                               |
+| -------------- | ----------------------- | ----------------------------------------------------- |
+| `.nullish()`   | `optional<nullable<T>>` | `z.string().nullish()` → `optional<nullable<string>>` |
+| `.nullable()`  | `nullable<T>`           | `z.string().nullable()` → `nullable<string>`          |
+| `.optional()`  | `optional<T>`           | `z.string().optional()` → `optional<string>`          |
+| Always present | `T`                     | `z.string()` → `string`                               |
 
 **Source References:**
 
@@ -476,8 +476,8 @@ import {
 
 // Observability - OpenTelemetry + DataDog (NOT Sentry for backend)
 import {
-  logger,          // Winston logger with OTEL/DataDog trace context
-  traceException,  // Record exceptions to OpenTelemetry spans
+  logger, // Winston logger with OTEL/DataDog trace context
+  traceException, // Record exceptions to OpenTelemetry spans
   instrumentAsync, // Create instrumented spans for operations
 } from "@langfuse/shared/src/server";
 
@@ -514,6 +514,7 @@ import { QueueName, TQueueJobTypes } from "@langfuse/shared/src/server";
 ### Example Features to Reference
 
 Reference existing Langfuse features for implementation patterns:
+
 - **Datasets** (`web/src/features/datasets/`) - Complete feature with tRPC router, public API, and service
 - **Prompts** (`web/src/features/prompts/`) - Feature with versioning and templates
 - **Evaluations** (`web/src/features/evals/`) - Complex feature with worker integration
@@ -534,8 +535,8 @@ Reference existing Langfuse features for implementation patterns:
 
 ## Navigation Guide
 
-| Need to...                | Read this                                                    |
-| ------------------------- | ------------------------------------------------------------ |
+| Need to...                | Read this                                                              |
+| ------------------------- | ---------------------------------------------------------------------- |
 | Understand architecture   | [architecture-overview.md](resources/architecture-overview.md)         |
 | Create routes/controllers | [routing-and-controllers.md](resources/routing-and-controllers.md)     |
 | Organize business logic   | [services-and-repositories.md](resources/services-and-repositories.md) |
