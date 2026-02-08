@@ -433,7 +433,7 @@ export const NewPromptForm: React.FC<NewPromptFormProps> = (props) => {
               </FormDescription>
               <FormControl>
                 <Textarea
-                  placeholder="Add commit message..."
+                  placeholder={t("pages.prompts.form.commitMessagePlaceholder")}
                   {...field}
                   className="rounded-md border text-sm focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 active:ring-0"
                 />

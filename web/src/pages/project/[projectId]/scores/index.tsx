@@ -39,7 +39,7 @@ export default function ScoresPage() {
           href: "https://langfuse.com/docs/evaluation/overview",
         },
         tabsProps: {
-          tabs: getScoresTabs(projectId),
+          tabs: getScoresTabs(projectId, t),
           activeTab: SCORES_TABS.SCORES,
         },
       }}

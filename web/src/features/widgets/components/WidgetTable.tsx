@@ -23,7 +23,9 @@ import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePos
 import { showErrorToast } from "@/src/features/notifications/showErrorToast";
 import { useRouter } from "next/router";
 import { getChartTypeDisplayName } from "@/src/features/widgets/chart-library/utils";
+import { getChartTypeDisplayName } from "@/src/features/widgets/chart-library/utils";
 import { type DashboardWidgetChartType } from "@langfuse/shared/src/db";
+import { useTranslation } from "@/src/features/i18n";
 
 type WidgetTableRow = {
   id: string;
@@ -112,6 +114,7 @@ export function DashboardWidgetTable() {
   const projectId = useProjectIdFromURL();
   const { setDetailPageList } = useDetailPageLists();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const [orderByState, setOrderByState] = useOrderByState({
     column: "updatedAt",
@@ -152,7 +155,7 @@ export function DashboardWidgetTable() {
   const columnHelper = createColumnHelper<WidgetTableRow>();
   const widgetColumns = [
     columnHelper.accessor("name", {
-      header: "Name",
+      header: t("dashboard.widgets.table.name"),
       id: "name",
       enableSorting: true,
       size: 200,
@@ -167,7 +170,7 @@ export function DashboardWidgetTable() {
       },
     }),
     columnHelper.accessor("description", {
-      header: "Description",
+      header: t("dashboard.widgets.table.description"),
       id: "description",
       size: 300,
       cell: (row) => {
@@ -175,7 +178,7 @@ export function DashboardWidgetTable() {
       },
     }),
     columnHelper.accessor("view", {
-      header: "View Type",
+      header: t("dashboard.widgets.table.viewType"),
       id: "view",
       enableSorting: true,
       size: 100,
@@ -184,7 +187,7 @@ export function DashboardWidgetTable() {
       },
     }),
     columnHelper.accessor("chartType", {
-      header: "Chart Type",
+      header: t("dashboard.widgets.table.chartType"),
       id: "chartType",
       enableSorting: true,
       size: 100,
@@ -192,7 +195,7 @@ export function DashboardWidgetTable() {
         getChartTypeDisplayName(row.getValue() as DashboardWidgetChartType),
     }),
     columnHelper.accessor("createdAt", {
-      header: "Created At",
+      header: t("dashboard.widgets.table.createdAt"),
       id: "createdAt",
       enableSorting: true,
       size: 150,
@@ -202,7 +205,7 @@ export function DashboardWidgetTable() {
       },
     }),
     columnHelper.accessor("updatedAt", {
-      header: "Updated At",
+      header: t("dashboard.widgets.table.updatedAt"),
       id: "updatedAt",
       enableSorting: true,
       size: 150,
@@ -213,7 +216,7 @@ export function DashboardWidgetTable() {
     }),
     columnHelper.display({
       id: "actions",
-      header: "Actions",
+      header: t("dashboard.widgets.table.actions"),
       size: 70,
       cell: (row) => {
         const id = row.row.original.id;

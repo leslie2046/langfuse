@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from "react";
+import { useTranslation } from "@/src/features/i18n";
 
 import { usePlaygroundContext } from "@/src/features/playground/page/context";
 import { Button } from "@/src/components/ui/button";
@@ -24,6 +25,7 @@ export const StructuredOutputSchemaPopover = () => {
   const { structuredOutputSchema, setStructuredOutputSchema } =
     usePlaygroundContext();
   const projectId = useProjectIdFromURL();
+  const { t } = useTranslation();
 
   const { data: savedSchemas = [] } = api.llmSchemas.getAll.useQuery(
     {
@@ -93,11 +95,11 @@ export const StructuredOutputSchemaPopover = () => {
   return (
     <Command className="flex flex-col">
       <CommandInput
-        placeholder="Search schemas..."
+        placeholder={t("playground.schema.search")}
         className="h-8 border-none py-1 pl-6 pr-1 focus:ring-0 focus:ring-offset-0"
       />
       <CommandList className="max-h-[300px] overflow-y-auto">
-        <CommandEmpty>No schemas found.</CommandEmpty>
+        <CommandEmpty>{t("playground.schema.notFound")}</CommandEmpty>
         <CommandGroup>
           {savedSchemas.map((schema) => (
             <CommandItem
@@ -142,7 +144,7 @@ export const StructuredOutputSchemaPopover = () => {
         >
           <Button variant="outline" size="default" className="w-full">
             <PlusIcon className="mr-2 h-4 w-4" />
-            Create new schema
+            {t("playground.schema.create")}
           </Button>
         </CreateOrEditLLMSchemaDialog>
       </div>
@@ -155,6 +157,7 @@ export const StructuredOutputSchemaSection = () => {
   const { structuredOutputSchema, setStructuredOutputSchema } =
     usePlaygroundContext();
   const projectId = useProjectIdFromURL();
+  const { t } = useTranslation();
 
   const { data: savedSchemas = [] } = api.llmSchemas.getAll.useQuery(
     {
@@ -241,7 +244,9 @@ export const StructuredOutputSchemaSection = () => {
     <ScrollArea className="h-full">
       {!structuredOutputSchema ? (
         <div className="flex h-16 flex-col items-center justify-center p-4 text-center">
-          <p className="text-xs text-muted-foreground">No schema provided.</p>
+          <p className="text-xs text-muted-foreground">
+            {t("playground.schema.noSchema")}
+          </p>
         </div>
       ) : (
         <div className="space-y-1">
@@ -276,7 +281,7 @@ export const StructuredOutputSchemaSection = () => {
                   </h3>
                   {!isSchemaSaved(structuredOutputSchema) ? (
                     <span className="rounded bg-muted px-1 py-0.5 text-xs text-muted-foreground">
-                      Unsaved
+                      {t("playground.schema.unsaved")}
                     </span>
                   ) : null}
                 </div>

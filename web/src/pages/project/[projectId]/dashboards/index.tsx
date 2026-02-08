@@ -30,7 +30,7 @@ export default function Dashboards() {
           href: "https://langfuse.com/docs/metrics/features/custom-dashboards",
         },
         tabsProps: {
-          tabs: getDashboardTabs(projectId),
+          tabs: getDashboardTabs(projectId, t),
           activeTab: DASHBOARD_TABS.DASHBOARDS,
         },
         actionButtonsRight: (

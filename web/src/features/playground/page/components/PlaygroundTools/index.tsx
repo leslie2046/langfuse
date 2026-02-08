@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from "react";
+import { useTranslation } from "@/src/features/i18n";
 
 import { usePlaygroundContext } from "@/src/features/playground/page/context";
 import { Button } from "@/src/components/ui/button";
@@ -24,6 +25,7 @@ import { type PlaygroundTool } from "@/src/features/playground/page/types";
 export const PlaygroundToolsPopover = () => {
   const { setTools } = usePlaygroundContext();
   const projectId = useProjectIdFromURL();
+  const { t } = useTranslation();
 
   const { data: savedTools = [] } = api.llmTools.getAll.useQuery(
     {
@@ -78,11 +80,11 @@ export const PlaygroundToolsPopover = () => {
   return (
     <Command className="flex flex-col">
       <CommandInput
-        placeholder="Search tools..."
+        placeholder={t("playground.tools.search")}
         className="h-8 border-none py-1 pl-6 pr-1 focus:ring-0 focus:ring-offset-0"
       />
       <CommandList className="max-h-[300px] overflow-y-auto">
-        <CommandEmpty>No tools found.</CommandEmpty>
+        <CommandEmpty>{t("playground.tools.notFound")}</CommandEmpty>
         <CommandGroup>
           {savedTools.map((tool) => (
             <CommandItem
@@ -132,7 +134,7 @@ export const PlaygroundToolsPopover = () => {
         >
           <Button variant="outline" size="default" className="w-full">
             <PlusIcon className="mr-2 h-4 w-4" />
-            Create new tool
+            {t("playground.tools.create")}
           </Button>
         </CreateOrEditLLMToolDialog>
       </div>
@@ -144,6 +146,7 @@ export const PlaygroundToolsPopover = () => {
 export const PlaygroundTools = () => {
   const { tools, setTools } = usePlaygroundContext();
   const projectId = useProjectIdFromURL();
+  const { t } = useTranslation();
 
   const { data: savedTools = [] } = api.llmTools.getAll.useQuery(
     {
@@ -232,7 +235,9 @@ export const PlaygroundTools = () => {
     <ScrollArea className="h-full">
       {tools.length === 0 ? (
         <div className="flex h-16 flex-col items-center justify-center p-4 text-center">
-          <p className="text-xs text-muted-foreground">No tools attached.</p>
+          <p className="text-xs text-muted-foreground">
+            {t("playground.tools.noToolsAttached")}
+          </p>
         </div>
       ) : (
         <div className="space-y-1">
@@ -265,7 +270,7 @@ export const PlaygroundTools = () => {
                     </h3>
                     {!isToolSaved(tool) ? (
                       <span className="rounded bg-muted px-1 py-0.5 text-xs text-muted-foreground">
-                        Unsaved
+                        {t("playground.tools.unsaved")}
                       </span>
                     ) : null}
                   </div>

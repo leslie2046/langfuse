@@ -3,11 +3,11 @@ import { useTranslation } from "@/src/features/i18n";
 import { cn } from "@/src/utils/tailwind";
 
 export function LanguageToggle() {
-  const { locale, setLocale } = useTranslation();
+  const { locale, setLocale, t } = useTranslation();
 
   return (
     <div className="flex items-center space-x-1">
-      <span className="mr-2 text-sm">Language</span>
+      <span className="mr-2 text-sm">{t("common.language")}</span>
       <div
         title="English"
         className={cn(

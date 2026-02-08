@@ -10,6 +10,7 @@ import { Switch } from "@/src/components/ui/switch";
 import { Settings } from "lucide-react";
 import useLocalStorage from "@/src/components/useLocalStorage";
 import { env } from "@/src/env.mjs";
+import { useTranslation } from "@/src/features/i18n";
 
 import { GenerationOutput } from "./GenerationOutput";
 import { ChatMessages } from "@/src/components/ChatMessages";
@@ -49,6 +50,7 @@ const SubmitButton = () => {
     "langfuse-playground-streaming",
     defaultStreamingEnabled,
   );
+  const { t } = useTranslation();
 
   return (
     <div className="flex items-center gap-2">
@@ -59,7 +61,7 @@ const SubmitButton = () => {
         }}
         loading={isStreaming}
       >
-        <p>Submit</p>
+        <p>{t("playground.submit")}</p>
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -78,11 +80,13 @@ const SubmitButton = () => {
             onClick={(e) => e.preventDefault()}
           >
             <div className="flex flex-col">
-              <span className="font-medium">Stream responses</span>
+              <span className="font-medium">
+                {t("playground.streamResponses")}
+              </span>
               <span className="text-xs text-muted-foreground">
                 {streamingEnabled
-                  ? "Real-time response streaming"
-                  : "Complete response at once"}
+                  ? t("playground.streamResponsesDescription")
+                  : t("playground.completeResponseDescription")}
               </span>
             </div>
             <Switch

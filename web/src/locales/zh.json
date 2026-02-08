@@ -5,16 +5,7 @@
     "projects": "项目",
     "home": "首页",
     "dashboards": "仪表盘",
-    "command": {
-      "placeholder": "输入命令或搜索...",
-      "noResults": "未找到结果。",
-      "mainNavigation": "主要导航",
-      "projects": "项目",
-      "dashboards": "仪表盘",
-      "projectSettings": "项目设置",
-      "organizationSettings": "组织设置",
-      "accountSettings": "账户设置"
-    },
+
     "tracing": "追踪",
     "sessions": "会话",
     "users": "用户",
@@ -31,7 +22,16 @@
     "v4BetaTooltip": "切换以使用基于 v4 架构的新事件。",
     "settings": "设置",
     "bookACall": "预约通话",
-    "support": "支持",
+    "support": "支持"
+  },
+  "command": {
+    "placeholder": "输入命令或搜索...",
+    "noResults": "未找到结果。",
+    "mainNavigation": "主要导航",
+    "projects": "项目",
+    "dashboards": "仪表盘",
+    "projectSettings": "项目设置",
+    "organizationSettings": "组织设置",
     "accountSettings": "账户设置"
   },
   "groups": {
@@ -451,6 +451,11 @@
     "continueWith": "继续使用",
     "emailCredentials": "邮箱凭证"
   },
+  "filters": {
+    "deselectAll": "取消全选",
+    "selectAll": "全选",
+    "clearFilters": "清除筛选"
+  },
   "dashboard": {
     "analytics": "分析",
     "tracing": {
@@ -525,7 +530,40 @@
       "totalAggregateScores": "总聚合评分",
       "movingAverage": "随时间变化的移动平均值",
       "scoresOverTime": "随时间变化的评分",
-      "selectScore": "选择一个评分以查看分析"
+      "selectScore": "选择一个评分以查看分析",
+      "header": {
+        "firstScore": "第一个评分",
+        "secondScore": "第二个评分",
+        "beta": "Beta 功能",
+        "betaDescription": "评分分析目前处于 Beta 阶段。我们将积极改进此功能，期待收到您的反馈。",
+        "shareFeedback": "在 GitHub Discussions 均分反馈"
+      },
+      "objectType": {
+        "all": "所有对象",
+        "trace": "追踪",
+        "session": "会话",
+        "observation": "观察",
+        "dataset_run": "数据集运行",
+        "prompt": "对象类型"
+      }
+    },
+    "tabs": {
+      "dashboards": "仪表盘",
+      "widgets": "组件"
+    },
+    "widgets": {
+      "title": "组件",
+      "description": "管理和创建仪表盘组件。",
+      "newWidget": "新建组件",
+      "table": {
+        "name": "名称",
+        "description": "描述",
+        "viewType": "视图类型",
+        "chartType": "图表类型",
+        "createdAt": "创建时间",
+        "updatedAt": "更新时间",
+        "actions": "操作"
+      }
     }
   },
   "onboarding": {
@@ -712,10 +750,44 @@
     }
   },
   "playground": {
-    "title": "Playground",
+    "title": "体验场",
     "helpDescription": "一个用于在多个窗口中测试和迭代您的 Prompt 的沙箱",
     "window": "窗口",
     "windows": "窗口",
+    "reset": "重置体验场",
+    "submit": "提交",
+    "streamResponses": "流式响应",
+    "streamResponsesDescription": "实时流式响应",
+    "completeResponseDescription": "一次性完整响应",
+    "tools": {
+      "title": "工具",
+      "configure": "配置您的模型使用的工具。",
+      "search": "搜索工具...",
+      "notFound": "未找到工具",
+      "create": "创建新工具",
+      "noToolsAttached": "未附加工具。",
+      "unsaved": "未保存"
+    },
+    "schema": {
+      "title": "结构",
+      "titleFull": "结构化输出",
+      "configure": "配置结构化输出的 JSON Schema。",
+      "noSchema": "未提供 Schema。",
+      "search": "搜索 Schema...",
+      "notFound": "未找到 Schema",
+      "create": "创建新 Schema",
+      "unsaved": "未保存"
+    },
+    "variables": {
+      "title": "变量",
+      "titleFull": "变量和消息占位符",
+      "abbreviation": "变量",
+      "configure": "配置 Prompt 的变量和消息占位符。",
+      "noVariables": "未定义变量。",
+      "noVariablesOrPlaceholders": "未定义变量或消息占位符。",
+      "messagePlaceholders": "消息占位符",
+      "instruction": "在您的 Prompt 中使用双大括号添加变量："
+    },
     "runAll": "全部运行 (Ctrl + Enter)",
     "configureModelFirst": "请先在项目设置中配置模型",
     "executeAllWindows": "同时执行所有 Playground 窗口",
@@ -736,77 +808,7 @@
     "newSplitWindow": "新建分屏窗口",
     "promptsFromPlaygroundDescription": "体验场中的提示词只能保存为 'chat' 提示词，因为它们包含多个系统/用户消息。"
   },
-  "llmApiKeys": {
-    "title": "LLM API 密钥",
-    "description": "配置 Langfuse 使用的 LLM 提供商 API 密钥。",
-    "provider": "提供商",
-    "adapter": "适配器",
-    "baseUrl": "API 基础地址",
-    "apiKey": "API 密钥",
-    "extraHeaders": "额外请求头",
-    "updateTitle": "更新 LLM API 密钥",
-    "deleteTitle": "删除 LLM API 密钥",
-    "deleteDescription": "您确定要删除此 API 密钥吗？此操作无法撤销。",
-    "addBtn": "添加 API 密钥",
-    "dialogTitle": "添加 LLM API 密钥",
-    "form": {
-      "adapter": "适配器",
-      "adapterDescription": "选择要使用的 LLM 适配器。",
-      "adapterPlaceholder": "选择适配器",
-      "provider": "提供商名称",
-      "providerDescription": "此提供商配置的唯一名称。",
-      "customModels": "自定义模型",
-      "customModelsDescription": "为此提供商定义自定义模型。",
-      "customModelsAzureWarning": "对于 Azure OpenAI，自定义模型名称必须与部署名称匹配。",
-      "customModelsBedrockWarning": "对于 Bedrock，请使用模型 ID。",
-      "customModelName": "模型名称",
-      "addCustomModel": "添加自定义模型",
-      "extraHeaders": "额外请求头",
-      "extraHeadersDescription": "随请求发送的附加头信息。存储在 {location}。",
-      "onOurServers": "我们的服务器上加密存储",
-      "inYourDatabase": "您的数据库中",
-      "headerName": "Header 名称",
-      "headerValue": "Header 值",
-      "addHeader": "添加 Header",
-      "awsRegion": "AWS 区域",
-      "current": "当前：",
-      "awsAccessKeyId": "AWS Access Key ID",
-      "awsSecretAccessKey": "AWS Secret Access Key",
-      "optional": "（可选）",
-      "bedrockUpdateDescription": "留空以保留现有凭证。",
-      "bedrockCloudDescription": "Langfuse Cloud 必需。",
-      "bedrockSelfHostedDescription": "自托管可选。",
-      "usingDefaultAwsCredentials": "正在使用默认 AWS 凭证",
-      "preservedIfEmpty": "（若为空则保留）",
-      "awsDefaultChainTitle": "AWS 默认凭证链",
-      "awsDefaultChainDescription": "Langfuse 将尝试在标准位置查找凭证：",
-      "awsEnvVars": "环境变量",
-      "awsCredsFile": "共享凭证文件",
-      "awsIamEc2": "EC2 实例元数据",
-      "awsIamEcs": "ECS 容器凭证",
-      "awsLearnMore": "了解更多关于 Node.js 中的 AWS 凭证",
-      "useAdc": "使用默认 GCP 凭证 (ADC)",
-      "adcDescription": "从环境中使用应用程序默认凭证。",
-      "errors": {
-        "providerRequired": "提供商名称为必填项",
-        "providerFormat": "提供商名称不能包含冒号",
-        "awsRegionRequired": "AWS 区域为必填项",
-        "bedrockCredentialsRequired": "Bedrock 凭证为必填项",
-        "customModelRequired": "至少需要一个自定义模型",
-        "customModelRequiredWhenDefaultDisabled": "禁用默认模型时需要自定义模型",
-        "gcpKeyRequired": "GCP 服务账户密钥为必填项",
-        "gcpKeyOrAdcRequired": "需要 GCP 密钥或 ADC",
-        "secretKeyRequired": "Secret Key 为必填项",
-        "azureBaseUrlRequired": "Azure Base URL 为必填项",
-        "verificationFailed": "验证失败",
-        "providerExists": "提供商已存在"
-      }
-    }
-  },
-  "apiKeys": {
-    "none": "未找到 API 密钥",
-    "permanentlyDelete": "永久删除"
-  },
+
   "pages": {
     "traces": {
       "title": "追踪",
@@ -919,7 +921,8 @@
         "reviewChanges": "审查变更",
         "saveNewVersion": "保存新版本",
         "createPrompt": "创建 Prompt",
-        "error": "错误"
+        "error": "错误",
+        "commitMessagePlaceholder": "添加提交信息..."
       }
     },
     "annotationQueues": {
@@ -1399,5 +1402,17 @@
     },
     "next": "下一步",
     "helpDescription": "创建一个新组织。这将用于管理您的项目和团队。"
+  },
+  "models": {
+    "testMatch": {
+      "usageDetails": "用量详情（可选）",
+      "description": "添加用量详情以测试定价层级匹配。留空以匹配默认层级。",
+      "prefill": "从模板预填:",
+      "openAI": "OpenAI",
+      "anthropic": "Anthropic",
+      "usageType": "用量类型",
+      "value": "值",
+      "addUsageType": "添加用量类型"
+    }
   }
 }

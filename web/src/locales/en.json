@@ -5,16 +5,7 @@
     "projects": "Projects",
     "home": "Home",
     "dashboards": "Dashboards",
-    "command": {
-      "placeholder": "Type a command or search...",
-      "noResults": "No results found.",
-      "mainNavigation": "Main Navigation",
-      "projects": "Projects",
-      "dashboards": "Dashboards",
-      "projectSettings": "Project Settings",
-      "organizationSettings": "Organization Settings",
-      "accountSettings": "Account Settings"
-    },
+
     "tracing": "Tracing",
     "sessions": "Sessions",
     "users": "Users",
@@ -31,7 +22,16 @@
     "v4BetaTooltip": "Toggle to use new events based v4 architecture.",
     "settings": "Settings",
     "bookACall": "Book a call",
-    "support": "Support",
+    "support": "Support"
+  },
+  "command": {
+    "placeholder": "Type a command or search...",
+    "noResults": "No results found.",
+    "mainNavigation": "Main Navigation",
+    "projects": "Projects",
+    "dashboards": "Dashboards",
+    "projectSettings": "Project Settings",
+    "organizationSettings": "Organization Settings",
     "accountSettings": "Account Settings"
   },
   "groups": {
@@ -451,6 +451,11 @@
     "continueWith": "Continue with",
     "emailCredentials": "Email credentials"
   },
+  "filters": {
+    "deselectAll": "Deselect all",
+    "selectAll": "Select all",
+    "clearFilters": "Clear filters"
+  },
   "dashboard": {
     "analytics": "Analytics",
     "tracing": {
@@ -525,7 +530,40 @@
       "totalAggregateScores": "Total aggregate scores",
       "movingAverage": "Moving average over time",
       "scoresOverTime": "Scores over time",
-      "selectScore": "Select a score to view analytics"
+      "selectScore": "Select a score to view analytics",
+      "header": {
+        "firstScore": "First score",
+        "secondScore": "Second score",
+        "beta": "Beta Feature",
+        "betaDescription": "Score analytics is currently in beta. We're actively improving this feature and would love to hear your feedback.",
+        "shareFeedback": "Share feedback on GitHub Discussions"
+      },
+      "objectType": {
+        "all": "All Objects",
+        "trace": "Traces",
+        "session": "Sessions",
+        "observation": "Observations",
+        "dataset_run": "Dataset Runs",
+        "prompt": "Object type"
+      }
+    },
+    "tabs": {
+      "dashboards": "Dashboards",
+      "widgets": "Widgets"
+    },
+    "widgets": {
+      "title": "Widgets",
+      "description": "Manage and create widgets for your dashboard.",
+      "newWidget": "New widget",
+      "table": {
+        "name": "Name",
+        "description": "Description",
+        "viewType": "View Type",
+        "chartType": "Chart Type",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At",
+        "actions": "Actions"
+      }
     }
   },
   "onboarding": {
@@ -716,6 +754,40 @@
     "helpDescription": "A sandbox to test and iterate your prompts across multiple windows",
     "window": "window",
     "windows": "windows",
+    "reset": "Reset playground",
+    "submit": "Submit",
+    "streamResponses": "Stream responses",
+    "streamResponsesDescription": "Real-time response streaming",
+    "completeResponseDescription": "Complete response at once",
+    "tools": {
+      "title": "Tools",
+      "configure": "Configure tools for your model to use.",
+      "search": "Search tools...",
+      "notFound": "No tools found.",
+      "create": "Create new tool",
+      "noToolsAttached": "No tools attached.",
+      "unsaved": "Unsaved"
+    },
+    "schema": {
+      "title": "Schema",
+      "titleFull": "Structured Output",
+      "configure": "Configure JSON schema for structured output.",
+      "noSchema": "No schema provided.",
+      "search": "Search schemas...",
+      "notFound": "No schemas found.",
+      "create": "Create new schema",
+      "unsaved": "Unsaved"
+    },
+    "variables": {
+      "title": "Variables",
+      "titleFull": "Variables & Message Placeholders",
+      "abbreviation": "Vars",
+      "configure": "Configure variables and message placeholders for your prompts.",
+      "noVariables": "No variables defined.",
+      "noVariablesOrPlaceholders": "No variables or message placeholders defined.",
+      "messagePlaceholders": "Message Placeholders",
+      "instruction": "Use double curly braces in your prompts to add a variable:"
+    },
     "runAll": "Run All (Ctrl + Enter)",
     "configureModelFirst": "Please configure a model in Project Settings first",
     "executeAllWindows": "Execute all playground windows simultaneously",
@@ -736,77 +808,7 @@
     "newSplitWindow": "New split window",
     "promptsFromPlaygroundDescription": "Prompts from the playground can only be saved to 'chat' prompts as they include multiple system/user messages."
   },
-  "llmApiKeys": {
-    "title": "LLM API Keys",
-    "description": "Configure API keys for LLM providers used in Langfuse.",
-    "provider": "Provider",
-    "adapter": "Adapter",
-    "baseUrl": "Base URL",
-    "apiKey": "API Key",
-    "extraHeaders": "Extra Headers",
-    "updateTitle": "Update LLM API Key",
-    "deleteTitle": "Delete LLM API Key",
-    "deleteDescription": "Are you sure you want to delete this API key? This action cannot be undone.",
-    "addBtn": "Add API Key",
-    "dialogTitle": "Add LLM API Key",
-    "form": {
-      "adapter": "Adapter",
-      "adapterDescription": "Select the LLM adapter to use.",
-      "adapterPlaceholder": "Select adapter",
-      "provider": "Provider Name",
-      "providerDescription": "Unique name for this provider configuration.",
-      "customModels": "Custom Models",
-      "customModelsDescription": "Define custom models for this provider.",
-      "customModelsAzureWarning": "For Azure OpenAI, custom model names must match deployment names.",
-      "customModelsBedrockWarning": "For Bedrock, use model IDs.",
-      "customModelName": "Model Name",
-      "addCustomModel": "Add Custom Model",
-      "extraHeaders": "Extra Headers",
-      "extraHeadersDescription": "Additional headers to send with requests. Stored {location}.",
-      "onOurServers": "encrypted on our servers",
-      "inYourDatabase": "in your database",
-      "headerName": "Header Name",
-      "headerValue": "Header Value",
-      "addHeader": "Add Header",
-      "awsRegion": "AWS Region",
-      "current": "Current:",
-      "awsAccessKeyId": "AWS Access Key ID",
-      "awsSecretAccessKey": "AWS Secret Access Key",
-      "optional": "(optional)",
-      "bedrockUpdateDescription": "Leave empty to keep existing credentials.",
-      "bedrockCloudDescription": "Required for Langfuse Cloud.",
-      "bedrockSelfHostedDescription": "Optional for self-hosted.",
-      "usingDefaultAwsCredentials": "Using Default AWS Credentials",
-      "preservedIfEmpty": "(preserved if empty)",
-      "awsDefaultChainTitle": "AWS Default Credential Chain",
-      "awsDefaultChainDescription": "Langfuse will attempt to find credentials in standard locations:",
-      "awsEnvVars": "Environment Variables",
-      "awsCredsFile": "Shared Credentials File",
-      "awsIamEc2": "EC2 Instance Metadata",
-      "awsIamEcs": "ECS Container Credentials",
-      "awsLearnMore": "Learn more about AWS credentials in Node.js",
-      "useAdc": "Use Default GCP Credentials (ADC)",
-      "adcDescription": "Use Application Default Credentials from the environment.",
-      "errors": {
-        "providerRequired": "Provider name is required",
-        "providerFormat": "Provider name cannot contain colons",
-        "awsRegionRequired": "AWS Region is required",
-        "bedrockCredentialsRequired": "Bedrock credentials are required",
-        "customModelRequired": "At least one custom model is required",
-        "customModelRequiredWhenDefaultDisabled": "Custom models required when default models are disabled",
-        "gcpKeyRequired": "GCP Service Account Key is required",
-        "gcpKeyOrAdcRequired": "GCP Key or ADC is required",
-        "secretKeyRequired": "Secret Key is required",
-        "azureBaseUrlRequired": "Azure Base URL is required",
-        "verificationFailed": "Verification failed",
-        "providerExists": "Provider usage exists"
-      }
-    }
-  },
-  "apiKeys": {
-    "none": "No API keys found",
-    "permanentlyDelete": "Permanently delete"
-  },
+
   "pages": {
     "traces": {
       "title": "Tracing",
@@ -919,7 +921,8 @@
         "reviewChanges": "Review changes",
         "saveNewVersion": "Save new version",
         "createPrompt": "Create prompt",
-        "error": "Error"
+        "error": "Error",
+        "commitMessagePlaceholder": "Add commit message..."
       }
     },
     "annotationQueues": {
@@ -1399,5 +1402,17 @@
     },
     "next": "Next",
     "helpDescription": "Create a new organization. This will be used to manage your projects and teams."
+  },
+  "models": {
+    "testMatch": {
+      "usageDetails": "Usage Details (optional)",
+      "description": "Add usage details to test pricing tier matching. Leave empty to match the default tier.",
+      "prefill": "Prefill from template:",
+      "openAI": "OpenAI",
+      "anthropic": "Anthropic",
+      "usageType": "Usage Type",
+      "value": "Value",
+      "addUsageType": "Add Usage Type"
+    }
   }
 }
