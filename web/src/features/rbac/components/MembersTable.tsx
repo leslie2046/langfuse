@@ -374,9 +374,9 @@ export function MembersTable({
   if (project ? !hasProjectViewAccess : !hasOrgViewAccess) {
     return (
       <Alert>
-        <AlertTitle>Access Denied</AlertTitle>
+        <AlertTitle>{t("organization.members.accessDenied.title")}</AlertTitle>
         <AlertDescription>
-          You do not have permission to view members of this organization.
+          {t("organization.members.accessDenied.description")}
         </AlertDescription>
       </Alert>
     );

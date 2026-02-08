@@ -12,7 +12,7 @@ export function ThemeToggle() {
   return (
     <div className="flex items-center space-x-1">
       <span className="mr-2">{t("common.theme")}</span>
-      <div title="Light mode">
+      <div title={t("theme.light")}>
         <Sun
           className={cn(
             theme === "light" ? "text-primary-accent" : "",
@@ -27,7 +27,7 @@ export function ThemeToggle() {
           }}
         />
       </div>
-      <div title="Dark mode">
+      <div title={t("theme.dark")}>
         <Moon
           className={cn(
             theme === "dark" ? "text-primary-accent" : "",
@@ -42,7 +42,7 @@ export function ThemeToggle() {
           }}
         />
       </div>
-      <div title="System mode">
+      <div title={t("theme.system")}>
         <Monitor
           className={cn(
             theme === "system" ? "text-primary-accent" : "",

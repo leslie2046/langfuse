@@ -56,7 +56,10 @@ export const RoleSelectItem = ({
             </div>
           ) : (
             <>
-              <div className="font-bold">Role: {formatRole(role, t)}</div>
+              <div className="font-bold">
+                {t("organization.members.tooltips.rolePrefix")}
+                {formatRole(role, t)}
+              </div>
               <p className="mt-2 text-xs font-semibold">
                 {t("organization.members.tooltips.orgScopes")}
               </p>
@@ -66,11 +69,11 @@ export const RoleSelectItem = ({
               </p>
               <ul className="list-inside list-disc text-xs">{projectScopes}</ul>
               <p className="mt-2 border-t pt-2 text-xs">
-                Note:{" "}
+                {t("organization.members.tooltips.notePrefix")}
                 <span className="text-muted-foreground">
                   {t("organization.members.tooltips.inheritedScopes")}
-                </span>{" "}
-                are inherited from lower role.
+                </span>
+                {t("organization.members.tooltips.inheritedSuffix")}
               </p>
             </>
           )}

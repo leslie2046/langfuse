@@ -64,6 +64,7 @@ import {
   MAX_PIVOT_TABLE_DIMENSIONS,
   MAX_PIVOT_TABLE_METRICS,
 } from "@/src/features/widgets/utils/pivot-table-utils";
+import { useTranslation } from "@/src/features/i18n";
 
 type ChartType = {
   group: "time-series" | "total-value";
@@ -136,6 +137,32 @@ const chartTypes: ChartType[] = [
   },
 ];
 
+const getChartTypeName = (
+  value: DashboardWidgetChartType,
+  t: (key: string) => string,
+) => {
+  switch (value) {
+    case "NUMBER":
+      return t("widget.chartTypes.bigNumber");
+    case "LINE_TIME_SERIES":
+      return t("widget.chartTypes.lineChart");
+    case "BAR_TIME_SERIES":
+      return t("widget.chartTypes.verticalBarChart");
+    case "HORIZONTAL_BAR":
+      return t("widget.chartTypes.horizontalBarChart");
+    case "VERTICAL_BAR":
+      return t("widget.chartTypes.verticalBarChart");
+    case "HISTOGRAM":
+      return t("widget.chartTypes.histogram");
+    case "PIE":
+      return t("widget.chartTypes.pieChart");
+    case "PIVOT_TABLE":
+      return t("widget.chartTypes.pivotTable");
+    default:
+      return value;
+  }
+};
+
 /**
  * Interface for representing a selected metric combination
  * Combines measure and aggregation into a single selectable entity
@@ -185,6 +212,7 @@ export function WidgetForm({
   widgetId?: string;
 }) {
   // State for form fields
+  const { t } = useTranslation();
   const [widgetName, setWidgetName] = useState<string>(initialValues.name);
   const [widgetDescription, setWidgetDescription] = useState<string>(
     initialValues.description,
@@ -1092,9 +1120,9 @@ export function WidgetForm({
       <div className="h-full w-1/3 min-w-[430px]">
         <Card className="flex h-full flex-col">
           <CardHeader>
-            <CardTitle>Widget Configuration</CardTitle>
+            <CardTitle>{t("widget.configuration.title")}</CardTitle>
             <CardDescription>
-              Configure your widget by selecting data and visualization options
+              {t("widget.configuration.description")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 overflow-y-auto">
@@ -1592,11 +1620,13 @@ export function WidgetForm({
 
             {/* Visualization Section */}
             <div className="mt-6 space-y-4">
-              <h3 className="text-lg font-bold">Visualization</h3>
+              <h3 className="text-lg font-bold">
+                {t("widget.visualization.title")}
+              </h3>
 
               {/* Widget Name */}
               <div className="space-y-2">
-                <Label htmlFor="widget-name">Name</Label>
+                <Label htmlFor="widget-name">{t("widget.form.name")}</Label>
                 <Input
                   id="widget-name"
                   value={widgetName}
@@ -1610,7 +1640,9 @@ export function WidgetForm({
 
               {/* Widget Description */}
               <div className="space-y-2">
-                <Label htmlFor="widget-description">Description</Label>
+                <Label htmlFor="widget-description">
+                  {t("widget.form.description")}
+                </Label>
                 <Input
                   id="widget-description"
                   value={widgetDescription}
@@ -1624,7 +1656,9 @@ export function WidgetForm({
 
               {/* Chart Type Selection */}
               <div className="space-y-2">
-                <Label htmlFor="chart-type-select">Chart Type</Label>
+                <Label htmlFor="chart-type-select">
+                  {t("widget.form.chartType")}
+                </Label>
                 <Select
                   value={selectedChartType}
                   onValueChange={setSelectedChartType}
@@ -1643,7 +1677,7 @@ export function WidgetForm({
                               {React.createElement(chart.icon, {
                                 className: "mr-2 w-4",
                               })}
-                              <span>{chart.name}</span>
+                              <span>{getChartTypeName(chart.value, t)}</span>
                             </div>
                           </SelectItem>
                         ))}
@@ -1658,7 +1692,7 @@ export function WidgetForm({
                               {React.createElement(chart.icon, {
                                 className: "mr-2 w-4",
                               })}
-                              <span>{chart.name}</span>
+                              <span>{getChartTypeName(chart.value, t)}</span>
                             </div>
                           </SelectItem>
                         ))}
@@ -1668,7 +1702,9 @@ export function WidgetForm({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="date-select">Date Range</Label>
+                <Label htmlFor="date-select">
+                  {t("widget.form.dateRange")}
+                </Label>
                 <DatePickerWithRange
                   dateRange={dateRange}
                   setDateRangeAndOption={(option, range) => {
@@ -1736,7 +1772,7 @@ export function WidgetForm({
           </CardContent>
           <CardFooter className="mt-auto">
             <Button className="w-full" size="lg" onClick={handleSaveWidget}>
-              Save Widget
+              {t("widget.form.save")}
             </Button>
           </CardFooter>
         </Card>

@@ -1,4 +1,69 @@
 {
+  "account": {
+    "displayName": {
+      "title": "显示名称",
+      "successTitle": "显示名称已更新",
+      "successDescription": "您的显示名称已成功更新。",
+      "updating": "您的显示名称将从",
+      "to": "更新为",
+      "current": "您的显示名称当前为",
+      "save": "保存"
+    },
+    "email": {
+      "title": "邮箱",
+      "label": "您的邮箱地址："
+    },
+    "password": {
+      "title": "密码",
+      "description": "要更改您的密码，我们将向您的邮箱发送一个安全链接。点击下方按钮开始密码重置流程。",
+      "button": "更改密码"
+    },
+    "delete": {
+      "title": "删除您的账户",
+      "description": "如果您不是任何组织的最后一位所有者，您可以删除您的账户。如果您是最后一位所有者，请先添加另一位所有者或删除该组织及所有项目。",
+      "button": "删除账户",
+      "successTitle": "账户已删除",
+      "successDescription": "您的账户已成功删除。",
+      "error": "删除账户失败",
+      "dialog": {
+        "title": "删除账户",
+        "blocking": "您无法删除账户，因为您是以下组织的最后一位所有者：",
+        "instruction": "请在删除账户之前添加另一位所有者或删除这些组织。",
+        "confirmPrefix": "确认删除，请在输入框中输入您的邮箱地址",
+        "confirmSuffix": ""
+      }
+    },
+    "general": {
+      "title": "常规"
+    },
+    "settings": {
+      "title": "账户设置"
+    }
+  },
+  "project": {
+    "transfer": {
+      "button": "转移项目",
+      "successTitle": "项目已转移",
+      "successDescription": "项目已成功转移到新组织。正在重定向...",
+      "dialog": {
+        "title": "转移项目"
+      },
+      "warning": {
+        "title": "警告",
+        "description": "转移项目会将其移动到另一个组织：",
+        "point1": "如果不属于新组织的成员，将失去访问权限。",
+        "point2": "项目将保持完全运行，API 密钥、设置和数据保持不变。所有功能（例如追踪、提示词管理）将继续不间断工作。"
+      },
+      "form": {
+        "selectOrg": "选择新组织",
+        "placeholder": "选择组织",
+        "description": "将此项目转移到您有权创建项目的另一个组织。",
+        "confirm": "确认",
+        "confirmInstruction": "确认操作，请在输入框中输入",
+        "confirmSuffix": ""
+      }
+    }
+  },
   "navigation": {
     "goTo": "跳转到...",
     "organizations": "组织",
@@ -40,6 +105,7 @@
     "evaluation": "评估"
   },
   "common": {
+    "noAccess": "无访问权限",
     "organization": "组织",
     "project": "项目",
     "loading": "加载中",
@@ -222,16 +288,7 @@
       "searchModels": "搜索模型...",
       "noModelFound": "未找到模型。",
       "allModels": "所有模型",
-      "selectedModels": "已选择 {count} 个",
-      "delete": {
-        "button": "删除组件",
-        "confirmTitle": "请确认",
-        "confirmDescription": "此操作将永久删除该组件。如果组件目前在任何仪表盘中使用，您需要先从这些仪表盘中移除它。",
-        "success": "组件已删除",
-        "error": "删除组件失败",
-        "inUseTitle": "组件正在使用中",
-        "inUseDescription": "组件仍在使用中。请在删除之前将其从所有仪表盘中移除。"
-      }
+      "selectedModels": "已选择 {count} 个"
     },
 
     "columns": {
@@ -419,7 +476,9 @@
     "billing": "账单",
     "debugInformation": "调试信息",
     "metadata": "元数据",
-    "dangerZone": "危险区域",
+    "dangerZone": {
+      "title": "危险区域"
+    },
     "transferOwnership": "转移所有权",
     "transferOwnershipDesc": "将此项目转移到您有权创建项目的其他组织。",
     "deleteProject": "删除此项目",
@@ -571,7 +630,39 @@
         "chartType": "图表类型",
         "createdAt": "创建时间",
         "updatedAt": "更新时间",
-        "actions": "操作"
+        "actions": "操作",
+        "delete": {
+          "button": "删除组件",
+          "confirmTitle": "请确认",
+          "confirmDescription": "此操作将永久删除该组件。如果组件目前在任何仪表盘中使用，您需要先从这些仪表盘中移除它。",
+          "success": "组件已删除",
+          "error": "删除组件失败",
+          "inUseTitle": "组件正在使用中",
+          "inUseDescription": "组件仍在使用中。请在删除之前将其从所有仪表盘中移除。"
+        }
+      },
+      "chartTypes": {
+        "bigNumber": "数字",
+        "lineChart": "折线图",
+        "verticalBarChart": "垂直柱状图",
+        "horizontalBarChart": "水平柱状图",
+        "histogram": "直方图",
+        "pieChart": "饼图",
+        "pivotTable": "透视表"
+      },
+      "configuration": {
+        "title": "组件配置",
+        "description": "通过选择数据和可视化选项来配置您的组件"
+      },
+      "visualization": {
+        "title": "可视化"
+      },
+      "form": {
+        "name": "名称",
+        "description": "描述",
+        "chartType": "图表类型",
+        "dateRange": "日期范围",
+        "save": "保存组件"
       }
     }
   },
@@ -1100,6 +1191,7 @@
   },
   "models": {
     "title": "模型定义",
+    "clone": "克隆模型",
     "description": "存储 LLM 模型定价信息的配置。模型定义指定每个输入和输出 Token 的成本，使 Langfuse 能够根据 Token 使用情况自动计算生成价格。",
     "modelNameDescription": "标准化模型名称。如果生成内容在摄取时匹配 `matchPattern`，则会分配给此模型名称。",
     "matchPatternDescription": "用于匹配生成内容的 `model` 参数以应用模型定价的正则表达式模式",
@@ -1123,10 +1215,17 @@
     "testMatch": {
       "btn": "测试模型匹配",
       "title": "测试模型匹配",
-      "description": "测试您的输入数据将匹配哪个模型和定价层级。",
+      "description": "测试您的输入数据将匹配哪个模型和定价层级。留空以匹配默认层级。",
       "modelName": "模型名称 *",
       "modelNameDesc": "生成中的模型名称。",
-      "submit": "测试匹配"
+      "submit": "测试匹配",
+      "usageDetails": "用量详情（可选）",
+      "prefill": "从模板预填:",
+      "openAI": "OpenAI",
+      "anthropic": "Anthropic",
+      "usageType": "用量类型",
+      "value": "值",
+      "addUsageType": "添加用量类型"
     },
     "upsert": {
       "createTitle": "创建模型",
@@ -1239,6 +1338,10 @@
   "organization": {
     "members": {
       "title": "组织成员",
+      "accessDenied": {
+        "title": "访问被拒绝",
+        "description": "您没有查看此组织成员的权限。"
+      },
       "addMember": "添加新成员",
       "addProjectMember": "添加项目成员",
       "addMemberToTarget": "添加新成员到{{target}}",
@@ -1282,7 +1385,10 @@
         "inheritedScopes": "灰色权限",
         "editOrgRolePre": "组织级角色可以在",
         "editOrgRoleLink": "组织设置",
-        "editOrgRolePost": "中编辑。"
+        "editOrgRolePost": "中编辑。",
+        "rolePrefix": "角色：",
+        "notePrefix": "注意：",
+        "inheritedSuffix": "是从较低级别角色继承的。"
       },
       "naOnPlan": "当前计划不可用",
       "userAvatar": "用户头像",
@@ -1307,6 +1413,7 @@
       "apiKeys": "API 密钥",
       "auditLogs": "审计日志"
     },
+
     "rename": {
       "title": "组织名称",
       "currentName": "您的组织当前名称为",
@@ -1317,6 +1424,18 @@
     "debug": {
       "title": "调试信息",
       "metadata": "元数据"
+    },
+    "aiFeatures": {
+      "title": "AI 功能",
+      "enableForOrg": "为您的组织启用 AI 驱动的功能",
+      "description": "此设置适用于所有用户和项目。任何数据 <i>可以</i> 被发送到 Langfuse 数据区域内的 AWS Bedrock。追踪数据被发送到您数据区域内的 Langfuse Cloud。您的数据将不会用于训练模型。适用的 HIPAA、SOC2、GDPR 和 ISO 27001 合规性保持不变。",
+      "moreDetails": "更多详情请参阅文档。",
+      "confirmTitle": "确认 AI 功能变更",
+      "confirmDescription": "您即将 <strong>{status}</strong> 您的组织的 AI 功能。启用后，任何数据 <i>可以</i> 被发送到您数据区域内的 AWS Bedrock 进行处理。",
+      "enable": "启用",
+      "disable": "禁用",
+      "learnMore": "在文档中了解更多。",
+      "areYouSure": "您确定要继续吗？"
     },
     "dangerZone": {
       "title": "危险区域",
@@ -1377,8 +1496,10 @@
     "updateError": "更新通知首选项失败。请重试。"
   },
   "tracing": {
-    "setup": "Tracing 设置",
-    "setupDescription": "设置 Tracing 以跟踪和分析您的 LLM 调用。您可以创建 API Key 并将 Langfuse 集成到您的应用程序中。",
+    "setup": {
+      "title": "Tracing 设置",
+      "description": "设置 Tracing 以跟踪和分析您的 LLM 调用。您可以创建 API Key 并将 Langfuse 集成到您的应用程序中。"
+    },
     "getApiKeys": "1. 获取 API Key",
     "getApiKeysDescription": "您需要创建一个 API Key 来开始跟踪您的应用程序。您稍后可以在项目设置中创建更多密钥。",
     "createApiKey": "创建新 API Key",
@@ -1391,6 +1512,12 @@
     "secretKey": "Secret Key",
     "secretKeyDescription": "此密钥只能查看一次。您随时可以在项目设置中创建新密钥。",
     "publicKey": "Public Key"
+  },
+
+  "theme": {
+    "light": "亮色模式",
+    "dark": "暗色模式",
+    "system": "跟随系统"
   },
   "setup": {
     "title": "设置",
@@ -1411,17 +1538,5 @@
     },
     "next": "下一步",
     "helpDescription": "创建一个新组织。这将用于管理您的项目和团队。"
-  },
-  "models": {
-    "testMatch": {
-      "usageDetails": "用量详情（可选）",
-      "description": "添加用量详情以测试定价层级匹配。留空以匹配默认层级。",
-      "prefill": "从模板预填:",
-      "openAI": "OpenAI",
-      "anthropic": "Anthropic",
-      "usageType": "用量类型",
-      "value": "值",
-      "addUsageType": "添加用量类型"
-    }
   }
 }

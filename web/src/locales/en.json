@@ -1,4 +1,69 @@
 {
+  "account": {
+    "displayName": {
+      "title": "Display Name",
+      "successTitle": "Display Name Updated",
+      "successDescription": "Your display name has been successfully updated.",
+      "updating": "Your display name will be updated from",
+      "to": "to",
+      "current": "Your display name is currently",
+      "save": "Save"
+    },
+    "email": {
+      "title": "Email",
+      "label": "Your email address:"
+    },
+    "password": {
+      "title": "Password",
+      "description": "To change your password, we will send you a secure link to your email address. Click the button below to start the password reset process.",
+      "button": "Change Password"
+    },
+    "delete": {
+      "title": "Delete your account",
+      "description": "You can delete your account if you are not the last owner of any organization. If you are the last owner, please add another owner or delete the organization and all projects first.",
+      "button": "Delete Account",
+      "successTitle": "Account Deleted",
+      "successDescription": "Your account has been successfully deleted.",
+      "error": "Failed to Delete Account",
+      "dialog": {
+        "title": "Delete Account",
+        "blocking": "You cannot delete your account because you are the last owner of the following organization(s):",
+        "instruction": "Please add another owner or delete these organizations before deleting your account.",
+        "confirmPrefix": "To confirm, type your email address",
+        "confirmSuffix": "in the input box"
+      }
+    },
+    "general": {
+      "title": "General"
+    },
+    "settings": {
+      "title": "Account Settings"
+    }
+  },
+  "project": {
+    "transfer": {
+      "button": "Transfer Project",
+      "successTitle": "Project transferred",
+      "successDescription": "The project is successfully transferred to the new organization. Redirecting...",
+      "dialog": {
+        "title": "Transfer Project"
+      },
+      "warning": {
+        "title": "Warning",
+        "description": "Transferring the project will move it to a different organization:",
+        "point1": "Members who are not part of the new organization will lose access.",
+        "point2": "The project remains fully operational as API keys, settings, and data will remain unchanged. All features (e.g. tracing, prompt management) will continue to work without interruption."
+      },
+      "form": {
+        "selectOrg": "Select New Organization",
+        "placeholder": "Select organization",
+        "description": "Transfer this project to another organization where you have the ability to create projects.",
+        "confirm": "Confirm",
+        "confirmInstruction": "To confirm, type",
+        "confirmSuffix": "in the input box"
+      }
+    }
+  },
   "navigation": {
     "goTo": "Go to...",
     "organizations": "Organizations",
@@ -40,6 +105,7 @@
     "evaluation": "Evaluation"
   },
   "common": {
+    "noAccess": "No access",
     "organization": "Organization",
     "project": "Project",
     "loading": "Loading",
@@ -222,16 +288,7 @@
       "searchModels": "Search models...",
       "noModelFound": "No model found.",
       "allModels": "All models",
-      "selectedModels": "{count} selected",
-      "delete": {
-        "button": "Delete Widget",
-        "confirmTitle": "Please confirm",
-        "confirmDescription": "This action permanently deletes this widget. If the widget is currently used in any dashboard, you will need to remove it from those dashboards first.",
-        "success": "Widget deleted",
-        "error": "Failed to delete widget",
-        "inUseTitle": "Widget in use",
-        "inUseDescription": "Widget is still in use. Please remove it from all dashboards before deleting it."
-      }
+      "selectedModels": "{count} selected"
     },
 
     "columns": {
@@ -419,7 +476,9 @@
     "billing": "Billing",
     "debugInformation": "Debug Information",
     "metadata": "Metadata",
-    "dangerZone": "Danger Zone",
+    "dangerZone": {
+      "title": "Danger Zone"
+    },
     "transferOwnership": "Transfer ownership",
     "transferOwnershipDesc": "Transfer this project to another organization where you have the ability to create projects.",
     "deleteProject": "Delete this project",
@@ -571,7 +630,39 @@
         "chartType": "Chart Type",
         "createdAt": "Created At",
         "updatedAt": "Updated At",
-        "actions": "Actions"
+        "actions": "Actions",
+        "delete": {
+          "button": "Delete Widget",
+          "confirmTitle": "Please confirm",
+          "confirmDescription": "This action permanently deletes this widget. If the widget is currently used in any dashboard, you will need to remove it from those dashboards first.",
+          "success": "Widget deleted",
+          "error": "Failed to delete widget",
+          "inUseTitle": "Widget in use",
+          "inUseDescription": "Widget is still in use. Please remove it from all dashboards before deleting it."
+        }
+      },
+      "chartTypes": {
+        "bigNumber": "Big Number",
+        "lineChart": "Line Chart",
+        "verticalBarChart": "Vertical Bar Chart",
+        "horizontalBarChart": "Horizontal Bar Chart",
+        "histogram": "Histogram",
+        "pieChart": "Pie Chart",
+        "pivotTable": "Pivot Table"
+      },
+      "configuration": {
+        "title": "Widget Configuration",
+        "description": "Configure your widget by selecting data and visualization options"
+      },
+      "visualization": {
+        "title": "Visualization"
+      },
+      "form": {
+        "name": "Name",
+        "description": "Description",
+        "chartType": "Chart Type",
+        "dateRange": "Date Range",
+        "save": "Save Widget"
       }
     }
   },
@@ -1100,6 +1191,7 @@
   },
   "models": {
     "title": "Model Definitions",
+    "clone": "Clone model",
     "description": "A configuration that stores pricing information for an LLM model. Model definitions specify the cost per input and output token, enabling Langfuse to automatically calculate the price of generations based on token usage.",
     "modelNameDescription": "Standardized model name. Generations are assigned to this model name if they match the `matchPattern` upon ingestion.",
     "matchPatternDescription": "Regex pattern to match `model` parameter of generations to model pricing",
@@ -1123,10 +1215,17 @@
     "testMatch": {
       "btn": "Test Model Match",
       "title": "Test Model Match",
-      "description": "Test which model and pricing tier your ingestion data would match against.",
+      "description": "Test which model and pricing tier your ingestion data would match against. Leave empty to match the default tier.",
       "modelName": "Model Name *",
       "modelNameDesc": "The model name on your generations.",
-      "submit": "Test Match"
+      "submit": "Test Match",
+      "usageDetails": "Usage Details (optional)",
+      "prefill": "Prefill from template:",
+      "openAI": "OpenAI",
+      "anthropic": "Anthropic",
+      "usageType": "Usage Type",
+      "value": "Value",
+      "addUsageType": "Add Usage Type"
     },
     "upsert": {
       "createTitle": "Create Model",
@@ -1239,6 +1338,10 @@
   "organization": {
     "members": {
       "title": "Organization Members",
+      "accessDenied": {
+        "title": "Access Denied",
+        "description": "You do not have permission to view members of this organization."
+      },
       "addMember": "Add new member",
       "addProjectMember": "Add project member",
       "addMemberToTarget": "Add new member to the {{target}}",
@@ -1279,10 +1382,13 @@
         "orgNoneRole": "User has no access to this organization.",
         "orgScopes": "Organization Scopes",
         "projectScopes": "Project Scopes",
-        "inheritedScopes": "Muted scopes",
-        "editOrgRolePre": "The organization-level role can be edited in the ",
-        "editOrgRoleLink": "organization settings",
-        "editOrgRolePost": "."
+        "inheritedScopes": "Gray scopes",
+        "editOrgRolePre": "Cloud-level roles can be edited in ",
+        "editOrgRoleLink": "Organization Settings",
+        "editOrgRolePost": ".",
+        "rolePrefix": "Role: ",
+        "notePrefix": "Note: ",
+        "inheritedSuffix": " are inherited from lower role."
       },
       "naOnPlan": "N/A on plan",
       "userAvatar": "User Avatar",
@@ -1307,6 +1413,7 @@
       "apiKeys": "API Keys",
       "auditLogs": "Audit Logs"
     },
+
     "rename": {
       "title": "Organization Name",
       "currentName": "Your Organization is currently named",
@@ -1317,6 +1424,18 @@
     "debug": {
       "title": "Debug Information",
       "metadata": "Metadata"
+    },
+    "aiFeatures": {
+      "title": "AI Features",
+      "enableForOrg": "Enable AI powered features for your organization",
+      "description": "This setting applies to all users and projects. Any data <i>can</i> be sent to AWS Bedrock within the Langfuse data region. Traces are sent to Langfuse Cloud in your data region. Your data will not be used for training models. Applicable HIPAA, SOC2, GDPR, and ISO 27001 compliance remains intact.",
+      "moreDetails": "More details in the docs here.",
+      "confirmTitle": "Confirm AI Features Change",
+      "confirmDescription": "You are about to <strong>{status}</strong> AI features for your organization. When enabled, any data <i>can</i> be sent to AWS Bedrock in your data region for processing.",
+      "enable": "enable",
+      "disable": "disable",
+      "learnMore": "Learn more in the docs.",
+      "areYouSure": "Are you sure you want to proceed?"
     },
     "dangerZone": {
       "title": "Danger Zone",
@@ -1377,20 +1496,28 @@
     "updateError": "Failed to update notification preference. Please try again."
   },
   "tracing": {
-    "setup": "Tracing Setup",
-    "setupDescription": "Setup tracing to track and analyze your LLM calls. You can create API keys and integrate Langfuse with your application.",
-    "getApiKeys": "1. Get API keys",
-    "getApiKeysDescription": "You need to create an API key to start tracing your application. You can create more keys later in the project settings.",
-    "createApiKey": "Create new API key",
-    "manageApiKeys": "Manage API keys",
-    "addTracing": "2. Add tracing to your application",
-    "addTracingDescription": "Langfuse relies on OpenTelemetry to instrument your application and export LLM application/agent traces to Langfuse. You can use one of our SDKs or 50+ framework integrations. Please follow the quickstart in the documentation to add Langfuse to your application.",
-    "quickstart": "Quickstart guide",
+    "setup": {
+      "title": "Tracing Setup",
+      "description": "Set up tracing to track and analyze your LLM calls. You can create an API Key and integrate Langfuse into your application."
+    },
+    "getApiKeys": "1. Get API Key",
+    "getApiKeysDescription": "You need to create an API Key to start tracing your application. You can create more keys later in project settings.",
+    "createApiKey": "Create new API Key",
+    "manageApiKeys": "Manage API Keys",
+    "addTracing": "2. Add Tracing to your application",
+    "addTracingDescription": "Langfuse relies on OpenTelemetry to instrument your application and export LLM application/agent traces to Langfuse. You can use our SDKs or one of the 50+ framework integrations. Follow the quickstart in the docs to add Langfuse to your application.",
+    "quickstart": "Quickstart Guide",
     "pending": "Pending",
     "active": "Active",
     "secretKey": "Secret Key",
-    "secretKeyDescription": "This key can only be viewed once. You can always create new keys in the project settings.",
+    "secretKeyDescription": "This secret key can only be viewed once. You can always create new keys in the project settings.",
     "publicKey": "Public Key"
+  },
+
+  "theme": {
+    "light": "Light mode",
+    "dark": "Dark mode",
+    "system": "System mode"
   },
   "setup": {
     "title": "Setup",
@@ -1411,17 +1538,5 @@
     },
     "next": "Next",
     "helpDescription": "Create a new organization. This will be used to manage your projects and teams."
-  },
-  "models": {
-    "testMatch": {
-      "usageDetails": "Usage Details (optional)",
-      "description": "Add usage details to test pricing tier matching. Leave empty to match the default tier.",
-      "prefill": "Prefill from template:",
-      "openAI": "OpenAI",
-      "anthropic": "Anthropic",
-      "usageType": "Usage Type",
-      "value": "Value",
-      "addUsageType": "Add Usage Type"
-    }
   }
 }

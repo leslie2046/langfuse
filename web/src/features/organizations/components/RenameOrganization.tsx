@@ -100,7 +100,7 @@ export default function RenameOrganization() {
                         disabled={!hasAccess}
                       />
                       {!hasAccess && (
-                        <span title="No access">
+                        <span title={t("common.noAccess")}>
                           <LockIcon className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted" />
                         </span>
                       )}
