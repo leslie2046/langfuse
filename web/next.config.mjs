@@ -92,7 +92,7 @@ const nextConfig = {
     locales: ["en", "zh"],
     defaultLocale: "en",
   },
-  // output: "standalone",
+  output: "standalone",
 
   async headers() {
     return [
