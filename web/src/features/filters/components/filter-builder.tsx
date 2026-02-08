@@ -26,6 +26,7 @@ import {
   Info,
   Plus,
   WandSparkles,
+  Sparkles,
   X,
 } from "lucide-react";
 import {
@@ -531,15 +532,13 @@ function FilterBuilderForm({
                     ? t("common.filters.loading")
                     : t("common.filters.generateFilters")}
                 </Button>
-        <Tooltip>
+                <Tooltip>
                   <TooltipTrigger asChild>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent>
-                  <p className="max-w-xs">
-                    {t("common.filters.aiTooltip")}
-                  </p>
-                </TooltipContent>
+                    <p className="max-w-xs">{t("common.filters.aiTooltip")}</p>
+                  </TooltipContent>
                 </Tooltip>
               </div>
               {aiError && (
