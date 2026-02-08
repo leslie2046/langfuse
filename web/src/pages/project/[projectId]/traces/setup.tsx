@@ -91,6 +91,7 @@ export const TracingSetup = ({
 export default function TracesSetupPage() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
+  const { t } = useTranslation();
 
   // Check if the user has tracing configured
   const { data: hasTracingConfigured } =
@@ -119,10 +120,9 @@ export default function TracesSetupPage() {
   return (
     <ContainerPage
       headerProps={{
-        title: "Tracing Setup",
+        title: t("tracing.setup.title"),
         help: {
-          description:
-            "Setup tracing to track and analyze your LLM calls. You can create API keys and integrate Langfuse with your application.",
+          description: t("tracing.setup.description"),
           href: "https://langfuse.com/docs/observability/overview",
         },
       }}

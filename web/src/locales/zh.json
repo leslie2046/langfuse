@@ -5,6 +5,17 @@
     "projects": "项目",
     "home": "首页",
     "dashboards": "仪表盘",
+    "command": {
+      "placeholder": "输入命令或搜索...",
+      "noResults": "未找到结果。",
+      "mainNavigation": "主要导航",
+      "projects": "项目",
+      "dashboards": "仪表盘",
+      "projectSettings": "项目设置",
+      "organizationSettings": "组织设置",
+      "accountSettings": "账户设置"
+    },
+    "tracing": "追踪",
     "sessions": "会话",
     "users": "用户",
     "prompts": "提示词",
@@ -78,6 +89,32 @@
     "inactive": "非活动",
     "configure": "配置",
     "integrationDocs": "集成文档",
+    "datePicker": {
+      "pickDate": "选择日期",
+      "resetDate": "重置日期",
+      "start": "开始",
+      "startTime": "开始时间",
+      "end": "结束",
+      "endTime": "结束时间",
+      "selectFromCalendar": "从日历选择",
+      "selectTimeRange": "选择时间范围"
+    },
+    "dateRange": {
+      "last5Minutes": "最近 5 分钟",
+      "last30Minutes": "最近 30 分钟",
+      "last1Hour": "最近 1 小时",
+      "last3Hours": "最近 3 小时",
+      "last6Hours": "最近 6 小时",
+      "last1Day": "最近 1 天",
+      "last3Days": "最近 3 天",
+      "last7Days": "最近 7 天",
+      "last14Days": "最近 14 天",
+      "last30Days": "最近 30 天",
+      "last90Days": "最近 90 天",
+      "last1Year": "最近 1 年",
+      "allTime": "全部时间",
+      "custom": "自定义"
+    },
     "buttons": {
       "edit": "编辑",
       "save": "保存",
@@ -154,19 +191,11 @@
     "filters": {
       "filters": "筛选",
       "search": "搜索",
-      "datePicker": {
-        "pickDate": "选择日期",
-        "resetDate": "重置日期",
-        "start": "开始",
-        "startTime": "开始时间",
-        "end": "结束",
-        "endTime": "结束时间",
-        "selectFromCalendar": "从日历选择",
-        "selectTimeRange": "选择时间范围"
-      },
+
       "searchPlaceholder": "搜索...",
       "addFilter": "添加筛选",
-      "clearFilters": "清除所有筛选",
+      "clearFilters": "清除筛选",
+      "clearAllFilters": "清除所有筛选",
       "selectColumn": "选择列",
       "selectOperator": "选择运算符",
       "enterValue": "输入值",
@@ -188,24 +217,14 @@
       "loading": "加载中...",
       "aiTooltip": "我们将自然语言转换为确定的筛选条件，您可以稍后进行调整",
       "failedToGenerate": "生成筛选失败，请重试",
-      "invalidResponse": "API 响应格式无效"
+      "invalidResponse": "API 响应格式无效",
+      "selectAll": "全选",
+      "searchModels": "搜索模型...",
+      "noModelFound": "未找到模型。",
+      "allModels": "所有模型",
+      "selectedModels": "已选择 {count} 个"
     },
-    "dateRange": {
-      "last5Minutes": "最近 5 分钟",
-      "last30Minutes": "最近 30 分钟",
-      "last1Hour": "最近 1 小时",
-      "last3Hours": "最近 3 小时",
-      "last6Hours": "最近 6 小时",
-      "last1Day": "最近 1 天",
-      "last3Days": "最近 3 天",
-      "last7Days": "最近 7 天",
-      "last14Days": "最近 14 天",
-      "last30Days": "最近 30 天",
-      "last90Days": "最近 90 天",
-      "last1Year": "最近 1 年",
-      "allTime": "全部时间",
-      "custom": "自定义"
-    },
+
     "columns": {
       "showColumns": "列",
       "hideColumn": "隐藏列",
@@ -245,7 +264,11 @@
     "share": "分享",
     "unshare": "取消分享",
     "copyLink": "复制",
-    "copied": "已复制"
+    "copied": "已复制",
+    "setup": {
+      "title": "追踪设置",
+      "description": "设置追踪以跟踪和分析您的 LLM 调用。您可以创建 API 密钥并将 Langfuse 集成到您的应用程序中。"
+    }
   },
   "session": {
     "sessionUsers": "会话用户",
@@ -494,8 +517,16 @@
       "traces": "追踪包含关于 LLM 应用的详细信息，可以使用 SDK 创建。",
       "scores": "评分用于评估 LLM 质量，可以手动创建或使用 SDK 创建。"
     },
-    "showTop": "显示前",
-    "showAll": "显示全部"
+    "showTop": "显示前几名",
+    "showAll": "显示全部",
+    "scoresAnalytics": {
+      "title": "评分分析",
+      "description": "随时间变化的评分聚合和平均值",
+      "totalAggregateScores": "总聚合评分",
+      "movingAverage": "随时间变化的移动平均值",
+      "scoresOverTime": "随时间变化的评分",
+      "selectScore": "选择一个评分以查看分析"
+    }
   },
   "onboarding": {
     "traces": {
