@@ -222,7 +222,16 @@
       "searchModels": "Search models...",
       "noModelFound": "No model found.",
       "allModels": "All models",
-      "selectedModels": "{count} selected"
+      "selectedModels": "{count} selected",
+      "delete": {
+        "button": "Delete Widget",
+        "confirmTitle": "Please confirm",
+        "confirmDescription": "This action permanently deletes this widget. If the widget is currently used in any dashboard, you will need to remove it from those dashboards first.",
+        "success": "Widget deleted",
+        "error": "Failed to delete widget",
+        "inUseTitle": "Widget in use",
+        "inUseDescription": "Widget is still in use. Please remove it from all dashboards before deleting it."
+      }
     },
 
     "columns": {

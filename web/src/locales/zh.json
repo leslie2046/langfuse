@@ -222,7 +222,16 @@
       "searchModels": "搜索模型...",
       "noModelFound": "未找到模型。",
       "allModels": "所有模型",
-      "selectedModels": "已选择 {count} 个"
+      "selectedModels": "已选择 {count} 个",
+      "delete": {
+        "button": "删除组件",
+        "confirmTitle": "请确认",
+        "confirmDescription": "此操作将永久删除该组件。如果组件目前在任何仪表盘中使用，您需要先从这些仪表盘中移除它。",
+        "success": "组件已删除",
+        "error": "删除组件失败",
+        "inUseTitle": "组件正在使用中",
+        "inUseDescription": "组件仍在使用中。请在删除之前将其从所有仪表盘中移除。"
+      }
     },
 
     "columns": {

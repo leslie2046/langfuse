@@ -23,7 +23,7 @@ import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePos
 import { showErrorToast } from "@/src/features/notifications/showErrorToast";
 import { useRouter } from "next/router";
 import { getChartTypeDisplayName } from "@/src/features/widgets/chart-library/utils";
-import { getChartTypeDisplayName } from "@/src/features/widgets/chart-library/utils";
+
 import { type DashboardWidgetChartType } from "@langfuse/shared/src/db";
 import { useTranslation } from "@/src/features/i18n";
 
@@ -48,6 +48,7 @@ export function DeleteWidget({
   const projectId = useProjectIdFromURL();
   const utils = api.useUtils();
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
   const hasAccess =
     useHasProjectAccess({ projectId, scope: "dashboards:CUD" }) &&
     owner !== "LANGFUSE";
@@ -61,11 +62,11 @@ export function DeleteWidget({
     onError: (error) => {
       if (error.data?.code === "CONFLICT") {
         showErrorToast(
-          "Widget in use",
-          "Widget is still in use. Please remove it from all dashboards before deleting it.",
+          t("dashboard.widgets.delete.inUseTitle"),
+          t("dashboard.widgets.delete.inUseDescription"),
         );
       } else {
-        showErrorToast("Failed to delete widget", error.message);
+        showErrorToast(t("dashboard.widgets.delete.error"), error.message);
       }
     },
   });
@@ -78,11 +79,9 @@ export function DeleteWidget({
         </Button>
       </PopoverTrigger>
       <PopoverContent>
-        <h2 className="text-md mb-3 font-semibold">Please confirm</h2>
+        <h2 className="text-md mb-3 font-semibold">{t("dashboard.widgets.delete.confirmTitle")}</h2>
         <p className="mb-3 text-sm">
-          This action permanently deletes this widget. If the widget is
-          currently used in any dashboard, you will need to remove it from those
-          dashboards first.
+          {t("dashboard.widgets.delete.confirmDescription")}
         </p>
         <div className="flex justify-end space-x-4">
           <Button
@@ -102,7 +101,8 @@ export function DeleteWidget({
               setIsOpen(false);
             }}
           >
-            Delete Widget
+
+            {t("dashboard.widgets.delete.button")}
           </Button>
         </div>
       </PopoverContent>
