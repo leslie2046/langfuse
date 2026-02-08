@@ -58,7 +58,9 @@ const OrganizationProjectTiles = ({
             {!project.deletedAt ? (
               <CardFooter className="gap-2">
                 <Button asChild variant="secondary">
-                  <Link href={`/project/${project.id}`}>{t("organization.projectOverview.goToProject")}</Link>
+                  <Link href={`/project/${project.id}`}>
+                    {t("organization.projectOverview.goToProject")}
+                  </Link>
                 </Button>
                 <Button asChild variant="ghost">
                   <Link href={`/project/${project.id}/settings`}>
@@ -68,7 +70,9 @@ const OrganizationProjectTiles = ({
               </CardFooter>
             ) : (
               <CardContent>
-                <CardDescription>{t("organization.projectOverview.projectDeleting")}</CardDescription>
+                <CardDescription>
+                  {t("organization.projectOverview.projectDeleting")}
+                </CardDescription>
               </CardContent>
             )}
           </Card>
@@ -280,7 +284,9 @@ export const OrganizationProjectOverview = () => {
       headerProps={{
         title: t("navigation.organizations"),
         help: {
-          description: t("organization.projectOverview.organizationDescription"),
+          description: t(
+            "organization.projectOverview.organizationDescription",
+          ),
           href: "https://langfuse.com/docs/rbac",
         },
         breadcrumb: [

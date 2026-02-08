@@ -413,7 +413,9 @@ export const NewPromptForm: React.FC<NewPromptFormProps> = (props) => {
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>{t("pages.prompts.form.productionLabel")}</FormLabel>
+                  <FormLabel>
+                    {t("pages.prompts.form.productionLabel")}
+                  </FormLabel>
                 </div>
               </div>
             </FormItem>

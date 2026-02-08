@@ -49,7 +49,6 @@ export type ModelTableRow = {
   serverResponse: GetModelResult;
 };
 
-
 export default function ModelTable({ projectId }: { projectId: string }) {
   const { t } = useTranslation();
   const router = useRouter();

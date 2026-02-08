@@ -128,7 +128,6 @@ function EditDashboardButton({
   );
 }
 
-
 export function DashboardTable() {
   const projectId = useProjectIdFromURL() as string;
   const { setDetailPageList } = useDetailPageLists();

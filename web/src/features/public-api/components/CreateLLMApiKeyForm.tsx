@@ -58,10 +58,7 @@ const createFormSchema = (
       provider: z
         .string()
         .min(1, t("llmApiKeys.form.errors.providerRequired"))
-        .regex(
-          /^[^:]+$/,
-          t("llmApiKeys.form.errors.providerFormat"),
-        ),
+        .regex(/^[^:]+$/, t("llmApiKeys.form.errors.providerFormat")),
       adapter: z.nativeEnum(LLMAdapter),
       baseURL: z.union([z.literal(""), z.url()]),
       withDefaultModels: z.boolean(),
@@ -130,8 +127,9 @@ const createFormSchema = (
         return data.withDefaultModels || data.customModels.length > 0;
       },
       {
-        message:
-          t("llmApiKeys.form.errors.customModelRequiredWhenDefaultDisabled"),
+        message: t(
+          "llmApiKeys.form.errors.customModelRequiredWhenDefaultDisabled",
+        ),
         path: ["withDefaultModels"],
       },
     )
@@ -238,7 +236,6 @@ export function CreateLLMApiKeyForm({
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues:
-
       mode === "update" && existingKey
         ? {
             adapter: existingKey.adapter as LLMAdapter,
@@ -747,9 +744,7 @@ export function CreateLLMApiKeyForm({
               {!isLangfuseCloud && (
                 <div className="space-y-2 border-l-2 border-blue-200 pl-4 text-sm text-muted-foreground">
                   <p>
-                    <strong>
-                      {t("llmApiKeys.form.awsDefaultChainTitle")}
-                    </strong>{" "}
+                    <strong>{t("llmApiKeys.form.awsDefaultChainTitle")}</strong>{" "}
                     {t("llmApiKeys.form.awsDefaultChainDescription")}
                   </p>
                   <ul className="ml-2 list-inside list-disc space-y-1">
@@ -1012,24 +1007,20 @@ export function CreateLLMApiKeyForm({
                   name="vertexAILocation"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("llmApiKeys.form.locationGlobal")}</FormLabel>
+                      <FormLabel>
+                        {t("llmApiKeys.form.locationGlobal")}
+                      </FormLabel>
                       <FormDescription>
                         {t("llmApiKeys.form.locationGlobalDescription")}
                       </FormDescription>
                       <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="global"
-                          data-1p-ignore
-                        />
+                        <Input {...field} placeholder="global" data-1p-ignore />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               )}
-
-
 
               {/* Extra Headers */}
               {currentAdapter === LLMAdapter.OpenAI &&

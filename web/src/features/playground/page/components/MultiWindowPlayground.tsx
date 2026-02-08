@@ -188,7 +188,9 @@ function PlaygroundWindowContent({
                         className="h-7 gap-1.5 px-2.5 text-xs @xl:hidden"
                       >
                         <Plus size={14} />
-                        <span className="sr-only">{t("playground.newSplitWindow")}</span>
+                        <span className="sr-only">
+                          {t("playground.newSplitWindow")}
+                        </span>
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent className="text-xs">

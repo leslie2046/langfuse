@@ -17,7 +17,9 @@ export default function NewDashboard() {
   const { t } = useTranslation();
 
   // State for new dashboard
-  const [dashboardName, setDashboardName] = useState(t("pages.dashboards.create.title"));
+  const [dashboardName, setDashboardName] = useState(
+    t("pages.dashboards.create.title"),
+  );
   const [dashboardDescription, setDashboardDescription] = useState("");
 
   // Check project access
@@ -90,7 +92,9 @@ export default function NewDashboard() {
     >
       <div className="mx-auto my-8 max-w-xl space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="dashboard-name">{t("pages.dashboards.create.nameLabel")}</Label>
+          <Label htmlFor="dashboard-name">
+            {t("pages.dashboards.create.nameLabel")}
+          </Label>
           <Input
             id="dashboard-name"
             value={dashboardName}
@@ -103,7 +107,9 @@ export default function NewDashboard() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="dashboard-description">{t("pages.dashboards.create.descLabel")}</Label>
+          <Label htmlFor="dashboard-description">
+            {t("pages.dashboards.create.descLabel")}
+          </Label>
           <Textarea
             id="dashboard-description"
             value={dashboardDescription}
@@ -116,9 +122,7 @@ export default function NewDashboard() {
         </div>
 
         <div className="text-sm text-muted-foreground">
-          <p>
-            {t("pages.dashboards.create.helpText")}
-          </p>
+          <p>{t("pages.dashboards.create.helpText")}</p>
         </div>
       </div>
     </Page>

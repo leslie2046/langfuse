@@ -76,9 +76,7 @@ export function BatchExportsTable(props: { projectId: string }) {
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="space-y-1">
-                    <div>
-                      Created: {new Date(createdAt).toLocaleString()}
-                    </div>
+                    <div>Created: {new Date(createdAt).toLocaleString()}</div>
                     <div>
                       Finished:{" "}
                       {finishedAt ? new Date(finishedAt).toLocaleString() : "-"}

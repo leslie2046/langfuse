@@ -111,7 +111,9 @@ export const SaveToPromptButton: React.FC<SaveToPromptButtonProps> = ({
               </Button>
             </PopoverTrigger>
           </TooltipTrigger>
-          <TooltipContent className="text-xs">{t("playground.saveAsPrompt")}</TooltipContent>
+          <TooltipContent className="text-xs">
+            {t("playground.saveAsPrompt")}
+          </TooltipContent>
         </Tooltip>
         <PopoverTrigger asChild>
           <Button
@@ -137,7 +139,9 @@ export const SaveToPromptButton: React.FC<SaveToPromptButtonProps> = ({
             />
             <InputCommandEmpty>
               {t("playground.noChatPromptFound")}
-              <DocPopup description={t("playground.promptsFromPlaygroundDescription")} />
+              <DocPopup
+                description={t("playground.promptsFromPlaygroundDescription")}
+              />
             </InputCommandEmpty>
             <InputCommandGroup className="mt-2">
               <InputCommandList>

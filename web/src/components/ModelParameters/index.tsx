@@ -285,7 +285,11 @@ export const ModelParameters: React.FC<ModelParamsContext> = ({
     >
       {!isEmbedded ? (
         <div className="flex items-center justify-between">
-          {customHeader ? customHeader : <p className="font-semibold">{t("playground.model")}</p>}
+          {customHeader ? (
+            customHeader
+          ) : (
+            <p className="font-semibold">{t("playground.model")}</p>
+          )}
           {SettingsButton}
         </div>
       ) : (

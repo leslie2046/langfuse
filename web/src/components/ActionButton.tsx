@@ -11,8 +11,6 @@ import Link from "next/link";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import { useTranslation } from "@/src/features/i18n";
 
-
-
 interface ActionButtonProps extends ButtonProps {
   icon?: React.ReactNode;
   loading?: boolean;

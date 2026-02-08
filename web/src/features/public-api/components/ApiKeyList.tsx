@@ -75,9 +75,7 @@ export function ApiKeyList(props: { entityId: string; scope: ApiKeyScope }) {
         <Header title={t("settings.apiKeys")} />
         <Alert>
           <AlertTitle>Access Denied</AlertTitle>
-          <AlertDescription>
-            {t("permissions.noAccess")}
-          </AlertDescription>
+          <AlertDescription>{t("permissions.noAccess")}</AlertDescription>
         </Alert>
       </div>
     );

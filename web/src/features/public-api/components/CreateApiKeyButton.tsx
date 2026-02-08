@@ -125,7 +125,9 @@ export function CreateApiKeyButton(props: {
           ) : (
             <div className="space-y-4">
               <div>
-                <Label htmlFor="note">{t("apiKeys.createDialog.noteLabel")}</Label>
+                <Label htmlFor="note">
+                  {t("apiKeys.createDialog.noteLabel")}
+                </Label>
                 <Input
                   id="note"
                   placeholder={t("apiKeys.createDialog.notePlaceholder")}

@@ -168,9 +168,7 @@ export function MembershipInvitesPage({
           <div className="flex space-x-2">
             <button
               onClick={() => {
-                if (
-                  confirm(t("organization.members.actions.cancelInvite"))
-                ) {
+                if (confirm(t("organization.members.actions.cancelInvite"))) {
                   mutDeleteInvite.mutate({ inviteId, orgId });
                 }
               }}

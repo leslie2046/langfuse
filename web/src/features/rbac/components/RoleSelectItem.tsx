@@ -6,12 +6,8 @@ import {
 import { SelectItem } from "@/src/components/ui/select";
 import { Role } from "@langfuse/shared";
 import { HoverCardPortal } from "@radix-ui/react-hover-card";
-import {
-  organizationRoleAccessRights,
-} from "@/src/features/rbac/constants/organizationAccessRights";
-import {
-  projectRoleAccessRights,
-} from "@/src/features/rbac/constants/projectAccessRights";
+import { organizationRoleAccessRights } from "@/src/features/rbac/constants/organizationAccessRights";
+import { projectRoleAccessRights } from "@/src/features/rbac/constants/projectAccessRights";
 import { orderedRoles } from "@/src/features/rbac/constants/orderedRoles";
 import { useTranslation } from "@/src/features/i18n";
 
@@ -25,8 +21,16 @@ export const RoleSelectItem = ({
   const { t } = useTranslation();
   const isProjectNoneRole = role === Role.NONE && isProjectRole;
   const isOrgNoneRole = role === Role.NONE && !isProjectRole;
-  const orgScopes = reduceScopesToListItems(organizationRoleAccessRights, role, t);
-  const projectScopes = reduceScopesToListItems(projectRoleAccessRights, role, t);
+  const orgScopes = reduceScopesToListItems(
+    organizationRoleAccessRights,
+    role,
+    t,
+  );
+  const projectScopes = reduceScopesToListItems(
+    projectRoleAccessRights,
+    role,
+    t,
+  );
 
   return (
     <HoverCard openDelay={0} closeDelay={0}>
@@ -34,27 +38,39 @@ export const RoleSelectItem = ({
         <SelectItem value={role} className="max-w-56">
           <span>
             {formatRole(role, t)}
-            {isProjectNoneRole ? ` (${t("organization.members.roles.keepDefault")})` : ""}
+            {isProjectNoneRole
+              ? ` (${t("organization.members.roles.keepDefault")})`
+              : ""}
           </span>
         </SelectItem>
       </HoverCardTrigger>
       <HoverCardPortal>
         <HoverCardContent hideWhenDetached={true} align="center" side="right">
           {isProjectNoneRole ? (
-            <div className="text-xs">{t("organization.members.tooltips.projectNoneRole")}</div>
+            <div className="text-xs">
+              {t("organization.members.tooltips.projectNoneRole")}
+            </div>
           ) : isOrgNoneRole ? (
-            <div className="text-xs">{t("organization.members.tooltips.orgNoneRole")}</div>
+            <div className="text-xs">
+              {t("organization.members.tooltips.orgNoneRole")}
+            </div>
           ) : (
             <>
               <div className="font-bold">Role: {formatRole(role, t)}</div>
-              <p className="mt-2 text-xs font-semibold">{t("organization.members.tooltips.orgScopes")}</p>
+              <p className="mt-2 text-xs font-semibold">
+                {t("organization.members.tooltips.orgScopes")}
+              </p>
               <ul className="list-inside list-disc text-xs">{orgScopes}</ul>
-              <p className="mt-2 text-xs font-semibold">{t("organization.members.tooltips.projectScopes")}</p>
+              <p className="mt-2 text-xs font-semibold">
+                {t("organization.members.tooltips.projectScopes")}
+              </p>
               <ul className="list-inside list-disc text-xs">{projectScopes}</ul>
               <p className="mt-2 border-t pt-2 text-xs">
                 Note:{" "}
-                <span className="text-muted-foreground">{t("organization.members.tooltips.inheritedScopes")}</span> are
-                inherited from lower role.
+                <span className="text-muted-foreground">
+                  {t("organization.members.tooltips.inheritedScopes")}
+                </span>{" "}
+                are inherited from lower role.
               </p>
             </>
           )}

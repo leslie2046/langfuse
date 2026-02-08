@@ -143,7 +143,7 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
                 updateModelParamValue,
                 setModelParamEnabled,
               }}
-                formDisabled={!hasWriteAccess}
+              formDisabled={!hasWriteAccess}
             />
             <div className="my-2 text-xs text-muted-foreground">
               {t("evaluators.defaultModel.functionCalling")}
@@ -170,7 +170,8 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
               </div>
               {formError ? (
                 <p className="text-red w-full text-center">
-                  <span className="font-bold">{t("common.error")}:</span> {formError}
+                  <span className="font-bold">{t("common.error")}:</span>{" "}
+                  {formError}
                 </p>
               ) : null}
             </div>
@@ -215,13 +216,17 @@ function UpdateButton({
         onClick={(e) => e.stopPropagation()}
         className="w-fit max-w-[500px]"
       >
-        <h2 className="text-md mb-3 font-semibold">{t("evaluators.defaultModel.updateConfirmationTitle")}</h2>
+        <h2 className="text-md mb-3 font-semibold">
+          {t("evaluators.defaultModel.updateConfirmationTitle")}
+        </h2>
         <p className="mb-3 text-sm">
           {t("evaluators.defaultModel.updateConfirmationDescription")}
         </p>
         <div className="mb-4 grid w-full gap-1.5">
           <Label htmlFor="update-confirmation">
-            {t("evaluators.defaultModel.typeToConfirm", { confirmation: CONFIRMATION })}
+            {t("evaluators.defaultModel.typeToConfirm", {
+              confirmation: CONFIRMATION,
+            })}
           </Label>
           <Input
             id="update-confirmation"

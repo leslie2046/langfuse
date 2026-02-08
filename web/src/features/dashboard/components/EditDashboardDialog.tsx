@@ -88,7 +88,9 @@ export function EditDashboardDialog({
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="description">{t("pages.dashboards.edit.description")}</Label>
+              <Label htmlFor="description">
+                {t("pages.dashboards.edit.description")}
+              </Label>
               <Textarea
                 id="description"
                 value={description}

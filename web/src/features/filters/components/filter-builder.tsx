@@ -562,7 +562,11 @@ function FilterBuilderForm({
                 );
                 return (
                   <tr key={i}>
-                    <td className="p-1 text-sm">{i === 0 ? t("common.filters.where") : t("common.filters.and")}</td>
+                    <td className="p-1 text-sm">
+                      {i === 0
+                        ? t("common.filters.where")
+                        : t("common.filters.and")}
+                    </td>
                     <td className="flex gap-2 p-1">
                       {/* selector of the column to be filtered */}
                       <Popover>
@@ -575,7 +579,9 @@ function FilterBuilderForm({
                             className="flex w-full min-w-32 items-center justify-between gap-2"
                           >
                             <span className="truncate">
-                              {column ? column.name : t("common.filters.column")}
+                              {column
+                                ? column.name
+                                : t("common.filters.column")}
                             </span>
                             <ChevronDown className="h-4 w-4 flex-shrink-0 opacity-50" />
                           </Button>

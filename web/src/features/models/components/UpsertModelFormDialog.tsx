@@ -375,7 +375,9 @@ export const UpsertModelFormDialog = (({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder={t("models.upsert.selectUnit")} />
+                          <SelectValue
+                            placeholder={t("models.upsert.selectUnit")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -386,21 +388,21 @@ export const UpsertModelFormDialog = (({
                         ))}
                       </SelectContent>
                     </Select>
-                      <FormDescription>
-                        {t("models.tokenizerIdDescription")}{" "}
-                        <Link
-                          href="https://langfuse.com/docs/model-usage-and-cost"
-                          className="underline"
-                          target="_blank"
-                        >
-                          {t("common.docs")}
-                        </Link>
-                        .
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormDescription>
+                      {t("models.tokenizerIdDescription")}{" "}
+                      <Link
+                        href="https://langfuse.com/docs/model-usage-and-cost"
+                        className="underline"
+                        target="_blank"
+                      >
+                        {t("common.docs")}
+                      </Link>
+                      .
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               {tokenizerId && tokenizerId !== "None" && (
                 <FormField

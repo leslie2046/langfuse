@@ -277,7 +277,8 @@ export function MembersTable({
                 "meta",
               ) as MembersTableRow["meta"];
 
-              if (!projectRolesEntitlement) return t("organization.members.naOnPlan");
+              if (!projectRolesEntitlement)
+                return t("organization.members.naOnPlan");
 
               return (
                 <ProjectRoleDropdown
@@ -512,9 +513,7 @@ const OrgRoleDropdown = ({
       onValueChange={(value) => {
         if (
           userId !== session.data?.user?.id ||
-          confirm(
-            t("organization.members.actions.changeOrgRole"),
-          )
+          confirm(t("organization.members.actions.changeOrgRole"))
         ) {
           mut.mutate({
             orgId,

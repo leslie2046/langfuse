@@ -20,7 +20,9 @@ export function TierPrefillButtons({
 
   return (
     <div className="space-y-2">
-      <FormDescription>{t("models.upsert.pricing.prefillFromTemplate")}</FormDescription>
+      <FormDescription>
+        {t("models.upsert.pricing.prefillFromTemplate")}
+      </FormDescription>
       <div className="flex gap-2">
         <Button
           type="button"

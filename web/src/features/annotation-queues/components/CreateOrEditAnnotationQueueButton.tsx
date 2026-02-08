@@ -280,7 +280,9 @@ export const CreateOrEditAnnotationQueueButton = ({
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("common.form.descriptionOptional")}</FormLabel>
+                      <FormLabel>
+                        {t("common.form.descriptionOptional")}
+                      </FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
@@ -297,7 +299,9 @@ export const CreateOrEditAnnotationQueueButton = ({
                   name="scoreConfigIds"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("common.annotationQueue.scoreConfigs")}</FormLabel>
+                      <FormLabel>
+                        {t("common.annotationQueue.scoreConfigs")}
+                      </FormLabel>
                       <FormDescription>
                         {t("common.annotationQueue.scoreConfigsDescription")}
                       </FormDescription>
@@ -354,7 +358,9 @@ export const CreateOrEditAnnotationQueueButton = ({
                   name="newAssignmentUserIds"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("common.annotationQueue.advancedSettings")}</FormLabel>
+                      <FormLabel>
+                        {t("common.annotationQueue.advancedSettings")}
+                      </FormLabel>
                       <div className="mt-1 rounded-md border">
                         <Collapsible
                           open={isAdvancedOpen && hasQueueAssignmentsReadAccess}

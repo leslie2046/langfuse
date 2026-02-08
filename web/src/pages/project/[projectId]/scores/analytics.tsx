@@ -192,7 +192,12 @@ export default function ScoresAnalyticsV2Page() {
     <Page
       headerProps={{
         title: t("pages.scores.title"),
-        breadcrumb: [{ name: t("pages.scores.title"), href: `/project/${projectId}/scores` }],
+        breadcrumb: [
+          {
+            name: t("pages.scores.title"),
+            href: `/project/${projectId}/scores`,
+          },
+        ],
         help: {
           description: t("pages.scores.helpDescription"),
           href: "https://langfuse.com/docs/evaluation/overview",
@@ -220,7 +225,9 @@ export default function ScoresAnalyticsV2Page() {
             <div className="flex flex-col items-center justify-center gap-4 rounded-lg border bg-destructive/10 p-12">
               <BarChart3 className="h-12 w-12 text-destructive" />
               <div className="text-center">
-                <h3 className="text-lg font-semibold">{t("pages.scores.analytics.errorLoading")}</h3>
+                <h3 className="text-lg font-semibold">
+                  {t("pages.scores.analytics.errorLoading")}
+                </h3>
                 <p className="mt-2 text-sm text-muted-foreground">
                   {t("pages.scores.analytics.errorLoadingDescription")}
                 </p>
@@ -230,7 +237,9 @@ export default function ScoresAnalyticsV2Page() {
             <div className="flex flex-col items-center justify-center gap-4 rounded-lg border bg-muted/20 p-12">
               <BarChart3 className="h-12 w-12 text-muted-foreground" />
               <div className="text-center">
-                <h3 className="text-lg font-semibold">{t("pages.scores.analytics.noScoresAvailable")}</h3>
+                <h3 className="text-lg font-semibold">
+                  {t("pages.scores.analytics.noScoresAvailable")}
+                </h3>
                 <p className="mt-2 text-sm text-muted-foreground">
                   {t("pages.scores.analytics.noScoresDescription")}
                 </p>
@@ -240,7 +249,9 @@ export default function ScoresAnalyticsV2Page() {
             <div className="flex flex-col items-center justify-center gap-6 rounded-lg border bg-muted/20 p-12">
               <BarChart3 className="h-16 w-16 text-muted-foreground" />
               <div className="max-w-2xl text-center">
-                <h3 className="text-2xl font-semibold">{t("pages.scores.analytics.selectScore")}</h3>
+                <h3 className="text-2xl font-semibold">
+                  {t("pages.scores.analytics.selectScore")}
+                </h3>
                 <p className="mt-3 text-base text-muted-foreground">
                   {t("pages.scores.analytics.selectScoreDescription")}
                 </p>
@@ -255,9 +266,7 @@ export default function ScoresAnalyticsV2Page() {
                     <p className="mb-1 font-semibold text-foreground">
                       {t("pages.scores.analytics.twoScores")}
                     </p>
-                    <p>
-                      {t("pages.scores.analytics.twoScoresDescription")}
-                    </p>
+                    <p>{t("pages.scores.analytics.twoScoresDescription")}</p>
                   </div>
                 </div>
               </div>
@@ -269,9 +278,9 @@ export default function ScoresAnalyticsV2Page() {
           ) : (
             <div className="flex flex-col items-center justify-center gap-4 rounded-lg border p-12">
               <Loader2 className="h-12 w-12 animate-spin text-muted-foreground" />
-                <p className="text-sm text-muted-foreground">
-                  {t("pages.scores.analytics.loading")}
-                </p>
+              <p className="text-sm text-muted-foreground">
+                {t("pages.scores.analytics.loading")}
+              </p>
             </div>
           )}
         </div>

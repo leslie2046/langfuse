@@ -190,7 +190,9 @@ export function CreateProjectMemberButton(props: {
                     name="orgRole"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t("organization.members.orgRole")}</FormLabel>
+                        <FormLabel>
+                          {t("organization.members.orgRole")}
+                        </FormLabel>
                         <Select
                           defaultValue={field.value}
                           onValueChange={(value) =>
@@ -225,7 +227,9 @@ export function CreateProjectMemberButton(props: {
                     name="projectRole"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t("organization.members.projectRole")}</FormLabel>
+                        <FormLabel>
+                          {t("organization.members.projectRole")}
+                        </FormLabel>
                         <Select
                           defaultValue={field.value}
                           onValueChange={(value) =>
