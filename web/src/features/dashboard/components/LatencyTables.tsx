@@ -10,7 +10,6 @@ import { Popup } from "@/src/components/layouts/doc-popup";
 import {
   type QueryType,
   mapLegacyUiTableFilterToView,
-  mapLegacyUiTableFilterToView,
 } from "@/src/features/query";
 import { useTranslation } from "@/src/features/i18n";
 

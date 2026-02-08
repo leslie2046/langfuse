@@ -1043,7 +1043,7 @@
       "awsCredsFile": "AWS credentials file (~/.aws/credentials)",
       "awsIamEc2": "IAM roles for EC2 instances",
       "awsIamEcs": "IAM roles for ECS tasks",
-      "awsLearnMore": "Learn more about AWS credential providers →",
+      "awsLearnMore": "Learn more about AWS credential providers ->",
       "exampleJson": "Example JSON:",
       "adcTitle": "Application Default Credentials (ADC):",
       "adcCheckDescription": "When enabled, the system will automatically check for credentials in this order:",
@@ -1052,7 +1052,7 @@
       "adcGke": "GKE Workload Identity",
       "adcCloudRun": "Cloud Run service account",
       "adcComputeEngine": "Compute Engine service account",
-      "adcLearnMore": "Learn more about ADC →"
+      "adcLearnMore": "Learn more about ADC ->"
     }
   },
   "models": {
