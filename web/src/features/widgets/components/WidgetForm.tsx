@@ -244,7 +244,12 @@ export function WidgetForm({
           id: `${metric.agg}_${metric.measure}`,
           measure: metric.measure,
           aggregation: metric.agg as z.infer<typeof metricAggregations>,
-          label: `${startCase(metric.agg)} ${startCase(metric.measure)}`,
+          label:
+            metric.measure === "count"
+              ? t("dashboard.widgets.measures.count")
+              : `${t(`dashboard.widgets.aggregations.${metric.agg}`)} ${t(
+                  `dashboard.widgets.measures.${metric.measure}`,
+                )}`,
         }))
       : // Default to single metric (new widget)
         [
@@ -252,7 +257,12 @@ export function WidgetForm({
             id: `${initialValues.aggregation}_${initialValues.measure}`,
             measure: initialValues.measure,
             aggregation: initialValues.aggregation,
-            label: `${startCase(initialValues.aggregation)} ${startCase(initialValues.measure)}`,
+            label:
+              initialValues.measure === "count"
+                ? t("dashboard.widgets.measures.count")
+                : `${t(
+                    `dashboard.widgets.aggregations.${initialValues.aggregation}`,
+                  )} ${t(`dashboard.widgets.measures.${initialValues.measure}`)}`,
           },
         ],
   );
@@ -397,7 +407,12 @@ export function WidgetForm({
         id: `${finalAggregation}_${measure}`,
         measure: measure,
         aggregation: finalAggregation as z.infer<typeof metricAggregations>,
-        label: `${startCase(finalAggregation)} ${startCase(measure)}`,
+        label:
+          measure === "count"
+            ? t("dashboard.widgets.measures.count")
+            : `${t(`dashboard.widgets.aggregations.${finalAggregation}`)} ${t(
+                `dashboard.widgets.measures.${measure}`,
+              )}`,
       };
 
       // Set the metric at the specified index
@@ -498,71 +513,71 @@ export function WidgetForm({
   // Filter columns for PopoverFilterBuilder
   const filterColumns: ColumnDefinition[] = [
     {
-      name: "Environment",
+      name: t("dashboard.widgets.dimensions.environment"),
       id: "environment",
       type: "stringOptions",
       options: environmentOptions,
       internal: "internalValue",
     },
     {
-      name: "Trace Name",
+      name: t("dashboard.widgets.dimensions.traceName"),
       id: "traceName",
       type: "stringOptions",
       options: nameOptions,
       internal: "internalValue",
     },
     {
-      name: "Observation Name",
+      name: t("dashboard.widgets.dimensions.observationName"),
       id: "observationName",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: "Score Name",
+      name: t("dashboard.widgets.dimensions.scoreName"),
       id: "scoreName",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: "Tags",
+      name: t("dashboard.widgets.dimensions.tags"),
       id: "tags",
       type: "arrayOptions",
       options: tagsOptions,
       internal: "internalValue",
     },
     {
-      name: "Tool Names",
+      name: t("dashboard.widgets.dimensions.toolNames"),
       id: "toolNames",
       type: "arrayOptions",
       options: toolNamesOptions,
       internal: "internalValue",
     },
     {
-      name: "User",
+      name: t("dashboard.widgets.dimensions.user"),
       id: "user",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: "Session",
+      name: t("dashboard.widgets.dimensions.session"),
       id: "session",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: "Metadata",
+      name: t("dashboard.widgets.dimensions.metadata"),
       id: "metadata",
       type: "stringObject",
       internal: "internalValue",
     },
     {
-      name: "Release",
+      name: t("dashboard.widgets.dimensions.release"),
       id: "release",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: "Version",
+      name: t("dashboard.widgets.dimensions.version"),
       id: "version",
       type: "string",
       internal: "internalValue",
@@ -570,7 +585,7 @@ export function WidgetForm({
   ];
   if (selectedView === "observations") {
     filterColumns.push({
-      name: "Model",
+      name: t("dashboard.widgets.dimensions.providedModelName"),
       id: "providedModelName",
       type: "stringOptions",
       options: modelOptions,
@@ -579,7 +594,7 @@ export function WidgetForm({
   }
   if (selectedView === "scores-categorical") {
     filterColumns.push({
-      name: "Score String Value",
+      name: t("dashboard.widgets.dimensions.stringValue"),
       id: "stringValue",
       type: "string",
       internal: "internalValue",
@@ -587,7 +602,7 @@ export function WidgetForm({
   }
   if (selectedView === "scores-numeric") {
     filterColumns.push({
-      name: "Score Value",
+      name: t("dashboard.widgets.dimensions.value"),
       id: "value",
       type: "number",
       internal: "internalValue",
@@ -720,7 +735,7 @@ export function WidgetForm({
         })
         .map(([key]) => ({
           value: key,
-          label: startCase(key),
+          label: t(`dashboard.widgets.measures.${key}`),
         }))
         .sort((a, b) =>
           a.label.localeCompare(b.label, "en", { sensitivity: "base" }),
@@ -731,7 +746,7 @@ export function WidgetForm({
     return Object.entries(viewDeclaration.measures)
       .map(([key]) => ({
         value: key,
-        label: startCase(key),
+        label: t(`dashboard.widgets.measures.${key}`),
       }))
       .sort((a, b) =>
         a.label.localeCompare(b.label, "en", { sensitivity: "base" }),
@@ -786,7 +801,7 @@ export function WidgetForm({
         })
         .map(([key]) => ({
           value: key,
-          label: startCase(key),
+          label: t(`dashboard.widgets.measures.${key}`),
         }))
         .sort((a, b) =>
           a.label.localeCompare(b.label, "en", { sensitivity: "base" }),
@@ -801,7 +816,7 @@ export function WidgetForm({
     return Object.entries(viewDeclaration.dimensions)
       .map(([key]) => ({
         value: key,
-        label: startCase(key),
+        label: t(`dashboard.widgets.dimensions.${key}`),
       }))
       .sort((a, b) =>
         a.label.localeCompare(b.label, "en", { sensitivity: "base" }),
@@ -943,7 +958,9 @@ export function WidgetForm({
                     if (Array.isArray(val)) return val.join(", ");
                     return String(val);
                   })()
-                : formatMetricName(metricField),
+                : selectedMeasure === "count"
+                  ? t("dashboard.widgets.measures.count")
+                  : `${t(`dashboard.widgets.aggregations.${selectedAggregation}`)} ${t(`dashboard.widgets.measures.${selectedMeasure}`)}`,
             metric: Array.isArray(metric) ? metric : Number(metric || 0),
             time_dimension: item["time_dimension"],
           };
@@ -961,7 +978,10 @@ export function WidgetForm({
 
   const handleSaveWidget = () => {
     if (!widgetName.trim()) {
-      showErrorToast("Error", "Widget name is required");
+      showErrorToast(
+        t("dashboard.widgets.form.error"),
+        t("dashboard.widgets.form.nameRequired"),
+      );
       return;
     }
 
@@ -971,8 +991,8 @@ export function WidgetForm({
     );
     if (selectedChartType === "PIVOT_TABLE" && validMetrics.length === 0) {
       showErrorToast(
-        "Error",
-        "At least one metric is required for pivot tables",
+        t("dashboard.widgets.form.error"),
+        t("dashboard.widgets.form.pivotMetricRequired"),
       );
       return;
     }
@@ -1036,8 +1056,12 @@ export function WidgetForm({
     // For pivot tables, combine all dimensions, otherwise use regular dimension
     const dimensionForNaming =
       selectedChartType === "PIVOT_TABLE" && pivotDimensions.length > 0
-        ? pivotDimensions.map(startCase).join(" and ")
-        : selectedDimension;
+        ? pivotDimensions
+            .map((d) => t(`dashboard.widgets.dimensions.${d}`))
+            .join(` ${t("dashboard.widgets.dataSelection.and")} `)
+        : selectedDimension !== "none"
+          ? t(`dashboard.widgets.dimensions.${selectedDimension}`)
+          : "none";
 
     // For pivot tables, extract actual metric names for the new formatting
     const isPivotTable = selectedChartType === "PIVOT_TABLE";
@@ -1056,6 +1080,7 @@ export function WidgetForm({
       dimension: dimensionForNaming,
       view: selectedView,
       metrics: metricNames,
+      t: t,
       isMultiMetric: isPivotTable && validMetricsForNaming.length > 0,
     });
 
@@ -1078,8 +1103,12 @@ export function WidgetForm({
     // For pivot tables, combine all dimensions, otherwise use regular dimension
     const dimensionForDescription =
       selectedChartType === "PIVOT_TABLE" && pivotDimensions.length > 0
-        ? pivotDimensions.map(startCase).join(" and ")
-        : selectedDimension;
+        ? pivotDimensions
+            .map((d) => t(`dashboard.widgets.dimensions.${d}`))
+            .join(` ${t("dashboard.widgets.dataSelection.and")} `)
+        : selectedDimension !== "none"
+          ? t(`dashboard.widgets.dimensions.${selectedDimension}`)
+          : "none";
 
     // For pivot tables, extract actual metric names for the new formatting
     const isPivotTable = selectedChartType === "PIVOT_TABLE";
@@ -1098,6 +1127,7 @@ export function WidgetForm({
       view: selectedView,
       filters: userFilterState,
       metrics: metricNames,
+      t: t,
       isMultiMetric: isPivotTable && validMetricsForDescription.length > 0,
     });
 
@@ -1128,11 +1158,15 @@ export function WidgetForm({
           <CardContent className="space-y-4 overflow-y-auto">
             {/* Data Selection Section */}
             <div className="space-y-4">
-              <h3 className="text-lg font-bold">Data Selection</h3>
+              <h3 className="text-lg font-bold">
+                {t("dashboard.widgets.dataSelection.title")}
+              </h3>
 
               {/* View Selection */}
               <div className="space-y-2">
-                <Label htmlFor="view-select">View</Label>
+                <Label htmlFor="view-select">
+                  {t("dashboard.widgets.dataSelection.view")}
+                </Label>
                 <Select
                   value={selectedView}
                   onValueChange={(value) => {
@@ -1192,15 +1226,21 @@ export function WidgetForm({
                   }}
                 >
                   <SelectTrigger id="view-select">
-                    <SelectValue placeholder="Select a view" />
+                    <SelectValue
+                      placeholder={t(
+                        "dashboard.widgets.dataSelection.viewPlaceholder",
+                      )}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     {views.options.map((view) => (
                       <WidgetPropertySelectItem
                         key={view}
                         value={view}
-                        label={startCase(view)}
-                        description={viewDeclarations.v1[view].description}
+                        label={t(`dashboard.widgets.views.${view}`)}
+                        description={t(
+                          `dashboard.widgets.views.${view}Description`,
+                        )}
                       />
                     ))}
                   </SelectContent>
@@ -1210,7 +1250,9 @@ export function WidgetForm({
               {/* Metrics Selection */}
               <div className="space-y-2">
                 <Label htmlFor="metrics-select">
-                  {selectedChartType === "PIVOT_TABLE" ? "Metrics" : "Metric"}
+                  {selectedChartType === "PIVOT_TABLE"
+                    ? t("dashboard.widgets.dataSelection.metrics")
+                    : t("dashboard.widgets.dataSelection.metric")}
                 </Label>
 
                 {/* For pivot tables: multiple metrics selection */}
@@ -1241,8 +1283,15 @@ export function WidgetForm({
                           <div key={index} className="space-y-2">
                             <div className="flex items-center justify-between">
                               <Label htmlFor={`pivot-metric-${index}`}>
-                                Metric {index + 1}{" "}
-                                {index === 0 ? "(Required)" : "(Optional)"}
+                                {index === 0
+                                  ? t(
+                                      "dashboard.widgets.pivotTable.metricRequired",
+                                      { index: index + 1 },
+                                    )
+                                  : t(
+                                      "dashboard.widgets.pivotTable.metricOptional",
+                                      { index: index + 1 },
+                                    )}
                               </Label>
                               {index > 0 && (
                                 <Button
@@ -1275,10 +1324,10 @@ export function WidgetForm({
                                     <SelectValue
                                       placeholder={
                                         !isEnabled
-                                          ? "Select previous metric first"
+                                          ? t("dashboard.widgets.pivotTable.selectPreviousMetric")
                                           : !canEdit
-                                            ? "No more measures available"
-                                            : "Select measure"
+                                            ? t("dashboard.widgets.pivotTable.noMoreMeasures")
+                                            : t("dashboard.widgets.pivotTable.selectMeasure")
                                       }
                                     />
                                   </SelectTrigger>
@@ -1317,7 +1366,9 @@ export function WidgetForm({
                                     }
                                   >
                                     <SelectTrigger>
-                                      <SelectValue placeholder="Select aggregation" />
+                                      <SelectValue placeholder={t(
+                                        "dashboard.widgets.pivotTable.selectAggregation",
+                                      )} />
                                     </SelectTrigger>
                                     <SelectContent>
                                       {aggregationsForIndex.map(
@@ -1326,7 +1377,9 @@ export function WidgetForm({
                                             key={aggregation}
                                             value={aggregation}
                                           >
-                                            {startCase(aggregation)}
+                                            {t(
+                                              `dashboard.widgets.aggregations.${aggregation}`,
+                                            )}
                                           </SelectItem>
                                         ),
                                       )}
@@ -1352,7 +1405,9 @@ export function WidgetForm({
                           className="w-full"
                         >
                           <Plus className="mr-1 h-3 w-3" />
-                          Add Metric {selectedMetrics.length + 1}
+                          {t("dashboard.widgets.pivotTable.addMetric", {
+                            index: selectedMetrics.length + 1,
+                          })}
                         </Button>
                       )}
                   </div>
@@ -1364,7 +1419,11 @@ export function WidgetForm({
                       onValueChange={(value) => setSelectedMeasure(value)}
                     >
                       <SelectTrigger id="metrics-select">
-                        <SelectValue placeholder="Select metrics" />
+                        <SelectValue
+                          placeholder={t(
+                            "dashboard.widgets.dataSelection.metricPlaceholder",
+                          )}
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {availableMetrics.map((metric) => {
@@ -1397,20 +1456,27 @@ export function WidgetForm({
                           }
                         >
                           <SelectTrigger id="aggregation-select">
-                            <SelectValue placeholder="Select Aggregation" />
+                            <SelectValue
+                              placeholder={t(
+                                "dashboard.widgets.dataSelection.aggregationPlaceholder",
+                              )}
+                            />
                           </SelectTrigger>
                           <SelectContent>
                             {metricAggregations.options.map((aggregation) => (
                               <SelectItem key={aggregation} value={aggregation}>
-                                {startCase(aggregation)}
+                                {t(
+                                  `dashboard.widgets.aggregations.${aggregation}`,
+                                )}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                         {selectedChartType === "HISTOGRAM" && (
                           <p className="text-xs text-muted-foreground">
-                            Aggregation is automatically set to
-                            &quot;histogram&quot; for histogram charts
+                            {t(
+                              "dashboard.widgets.dataSelection.histogramAggNote",
+                            )}
                           </p>
                         )}
                       </div>
@@ -1421,7 +1487,7 @@ export function WidgetForm({
 
               {/* Filters Section */}
               <div className="space-y-2">
-                <Label>Filters</Label>
+                <Label>{t("dashboard.widgets.dataSelection.filters")}</Label>
                 <div className="space-y-2">
                   <InlineFilterBuilder
                     columns={filterColumns}
@@ -1443,17 +1509,23 @@ export function WidgetForm({
                 selectedChartType !== "PIVOT_TABLE" && (
                   <div className="space-y-2">
                     <Label htmlFor="dimension-select">
-                      Breakdown Dimension (Optional)
+                      {t("dashboard.widgets.dataSelection.breakdownDimension")}
                     </Label>
                     <Select
                       value={selectedDimension}
                       onValueChange={setSelectedDimension}
                     >
                       <SelectTrigger id="dimension-select">
-                        <SelectValue placeholder="Select a dimension" />
+                        <SelectValue
+                          placeholder={t(
+                            "dashboard.widgets.dataSelection.dimensionPlaceholder",
+                          )}
+                        />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
+                        <SelectItem value="none">
+                          {t("dashboard.widgets.dataSelection.none")}
+                        </SelectItem>
                         {availableDimensions.map((dimension) => {
                           const meta =
                             viewDeclarations.v1[selectedView]?.dimensions?.[
@@ -1480,12 +1552,12 @@ export function WidgetForm({
                 <div className="space-y-4">
                   <div>
                     <h4 className="mb-2 text-sm font-semibold">
-                      Row Dimensions
+                      {t("dashboard.widgets.pivotTable.rowDimensions")}
                     </h4>
                     <p className="mb-3 text-xs text-muted-foreground">
-                      Configure up to {MAX_PIVOT_TABLE_DIMENSIONS} dimensions
-                      for pivot table rows. Each dimension creates groupings
-                      with subtotals.
+                      {t("dashboard.widgets.pivotTable.rowDimensionsDesc", {
+                        max: MAX_PIVOT_TABLE_DIMENSIONS,
+                      })}
                     </p>
                   </div>
 
@@ -1503,7 +1575,9 @@ export function WidgetForm({
                       return (
                         <div key={index} className="space-y-2">
                           <Label htmlFor={`pivot-dimension-${index}`}>
-                            Dimension {index + 1} (Optional)
+                            {t("dashboard.widgets.pivotTable.dimension", {
+                              index: index + 1,
+                            })}
                           </Label>
                           <Select
                             value={currentValue}
@@ -1516,14 +1590,20 @@ export function WidgetForm({
                               <SelectValue
                                 placeholder={
                                   isEnabled
-                                    ? "Select a dimension"
-                                    : "Select previous dimension first"
+                                    ? t(
+                                        "dashboard.widgets.dataSelection.dimensionPlaceholder",
+                                      )
+                                    : t(
+                                        "dashboard.widgets.pivotTable.selectPreviousFirst",
+                                      )
                                 }
                               />
                             </SelectTrigger>
                             <SelectContent>
                               {index >= 0 && (
-                                <SelectItem value="none">None</SelectItem>
+                                <SelectItem value="none">
+                                  {t("dashboard.widgets.dataSelection.none")}
+                                </SelectItem>
                               )}
                               {availableDimensions
                                 .filter(
@@ -1558,26 +1638,33 @@ export function WidgetForm({
                 <div className="space-y-4">
                   <div>
                     <h4 className="mb-2 text-sm font-semibold">
-                      Default Sort Configuration
+                      {t("dashboard.widgets.pivotTable.defaultSort")}
                     </h4>
                     <p className="mb-3 text-xs text-muted-foreground">
-                      Configure the default sort order for the pivot table. This
-                      will be applied when the widget is first loaded.
+                      {t("dashboard.widgets.pivotTable.defaultSortDesc")}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="default-sort-column">Sort Column</Label>
+                      <Label htmlFor="default-sort-column">
+                        {t("dashboard.widgets.pivotTable.sortColumn")}
+                      </Label>
                       <Select
                         value={defaultSortColumn}
                         onValueChange={setDefaultSortColumn}
                       >
                         <SelectTrigger id="default-sort-column">
-                          <SelectValue placeholder="Select a column to sort by" />
+                          <SelectValue
+                            placeholder={t(
+                              "dashboard.widgets.pivotTable.sortColumnPlaceholder",
+                            )}
+                          />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="none">No default sort</SelectItem>
+                          <SelectItem value="none">
+                            {t("dashboard.widgets.pivotTable.noDefaultSort")}
+                          </SelectItem>
                           {/* Show available metrics as sort options */}
                           {selectedMetrics
                             .filter(
@@ -1586,7 +1673,13 @@ export function WidgetForm({
                             )
                             .map((metric) => (
                               <SelectItem key={metric.id} value={metric.id}>
-                                {formatMetricName(metric.id)}
+                                {metric.measure === "count"
+                                  ? t("dashboard.widgets.measures.count")
+                                  : `${t(
+                                      `dashboard.widgets.aggregations.${metric.aggregation}`,
+                                    )} ${t(
+                                      `dashboard.widgets.measures.${metric.measure}`,
+                                    )}`}
                               </SelectItem>
                             ))}
                         </SelectContent>
@@ -1594,7 +1687,9 @@ export function WidgetForm({
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="default-sort-order">Sort Order</Label>
+                      <Label htmlFor="default-sort-order">
+                        {t("dashboard.widgets.pivotTable.sortOrder")}
+                      </Label>
                       <Select
                         value={defaultSortOrder}
                         onValueChange={(value: "ASC" | "DESC") =>
@@ -1608,8 +1703,12 @@ export function WidgetForm({
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="ASC">Ascending (A-Z)</SelectItem>
-                          <SelectItem value="DESC">Descending (Z-A)</SelectItem>
+                          <SelectItem value="ASC">
+                            {t("dashboard.widgets.pivotTable.ascending")}
+                          </SelectItem>
+                          <SelectItem value="DESC">
+                            {t("dashboard.widgets.pivotTable.descending")}
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -1636,7 +1735,9 @@ export function WidgetForm({
                     if (!autoLocked) setAutoLocked(true);
                     setWidgetName(e.target.value);
                   }}
-                  placeholder="Enter widget name"
+                  placeholder={t(
+                    "dashboard.widgets.form.namePlaceholder",
+                  )}
                 />
               </div>
 
@@ -1652,7 +1753,9 @@ export function WidgetForm({
                     if (!autoLocked) setAutoLocked(true);
                     setWidgetDescription(e.target.value);
                   }}
-                  placeholder="Enter widget description"
+                  placeholder={t(
+                    "dashboard.widgets.form.descriptionPlaceholder",
+                  )}
                 />
               </div>
 
@@ -1666,11 +1769,17 @@ export function WidgetForm({
                   onValueChange={setSelectedChartType}
                 >
                   <SelectTrigger id="chart-type-select">
-                    <SelectValue placeholder="Select a chart type" />
+                    <SelectValue
+                      placeholder={t(
+                        "dashboard.widgets.form.chartTypePlaceholder",
+                      )}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Time Series</SelectLabel>
+                      <SelectLabel>
+                        {t("dashboard.widgets.chartGroups.timeSeries")}
+                      </SelectLabel>
                       {chartTypes
                         .filter((item) => item.group === "time-series")
                         .map((chart) => (
@@ -1685,7 +1794,9 @@ export function WidgetForm({
                         ))}
                     </SelectGroup>
                     <SelectGroup>
-                      <SelectLabel>Total Value</SelectLabel>
+                      <SelectLabel>
+                        {t("dashboard.widgets.chartGroups.totalValue")}
+                      </SelectLabel>
                       {chartTypes
                         .filter((item) => item.group === "total-value")
                         .map((chart) => (
@@ -1726,7 +1837,9 @@ export function WidgetForm({
               {/* Histogram Bins Selection - Only shown for HISTOGRAM chart type */}
               {selectedChartType === "HISTOGRAM" && (
                 <div className="space-y-2">
-                  <Label htmlFor="histogram-bins">Number of Bins (1-100)</Label>
+                  <Label htmlFor="histogram-bins">
+                    {t("dashboard.widgets.form.bins")}
+                  </Label>
                   <Input
                     id="histogram-bins"
                     type="number"
@@ -1739,7 +1852,7 @@ export function WidgetForm({
                         setHistogramBins(value);
                       }
                     }}
-                    placeholder="Enter number of bins (1-100)"
+                    placeholder={t("dashboard.widgets.form.binsPlaceholder")}
                   />
                 </div>
               )}
@@ -1752,7 +1865,7 @@ export function WidgetForm({
                 ) && (
                   <div className="space-y-2">
                     <Label htmlFor="row-limit">
-                      Breakdown Row Limit (0-1000)
+                      {t("dashboard.widgets.form.rowLimit")}
                     </Label>
                     <Input
                       id="row-limit"
@@ -1766,7 +1879,7 @@ export function WidgetForm({
                           setRowLimit(value);
                         }
                       }}
-                      placeholder="Enter breakdown row limit (0-1000)"
+                      placeholder={t("dashboard.widgets.form.rowLimitPlaceholder")}
                     />
                   </div>
                 )}
@@ -1831,7 +1944,7 @@ export function WidgetForm({
             <CardContent>
               <div className="flex h-[300px] items-center justify-center">
                 <p className="text-muted-foreground">
-                  Waiting for Input / Loading...
+                  {t("dashboard.widgets.form.loading")}
                 </p>
               </div>
             </CardContent>
