@@ -1526,7 +1526,10 @@
     "step3": "3. 创建项目",
     "newOrganization": {
       "title": "新建组织",
-      "description": "组织用于管理您的项目和团队。"
+      "description": "组织用于管理您的项目和团队。",
+      "nameLabel": "组织名称",
+      "namePlaceholder": "my-org",
+      "create": "创建"
     },
     "organizationMembers": {
       "title": "组织成员",

@@ -143,21 +143,21 @@ const getChartTypeName = (
 ) => {
   switch (value) {
     case "NUMBER":
-      return t("widget.chartTypes.bigNumber");
+      return t("dashboard.widgets.chartTypes.bigNumber");
     case "LINE_TIME_SERIES":
-      return t("widget.chartTypes.lineChart");
+      return t("dashboard.widgets.chartTypes.lineChart");
     case "BAR_TIME_SERIES":
-      return t("widget.chartTypes.verticalBarChart");
+      return t("dashboard.widgets.chartTypes.verticalBarChart");
     case "HORIZONTAL_BAR":
-      return t("widget.chartTypes.horizontalBarChart");
+      return t("dashboard.widgets.chartTypes.horizontalBarChart");
     case "VERTICAL_BAR":
-      return t("widget.chartTypes.verticalBarChart");
+      return t("dashboard.widgets.chartTypes.verticalBarChart");
     case "HISTOGRAM":
-      return t("widget.chartTypes.histogram");
+      return t("dashboard.widgets.chartTypes.histogram");
     case "PIE":
-      return t("widget.chartTypes.pieChart");
+      return t("dashboard.widgets.chartTypes.pieChart");
     case "PIVOT_TABLE":
-      return t("widget.chartTypes.pivotTable");
+      return t("dashboard.widgets.chartTypes.pivotTable");
     default:
       return value;
   }
@@ -1120,9 +1120,9 @@ export function WidgetForm({
       <div className="h-full w-1/3 min-w-[430px]">
         <Card className="flex h-full flex-col">
           <CardHeader>
-            <CardTitle>{t("widget.configuration.title")}</CardTitle>
+            <CardTitle>{t("dashboard.widgets.configuration.title")}</CardTitle>
             <CardDescription>
-              {t("widget.configuration.description")}
+              {t("dashboard.widgets.configuration.description")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 overflow-y-auto">
@@ -1621,12 +1621,14 @@ export function WidgetForm({
             {/* Visualization Section */}
             <div className="mt-6 space-y-4">
               <h3 className="text-lg font-bold">
-                {t("widget.visualization.title")}
+                {t("dashboard.widgets.visualization.title")}
               </h3>
 
               {/* Widget Name */}
               <div className="space-y-2">
-                <Label htmlFor="widget-name">{t("widget.form.name")}</Label>
+                <Label htmlFor="widget-name">
+                  {t("dashboard.widgets.form.name")}
+                </Label>
                 <Input
                   id="widget-name"
                   value={widgetName}
@@ -1641,7 +1643,7 @@ export function WidgetForm({
               {/* Widget Description */}
               <div className="space-y-2">
                 <Label htmlFor="widget-description">
-                  {t("widget.form.description")}
+                  {t("dashboard.widgets.form.description")}
                 </Label>
                 <Input
                   id="widget-description"
@@ -1657,7 +1659,7 @@ export function WidgetForm({
               {/* Chart Type Selection */}
               <div className="space-y-2">
                 <Label htmlFor="chart-type-select">
-                  {t("widget.form.chartType")}
+                  {t("dashboard.widgets.form.chartType")}
                 </Label>
                 <Select
                   value={selectedChartType}
@@ -1703,7 +1705,7 @@ export function WidgetForm({
 
               <div className="space-y-2">
                 <Label htmlFor="date-select">
-                  {t("widget.form.dateRange")}
+                  {t("dashboard.widgets.form.dateRange")}
                 </Label>
                 <DatePickerWithRange
                   dateRange={dateRange}
@@ -1772,7 +1774,7 @@ export function WidgetForm({
           </CardContent>
           <CardFooter className="mt-auto">
             <Button className="w-full" size="lg" onClick={handleSaveWidget}>
-              {t("widget.form.save")}
+              {t("dashboard.widgets.form.save")}
             </Button>
           </CardFooter>
         </Card>

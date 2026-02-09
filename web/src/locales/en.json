@@ -1526,7 +1526,10 @@
     "step3": "3. Create Project",
     "newOrganization": {
       "title": "New Organization",
-      "description": "Organizations are used to manage your projects and teams."
+      "description": "Organizations are used to manage your projects and teams.",
+      "nameLabel": "Organization name",
+      "namePlaceholder": "my-org",
+      "create": "Create"
     },
     "organizationMembers": {
       "title": "Organization Members",
