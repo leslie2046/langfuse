@@ -123,7 +123,7 @@ export default withMiddlewares({
           Object.keys(propagatedHeaders).length > 0
             ? propagatedHeaders
             : undefined,
-      });
+      } as any);
 
       // At this point, we have the raw OpenTelemetry Span body. We upload the full batch to S3
       // and the OtelIngestionProcessor logic will handle processing in the worker container.
