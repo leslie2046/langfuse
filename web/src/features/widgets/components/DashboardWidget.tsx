@@ -21,6 +21,7 @@ import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAcces
 import { showErrorToast } from "@/src/features/notifications/showErrorToast";
 import { DownloadButton } from "@/src/features/widgets/chart-library/DownloadButton";
 import { formatMetricName } from "@/src/features/widgets/utils";
+import { useTranslation } from "@/src/features/i18n";
 
 export interface WidgetPlacement {
   id: string;
@@ -49,6 +50,7 @@ export function DashboardWidget({
   onDeleteWidget: (tileId: string) => void;
   dashboardOwner: "LANGFUSE" | "PROJECT";
 }) {
+  const { t } = useTranslation();
   const router = useRouter();
   const utils = api.useUtils();
   const widget = api.dashboardWidgets.get.useQuery(
@@ -181,7 +183,7 @@ export function DashboardWidget({
                 // Objects / numbers / booleans are stringified to avoid React key issues
                 return String(val);
               })()
-            : formatMetricName(metricField),
+            : formatMetricName(metricField, t),
         metric: Array.isArray(metricValue)
           ? metricValue
           : Number(metricValue || 0),

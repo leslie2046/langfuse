@@ -58,7 +58,6 @@ import {
 import {
   buildWidgetName,
   buildWidgetDescription,
-  formatMetricName,
 } from "@/src/features/widgets/utils";
 import {
   MAX_PIVOT_TABLE_DIMENSIONS,
