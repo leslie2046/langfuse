@@ -2,13 +2,13 @@ import { ColumnDefinition } from "./types";
 
 export const usersTableCols: ColumnDefinition[] = [
   {
-    name: "Timestamp",
+    name: "pages.users.columns.timestamp",
     id: "timestamp",
     type: "datetime",
     internal: 't."timestamp"',
   },
   {
-    name: "User ID",
+    name: "pages.users.columns.userId",
     id: "userId",
     type: "stringOptions",
     options: [],

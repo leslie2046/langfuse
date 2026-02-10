@@ -8,14 +8,14 @@ import { formatColumnOptions } from "./typeHelpers";
 
 export const tracesOnlyCols: ColumnDefinition[] = [
   {
-    name: "⭐️",
+    name: "pages.traces.columns.bookmarked",
     id: "bookmarked",
     type: "boolean",
     internal: "t.bookmarked",
   },
   { name: "ID", id: "id", type: "string", internal: "t.id" },
   {
-    name: "Name",
+    name: "pages.traces.columns.name",
     id: "name",
     type: "stringOptions",
     internal: 't."name"',
@@ -23,54 +23,54 @@ export const tracesOnlyCols: ColumnDefinition[] = [
     nullable: true,
   },
   {
-    name: "Environment",
+    name: "pages.traces.columns.environment",
     id: "environment",
     type: "stringOptions",
     internal: 't."environment"',
     options: [], // to be filled in at runtime
   },
   {
-    name: "Timestamp",
+    name: "pages.traces.columns.timestamp",
     id: "timestamp",
     type: "datetime",
     internal: 't."timestamp"',
   },
   {
-    name: "User ID",
+    name: "pages.traces.columns.userId",
     id: "userId",
     type: "string",
     internal: 't."user_id"',
     nullable: true,
   },
   {
-    name: "Session ID",
+    name: "pages.traces.columns.sessionId",
     id: "sessionId",
     type: "string",
     internal: 't."session_id"',
     nullable: true,
   },
   {
-    name: "Metadata",
+    name: "pages.traces.columns.metadata",
     id: "metadata",
     type: "stringObject",
     internal: 't."metadata"',
   },
   {
-    name: "Version",
+    name: "pages.traces.columns.version",
     id: "version",
     type: "string",
     internal: 't."version"',
     nullable: true,
   },
   {
-    name: "Release",
+    name: "pages.traces.columns.release",
     id: "release",
     type: "string",
     internal: 't."release"',
     nullable: true,
   },
   {
-    name: "Level",
+    name: "pages.traces.columns.level",
     id: "level",
     type: "stringOptions",
     internal: '"level"',
@@ -82,75 +82,76 @@ export const tracesOnlyCols: ColumnDefinition[] = [
     ] as { value: ObservationLevelType }[],
   },
   {
-    name: "Tags",
+    name: "pages.traces.columns.tags",
     id: "tags",
     type: "arrayOptions",
     internal: 't."tags"',
     options: [], // to be filled in at runtime
   },
 ];
+
 export const tracesTableCols: ColumnDefinition[] = [
   ...tracesOnlyCols,
   {
-    name: "Input Tokens",
+    name: "pages.traces.columns.inputTokens",
     id: "inputTokens",
     type: "number",
     internal: 'generation_metrics."promptTokens"',
     nullable: true,
   },
   {
-    name: "Output Tokens",
+    name: "pages.traces.columns.outputTokens",
     id: "outputTokens",
     type: "number",
     internal: 'generation_metrics."completionTokens"',
     nullable: true,
   },
   {
-    name: "Error Level Count",
+    name: "pages.traces.columns.errorCount",
     id: "errorCount",
     type: "number",
     internal: 'generation_metrics."errorCount"',
   },
   {
-    name: "Warning Level Count",
+    name: "pages.traces.columns.warningCount",
     id: "warningCount",
     type: "number",
     internal: 'generation_metrics."warningCount"',
   },
   {
-    name: "Default Level Count",
+    name: "pages.traces.columns.defaultCount",
     id: "defaultCount",
     type: "number",
     internal: 'generation_metrics."defaultCount"',
   },
   {
-    name: "Debug Level Count",
+    name: "pages.traces.columns.debugCount",
     id: "debugCount",
     type: "number",
     internal: 'generation_metrics."debugCount"',
   },
   {
-    name: "Total Tokens",
+    name: "pages.traces.columns.totalTokens",
     id: "totalTokens",
     type: "number",
     internal: 'generation_metrics."totalTokens"',
     nullable: true,
   },
   {
-    name: "Tokens",
+    name: "pages.traces.columns.tokens",
     id: "tokens",
     type: "number",
     internal: 'generation_metrics."totalTokens"',
     nullable: true,
   },
   {
-    name: "Scores (numeric)",
+    name: "pages.traces.columns.scoresNumeric",
     id: "scores_avg",
     type: "numberObject",
     internal: "scores_avg",
   },
   {
-    name: "Scores (categorical)",
+    name: "pages.traces.columns.scoresCategorical",
     id: "score_categories",
     type: "categoryOptions",
     internal: "score_categories",
@@ -158,40 +159,40 @@ export const tracesTableCols: ColumnDefinition[] = [
     nullable: true,
   },
   {
-    name: "Latency (s)",
+    name: "pages.traces.columns.latencySeconds",
     id: "latency",
     type: "number",
     internal: "observation_metrics.latency",
   },
   {
-    name: "Input Cost ($)",
+    name: "pages.traces.columns.inputCostUSD",
     id: "inputCost",
     type: "number",
     internal: '"calculatedInputCost"',
     nullable: true,
   },
   {
-    name: "Output Cost ($)",
+    name: "pages.traces.columns.outputCostUSD",
     id: "outputCost",
     type: "number",
     internal: '"calculatedOutputCost"',
     nullable: true,
   },
   {
-    name: "Total Cost ($)",
+    name: "pages.traces.columns.totalCostUSD",
     id: "totalCost",
     type: "number",
     internal: '"calculatedTotalCost"',
     nullable: true,
   },
   {
-    name: "Comment Count",
+    name: "pages.traces.columns.commentCount",
     id: "commentCount",
     type: "number",
     internal: "", // handled by comment filter helpers
   },
   {
-    name: "Comment Content",
+    name: "pages.traces.columns.commentContent",
     id: "commentContent",
     type: "string",
     internal: "", // handled by comment filter helpers
@@ -199,7 +200,7 @@ export const tracesTableCols: ColumnDefinition[] = [
 ];
 
 export const datasetCol: ColumnDefinition = {
-  name: "Dataset",
+  name: "pages.traces.columns.dataset",
   id: "datasetId",
   type: "stringOptions",
   internal: 'di."dataset_id"',
