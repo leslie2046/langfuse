@@ -750,7 +750,7 @@ export function WidgetForm({
       .sort((a, b) =>
         a.label.localeCompare(b.label, "en", { sensitivity: "base" }),
       );
-  }, [selectedView, selectedChartType, selectedMetrics]);
+  }, [selectedView, selectedChartType, selectedMetrics, t]);
 
   // Get available aggregations for a specific metric index in pivot tables
   const getAvailableAggregations = (
@@ -820,7 +820,7 @@ export function WidgetForm({
       .sort((a, b) =>
         a.label.localeCompare(b.label, "en", { sensitivity: "base" }),
       );
-  }, [selectedView]);
+  }, [selectedView, t]);
 
   // Create a dynamic query based on the selected view
   const query = useMemo<QueryType>(() => {
@@ -972,6 +972,7 @@ export function WidgetForm({
       selectedMeasure,
       selectedChartType,
       pivotDimensions,
+      t,
     ],
   );
 
@@ -1093,6 +1094,7 @@ export function WidgetForm({
     selectedView,
     selectedChartType,
     pivotDimensions,
+    t,
   ]);
 
   // Update widget description when selection or filters change, unless locked
@@ -1141,6 +1143,7 @@ export function WidgetForm({
     userFilterState,
     selectedChartType,
     pivotDimensions,
+    t,
   ]);
 
   return (
