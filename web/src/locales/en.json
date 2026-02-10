@@ -1047,7 +1047,43 @@
     "traces": {
       "title": "Tracing",
       "helpDescription": "A trace represents a single function/api invocation. Traces contain observations. See docs to learn more.",
-      "docs": "docs"
+      "docs": "docs",
+      "columns": {
+        "timestamp": "Timestamp",
+        "name": "Name",
+        "input": "Input",
+        "output": "Output",
+        "observationLevels": "Observation Levels",
+        "latency": "Latency",
+        "tokens": "Tokens",
+        "totalCost": "Total Cost",
+        "environment": "Environment",
+        "tags": "Tags",
+        "metadata": "Metadata",
+        "usage": "Usage",
+        "cost": "Cost",
+        "level": "Level",
+        "release": "Release",
+        "version": "Version",
+        "sessionId": "Session ID",
+        "bookmarked": "Bookmarked",
+        "errorCount": "Error Level Count",
+        "warningCount": "Warning Level Count",
+        "defaultCount": "Default Level Count",
+        "debugCount": "Debug Level Count",
+        "scoresNumeric": "Scores (numeric)",
+        "scoresCategorical": "Scores (categorical)",
+        "latencySeconds": "Latency (s)",
+        "inputCostUSD": "Input Cost ($)",
+        "outputCostUSD": "Output Cost ($)",
+        "totalCostUSD": "Total Cost ($)",
+        "commentCount": "Comment Count",
+        "commentContent": "Comment Content",
+        "dataset": "Dataset",
+        "inputTokens": "Input Tokens",
+        "outputTokens": "Output Tokens",
+        "totalTokens": "Total Tokens"
+      }
     },
     "sessions": {
       "title": "Sessions",
@@ -1057,6 +1093,7 @@
       "title": "Users",
       "helpDescription": "Attribute data in Langfuse to a user by adding a userId to your traces. See docs to learn more.",
       "columns": {
+        "timestamp": "Timestamp",
         "userId": "User ID",
         "userIdTooltip": "The unique identifier for the user that was logged in Langfuse. See docs for more details on how to set this up.",
         "environment": "Environment",
@@ -1115,7 +1152,7 @@
         "actions": "Actions",
         "clone": "Clone",
         "edit": "Edit",
-      "delete": "Delete"
+        "delete": "Delete"
       }
     },
     "scores": {
@@ -1527,14 +1564,14 @@
       "naOnPlan": "N/A on plan",
       "userAvatar": "User Avatar",
       "actions": {
-         "leaveOrg": "Are you sure you want to leave the organization?",
-         "removeMember": "Are you sure you want to remove this member from the organization?",
-         "changeOrgRole": "Are you sure that you want to change your own organization role?",
-         "changeProjectRole": "Are you sure that you want to change your own project role?",
-         "cancelInvite": "Are you sure you want to cancel this invitation?",
-         "saved": "Saved",
-         "orgRoleUpdated": "Organization role updated successfully",
-         "projectRoleUpdated": "Project role updated successfully"
+        "leaveOrg": "Are you sure you want to leave the organization?",
+        "removeMember": "Are you sure you want to remove this member from the organization?",
+        "changeOrgRole": "Are you sure that you want to change your own organization role?",
+        "changeProjectRole": "Are you sure that you want to change your own project role?",
+        "cancelInvite": "Are you sure you want to cancel this invitation?",
+        "saved": "Saved",
+        "orgRoleUpdated": "Organization role updated successfully",
+        "projectRoleUpdated": "Project role updated successfully"
       }
     },
     "settings": {

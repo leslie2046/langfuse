@@ -625,7 +625,7 @@ function FilterBuilderForm({
                           >
                             <span className="truncate">
                               {column
-                                ? column.name
+                                ? t(column.name)
                                 : t("common.filters.column")}
                             </span>
                             <ChevronDown className="h-4 w-4 flex-shrink-0 opacity-50" />
@@ -692,7 +692,7 @@ function FilterBuilderForm({
                                         )}
                                       />
                                       <span className="flex-1">
-                                        {option.name}
+                                        {t(option.name)}
                                       </span>
                                       {hasAlert && (
                                         <Tooltip>

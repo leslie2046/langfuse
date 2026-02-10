@@ -1,4 +1,3 @@
-import startCase from "lodash/startCase";
 import { type FilterState } from "@langfuse/shared";
 import { type DashboardWidgetChartType } from "@langfuse/shared/src/db";
 
@@ -38,7 +37,8 @@ export function formatMultipleMetricNames(
   metricNames: string[],
   t: (key: string, options?: any) => string,
 ): string {
-  if (metricNames.length === 0) return t("dashboard.widgets.dataSelection.none");
+  if (metricNames.length === 0)
+    return t("dashboard.widgets.dataSelection.none");
   if (metricNames.length === 1) return formatMetricName(metricNames[0], t);
 
   const formattedNames = metricNames.map((n) => formatMetricName(n, t));
@@ -87,7 +87,11 @@ export function buildWidgetName({
     }
   }
 
-  if (dimension && dimension !== "none" && dimension !== t("dashboard.widgets.dataSelection.none")) {
+  if (
+    dimension &&
+    dimension !== "none" &&
+    dimension !== t("dashboard.widgets.dataSelection.none")
+  ) {
     base += ` ${t("dashboard.widgets.dataSelection.by")} ${dimension}`;
   }
   base += ` (${t(`dashboard.widgets.views.${view}`)})`;
@@ -139,7 +143,11 @@ export function buildWidgetDescription({
   }
 
   // Dimension clause
-  if (dimension && dimension !== "none" && dimension !== t("dashboard.widgets.dataSelection.none")) {
+  if (
+    dimension &&
+    dimension !== "none" &&
+    dimension !== t("dashboard.widgets.dataSelection.none")
+  ) {
     sentence += ` ${t("dashboard.widgets.dataSelection.by")} ${dimension.toLowerCase()}`;
   }
 

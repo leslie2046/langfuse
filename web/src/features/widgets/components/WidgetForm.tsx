@@ -28,7 +28,7 @@ import { viewDeclarations } from "@/src/features/query/dataModel";
 import { type z } from "zod/v4";
 import { views } from "@/src/features/query/types";
 import { Input } from "@/src/components/ui/input";
-import startCase from "lodash/startCase";
+
 import { DatePickerWithRange } from "@/src/components/date-picker";
 import { InlineFilterBuilder } from "@/src/features/filters/components/filter-builder";
 import { useDashboardDateRange } from "@/src/hooks/useDashboardDateRange";
@@ -1323,10 +1323,16 @@ export function WidgetForm({
                                     <SelectValue
                                       placeholder={
                                         !isEnabled
-                                          ? t("dashboard.widgets.pivotTable.selectPreviousMetric")
+                                          ? t(
+                                              "dashboard.widgets.pivotTable.selectPreviousMetric",
+                                            )
                                           : !canEdit
-                                            ? t("dashboard.widgets.pivotTable.noMoreMeasures")
-                                            : t("dashboard.widgets.pivotTable.selectMeasure")
+                                            ? t(
+                                                "dashboard.widgets.pivotTable.noMoreMeasures",
+                                              )
+                                            : t(
+                                                "dashboard.widgets.pivotTable.selectMeasure",
+                                              )
                                       }
                                     />
                                   </SelectTrigger>
@@ -1365,9 +1371,11 @@ export function WidgetForm({
                                     }
                                   >
                                     <SelectTrigger>
-                                      <SelectValue placeholder={t(
-                                        "dashboard.widgets.pivotTable.selectAggregation",
-                                      )} />
+                                      <SelectValue
+                                        placeholder={t(
+                                          "dashboard.widgets.pivotTable.selectAggregation",
+                                        )}
+                                      />
                                     </SelectTrigger>
                                     <SelectContent>
                                       {aggregationsForIndex.map(
@@ -1734,9 +1742,7 @@ export function WidgetForm({
                     if (!autoLocked) setAutoLocked(true);
                     setWidgetName(e.target.value);
                   }}
-                  placeholder={t(
-                    "dashboard.widgets.form.namePlaceholder",
-                  )}
+                  placeholder={t("dashboard.widgets.form.namePlaceholder")}
                 />
               </div>
 
@@ -1878,7 +1884,9 @@ export function WidgetForm({
                           setRowLimit(value);
                         }
                       }}
-                      placeholder={t("dashboard.widgets.form.rowLimitPlaceholder")}
+                      placeholder={t(
+                        "dashboard.widgets.form.rowLimitPlaceholder",
+                      )}
                     />
                   </div>
                 )}

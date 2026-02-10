@@ -1047,7 +1047,44 @@
     "traces": {
       "title": "追踪",
       "helpDescription": "追踪表示单个函数/API 调用。追踪包含观察数据。查看文档了解更多。",
-      "docs": "文档"
+      "docs": "文档",
+      "columns": {
+        "timestamp": "时间戳",
+        "name": "名称",
+        "input": "输入",
+        "output": "输出",
+        "observationLevels": "观察等级",
+        "latency": "延迟",
+        "tokens": "Token 数",
+        "totalCost": "总成本",
+        "environment": "环境",
+        "tags": "标签",
+        "metadata": "元数据",
+        "usage": "用量",
+        "cost": "成本",
+        "level": "等级",
+        "release": "版本",
+        "version": "版本号",
+        "sessionId": "会话 ID",
+        "userId": "用户 ID",
+        "bookmarked": "已收藏",
+        "errorCount": "错误数",
+        "warningCount": "警告数",
+        "defaultCount": "默认数",
+        "debugCount": "调试数",
+        "scoresNumeric": "分数 (数值)",
+        "scoresCategorical": "分数 (分类)",
+        "latencySeconds": "延迟 (秒)",
+        "inputCostUSD": "输入成本 ($)",
+        "outputCostUSD": "输出成本 ($)",
+        "totalCostUSD": "总成本 ($)",
+        "commentCount": "评论数",
+        "commentContent": "评论内容",
+        "dataset": "数据集",
+        "inputTokens": "输入 Token",
+        "outputTokens": "输出 Token",
+        "totalTokens": "总 Token"
+      }
     },
     "sessions": {
       "title": "会话",
@@ -1057,6 +1094,7 @@
       "title": "用户",
       "helpDescription": "通过向追踪添加 userId 来将 Langfuse 中的数据归属到用户。查看文档了解更多。",
       "columns": {
+        "timestamp": "时间戳",
         "userId": "用户 ID",
         "userIdTooltip": "在 Langfuse 中记录的用户唯一标识符。查看文档了解如何设置。",
         "environment": "环境",
@@ -1527,14 +1565,14 @@
       "naOnPlan": "当前计划不可用",
       "userAvatar": "用户头像",
       "actions": {
-         "leaveOrg": "您确定要离开该组织吗？",
-         "removeMember": "您确定要将此成员从组织中移除吗？",
-         "changeOrgRole": "您确定要更改自己的组织角色吗？",
-         "changeProjectRole": "您确定要更改自己的项目角色吗？",
-         "cancelInvite": "您确定要取消此邀请吗？",
-         "saved": "已保存",
-         "orgRoleUpdated": "组织角色已成功更新",
-         "projectRoleUpdated": "项目角色已成功更新"
+        "leaveOrg": "您确定要离开该组织吗？",
+        "removeMember": "您确定要将此成员从组织中移除吗？",
+        "changeOrgRole": "您确定要更改自己的组织角色吗？",
+        "changeProjectRole": "您确定要更改自己的项目角色吗？",
+        "cancelInvite": "您确定要取消此邀请吗？",
+        "saved": "已保存",
+        "orgRoleUpdated": "组织角色已成功更新",
+        "projectRoleUpdated": "项目角色已成功更新"
       }
     },
     "settings": {

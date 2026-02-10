@@ -104,6 +104,7 @@ export default function UsersPage() {
 const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
   const router = useRouter();
   const projectId = router.query.projectId as string;
+  const { t } = useTranslation();
 
   const [userFilterState, setUserFilterState] = useQueryFilterState(
     [],
@@ -271,10 +272,9 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     {
       accessorKey: "userId",
       enableColumnFilter: true,
-      header: "User ID",
+      header: t("pages.users.columns.userId"),
       headerTooltip: {
-        description:
-          "The unique identifier for the user that was logged in Langfuse. See docs for more details on how to set this up.",
+        description: t("pages.users.columns.userIdTooltip"),
         href: "https://langfuse.com/docs/observability/features/users",
       },
       size: 150,
@@ -292,7 +292,7 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     },
     {
       accessorKey: "environment",
-      header: "Environment",
+      header: t("pages.users.columns.environment"),
       id: "environment",
       size: 150,
       enableHiding: true,
@@ -310,9 +310,9 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     },
     {
       accessorKey: "firstEvent",
-      header: "First Event",
+      header: t("pages.users.columns.firstEvent"),
       headerTooltip: {
-        description: "The earliest trace recorded for this user.",
+        description: t("pages.users.columns.firstEventTooltip"),
       },
       size: 150,
       cell: ({ row }) => {
@@ -325,9 +325,9 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     },
     {
       accessorKey: "lastEvent",
-      header: "Last Event",
+      header: t("pages.users.columns.lastEvent"),
       headerTooltip: {
-        description: "The latest trace recorded for this user.",
+        description: t("pages.users.columns.lastEventTooltip"),
       },
       size: 150,
       cell: ({ row }) => {
@@ -340,10 +340,9 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     },
     {
       accessorKey: "totalEvents",
-      header: "Total Events",
+      header: t("pages.users.columns.totalEvents"),
       headerTooltip: {
-        description:
-          "Total number of events for the user, includes traces and observations. See data model for more details.",
+        description: t("pages.users.columns.totalEventsTooltip"),
         href: "https://langfuse.com/docs/observability/data-model",
       },
       size: 120,
@@ -357,10 +356,9 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     },
     {
       accessorKey: "totalTokens",
-      header: "Total Tokens",
+      header: t("pages.users.columns.totalTokens"),
       headerTooltip: {
-        description:
-          "Total number of tokens used for the user across all generations.",
+        description: t("pages.users.columns.totalTokensTooltip"),
         href: "https://langfuse.com/docs/model-usage-and-cost",
       },
       size: 120,
@@ -374,9 +372,9 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     },
     {
       accessorKey: "totalCost",
-      header: "Total Cost",
+      header: t("pages.users.columns.totalCost"),
       headerTooltip: {
-        description: "Total cost for the user across all generations.",
+        description: t("pages.users.columns.totalCostTooltip"),
         href: "https://langfuse.com/docs/model-usage-and-cost",
       },
       size: 120,

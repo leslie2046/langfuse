@@ -219,7 +219,10 @@ function formatMetricValue(value: number | string): string {
  * @param t - The translation function
  * @returns Formatted column header
  */
-function formatColumnHeader(metricName: string, t: (key: string) => string): string {
+function formatColumnHeader(
+  metricName: string,
+  t: (key: string) => string,
+): string {
   return formatMetricName(metricName, t);
 }
 
