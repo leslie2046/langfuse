@@ -39,7 +39,6 @@ COPY --from=pruner /app/patches ./patches
 RUN pnpm install
 
 ENV DOCKER_BUILD 1
-ENV NEXT_MANUAL_SIG_HANDLE true
 
 # pass public variables in build step
 ARG NEXT_PUBLIC_PLAIN_APP_ID
