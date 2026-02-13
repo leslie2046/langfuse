@@ -426,23 +426,27 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
               : {
                   isLoading: false,
                   isError: false,
-                  data: userRowData.rows?.map((t) => {
+                  data: userRowData.rows?.map((row) => {
                     return {
-                      userId: t.id,
-                      environment: t.environment ?? undefined,
+                      userId: row.id,
+                      environment: row.environment ?? undefined,
                       firstEvent:
-                        row.firstTrace?.toLocaleString() ?? t("pages.users.columns.noEventYet"),
+                        row.firstTrace?.toLocaleString() ??
+                        t("pages.users.columns.noEventYet"),
                       lastEvent:
-                        row.lastTrace?.toLocaleString() ?? t("pages.users.columns.noEventYet"),
+                        row.lastTrace?.toLocaleString() ??
+                        t("pages.users.columns.noEventYet"),
                       totalEvents: compactNumberFormatter(
                         isBetaEnabled
-                          ? Number(t.totalObservations ?? 0)
-                          : Number(t.totalTraces ?? 0) +
-                              Number(t.totalObservations ?? 0),
+                          ? Number(row.totalObservations ?? 0)
+                          : Number(row.totalTraces ?? 0) +
+                              Number(row.totalObservations ?? 0),
                       ),
-                      totalTokens: compactNumberFormatter(t.totalTokens ?? 0),
+                      totalTokens: compactNumberFormatter(
+                        row.totalTokens ?? 0,
+                      ),
                       totalCost: usdFormatter(
-                        t.sumCalculatedTotalCost ?? 0,
+                        row.sumCalculatedTotalCost ?? 0,
                         2,
                         2,
                       ),
