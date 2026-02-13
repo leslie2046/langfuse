@@ -28,6 +28,9 @@ COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=pruner /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=pruner /app/out/json/ .
 
+# Copy patches directory needed by pnpm patchedDependencies
+COPY --from=pruner /app/patches ./patches
+
 RUN pnpm install --frozen-lockfile
 
 ENV DOCKER_BUILD 1
