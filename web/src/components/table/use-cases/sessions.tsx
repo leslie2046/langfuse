@@ -310,10 +310,14 @@ export default function SessionsTable({
     onSuccess: (data) => {
       showSuccessToast({
         title: t("pages.sessions.actions.sessionsAddedToQueue"),
-        description: t("pages.sessions.actions.sessionsAddedToQueueDesc", { queueName: data.queueName }),
+        description: t("pages.sessions.actions.sessionsAddedToQueueDesc", {
+          queueName: data.queueName ?? "",
+        }),
         link: {
           href: `/project/${projectId}/annotation-queues/${data.queueId}`,
-          text: t("pages.sessions.actions.viewQueue", { queueName: data.queueName }),
+          text: t("pages.sessions.actions.viewQueue", {
+            queueName: data.queueName ?? "",
+          }),
         },
       });
     },
