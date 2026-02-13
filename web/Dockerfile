@@ -33,7 +33,10 @@ COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/package.json ./package.json
 COPY --from=pruner /app/patches ./patches
 
-RUN pnpm install --frozen-lockfile
+# turbo prune may cause patchedDependencies mismatch between
+# the pruned lockfile and package.json, so we cannot use --frozen-lockfile.
+# Dependencies are still resolved from the lockfile.
+RUN pnpm install
 
 ENV DOCKER_BUILD 1
 ENV NEXT_MANUAL_SIG_HANDLE true
