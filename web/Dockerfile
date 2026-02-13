@@ -28,7 +28,9 @@ COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=pruner /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=pruner /app/out/json/ .
 
-# Copy patches directory needed by pnpm patchedDependencies
+# turbo prune may strip pnpm.patchedDependencies from root package.json,
+# causing a mismatch with the lockfile. Override with the original.
+COPY --from=pruner /app/package.json ./package.json
 COPY --from=pruner /app/patches ./patches
 
 RUN pnpm install --frozen-lockfile
