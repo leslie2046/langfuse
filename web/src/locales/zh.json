@@ -226,6 +226,20 @@
       "goToPreviousPage": "跳转到上一页",
       "goToNextPage": "跳转到下一页"
     },
+    "toolbar": {
+      "hideFilters": "隐藏筛选",
+      "showFilters": "显示筛选",
+      "search": "搜索...",
+      "searchIn": "搜索 ({fields})",
+      "environment": "环境",
+      "env": "环境",
+      "fullText": "全文搜索",
+      "idsNames": "ID / 名称",
+      "searchesInIO": "在输入/输出和 {fields} 中搜索。",
+      "searchesIn": "在 {fields} 中搜索。",
+      "perfWarning": " 为提高性能，请先筛选表格数据。",
+      "savedViews": "已保存视图"
+    },
     "deleteAction": {
       "button": "删除",
       "pleaseConfirm": "请确认",
@@ -281,14 +295,38 @@
       "describeFilters": "描述您想要应用的筛选...",
       "generateFilters": "生成筛选",
       "loading": "加载中...",
-      "aiTooltip": "我们将自然语言转换为确定的筛选条件，您可以稍后进行调整",
-      "failedToGenerate": "生成筛选失败，请重试",
-      "invalidResponse": "API 响应格式无效",
+      "aiTooltip": "我们将自然语言转换为确定的过滤器，您可以之后调整",
+      "failedToGenerate": "生成过滤器失败，请重试",
+      "invalidResponse": "API 返回格式无效",
       "selectAll": "全选",
+      "min": "最小值",
+      "max": "最大值",
+      "filterValues": "筛选值",
+      "showMore": "显示更多",
+      "contains": "包含",
+      "doesNotContain": "不包含",
+      "mode": "模式:",
+      "select": "选择",
+      "text": "文本",
+      "match": "匹配:",
+      "some": "部分",
+      "all": "全部",
+      "add": "添加",
+      "remove": "移除",
+      "clear": "清除",
+      "only": "仅",
+      "empty": "(空)",
+      "noMatches": "未找到匹配项",
+      "bookmarked": "已收藏",
+      "notBookmarked": "未收藏",
+      "environment": "环境",
+      "name": "名称",
+      "id": "ID",
+      "level": "级别",
       "searchModels": "搜索模型...",
       "noModelFound": "未找到模型。",
       "allModels": "所有模型",
-      "selectedModels": "已选择 {count} 个"
+      "selectedModels": "已选 {count} 项"
     },
 
     "columns": {
@@ -615,6 +653,24 @@
         "prompt": "对象类型"
       }
     },
+    "detail": {
+      "langfuseMaintained": "（Langfuse 维护）",
+      "clone": "克隆",
+      "addWidget": "添加组件",
+      "saveFilters": "保存筛选",
+      "saving": "保存中...",
+      "noDescription": "暂无描述",
+      "dashboardUpdated": "仪表盘已更新",
+      "dashboardUpdatedDesc": "您的更改已自动保存",
+      "filtersSaved": "筛选已保存",
+      "filtersSavedDesc": "仪表盘筛选已成功保存",
+      "errorUpdating": "更新仪表盘出错",
+      "errorSavingFilters": "保存筛选出错",
+      "errorCloning": "克隆仪表盘失败",
+      "widgetNotFound": "组件未找到",
+      "confirmDeletion": "请确认删除",
+      "failedCloneWidget": "克隆组件失败"
+    },
     "tabs": {
       "dashboards": "仪表盘",
       "widgets": "组件"
@@ -755,6 +811,10 @@
         "totalCost": "总成本",
         "timeToFirstToken": "首个 Token 时间 (TTFT)",
         "countScores": "评分数量",
+        "observationsCount": "观察数量",
+        "scoresCount": "评分数量",
+        "uniqueUserIds": "唯一用户数",
+        "uniqueSessionIds": "唯一会话数",
         "toolDefinitions": "工具定义",
         "toolCalls": "工具调用",
         "value": "值"
@@ -1088,7 +1148,33 @@
     },
     "sessions": {
       "title": "会话",
-      "helpDescription": "会话是相关追踪的集合，例如对话或线程。要开始，请向追踪添加 sessionId。查看文档了解更多。"
+      "helpDescription": "会话是相关追踪的集合，例如对话或线程。要开始，请向追踪添加 sessionId。查看文档了解更多。",
+      "columns": {
+        "id": "ID",
+        "createdAt": "创建时间",
+        "duration": "持续时间",
+        "environment": "环境",
+        "scores": "评分",
+        "userIds": "用户 ID",
+        "traces": "追踪",
+        "tracesTooltip": "会话中的追踪数量。",
+        "inputCost": "输入成本",
+        "outputCost": "输出成本",
+        "totalCost": "总成本",
+        "inputTokens": "输入 Token",
+        "outputTokens": "输出 Token",
+        "totalTokens": "总 Token",
+        "usage": "用量",
+        "traceTags": "追踪标签"
+      },
+      "actions": {
+        "addToQueue": "添加到标注队列",
+        "addToQueueDesc": "将选中的会话添加到标注队列。",
+        "annotationQueue": "标注队列",
+        "sessionsAddedToQueue": "会话已添加到队列",
+        "sessionsAddedToQueueDesc": "选中的会话将被添加到队列 \"{queueName}\"。这可能需要一分钟。",
+        "viewQueue": "查看队列 \"{queueName}\""
+      }
     },
     "users": {
       "title": "用户",

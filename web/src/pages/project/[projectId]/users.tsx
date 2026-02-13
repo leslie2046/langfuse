@@ -398,7 +398,7 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
         timeRange={timeRange}
         setTimeRange={setTimeRange}
         searchConfig={{
-          metadataSearchFields: ["User ID"],
+          metadataSearchFields: [t("pages.users.columns.userId")],
           updateQuery: setSearchQuery,
           currentQuery: searchQuery ?? undefined,
           tableAllowsFullTextSearch: false,
@@ -431,9 +431,9 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
                       userId: t.id,
                       environment: t.environment ?? undefined,
                       firstEvent:
-                        t.firstTrace?.toLocaleString() ?? "No event yet",
+                        row.firstTrace?.toLocaleString() ?? t("pages.users.columns.noEventYet"),
                       lastEvent:
-                        t.lastTrace?.toLocaleString() ?? "No event yet",
+                        row.lastTrace?.toLocaleString() ?? t("pages.users.columns.noEventYet"),
                       totalEvents: compactNumberFormatter(
                         isBetaEnabled
                           ? Number(t.totalObservations ?? 0)

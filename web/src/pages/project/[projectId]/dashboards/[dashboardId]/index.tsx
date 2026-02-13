@@ -10,6 +10,7 @@ import { Button } from "@/src/components/ui/button";
 import { PlusIcon, Copy } from "lucide-react";
 import { showSuccessToast } from "@/src/features/notifications/showSuccessToast";
 import { showErrorToast } from "@/src/features/notifications/showErrorToast";
+import { useTranslation } from "@/src/features/i18n";
 import {
   SelectWidgetDialog,
   type WidgetItem,
@@ -40,6 +41,7 @@ export default function DashboardDetail() {
   const router = useRouter();
   const utils = api.useUtils();
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
 
   const { projectId, dashboardId, addWidgetId } = router.query as {
     projectId: string;
@@ -97,15 +99,15 @@ export default function DashboardDetail() {
     api.dashboard.updateDashboardDefinition.useMutation({
       onSuccess: () => {
         showSuccessToast({
-          title: "Dashboard updated",
-          description: "Your changes have been saved automatically",
+          title: t("dashboard.detail.dashboardUpdated"),
+          description: t("dashboard.detail.dashboardUpdatedDesc"),
           duration: 2000,
         });
         // Invalidate the dashboard query to refetch the data
         dashboard.refetch();
       },
       onError: (error) => {
-        showErrorToast("Error updating dashboard", error.message);
+        showErrorToast(t("dashboard.detail.errorUpdating"), error.message);
       },
     });
 
@@ -114,15 +116,15 @@ export default function DashboardDetail() {
     api.dashboard.updateDashboardFilters.useMutation({
       onSuccess: () => {
         showSuccessToast({
-          title: "Filters saved",
-          description: "Dashboard filters have been saved successfully",
+          title: t("dashboard.detail.filtersSaved"),
+          description: t("dashboard.detail.filtersSavedDesc"),
           duration: 2000,
         });
         // Update saved state to match current state
         setSavedFilters(currentFilters);
       },
       onError: (error) => {
-        showErrorToast("Error saving filters", error.message);
+        showErrorToast(t("dashboard.detail.errorSavingFilters"), error.message);
       },
     });
 
@@ -383,7 +385,7 @@ export default function DashboardDetail() {
       }
     },
     onError: (e) => {
-      showErrorToast("Failed to clone dashboard", e.message);
+      showErrorToast(t("dashboard.detail.errorCloning"), e.message);
     },
   });
 
@@ -402,11 +404,11 @@ export default function DashboardDetail() {
         title:
           (dashboard.data?.name || "Dashboard") +
           (dashboard.data?.owner === "LANGFUSE"
-            ? " (Langfuse Maintained)"
+            ? " " + t("dashboard.detail.langfuseMaintained")
             : ""),
         help: {
           description:
-            dashboard.data?.description || "No description available",
+            dashboard.data?.description || t("dashboard.detail.noDescription"),
         },
         actionButtonsRight: (
           <>
@@ -417,14 +419,14 @@ export default function DashboardDetail() {
                 variant="outline"
               >
                 {updateDashboardFilters.isPending
-                  ? "Saving..."
-                  : "Save Filters"}
+                  ? t("dashboard.detail.saving")
+                  : t("dashboard.detail.saveFilters")}
               </Button>
             )}
             {hasCUDAccess && (
               <Button onClick={handleAddWidget}>
                 <PlusIcon size={16} className="mr-1 h-4 w-4" />
-                Add Widget
+                {t("dashboard.detail.addWidget")}
               </Button>
             )}
             {hasCloneAccess && (
@@ -433,7 +435,7 @@ export default function DashboardDetail() {
                 disabled={mutateCloneDashboard.isPending}
               >
                 <Copy size={16} className="mr-1 h-4 w-4" />
-                Clone
+                {t("dashboard.detail.clone")}
               </Button>
             )}
           </>

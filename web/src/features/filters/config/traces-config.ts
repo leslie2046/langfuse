@@ -12,7 +12,7 @@ export const traceFilterConfig: FilterConfig = {
     {
       type: "categorical" as const,
       column: "environment",
-      label: "Environment",
+      label: "common.filters.environment",
     },
     {
       type: "categorical" as const,
@@ -52,9 +52,9 @@ export const traceFilterConfig: FilterConfig = {
     {
       type: "boolean" as const,
       column: "bookmarked",
-      label: "Bookmarked",
-      trueLabel: "Bookmarked",
-      falseLabel: "Not bookmarked",
+      label: "common.filters.bookmarked",
+      trueLabel: "common.filters.bookmarked",
+      falseLabel: "common.filters.notBookmarked",
     },
     {
       type: "numeric" as const,

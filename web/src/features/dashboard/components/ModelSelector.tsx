@@ -54,10 +54,10 @@ export const ModelSelectorPopover = ({
       <PopoverContent className="w-56 p-0">
         <InputCommand>
           <InputCommandInput
-            placeholder={t("filters.searchModels")}
+            placeholder={t("common.filters.searchModels")}
             variant="bottom"
           />
-          <InputCommandEmpty>{t("filters.noModelFound")}</InputCommandEmpty>
+          <InputCommandEmpty>{t("common.filters.noModelFound")}</InputCommandEmpty>
           <InputCommandGroup>
             <InputCommandItem onSelect={handleSelectAll}>
               <Check
@@ -67,7 +67,7 @@ export const ModelSelectorPopover = ({
                 )}
               />
               <span>
-                <p className="font-semibold">{t("filters.selectAll")}</p>
+                <p className="font-semibold">{t("common.filters.selectAll")}</p>
               </span>
             </InputCommandItem>
             <InputCommandSeparator className="my-1" />
@@ -127,8 +127,8 @@ export const useModelSelection = (
   const isAllSelected = selectedModels.length === allModels.length;
 
   const buttonText = isAllSelected
-    ? t("filters.allModels")
-    : t("filters.selectedModels", { count: selectedModels.length });
+    ? t("common.filters.allModels")
+    : t("common.filters.selectedModels", { count: selectedModels.length });
 
   const handleSelectAll = () => {
     setSelectedModels(isAllSelected ? [] : [...allModels.map((m) => m.model)]);

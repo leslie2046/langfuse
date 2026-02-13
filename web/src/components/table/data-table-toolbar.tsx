@@ -38,6 +38,7 @@ import { DataTableSelectAllBanner } from "@/src/components/table/data-table-mult
 import { cn } from "@/src/utils/tailwind";
 import DocPopup from "@/src/components/layouts/doc-popup";
 import { TableViewPresetsDrawer } from "@/src/components/table/table-view-presets/components/data-table-view-presets-drawer";
+import { useTranslation } from "@/src/features/i18n";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -158,6 +159,7 @@ export function DataTableToolbar<TData, TValue>({
   );
 
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
   const { open: controlsPanelOpen, setOpen: setControlsPanelOpen } =
     useDataTableControls();
 
@@ -178,7 +180,7 @@ export function DataTableToolbar<TData, TValue>({
             ) : (
               <PanelLeftOpen className="h-4 w-4" />
             )}
-            <span>{controlsPanelOpen ? "Hide" : "Show"} filters</span>
+            <span>{controlsPanelOpen ? t("common.toolbar.hideFilters") : t("common.toolbar.showFilters")} </span>
             {filterState && filterState.length > 0 && (
               <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-xs">
                 {filterState.length}
@@ -212,8 +214,8 @@ export function DataTableToolbar<TData, TValue>({
                 placeholder={
                   searchConfig.placeholder ??
                   (searchConfig.tableAllowsFullTextSearch
-                    ? "Search..."
-                    : `Search (${searchConfig.metadataSearchFields?.join(", ")})`)
+                    ? t("common.toolbar.search")
+                    : t("common.toolbar.searchIn", { fields: searchConfig.metadataSearchFields?.join(", ") ?? "" }))
                 }
                 value={searchString}
                 onChange={(event) => {
@@ -245,9 +247,9 @@ export function DataTableToolbar<TData, TValue>({
                       {searchConfig.tableAllowsFullTextSearch &&
                       (searchConfig.searchType ?? []).includes("content")
                         ? (searchConfig.customDropdownLabels?.fullText ??
-                          "Full Text")
+                          t("common.toolbar.fullText"))
                         : (searchConfig.customDropdownLabels?.metadata ??
-                          "IDs / Names")}
+                          t("common.toolbar.idsNames"))}
                       <DocPopup
                         description={
                           searchConfig.tableAllowsFullTextSearch &&
@@ -255,15 +257,13 @@ export function DataTableToolbar<TData, TValue>({
                             "content",
                           ) ? (
                             <p className="text-xs font-normal text-primary">
-                              Searches in Input/Output and{" "}
-                              {searchConfig.metadataSearchFields?.join(", ")}.
+                              {t("common.toolbar.searchesInIO", { fields: searchConfig.metadataSearchFields?.join(", ") ?? "" })}
                               {!searchConfig.hidePerformanceWarning &&
-                                " For improved performance, please filter the table down."}
+                                t("common.toolbar.perfWarning")}
                             </p>
                           ) : (
                             <p className="text-xs font-normal text-primary">
-                              Searches in{" "}
-                              {searchConfig.metadataSearchFields?.join(", ")}.
+                              {t("common.toolbar.searchesIn", { fields: searchConfig.metadataSearchFields?.join(", ") ?? "" })}
                             </p>
                           )
                         }
@@ -296,14 +296,14 @@ export function DataTableToolbar<TData, TValue>({
                   >
                     <DropdownMenuRadioItem value="metadata">
                       {searchConfig.customDropdownLabels?.metadata ??
-                        "IDs / Names"}
+                        t("common.toolbar.idsNames")}
                     </DropdownMenuRadioItem>
                     <DropdownMenuRadioItem
                       value="metadata_fulltext"
                       disabled={!searchConfig.tableAllowsFullTextSearch}
                     >
                       {searchConfig.customDropdownLabels?.fullText ??
-                        "Full Text"}
+                        t("common.toolbar.fullText")}
                     </DropdownMenuRadioItem>
                   </DropdownMenuRadioGroup>
                 </DropdownMenuContent>
@@ -330,8 +330,8 @@ export function DataTableToolbar<TData, TValue>({
         )}
         {environmentFilter && (
           <MultiSelectFilter
-            title="Environment"
-            label="Env"
+            title={t("common.toolbar.environment")}
+            label={t("common.toolbar.env")}
             values={environmentFilter.values}
             onValueChange={environmentFilter.onValueChange}
             options={environmentFilter.options}

@@ -226,6 +226,20 @@
       "goToPreviousPage": "Go to previous page",
       "goToNextPage": "Go to next page"
     },
+    "toolbar": {
+      "hideFilters": "Hide filters",
+      "showFilters": "Show filters",
+      "search": "Search...",
+      "searchIn": "Search ({fields})",
+      "environment": "Environment",
+      "env": "Env",
+      "fullText": "Full Text",
+      "idsNames": "IDs / Names",
+      "searchesInIO": "Searches in Input/Output and {fields}.",
+      "searchesIn": "Searches in {fields}.",
+      "perfWarning": " For improved performance, please filter the table down.",
+      "savedViews": "Saved Views"
+    },
     "deleteAction": {
       "button": "Delete",
       "pleaseConfirm": "Please confirm",
@@ -288,7 +302,31 @@
       "searchModels": "Search models...",
       "noModelFound": "No model found.",
       "allModels": "All models",
-      "selectedModels": "{count} selected"
+      "selectedModels": "{count} selected",
+      "min": "Min.",
+      "max": "Max.",
+      "filterValues": "Filter values",
+      "showMore": "Show more values",
+      "contains": "contains",
+      "doesNotContain": "does not contain",
+      "mode": "Mode:",
+      "select": "SELECT",
+      "text": "TEXT",
+      "match": "Match:",
+      "some": "SOME",
+      "all": "ALL",
+      "add": "Add",
+      "remove": "Remove",
+      "clear": "Clear",
+      "only": "Only",
+      "empty": "(empty)",
+      "noMatches": "No matches found",
+      "bookmarked": "Bookmarked",
+      "notBookmarked": "Not bookmarked",
+      "environment": "Environment",
+      "name": "Name",
+      "id": "ID",
+      "level": "Level"
     },
 
     "columns": {
@@ -615,6 +653,24 @@
         "prompt": "Object type"
       }
     },
+    "detail": {
+      "langfuseMaintained": "(Langfuse Maintained)",
+      "clone": "Clone",
+      "addWidget": "Add Widget",
+      "saveFilters": "Save Filters",
+      "saving": "Saving...",
+      "noDescription": "No description available",
+      "dashboardUpdated": "Dashboard updated",
+      "dashboardUpdatedDesc": "Your changes have been saved automatically",
+      "filtersSaved": "Filters saved",
+      "filtersSavedDesc": "Dashboard filters have been saved successfully",
+      "errorUpdating": "Error updating dashboard",
+      "errorSavingFilters": "Error saving filters",
+      "errorCloning": "Failed to clone dashboard",
+      "widgetNotFound": "Widget not found",
+      "confirmDeletion": "Please confirm deletion",
+      "failedCloneWidget": "Failed to clone widget"
+    },
     "tabs": {
       "dashboards": "Dashboards",
       "widgets": "Widgets"
@@ -755,6 +811,10 @@
         "totalCost": "Total Cost",
         "timeToFirstToken": "Time to First Token (TTFT)",
         "countScores": "Count Scores",
+        "observationsCount": "Observations Count",
+        "scoresCount": "Scores Count",
+        "uniqueUserIds": "Unique Users",
+        "uniqueSessionIds": "Unique Sessions",
         "toolDefinitions": "Tool Definitions",
         "toolCalls": "Tool Calls",
         "value": "Value"
@@ -1087,7 +1147,33 @@
     },
     "sessions": {
       "title": "Sessions",
-      "helpDescription": "A session is a collection of related traces, such as a conversation or thread. To begin, add a sessionId to the trace. See docs to learn more."
+      "helpDescription": "A session is a collection of related traces, such as a conversation or thread. To begin, add a sessionId to the trace. See docs to learn more.",
+      "columns": {
+        "id": "ID",
+        "createdAt": "Created At",
+        "duration": "Duration",
+        "environment": "Environment",
+        "scores": "Scores",
+        "userIds": "User IDs",
+        "traces": "Traces",
+        "tracesTooltip": "The number of traces in the session.",
+        "inputCost": "Input Cost",
+        "outputCost": "Output Cost",
+        "totalCost": "Total Cost",
+        "inputTokens": "Input Tokens",
+        "outputTokens": "Output Tokens",
+        "totalTokens": "Total Tokens",
+        "usage": "Usage",
+        "traceTags": "Trace Tags"
+      },
+      "actions": {
+        "addToQueue": "Add to Annotation Queue",
+        "addToQueueDesc": "Add selected sessions to an annotation queue.",
+        "annotationQueue": "Annotation Queue",
+        "sessionsAddedToQueue": "Sessions added to queue",
+        "sessionsAddedToQueueDesc": "Selected sessions will be added to queue \"{queueName}\". This may take a minute.",
+        "viewQueue": "View queue \"{queueName}\""
+      }
     },
     "users": {
       "title": "Users",
