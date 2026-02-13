@@ -30,6 +30,7 @@ export function ScoreAnalytics(props: {
   toTimestamp: Date;
   projectId: string;
   isLoading?: boolean;
+  isDashboardChartsBeta?: boolean;
 }) {
   // Stale score selections in localStorage are ignored as we only show scores that exist in scoreAnalyticsOptions
   const [selectedDashboardScoreKeys, setSelectedDashboardScoreKeys] =
@@ -125,6 +126,7 @@ export function ScoreAnalytics(props: {
                         globalFilterState={props.globalFilterState}
                         fromTimestamp={props.fromTimestamp}
                         toTimestamp={props.toTimestamp}
+                        isDashboardChartsBeta={props.isDashboardChartsBeta}
                       />
                     )}
                     {(isNumericDataType(dataType) ||
@@ -140,6 +142,7 @@ export function ScoreAnalytics(props: {
                           >
                         }
                         globalFilterState={props.globalFilterState}
+                        isDashboardChartsBeta={props.isDashboardChartsBeta}
                       />
                     )}
                   </div>
@@ -158,6 +161,7 @@ export function ScoreAnalytics(props: {
                         globalFilterState={props.globalFilterState}
                         fromTimestamp={props.fromTimestamp}
                         toTimestamp={props.toTimestamp}
+                        isDashboardChartsBeta={props.isDashboardChartsBeta}
                       />
                     )}
                     {(isNumericDataType(dataType) ||
@@ -176,6 +180,7 @@ export function ScoreAnalytics(props: {
                         globalFilterState={props.globalFilterState}
                         fromTimestamp={props.fromTimestamp}
                         toTimestamp={props.toTimestamp}
+                        isDashboardChartsBeta={props.isDashboardChartsBeta}
                       />
                     )}
                   </div>
@@ -188,8 +193,8 @@ export function ScoreAnalytics(props: {
           })}
         </div>
       ) : Boolean(scoreKeysAndProps.data?.scoreColumns.length) ? (
-        <div className="flex min-h-[9rem] w-full flex-1 items-center justify-center rounded-tremor-default border">
-          <p className="text-tremor-content">
+        <div className="flex min-h-[9rem] w-full flex-1 items-center justify-center rounded-md border">
+          <p className="text-muted-foreground">
             {t("dashboard.scoresAnalytics.selectScore")}
           </p>
         </div>

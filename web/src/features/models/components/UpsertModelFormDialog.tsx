@@ -415,7 +415,6 @@ export const UpsertModelFormDialog = (({
                         mode="json"
                         value={field.value ?? "{}"}
                         onChange={field.onChange}
-                        minHeight="none"
                       />
                       <FormDescription>
                         {t("models.configDescription")}{" "}

@@ -319,7 +319,8 @@ export function DashboardWidget({
           data={transformedData}
           rowLimit={
             widget.data.chartConfig.type === "LINE_TIME_SERIES" ||
-            widget.data.chartConfig.type === "BAR_TIME_SERIES"
+            widget.data.chartConfig.type === "BAR_TIME_SERIES" ||
+            widget.data.chartConfig.type === "AREA_TIME_SERIES"
               ? 100
               : (widget.data.chartConfig.row_limit ?? 100)
           }

@@ -12,6 +12,7 @@ import {
 import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
 import ObservationsEventsTable from "@/src/features/events/components/EventsTable";
 import { useTranslation } from "@/src/features/i18n";
+import { useQueryProject } from "@/src/features/projects/hooks";
 
 export default function Traces() {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function Traces() {
   const { isBetaEnabled } = useV4Beta();
   const { t } = useTranslation();
   const [, setQueryParams] = useQueryParams({ viewMode: StringParam });
+  const { project } = useQueryProject();
 
   // Clear viewMode query when beta is turned off (e.g. from sidebar)
   useEffect(() => {
@@ -28,6 +30,7 @@ export default function Traces() {
   }, [isBetaEnabled, setQueryParams]);
 
   // Check if the user has tracing configured
+  // Skip polling entirely if the project flag is already set in the session
   const { data: hasTracingConfigured, isLoading } =
     api.traces.hasTracingConfigured.useQuery(
       { projectId },
@@ -38,7 +41,9 @@ export default function Traces() {
             skipBatch: true,
           },
         },
-        refetchInterval: 10_000,
+        refetchInterval: project?.hasTraces ? false : 10_000,
+        initialData: project?.hasTraces ? true : undefined,
+        staleTime: project?.hasTraces ? Infinity : 0,
       },
     );
 

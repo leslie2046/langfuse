@@ -24,6 +24,8 @@ import {
 } from "@/src/features/query";
 import type { DatabaseRow } from "@/src/server/api/services/sqlInterface";
 import { useTranslation } from "@/src/features/i18n";
+import { Chart } from "@/src/features/widgets/chart-library/Chart";
+import { timeSeriesToDataPoints } from "@/src/features/dashboard/lib/tremorv4-recharts-chart-adapters";
 
 export const GenerationLatencyChart = ({
   className,
@@ -33,6 +35,7 @@ export const GenerationLatencyChart = ({
   fromTimestamp,
   toTimestamp,
   isLoading = false,
+  isDashboardChartsBeta = false,
 }: {
   className?: string;
   projectId: string;
@@ -41,6 +44,7 @@ export const GenerationLatencyChart = ({
   fromTimestamp: Date;
   toTimestamp: Date;
   isLoading?: boolean;
+  isDashboardChartsBeta?: boolean;
 }) => {
   const { t } = useTranslation();
   const {
@@ -175,13 +179,29 @@ export const GenerationLatencyChart = ({
             content: (
               <>
                 {!isEmptyTimeSeries({ data: item.data }) ? (
-                  <BaseTimeSeriesChart
-                    className="[&_text]:fill-muted-foreground [&_tspan]:fill-muted-foreground"
-                    agg={agg}
-                    data={item.data}
-                    connectNulls={true}
-                    valueFormatter={latencyFormatter}
-                  />
+                  isDashboardChartsBeta ? (
+                    <div className="h-80 w-full shrink-0">
+                      <Chart
+                        chartType="LINE_TIME_SERIES"
+                        data={timeSeriesToDataPoints(item.data, agg)}
+                        rowLimit={100}
+                        chartConfig={{
+                          type: "LINE_TIME_SERIES",
+                          show_data_point_dots: false,
+                        }}
+                        valueFormatter={latencyFormatter}
+                        legendPosition="above"
+                      />
+                    </div>
+                  ) : (
+                    <BaseTimeSeriesChart
+                      className="[&_text]:fill-muted-foreground [&_tspan]:fill-muted-foreground"
+                      agg={agg}
+                      data={item.data}
+                      connectNulls={true}
+                      valueFormatter={latencyFormatter}
+                    />
+                  )
                 ) : (
                   <NoDataOrLoading
                     isLoading={isLoading || latencies.isPending}

@@ -5,13 +5,15 @@ import { useState } from "react";
 import { DashboardCard } from "@/src/features/dashboard/components/cards/DashboardCard";
 import { TotalMetric } from "@/src/features/dashboard/components/TotalMetric";
 import { BarList } from "@tremor/react";
-import { compactNumberFormatter } from "@/src/utils/numbers";
+import { compactNumberFormatter, numberFormatter } from "@/src/utils/numbers";
 import { NoDataOrLoading } from "@/src/components/NoDataOrLoading";
 import {
   type QueryType,
   mapLegacyUiTableFilterToView,
 } from "@/src/features/query";
 import { useTranslation } from "@/src/features/i18n";
+import { Chart } from "@/src/features/widgets/chart-library/Chart";
+import { barListToDataPoints } from "@/src/features/dashboard/lib/tremorv4-recharts-chart-adapters";
 
 export const TracesBarListChart = ({
   className,
@@ -20,6 +22,7 @@ export const TracesBarListChart = ({
   fromTimestamp,
   toTimestamp,
   isLoading = false,
+  isDashboardChartsBeta = false,
 }: {
   className?: string;
   projectId: string;
@@ -27,6 +30,7 @@ export const TracesBarListChart = ({
   fromTimestamp: Date;
   toTimestamp: Date;
   isLoading?: boolean;
+  isDashboardChartsBeta?: boolean;
 }) => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -100,6 +104,10 @@ export const TracesBarListChart = ({
     ? transformedTraces.slice(0, maxNumberOfEntries.expanded)
     : transformedTraces.slice(0, maxNumberOfEntries.collapsed);
 
+  // Height scales with bar count so each bar keeps the same height when expanding, otherwise recharts chart would resize to fit into the container.
+  const BAR_ROW_HEIGHT = 36;
+  const CHART_AXIS_PADDING = 32;
+
   return (
     <DashboardCard
       className={className}
@@ -118,15 +126,39 @@ export const TracesBarListChart = ({
         />
         {adjustedData.length > 0 ? (
           <>
-            <BarList
-              data={adjustedData}
-              valueFormatter={(number: number) =>
-                Intl.NumberFormat("en-US").format(number).toString()
-              }
-              className="mt-6 [&_*]:text-muted-foreground [&_p]:text-muted-foreground [&_span]:text-muted-foreground"
-              showAnimation={true}
-              color={"indigo"}
-            />
+            {isDashboardChartsBeta ? (
+              <div
+                className="mt-4 w-full"
+                style={{
+                  minHeight: 200,
+                  height: Math.max(
+                    200,
+                    adjustedData.length * BAR_ROW_HEIGHT + CHART_AXIS_PADDING,
+                  ),
+                }}
+              >
+                <Chart
+                  chartType="HORIZONTAL_BAR"
+                  data={barListToDataPoints(adjustedData)}
+                  rowLimit={maxNumberOfEntries.expanded}
+                  chartConfig={{
+                    type: "HORIZONTAL_BAR",
+                    row_limit: maxNumberOfEntries.expanded,
+                    subtle_fill: true,
+                    show_value_labels: true,
+                  }}
+                  valueFormatter={(n) => numberFormatter(n, 0)}
+                />
+              </div>
+            ) : (
+              <BarList
+                data={adjustedData}
+                valueFormatter={(number: number) => numberFormatter(number, 0)}
+                className="mt-6 [&_*]:text-muted-foreground [&_p]:text-muted-foreground [&_span]:text-muted-foreground"
+                showAnimation={true}
+                color={"indigo"}
+              />
+            )}
           </>
         ) : (
           <NoDataOrLoading
