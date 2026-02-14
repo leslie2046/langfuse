@@ -330,7 +330,7 @@ export default function ScoresTable({
       accessorKey: "id",
       id: "id",
       enableColumnFilter: false,
-      header: t("scores.columns.id"),
+      header: t("pages.scores.columns.id"),
       size: 100,
       enableSorting: false,
       defaultHidden: true,
@@ -344,7 +344,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "traceName",
-      header: t("scores.columns.traceName"),
+      header: t("pages.scores.columns.traceName"),
       id: "traceName",
       enableHiding: true,
       enableSorting: true,
@@ -366,7 +366,7 @@ export default function ScoresTable({
       accessorKey: "traceId",
       id: "traceId",
       enableColumnFilter: true,
-      header: t("scores.columns.trace"),
+      header: t("pages.scores.columns.trace"),
       enableSorting: true,
       size: 100,
       cell: ({ row }) => {
@@ -384,7 +384,7 @@ export default function ScoresTable({
     {
       accessorKey: "executionTraceId",
       id: "executionTraceId",
-      header: t("scores.columns.executionTrace"),
+      header: t("pages.scores.columns.executionTrace"),
       enableSorting: false,
       enableHiding: true,
       defaultHidden: true,
@@ -402,7 +402,7 @@ export default function ScoresTable({
     {
       accessorKey: "observationId",
       id: "observationId",
-      header: t("scores.columns.observation"),
+      header: t("pages.scores.columns.observation"),
       enableSorting: true,
       size: 100,
       cell: ({ row }) => {
@@ -420,7 +420,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "sessionId",
-      header: t("scores.columns.session"),
+      header: t("pages.scores.columns.session"),
       id: "sessionId",
       enableHiding: true,
       enableSorting: true,
@@ -437,7 +437,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "environment",
-      header: t("scores.columns.environment"),
+      header: t("pages.scores.columns.environment"),
       id: "environment",
       size: 150,
       enableHiding: true,
@@ -455,7 +455,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "userId",
-      header: t("scores.columns.user"),
+      header: t("pages.scores.columns.user"),
       id: "userId",
       headerTooltip: {
         description: "The user ID associated with the trace.",
@@ -478,7 +478,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "timestamp",
-      header: t("scores.columns.timestamp"),
+      header: t("pages.scores.columns.timestamp"),
       id: "timestamp",
       enableHiding: true,
       enableSorting: true,
@@ -490,7 +490,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "source",
-      header: t("scores.columns.source"),
+      header: t("pages.scores.columns.source"),
       id: "source",
       enableHiding: true,
       enableSorting: true,
@@ -498,7 +498,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "name",
-      header: t("scores.columns.name"),
+      header: t("pages.scores.columns.name"),
       id: "name",
       enableHiding: true,
       enableSorting: true,
@@ -506,7 +506,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "dataType",
-      header: t("scores.columns.dataType"),
+      header: t("pages.scores.columns.dataType"),
       id: "dataType",
       enableHiding: true,
       enableSorting: true,
@@ -514,7 +514,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "value",
-      header: t("scores.columns.value"),
+      header: t("pages.scores.columns.value"),
       id: "value",
       enableHiding: true,
       enableSorting: true,
@@ -522,7 +522,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "metadata",
-      header: t("scores.columns.metadata"),
+      header: t("pages.scores.columns.metadata"),
       id: "metadata",
       size: 400,
       headerTooltip: {
@@ -544,7 +544,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "comment",
-      header: t("scores.columns.comment"),
+      header: t("pages.scores.columns.comment"),
       id: "comment",
       enableHiding: true,
       size: 400,
@@ -558,7 +558,7 @@ export default function ScoresTable({
     {
       accessorKey: "author",
       id: "author",
-      header: t("scores.columns.author"),
+      header: t("pages.scores.columns.author"),
       enableHiding: true,
       size: 150,
       cell: ({ row }) => {
@@ -580,7 +580,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "jobConfigurationId",
-      header: t("scores.columns.evalConfigId"),
+      header: t("pages.scores.columns.evalConfigId"),
       id: "jobConfigurationId",
       headerTooltip: {
         description: "The Job Configuration ID associated with the trace.",
@@ -604,7 +604,7 @@ export default function ScoresTable({
     {
       accessorKey: "traceTags",
       id: "traceTags",
-      header: t("scores.columns.traceTags"),
+      header: t("pages.scores.columns.traceTags"),
       size: 250,
       enableHiding: true,
       defaultHidden: true,
@@ -771,14 +771,14 @@ export default function ScoresTable({
               columns={columns}
               noResultsMessage={
                 <div className="flex flex-col items-center">
-                  <span>No scores found.</span>
+                  <span>{t("pages.scores.noScoresFound")}</span>
                   <a
                     href="https://langfuse.com/faq/all/what-are-scores"
                     className="pointer-events-auto italic text-primary underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    What are scores?
+                    {t("pages.scores.whatAreScores")}
                   </a>
                 </div>
               }

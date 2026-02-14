@@ -697,7 +697,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "statusMessage",
-      header: "Status Message",
+      header: t("pages.observations.columns.statusMessage"),
       id: "statusMessage",
       size: 150,
       headerTooltip: {
@@ -749,7 +749,7 @@ export default function ObservationsTable({
     {
       accessorKey: "toolDefinitions",
       id: "toolDefinitions",
-      header: "Available Tools",
+      header: t("pages.observations.columns.toolDefinitions"),
       size: 120,
       enableHiding: true,
       enableSorting,
@@ -764,7 +764,7 @@ export default function ObservationsTable({
     {
       accessorKey: "toolCalls",
       id: "toolCalls",
-      header: "Tool Calls",
+      header: t("pages.observations.columns.toolCalls"),
       size: 100,
       enableHiding: true,
       enableSorting,
@@ -826,7 +826,7 @@ export default function ObservationsTable({
     {
       accessorKey: "model",
       id: "model",
-      header: "Model",
+      header: t("pages.observations.columns.model"),
       size: 150,
       enableHiding: true,
       enableSorting,
@@ -870,7 +870,7 @@ export default function ObservationsTable({
     {
       accessorKey: "promptName",
       id: "promptName",
-      header: "Prompt",
+      header: t("pages.observations.columns.promptName"),
       headerTooltip: {
         description: "Link to prompt version in Langfuse prompt management.",
         href: "https://langfuse.com/docs/prompt-management/get-started",
@@ -887,7 +887,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "environment",
-      header: "Environment",
+      header: t("pages.observations.columns.environment"),
       id: "environment",
       size: 150,
       enableHiding: true,
@@ -907,7 +907,7 @@ export default function ObservationsTable({
     {
       accessorKey: "traceTags",
       id: "traceTags",
-      header: "Trace Tags",
+      header: t("pages.observations.columns.traceTags"),
       size: 250,
       enableHiding: true,
       cell: ({ row }) => {
@@ -928,7 +928,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "metadata",
-      header: "Metadata",
+      header: t("pages.observations.columns.metadata"),
       size: 300,
       headerTooltip: {
         description: "Add metadata to traces to track additional information.",
@@ -952,7 +952,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "scores",
-      header: "Scores",
+      header: t("pages.observations.columns.scores"),
       id: "scores",
       enableHiding: true,
       defaultHidden: true,
@@ -964,7 +964,7 @@ export default function ObservationsTable({
     {
       accessorKey: "endTime",
       id: "endTime",
-      header: "End Time",
+      header: t("pages.observations.columns.endTime"),
       size: 150,
       enableHiding: true,
       enableSorting,
@@ -977,7 +977,7 @@ export default function ObservationsTable({
     {
       accessorKey: "id",
       id: "id",
-      header: "ObservationID",
+      header: t("pages.observations.columns.observationId"),
       size: 100,
       defaultHidden: true,
       enableSorting,
@@ -994,7 +994,7 @@ export default function ObservationsTable({
     {
       accessorKey: "traceName",
       id: "traceName",
-      header: "Trace Name",
+      header: t("pages.observations.columns.traceName"),
       size: 150,
       enableHiding: true,
       enableSorting,
@@ -1003,7 +1003,7 @@ export default function ObservationsTable({
     {
       accessorKey: "traceId",
       id: "traceId",
-      header: "Trace ID",
+      header: t("pages.observations.columns.traceId"),
       size: 100,
       cell: ({ row }) => {
         const value = row.getValue("traceId");
@@ -1018,7 +1018,7 @@ export default function ObservationsTable({
     {
       accessorKey: "modelId",
       id: "modelId",
-      header: "Model ID",
+      header: t("pages.observations.columns.modelId"),
       size: 100,
       enableHiding: true,
       defaultHidden: true,
@@ -1026,7 +1026,7 @@ export default function ObservationsTable({
     {
       accessorKey: "version",
       id: "version",
-      header: "Version",
+      header: t("pages.observations.columns.version"),
       size: 100,
       headerTooltip: {
         description: "Track changes via the version tag.",
@@ -1038,7 +1038,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "usage",
-      header: "Usage",
+      header: t("pages.observations.columns.usage"),
       id: "usage",
       enableHiding: true,
       defaultHidden: true,
@@ -1051,7 +1051,7 @@ export default function ObservationsTable({
         {
           accessorKey: "tokensPerSecond",
           id: "tokensPerSecond",
-          header: "Tokens per second",
+          header: t("pages.observations.columns.tokensPerSecond"),
           size: 200,
           cell: ({ row }: { row: Row<ObservationsTableRow> }) => {
             const latency: number | undefined = row.getValue("latency");
@@ -1076,7 +1076,7 @@ export default function ObservationsTable({
         {
           accessorKey: "inputTokens",
           id: "inputTokens",
-          header: "Input Tokens",
+          header: t("pages.observations.columns.inputTokens"),
           size: 100,
           enableHiding: true,
           defaultHidden: true,
@@ -1093,7 +1093,7 @@ export default function ObservationsTable({
         {
           accessorKey: "outputTokens",
           id: "outputTokens",
-          header: "Output Tokens",
+          header: t("pages.observations.columns.outputTokens"),
           size: 100,
           enableHiding: true,
           defaultHidden: true,
@@ -1110,7 +1110,7 @@ export default function ObservationsTable({
         {
           accessorKey: "totalTokens",
           id: "totalTokens",
-          header: "Total Tokens",
+          header: t("pages.observations.columns.totalTokens"),
           size: 100,
           enableHiding: true,
           defaultHidden: true,
@@ -1128,7 +1128,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "cost",
-      header: "Cost",
+      header: t("pages.observations.columns.cost"),
       id: "cost",
       enableHiding: true,
       defaultHidden: true,
@@ -1141,7 +1141,7 @@ export default function ObservationsTable({
         {
           accessorKey: "inputCost",
           id: "inputCost",
-          header: "Input Cost",
+          header: t("pages.observations.columns.inputCost"),
           size: 120,
           cell: ({ row }: { row: Row<ObservationsTableRow> }) => {
             const value: {
@@ -1160,7 +1160,7 @@ export default function ObservationsTable({
         {
           accessorKey: "outputCost",
           id: "outputCost",
-          header: "Output Cost",
+          header: t("pages.observations.columns.outputCost"),
           size: 120,
           cell: ({ row }: { row: Row<ObservationsTableRow> }) => {
             const value: {

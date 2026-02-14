@@ -1096,7 +1096,10 @@
         "level": "Level",
         "model": "Model",
         "modelId": "Model ID",
+        "observationId": "Observation ID",
         "promptName": "Prompt Name",
+        "scores": "Scores",
+        "endTime": "End Time",
         "traceTags": "Trace Tags",
         "metadata": "Metadata",
         "input": "Input",
@@ -1112,6 +1115,7 @@
         "totalCost": "Total Cost",
         "cost": "Cost",
         "usage": "Usage",
+        "tokensPerSecond": "Tokens per second",
         "toolNames": "Tool Names (Available)",
         "calledToolNames": "Tool Names (Called)",
         "toolDefinitions": "Available Tools",
@@ -1358,6 +1362,8 @@
         "evalConfigId": "Eval Configuration ID",
         "traceTags": "Trace Tags"
       },
+      "noScoresFound": "No scores found.",
+      "whatAreScores": "What are scores?",
       "helpDescription": "A scores is an evaluation of a traces or observations. It can be created from user feedback, model-based evaluations, or manual review. See docs to learn more.",
       "annotate": {
         "title": "Annotate",

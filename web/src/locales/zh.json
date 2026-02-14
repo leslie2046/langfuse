@@ -1097,7 +1097,10 @@
         "level": "级别",
         "model": "模型",
         "modelId": "模型 ID",
+        "observationId": "观察 ID",
         "promptName": "提示词名称",
+        "scores": "评分",
+        "endTime": "结束时间",
         "traceTags": "追踪标签",
         "metadata": "元数据",
         "input": "输入",
@@ -1113,6 +1116,7 @@
         "totalCost": "总成本",
         "cost": "成本",
         "usage": "用量",
+        "tokensPerSecond": "每秒 Token",
         "toolNames": "工具名称",
         "calledToolNames": "调用的工具名称",
         "toolDefinitions": "可用工具",
@@ -1359,6 +1363,8 @@
         "evalConfigId": "评估配置 ID",
         "traceTags": "追踪标签"
       },
+      "noScoresFound": "未找到评分。",
+      "whatAreScores": "什么是评分？",
       "helpDescription": "评分是对追踪或观察数据的评估。它可以通过用户反馈、基于模型的评估或人工审核创建。查看文档了解更多。",
       "annotate": {
         "title": "标注",
