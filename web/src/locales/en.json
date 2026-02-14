@@ -1322,29 +1322,7 @@
       "session": "Session",
       "userId": "User ID"
     },
-    "scores": {
-      "title": "Scores",
-      "columns": {
-        "id": "Score ID",
-        "traceName": "Trace Name",
-        "trace": "Trace",
-        "executionTrace": "Execution Trace",
-        "observation": "Observation",
-        "session": "Session",
-        "environment": "Environment",
-        "user": "User",
-        "timestamp": "Timestamp",
-        "source": "Source",
-        "name": "Name",
-        "dataType": "Data Type",
-        "value": "Value",
-        "metadata": "Metadata",
-        "comment": "Comment",
-        "author": "Author",
-        "evalConfigId": "Eval Configuration ID",
-        "traceTags": "Trace Tags"
-      }
-    },
+
     "dashboards": {
       "title": "Dashboards",
       "traces": "Traces",
@@ -1390,6 +1368,26 @@
     },
     "scores": {
       "title": "Scores",
+      "columns": {
+        "id": "Score ID",
+        "traceName": "Trace Name",
+        "trace": "Trace",
+        "executionTrace": "Execution Trace",
+        "observation": "Observation",
+        "session": "Session",
+        "environment": "Environment",
+        "user": "User",
+        "timestamp": "Timestamp",
+        "source": "Source",
+        "name": "Name",
+        "dataType": "Data Type",
+        "value": "Value",
+        "metadata": "Metadata",
+        "comment": "Comment",
+        "author": "Author",
+        "evalConfigId": "Eval Configuration ID",
+        "traceTags": "Trace Tags"
+      },
       "helpDescription": "A scores is an evaluation of a traces or observations. It can be created from user feedback, model-based evaluations, or manual review. See docs to learn more.",
       "analytics": {
         "noScoresAvailable": "No scores available",

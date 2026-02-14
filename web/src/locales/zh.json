@@ -1324,29 +1324,7 @@
       "session": "会话",
       "userId": "用户 ID"
     },
-    "scores": {
-      "title": "评分",
-      "columns": {
-        "id": "评分 ID",
-        "traceName": "追踪名称",
-        "trace": "追踪",
-        "executionTrace": "执行追踪",
-        "observation": "观察",
-        "session": "会话",
-        "environment": "环境",
-        "user": "用户",
-        "timestamp": "时间戳",
-        "source": "来源",
-        "name": "名称",
-        "dataType": "数据类型",
-        "value": "值",
-        "metadata": "元数据",
-        "comment": "评论",
-        "author": "作者",
-        "evalConfigId": "评估配置 ID",
-        "traceTags": "追踪标签"
-      }
-    },
+
     "dashboards": {
       "title": "仪表盘",
       "traces": "追踪",
@@ -1392,6 +1370,26 @@
     },
     "scores": {
       "title": "评分",
+      "columns": {
+        "id": "评分 ID",
+        "traceName": "追踪名称",
+        "trace": "追踪",
+        "executionTrace": "执行追踪",
+        "observation": "观察",
+        "session": "会话",
+        "environment": "环境",
+        "user": "用户",
+        "timestamp": "时间戳",
+        "source": "来源",
+        "name": "名称",
+        "dataType": "数据类型",
+        "value": "值",
+        "metadata": "元数据",
+        "comment": "评论",
+        "author": "作者",
+        "evalConfigId": "评估配置 ID",
+        "traceTags": "追踪标签"
+      },
       "helpDescription": "评分是对追踪或观察数据的评估。它可以通过用户反馈、基于模型的评估或人工审核创建。查看文档了解更多。",
       "analytics": {
         "noScoresAvailable": "暂无评分",
