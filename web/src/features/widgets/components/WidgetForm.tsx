@@ -512,71 +512,71 @@ export function WidgetForm({
   // Filter columns for PopoverFilterBuilder
   const filterColumns: ColumnDefinition[] = [
     {
-      name: t("dashboard.widgets.dimensions.environment"),
+      name: "environment",
       id: "environment",
       type: "stringOptions",
       options: environmentOptions,
       internal: "internalValue",
     },
     {
-      name: t("dashboard.widgets.dimensions.traceName"),
+      name: "traceName",
       id: "traceName",
       type: "stringOptions",
       options: nameOptions,
       internal: "internalValue",
     },
     {
-      name: t("dashboard.widgets.dimensions.observationName"),
+      name: "observationName",
       id: "observationName",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: t("dashboard.widgets.dimensions.scoreName"),
+      name: "scoreName",
       id: "scoreName",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: t("dashboard.widgets.dimensions.tags"),
+      name: "tags",
       id: "tags",
       type: "arrayOptions",
       options: tagsOptions,
       internal: "internalValue",
     },
     {
-      name: t("dashboard.widgets.dimensions.toolNames"),
+      name: "toolNames",
       id: "toolNames",
       type: "arrayOptions",
       options: toolNamesOptions,
       internal: "internalValue",
     },
     {
-      name: t("dashboard.widgets.dimensions.user"),
-      id: "user",
+      name: "userId",
+      id: "userId",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: t("dashboard.widgets.dimensions.session"),
-      id: "session",
+      name: "sessionId",
+      id: "sessionId",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: t("dashboard.widgets.dimensions.metadata"),
+      name: "metadata",
       id: "metadata",
       type: "stringObject",
       internal: "internalValue",
     },
     {
-      name: t("dashboard.widgets.dimensions.release"),
+      name: "release",
       id: "release",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: t("dashboard.widgets.dimensions.version"),
+      name: "version",
       id: "version",
       type: "string",
       internal: "internalValue",
@@ -584,7 +584,7 @@ export function WidgetForm({
   ];
   if (selectedView === "observations") {
     filterColumns.push({
-      name: t("dashboard.widgets.dimensions.providedModelName"),
+      name: "providedModelName",
       id: "providedModelName",
       type: "stringOptions",
       options: modelOptions,
@@ -593,7 +593,7 @@ export function WidgetForm({
   }
   if (selectedView === "scores-categorical") {
     filterColumns.push({
-      name: t("dashboard.widgets.dimensions.stringValue"),
+      name: "stringValue",
       id: "stringValue",
       type: "string",
       internal: "internalValue",
@@ -601,7 +601,7 @@ export function WidgetForm({
   }
   if (selectedView === "scores-numeric") {
     filterColumns.push({
-      name: t("dashboard.widgets.dimensions.value"),
+      name: "value",
       id: "value",
       type: "number",
       internal: "internalValue",
@@ -1503,6 +1503,7 @@ export function WidgetForm({
                     columns={filterColumns}
                     filterState={userFilterState}
                     onChange={setUserFilterState}
+                    columnIdentifier="id"
                     columnsWithCustomSelect={[
                       "environment",
                       "traceName",
