@@ -160,6 +160,9 @@
     "disabled": "已禁用",
     "active": "活动",
     "inactive": "非活动",
+    "small": "小",
+    "medium": "中",
+    "large": "大",
     "configure": "配置",
     "integrationDocs": "集成文档",
     "feedback": {
