@@ -424,6 +424,10 @@
     "showCorrections": "Show corrections"
   },
   "prompts": {
+    "title": "Prompts",
+    "helpDescription": "Manage and version your prompts in Langfuse. Edit and update them via the UI and SDK. Retrieve the production version via the SDKs. Learn more in the docs.",
+    "newPrompt": "New prompt",
+    "immutableNotice": "Prompts are immutable in Langfuse. To update a prompt, create a new version.",
     "table": {
       "name": "Name",
       "versions": "Versions",
@@ -472,6 +476,28 @@
     "viewExperiment": "View experiment"
   },
   "scores": {
+    "title": "Scores",
+    "columns": {
+      "id": "Score ID",
+      "traceName": "Trace Name",
+      "trace": "Trace",
+      "executionTrace": "Execution Trace",
+      "observation": "Observation",
+      "session": "Session",
+      "environment": "Environment",
+      "user": "User",
+      "timestamp": "Timestamp",
+      "source": "Source",
+      "name": "Name",
+      "dataType": "Data Type",
+      "value": "Value",
+      "metadata": "Metadata",
+      "comment": "Comment",
+      "author": "Author",
+      "evalConfigId": "Eval Configuration ID",
+      "traceTags": "Trace Tags"
+    },
+    "helpDescription": "A scores is an evaluation of a traces or observations. It can be created from user feedback, model-based evaluations, or manual review. See docs to learn more.",
     "annotate": {
       "title": "Annotate",
       "discardChanges": "Discard Changes",
@@ -1262,205 +1288,113 @@
         "sessionsAddedToQueueDesc": "Selected sessions will be added to queue \"{queueName}\". This may take a minute.",
         "viewQueue": "View queue \"{queueName}\""
       }
-    },
-    "users": {
-      "title": "Users",
-      "helpDescription": "Attribute data in Langfuse to a user by adding a userId to your traces. See docs to learn more.",
-      "columns": {
-        "timestamp": "Timestamp",
-        "userId": "User ID",
-        "userIdTooltip": "The unique identifier for the user that was logged in Langfuse. See docs for more details on how to set this up.",
-        "environment": "Environment",
-        "firstEvent": "First Event",
-        "firstEventTooltip": "The earliest trace recorded for this user.",
-        "lastEvent": "Last Event",
-        "lastEventTooltip": "The latest trace recorded for this user.",
-        "totalEvents": "Total Events",
-        "totalEventsTooltip": "Total number of events for the user, includes traces and observations. See data model for more details.",
-        "totalTokens": "Total Tokens",
-        "totalTokensTooltip": "Total number of tokens used for the user across all generations.",
-        "totalCost": "Total Cost",
-        "totalCostTooltip": "Total cost for the user across all generations.",
-        "noEventYet": "No event yet"
-      },
-      "stats": {
-        "observations": "Observations",
-        "traces": "Traces",
-        "totalTokens": "Total Tokens",
-        "totalCost": "Total Cost",
-        "active": "Active",
-        "noActivity": "No activity yet",
-        "noTraces": "No traces yet",
-        "dashboard": "Dashboard"
-      },
-      "tabs": {
-        "traces": "Traces",
-        "sessions": "Sessions",
-        "scores": "Scores"
-      }
-    },
-    "datasets": {
-      "title": "Datasets",
-      "addToDataset": "Add to dataset",
-      "helpDescription": "Datasets in Langfuse are a collection of inputs (and expected outputs) of an LLM application. They are used to benchmark new releases before deployment to production. See docs to learn more."
-    },
-    "traceDetail": {
-      "preview": "Preview",
-      "logView": "Log View",
-      "scores": "Scores",
-      "formatted": "Formatted",
-      "json": "JSON",
-      "metadata": "Metadata",
-      "statusMessage": "Status Message",
-      "tags": "Tags",
-      "latency": "Latency",
-      "timeToFirstToken": "Time to first token",
+    }
+  },
+  "annotationQueues": {
+    "title": "Annotation Queues",
+    "helpDescription": "Annotation queues are used to manage scoring workflows for your LLM projects. See docs to learn more."
+  },
+  "users": {
+    "title": "Users",
+    "helpDescription": "Attribute data in Langfuse to a user by adding a userId to your traces. See docs to learn more.",
+    "columns": {
+      "timestamp": "Timestamp",
+      "userId": "User ID",
+      "userIdTooltip": "The unique identifier for the user that was logged in Langfuse. See docs for more details on how to set this up.",
+      "environment": "Environment",
+      "firstEvent": "First Event",
+      "firstEventTooltip": "The earliest trace recorded for this user.",
+      "lastEvent": "Last Event",
+      "lastEventTooltip": "The latest trace recorded for this user.",
+      "totalEvents": "Total Events",
+      "totalEventsTooltip": "Total number of events for the user, includes traces and observations. See data model for more details.",
+      "totalTokens": "Total Tokens",
+      "totalTokensTooltip": "Total number of tokens used for the user across all generations.",
       "totalCost": "Total Cost",
-      "version": "Version",
-      "release": "Release",
-      "targetTrace": "Target Trace",
-      "session": "Session",
-      "userId": "User ID"
+      "totalCostTooltip": "Total cost for the user across all generations.",
+      "noEventYet": "No event yet"
     },
-
-    "dashboards": {
-      "title": "Dashboards",
-      "traces": "Traces",
+    "stats": {
       "observations": "Observations",
-      "helpDescription": "Manage and create dashboards for your project.",
-      "newDashboard": "New dashboard",
-      "create": {
-        "title": "Create Dashboard",
-        "description": "Create a new dashboard for your project",
-        "cancel": "Cancel",
-        "create": "Create",
-        "nameLabel": "Dashboard Name",
-        "namePlaceholder": "Enter dashboard name",
-        "descLabel": "Description",
-        "descPlaceholder": "Describe the purpose of this dashboard. Optional, but very helpful.",
-        "helpText": "After creating the dashboard, you can add widgets to visualize your data.",
-        "successTitle": "Dashboard created",
-        "successDescription": "Your new dashboard has been created successfully",
-        "errorTitle": "Error creating dashboard",
-        "validationError": "Validation error",
-        "nameRequired": "Dashboard name is required"
-      },
-      "edit": {
-        "title": "Edit Dashboard",
-        "name": "Name",
-        "description": "Description",
-        "cancel": "Cancel",
-        "save": "Save Changes",
-        "successTitle": "Dashboard updated",
-        "successDescription": "The dashboard has been updated successfully"
-      },
-      "table": {
-        "name": "Name",
-        "description": "Description",
-        "owner": "Owner",
-        "createdAt": "Created At",
-        "updatedAt": "Updated At",
-        "actions": "Actions",
-        "clone": "Clone",
-        "edit": "Edit",
-        "delete": "Delete"
-      }
+      "traces": "Traces",
+      "totalTokens": "Total Tokens",
+      "totalCost": "Total Cost",
+      "active": "Active",
+      "noActivity": "No activity yet",
+      "noTraces": "No traces yet",
+      "dashboard": "Dashboard"
     },
-    "scores": {
-      "title": "Scores",
-      "columns": {
-        "id": "Score ID",
-        "traceName": "Trace Name",
-        "trace": "Trace",
-        "executionTrace": "Execution Trace",
-        "observation": "Observation",
-        "session": "Session",
-        "environment": "Environment",
-        "user": "User",
-        "timestamp": "Timestamp",
-        "source": "Source",
-        "name": "Name",
-        "dataType": "Data Type",
-        "value": "Value",
-        "metadata": "Metadata",
-        "comment": "Comment",
-        "author": "Author",
-        "evalConfigId": "Eval Configuration ID",
-        "traceTags": "Trace Tags"
-      },
-      "helpDescription": "A scores is an evaluation of a traces or observations. It can be created from user feedback, model-based evaluations, or manual review. See docs to learn more.",
-      "analytics": {
-        "noScoresAvailable": "No scores available",
-        "noScoresDescription": "No scores have been created yet.",
-        "selectScore": "Select a score",
-        "selectScoreDescription": "Select a score to view analytics.",
-        "errorLoading": "Error Loading Scores",
-        "errorLoadingDescription": "Failed to load score data. Please try refreshing the page.",
-        "singleScore": "Single score selected:",
-        "singleScoreDescription": "View distribution and trends over time",
-        "twoScores": "Two scores selected:",
-        "twoScoresDescription": "Compare scores with heatmaps, correlation analysis, and statistical metrics",
-        "loading": "Loading analytics data..."
-      }
+    "tabs": {
+      "traces": "Traces",
+      "sessions": "Sessions",
+      "scores": "Scores"
+    }
+  },
+  "traceDetail": {
+    "preview": "Preview",
+    "logView": "Log View",
+    "scores": "Scores",
+    "formatted": "Formatted",
+    "json": "JSON",
+    "metadata": "Metadata",
+    "statusMessage": "Status Message",
+    "tags": "Tags",
+    "latency": "Latency",
+    "timeToFirstToken": "Time to first token",
+    "totalCost": "Total Cost",
+    "version": "Version",
+    "release": "Release",
+    "targetTrace": "Target Trace",
+    "session": "Session",
+    "userId": "User ID"
+  },
+  "dashboards": {
+    "title": "Dashboards",
+    "traces": "Traces",
+    "observations": "Observations",
+    "helpDescription": "Manage and create dashboards for your project.",
+    "newDashboard": "New dashboard",
+    "create": {
+      "title": "Create Dashboard",
+      "description": "Create a new dashboard for your project",
+      "cancel": "Cancel",
+      "create": "Create",
+      "nameLabel": "Dashboard Name",
+      "namePlaceholder": "Enter dashboard name",
+      "descLabel": "Description",
+      "descPlaceholder": "Describe the purpose of this dashboard. Optional, but very helpful.",
+      "helpText": "After creating the dashboard, you can add widgets to visualize your data.",
+      "successTitle": "Dashboard created",
+      "successDescription": "Your new dashboard has been created successfully",
+      "errorTitle": "Error creating dashboard",
+      "validationError": "Validation error",
+      "nameRequired": "Dashboard name is required"
     },
-    "prompts": {
-      "title": "Prompts",
-      "helpDescription": "Manage and version your prompts in Langfuse. Edit and update them via the UI and SDK. Retrieve the production version via the SDKs. Learn more in the docs.",
-      "newPrompt": "New prompt",
-      "newVersion": "New version",
-      "immutableNotice": "Prompts are immutable in Langfuse. To update a prompt, create a new version.",
-      "form": {
-        "name": "Name",
-        "nameDescription": "Use slashes '/' in prompt names to organize them into folders.",
-        "namePlaceholder": "your-prompt-name",
-        "prompt": "Prompt",
-        "promptDescription": "Define your prompt template.",
-        "config": "Config",
-        "configDescription": "JSON object to configure the model generation parameters.",
-        "productionLabel": "Active",
-        "commitMessage": "Commit message",
-        "commitMessageDescription": "Optional",
-        "reviewChanges": "Review changes",
-        "saveNewVersion": "Save new version",
-        "createPrompt": "Create prompt",
-        "error": "Error",
-        "commitMessagePlaceholder": "Add commit message..."
-      }
+    "edit": {
+      "title": "Edit Dashboard",
+      "name": "Name",
+      "description": "Description",
+      "cancel": "Cancel",
+      "save": "Save Changes",
+      "successTitle": "Dashboard updated",
+      "successDescription": "The dashboard has been updated successfully"
     },
-    "annotationQueues": {
-      "title": "Annotation Queues",
-      "helpDescription": "Annotation queues are used to manage scoring workflows for your LLM projects. See docs to learn more."
-    },
-    "evaluators": {
-      "title": "LLM-as-a-Judge Evaluators",
-      "helpDescription": "Configure a langfuse managed or custom evaluator to evaluate incoming traces.",
-      "setupEvaluator": "Set up evaluator",
-      "new": {
-        "title": "Set up evaluator",
-        "breadcrumb": "Running Evaluators",
-        "step0": "0. Set up default model",
-        "step1": "1. Select Evaluator",
-        "step2": "2. Run Evaluator"
-      },
-      "defaultModel": {
-        "title": "Default model",
-        "noModelSet": "No default model set",
-        "setUp": "Set up",
-        "setUpMessage": "No default model set. Set up default evaluation model",
-        "currentDefault": "Current default model: ",
-        "configuration": "Default model configuration",
-        "functionCalling": "Select a model which supports function calling.",
-        "update": "Update",
-        "updateConfirmationTitle": "Please confirm",
-        "updateConfirmationDescription": "Updating the default model will impact any currently running evaluators that use it. Please confirm that you want to proceed with this change.",
-        "typeToConfirm": "Type \"{confirmation}\" to confirm",
-        "confirm": "Confirm",
-        "updatedToastTitle": "Default evaluation model updated",
-        "updatedToastDescription": "All running evaluators will use the new model."
-      }
+    "table": {
+      "name": "Name",
+      "description": "Description",
+      "owner": "Owner",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "actions": "Actions",
+      "clone": "Clone",
+      "edit": "Edit",
+      "delete": "Delete"
     }
   },
   "datasets": {
+    "title": "Datasets",
+    "addToDataset": "Add to dataset",
+    "helpDescription": "Datasets in Langfuse are a collection of inputs (and expected outputs) of an LLM application. They are used to benchmark new releases before deployment to production. See docs to learn more.",
     "form": {
       "create": "Create new dataset",
       "name": "Name",
