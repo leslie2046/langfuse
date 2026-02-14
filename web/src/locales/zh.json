@@ -1284,11 +1284,68 @@
         "totalCost": "总成本",
         "totalCostTooltip": "用户在所有生成中的总成本。",
         "noEventYet": "暂无事件"
+      },
+      "stats": {
+        "observations": "观察",
+        "traces": "追踪",
+        "totalTokens": "总 Token",
+        "totalCost": "总成本",
+        "active": "活跃时间",
+        "noActivity": "暂无活动",
+        "noTraces": "暂无追踪",
+        "dashboard": "仪表盘"
+      },
+      "tabs": {
+        "traces": "追踪",
+        "sessions": "会话",
+        "scores": "评分"
       }
     },
     "datasets": {
       "title": "数据集",
+      "addToDataset": "添加到数据集",
       "helpDescription": "Langfuse 中的数据集是 LLM 应用的输入（和预期输出）集合。它们用于在部署到生产环境之前对新版本进行基准测试。查看文档了解更多。"
+    },
+    "traceDetail": {
+      "preview": "预览",
+      "logView": "日志视图",
+      "scores": "评分",
+      "formatted": "格式化",
+      "json": "JSON",
+      "metadata": "元数据",
+      "statusMessage": "状态信息",
+      "tags": "标签",
+      "latency": "延迟",
+      "timeToFirstToken": "首个 Token 时间",
+      "totalCost": "总成本",
+      "version": "版本",
+      "release": "发布版本",
+      "targetTrace": "目标追踪",
+      "session": "会话",
+      "userId": "用户 ID"
+    },
+    "scores": {
+      "title": "评分",
+      "columns": {
+        "id": "评分 ID",
+        "traceName": "追踪名称",
+        "trace": "追踪",
+        "executionTrace": "执行追踪",
+        "observation": "观察",
+        "session": "会话",
+        "environment": "环境",
+        "user": "用户",
+        "timestamp": "时间戳",
+        "source": "来源",
+        "name": "名称",
+        "dataType": "数据类型",
+        "value": "值",
+        "metadata": "元数据",
+        "comment": "评论",
+        "author": "作者",
+        "evalConfigId": "评估配置 ID",
+        "traceTags": "追踪标签"
+      }
     },
     "dashboards": {
       "title": "仪表盘",

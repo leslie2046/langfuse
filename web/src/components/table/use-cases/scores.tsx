@@ -1,4 +1,5 @@
 import { DataTable } from "@/src/components/table/data-table";
+import { useTranslation } from "@/src/features/i18n";
 import { useRowHeightLocalStorage } from "@/src/components/table/data-table-row-height-switch";
 import { DataTableToolbar } from "@/src/components/table/data-table-toolbar";
 import {
@@ -111,6 +112,7 @@ export default function ScoresTable({
   disableUrlPersistence?: boolean;
 }) {
   const utils = api.useUtils();
+  const { t } = useTranslation();
   const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
   const [paginationState, setPaginationState] = useQueryParams({
     pageIndex: withDefault(NumberParam, 0),
@@ -328,7 +330,7 @@ export default function ScoresTable({
       accessorKey: "id",
       id: "id",
       enableColumnFilter: false,
-      header: "Score ID",
+      header: t("scores.columns.id"),
       size: 100,
       enableSorting: false,
       defaultHidden: true,
@@ -342,7 +344,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "traceName",
-      header: "Trace Name",
+      header: t("scores.columns.traceName"),
       id: "traceName",
       enableHiding: true,
       enableSorting: true,
@@ -364,7 +366,7 @@ export default function ScoresTable({
       accessorKey: "traceId",
       id: "traceId",
       enableColumnFilter: true,
-      header: "Trace",
+      header: t("scores.columns.trace"),
       enableSorting: true,
       size: 100,
       cell: ({ row }) => {
@@ -382,7 +384,7 @@ export default function ScoresTable({
     {
       accessorKey: "executionTraceId",
       id: "executionTraceId",
-      header: "Execution Trace",
+      header: t("scores.columns.executionTrace"),
       enableSorting: false,
       enableHiding: true,
       defaultHidden: true,
@@ -400,7 +402,7 @@ export default function ScoresTable({
     {
       accessorKey: "observationId",
       id: "observationId",
-      header: "Observation",
+      header: t("scores.columns.observation"),
       enableSorting: true,
       size: 100,
       cell: ({ row }) => {
@@ -418,7 +420,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "sessionId",
-      header: "Session",
+      header: t("scores.columns.session"),
       id: "sessionId",
       enableHiding: true,
       enableSorting: true,
@@ -435,7 +437,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "environment",
-      header: "Environment",
+      header: t("scores.columns.environment"),
       id: "environment",
       size: 150,
       enableHiding: true,
@@ -453,7 +455,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "userId",
-      header: "User",
+      header: t("scores.columns.user"),
       id: "userId",
       headerTooltip: {
         description: "The user ID associated with the trace.",
@@ -476,7 +478,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "timestamp",
-      header: "Timestamp",
+      header: t("scores.columns.timestamp"),
       id: "timestamp",
       enableHiding: true,
       enableSorting: true,
@@ -488,7 +490,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "source",
-      header: "Source",
+      header: t("scores.columns.source"),
       id: "source",
       enableHiding: true,
       enableSorting: true,
@@ -496,7 +498,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "name",
-      header: "Name",
+      header: t("scores.columns.name"),
       id: "name",
       enableHiding: true,
       enableSorting: true,
@@ -504,7 +506,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "dataType",
-      header: "Data Type",
+      header: t("scores.columns.dataType"),
       id: "dataType",
       enableHiding: true,
       enableSorting: true,
@@ -512,7 +514,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "value",
-      header: "Value",
+      header: t("scores.columns.value"),
       id: "value",
       enableHiding: true,
       enableSorting: true,
@@ -520,7 +522,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "metadata",
-      header: "Metadata",
+      header: t("scores.columns.metadata"),
       id: "metadata",
       size: 400,
       headerTooltip: {
@@ -542,7 +544,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "comment",
-      header: "Comment",
+      header: t("scores.columns.comment"),
       id: "comment",
       enableHiding: true,
       size: 400,
@@ -556,7 +558,7 @@ export default function ScoresTable({
     {
       accessorKey: "author",
       id: "author",
-      header: "Author",
+      header: t("scores.columns.author"),
       enableHiding: true,
       size: 150,
       cell: ({ row }) => {
@@ -578,7 +580,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "jobConfigurationId",
-      header: "Eval Configuration ID",
+      header: t("scores.columns.evalConfigId"),
       id: "jobConfigurationId",
       headerTooltip: {
         description: "The Job Configuration ID associated with the trace.",
@@ -602,7 +604,7 @@ export default function ScoresTable({
     {
       accessorKey: "traceTags",
       id: "traceTags",
-      header: "Trace Tags",
+      header: t("scores.columns.traceTags"),
       size: 250,
       enableHiding: true,
       defaultHidden: true,

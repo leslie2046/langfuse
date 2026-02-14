@@ -1282,11 +1282,68 @@
         "totalCost": "Total Cost",
         "totalCostTooltip": "Total cost for the user across all generations.",
         "noEventYet": "No event yet"
+      },
+      "stats": {
+        "observations": "Observations",
+        "traces": "Traces",
+        "totalTokens": "Total Tokens",
+        "totalCost": "Total Cost",
+        "active": "Active",
+        "noActivity": "No activity yet",
+        "noTraces": "No traces yet",
+        "dashboard": "Dashboard"
+      },
+      "tabs": {
+        "traces": "Traces",
+        "sessions": "Sessions",
+        "scores": "Scores"
       }
     },
     "datasets": {
       "title": "Datasets",
+      "addToDataset": "Add to dataset",
       "helpDescription": "Datasets in Langfuse are a collection of inputs (and expected outputs) of an LLM application. They are used to benchmark new releases before deployment to production. See docs to learn more."
+    },
+    "traceDetail": {
+      "preview": "Preview",
+      "logView": "Log View",
+      "scores": "Scores",
+      "formatted": "Formatted",
+      "json": "JSON",
+      "metadata": "Metadata",
+      "statusMessage": "Status Message",
+      "tags": "Tags",
+      "latency": "Latency",
+      "timeToFirstToken": "Time to first token",
+      "totalCost": "Total Cost",
+      "version": "Version",
+      "release": "Release",
+      "targetTrace": "Target Trace",
+      "session": "Session",
+      "userId": "User ID"
+    },
+    "scores": {
+      "title": "Scores",
+      "columns": {
+        "id": "Score ID",
+        "traceName": "Trace Name",
+        "trace": "Trace",
+        "executionTrace": "Execution Trace",
+        "observation": "Observation",
+        "session": "Session",
+        "environment": "Environment",
+        "user": "User",
+        "timestamp": "Timestamp",
+        "source": "Source",
+        "name": "Name",
+        "dataType": "Data Type",
+        "value": "Value",
+        "metadata": "Metadata",
+        "comment": "Comment",
+        "author": "Author",
+        "evalConfigId": "Eval Configuration ID",
+        "traceTags": "Trace Tags"
+      }
     },
     "dashboards": {
       "title": "Dashboards",

@@ -1,4 +1,5 @@
 import { ChevronDown, CopyIcon, LockIcon, PlusIcon } from "lucide-react";
+import { useTranslation } from "@/src/features/i18n";
 import {
   Dialog,
   DialogContent,
@@ -78,6 +79,7 @@ export const NewDatasetItemFromExistingObject = (props: {
   const capture = usePostHogClientCapture();
   const buttonVariant = props.buttonVariant || "secondary";
   const buttonSize = props.size || "default";
+  const { t } = useTranslation();
 
   return (
     <>
@@ -158,7 +160,7 @@ export const NewDatasetItemFromExistingObject = (props: {
               aria-hidden="true"
             />
           ) : null}
-          Add to datasets
+          {t("datasets.addToDataset")}
           {!hasAccess ? (
             <LockIcon className={cn("ml-1.5 h-3 w-3")} aria-hidden="true" />
           ) : null}
