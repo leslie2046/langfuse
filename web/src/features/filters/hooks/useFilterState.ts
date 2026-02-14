@@ -103,7 +103,7 @@ const getCommaArrayParam = (table: TableName) => ({
 
         if (DEBUG_QUERY_STATE) console.log("parsedValue", parsedValue);
         const parsed = singleFilter.safeParse({
-          column: getColumnName(table, column),
+          column: getColumnId(table, column) ?? column,
           key: key !== "" ? key : undefined,
           operator,
           value: parsedValue,
@@ -193,8 +193,4 @@ function getColumnId(table: TableName, name: string): string | undefined {
   // to give more leeway to LLMs, we check against name or id
   return tableCols[table]?.find((col) => col.name === name || col.id === name)
     ?.id;
-}
-
-function getColumnName(table: TableName, id: string): string | undefined {
-  return tableCols[table]?.find((col) => col.id === id)?.name;
 }

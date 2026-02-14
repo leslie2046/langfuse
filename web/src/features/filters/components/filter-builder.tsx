@@ -778,14 +778,17 @@ function FilterBuilderForm({
                             <SelectValue placeholder="" />
                           </SelectTrigger>
                           <SelectContent>
-                            {column?.options.map((option) => (
-                              <SelectItem
-                                key={option.label}
-                                value={option.label}
-                              >
-                                {option.label}
-                              </SelectItem>
-                            ))}
+                            {column?.options.map((option) => {
+                              const optionValue = option.value ?? option.label;
+                              return (
+                                <SelectItem
+                                  key={optionValue}
+                                  value={optionValue}
+                                >
+                                  {optionValue}
+                                </SelectItem>
+                              );
+                            })}
                           </SelectContent>
                         </Select>
                       ) : filter.type === "positionInTrace" ? (
@@ -936,7 +939,7 @@ function FilterBuilderForm({
                           className="min-w-[100px]"
                           options={
                             column?.options
-                              .find((o) => o.label === filter.key)
+                              .find((o) => (o.value ?? o.label) === filter.key)
                               ?.values?.map((v) => ({ value: v })) ?? []
                           }
                           onValueChange={(value) =>

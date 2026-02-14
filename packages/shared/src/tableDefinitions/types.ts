@@ -16,6 +16,7 @@ export type SingleValueOption = {
 };
 
 export type MultiValueOption = {
+  value?: string;
   label: string;
   values: string[];
 };

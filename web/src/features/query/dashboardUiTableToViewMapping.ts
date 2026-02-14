@@ -6,250 +6,174 @@ import { type views } from "@/src/features/query/types";
 // (used for type extraction via typeof, which is a legitimate pattern)
 export const FilterArray = z.array(singleFilter);
 
-const viewMappings: Record<z.infer<typeof views>, Record<string, string>[]> = {
+type LegacyViewMapping = {
+  legacyColumn: string;
+  viewName: string;
+};
+
+const viewMappings: Record<z.infer<typeof views>, LegacyViewMapping[]> = {
   traces: [
-    {
-      uiTableName: "Trace Name",
-      viewName: "name",
-    },
-    {
-      uiTableName: "Observation Name",
-      viewName: "observationName",
-    },
-    {
-      uiTableName: "Score Name",
-      viewName: "scoreName",
-    },
-    {
-      uiTableName: "Tags",
-      viewName: "tags",
-    },
-    {
-      uiTableName: "User",
-      viewName: "userId",
-    },
-    {
-      uiTableName: "Session",
-      viewName: "sessionId",
-    },
-    {
-      uiTableName: "Metadata",
-      viewName: "metadata",
-    },
-    {
-      uiTableName: "Release",
-      viewName: "release",
-    },
-    {
-      uiTableName: "Version",
-      viewName: "version",
-    },
-    {
-      uiTableName: "Environment",
-      viewName: "environment",
-    },
+    { legacyColumn: "Trace Name", viewName: "name" },
+    { legacyColumn: "traceName", viewName: "name" },
+    { legacyColumn: "Observation Name", viewName: "observationName" },
+    { legacyColumn: "observationName", viewName: "observationName" },
+    { legacyColumn: "Score Name", viewName: "scoreName" },
+    { legacyColumn: "scoreName", viewName: "scoreName" },
+    { legacyColumn: "Tags", viewName: "tags" },
+    { legacyColumn: "tags", viewName: "tags" },
+    { legacyColumn: "traceTags", viewName: "tags" },
+    { legacyColumn: "User", viewName: "userId" },
+    { legacyColumn: "user", viewName: "userId" },
+    { legacyColumn: "Session", viewName: "sessionId" },
+    { legacyColumn: "session", viewName: "sessionId" },
+    { legacyColumn: "Metadata", viewName: "metadata" },
+    { legacyColumn: "metadata", viewName: "metadata" },
+    { legacyColumn: "Release", viewName: "release" },
+    { legacyColumn: "release", viewName: "release" },
+    { legacyColumn: "Version", viewName: "version" },
+    { legacyColumn: "version", viewName: "version" },
+    { legacyColumn: "Environment", viewName: "environment" },
+    { legacyColumn: "environment", viewName: "environment" },
   ],
   observations: [
-    {
-      uiTableName: "Trace Name",
-      viewName: "traceName",
-    },
-    {
-      uiTableName: "Observation Name",
-      viewName: "name",
-    },
-    {
-      uiTableName: "Score Name",
-      viewName: "scoreName",
-    },
-    {
-      uiTableName: "User",
-      viewName: "userId",
-    },
-    {
-      uiTableName: "Session",
-      viewName: "sessionId",
-    },
-    {
-      uiTableName: "Metadata",
-      viewName: "metadata",
-    },
-    {
-      uiTableName: "Type",
-      viewName: "type",
-    },
-    {
-      uiTableName: "Tags",
-      viewName: "tags",
-    },
-    {
-      uiTableName: "Model",
-      viewName: "providedModelName",
-    },
-    {
-      uiTableName: "Tool Names",
-      viewName: "toolNames",
-    },
-    {
-      uiTableName: "Environment",
-      viewName: "environment",
-    },
-    {
-      uiTableName: "Release",
-      viewName: "traceRelease",
-    },
-    {
-      uiTableName: "Version",
-      viewName: "traceVersion",
-    },
+    { legacyColumn: "Trace Name", viewName: "traceName" },
+    { legacyColumn: "traceName", viewName: "traceName" },
+    { legacyColumn: "Observation Name", viewName: "name" },
+    { legacyColumn: "observationName", viewName: "name" },
+    { legacyColumn: "Score Name", viewName: "scoreName" },
+    { legacyColumn: "scoreName", viewName: "scoreName" },
+    { legacyColumn: "User", viewName: "userId" },
+    { legacyColumn: "user", viewName: "userId" },
+    { legacyColumn: "Session", viewName: "sessionId" },
+    { legacyColumn: "session", viewName: "sessionId" },
+    { legacyColumn: "Metadata", viewName: "metadata" },
+    { legacyColumn: "metadata", viewName: "metadata" },
+    { legacyColumn: "Type", viewName: "type" },
+    { legacyColumn: "type", viewName: "type" },
+    { legacyColumn: "Tags", viewName: "tags" },
+    { legacyColumn: "tags", viewName: "tags" },
+    { legacyColumn: "Model", viewName: "providedModelName" },
+    { legacyColumn: "model", viewName: "providedModelName" },
+    { legacyColumn: "Tool Names", viewName: "toolNames" },
+    { legacyColumn: "toolNames", viewName: "toolNames" },
+    { legacyColumn: "Environment", viewName: "environment" },
+    { legacyColumn: "environment", viewName: "environment" },
+    { legacyColumn: "Release", viewName: "traceRelease" },
+    { legacyColumn: "release", viewName: "traceRelease" },
+    { legacyColumn: "Version", viewName: "traceVersion" },
+    { legacyColumn: "version", viewName: "traceVersion" },
   ],
   "scores-numeric": [
-    {
-      uiTableName: "Score Name",
-      viewName: "name",
-    },
-    {
-      uiTableName: "Score Source",
-      viewName: "source",
-    },
-    {
-      uiTableName: "Score Value",
-      viewName: "value",
-    },
-    {
-      uiTableName: "Scores Data Type",
-      viewName: "dataType",
-    },
-    {
-      uiTableName: "Tags",
-      viewName: "tags",
-    },
-    {
-      uiTableName: "Environment",
-      viewName: "environment",
-    },
-    {
-      uiTableName: "User",
-      viewName: "userId",
-    },
-    {
-      uiTableName: "Session",
-      viewName: "sessionId",
-    },
-    {
-      uiTableName: "Metadata",
-      viewName: "metadata",
-    },
-    {
-      uiTableName: "Trace Name",
-      viewName: "traceName",
-    },
-    {
-      uiTableName: "Observation Name",
-      viewName: "observationName",
-    },
-    {
-      uiTableName: "Release",
-      viewName: "traceRelease",
-    },
-    {
-      uiTableName: "Version",
-      viewName: "traceVersion",
-    },
+    { legacyColumn: "Score Name", viewName: "name" },
+    { legacyColumn: "scoreName", viewName: "name" },
+    { legacyColumn: "Score Source", viewName: "source" },
+    { legacyColumn: "scoreSource", viewName: "source" },
+    { legacyColumn: "Score Value", viewName: "value" },
+    { legacyColumn: "value", viewName: "value" },
+    { legacyColumn: "Scores Data Type", viewName: "dataType" },
+    { legacyColumn: "scoreDataType", viewName: "dataType" },
+    { legacyColumn: "Tags", viewName: "tags" },
+    { legacyColumn: "tags", viewName: "tags" },
+    { legacyColumn: "Environment", viewName: "environment" },
+    { legacyColumn: "environment", viewName: "environment" },
+    { legacyColumn: "User", viewName: "userId" },
+    { legacyColumn: "user", viewName: "userId" },
+    { legacyColumn: "Session", viewName: "sessionId" },
+    { legacyColumn: "session", viewName: "sessionId" },
+    { legacyColumn: "Metadata", viewName: "metadata" },
+    { legacyColumn: "metadata", viewName: "metadata" },
+    { legacyColumn: "Trace Name", viewName: "traceName" },
+    { legacyColumn: "traceName", viewName: "traceName" },
+    { legacyColumn: "Observation Name", viewName: "observationName" },
+    { legacyColumn: "observationName", viewName: "observationName" },
+    { legacyColumn: "Release", viewName: "traceRelease" },
+    { legacyColumn: "release", viewName: "traceRelease" },
+    { legacyColumn: "Version", viewName: "traceVersion" },
+    { legacyColumn: "version", viewName: "traceVersion" },
   ],
   "scores-categorical": [
-    {
-      uiTableName: "Score Name",
-      viewName: "name",
-    },
-    {
-      uiTableName: "Score Source",
-      viewName: "source",
-    },
-    {
-      uiTableName: "Score String Value",
-      viewName: "stringValue",
-    },
-    {
-      uiTableName: "Scores Data Type",
-      viewName: "dataType",
-    },
-    {
-      uiTableName: "Tags",
-      viewName: "tags",
-    },
-    {
-      uiTableName: "Environment",
-      viewName: "environment",
-    },
-    {
-      uiTableName: "User",
-      viewName: "userId",
-    },
-    {
-      uiTableName: "Session",
-      viewName: "sessionId",
-    },
-    {
-      uiTableName: "Metadata",
-      viewName: "metadata",
-    },
-    {
-      uiTableName: "Trace Name",
-      viewName: "traceName",
-    },
-    {
-      uiTableName: "Observation Name",
-      viewName: "observationName",
-    },
-    {
-      uiTableName: "Release",
-      viewName: "traceRelease",
-    },
-    {
-      uiTableName: "Version",
-      viewName: "traceVersion",
-    },
+    { legacyColumn: "Score Name", viewName: "name" },
+    { legacyColumn: "scoreName", viewName: "name" },
+    { legacyColumn: "Score Source", viewName: "source" },
+    { legacyColumn: "scoreSource", viewName: "source" },
+    { legacyColumn: "Score String Value", viewName: "stringValue" },
+    { legacyColumn: "stringValue", viewName: "stringValue" },
+    { legacyColumn: "Scores Data Type", viewName: "dataType" },
+    { legacyColumn: "scoreDataType", viewName: "dataType" },
+    { legacyColumn: "Tags", viewName: "tags" },
+    { legacyColumn: "tags", viewName: "tags" },
+    { legacyColumn: "Environment", viewName: "environment" },
+    { legacyColumn: "environment", viewName: "environment" },
+    { legacyColumn: "User", viewName: "userId" },
+    { legacyColumn: "user", viewName: "userId" },
+    { legacyColumn: "Session", viewName: "sessionId" },
+    { legacyColumn: "session", viewName: "sessionId" },
+    { legacyColumn: "Metadata", viewName: "metadata" },
+    { legacyColumn: "metadata", viewName: "metadata" },
+    { legacyColumn: "Trace Name", viewName: "traceName" },
+    { legacyColumn: "traceName", viewName: "traceName" },
+    { legacyColumn: "Observation Name", viewName: "observationName" },
+    { legacyColumn: "observationName", viewName: "observationName" },
+    { legacyColumn: "Release", viewName: "traceRelease" },
+    { legacyColumn: "release", viewName: "traceRelease" },
+    { legacyColumn: "Version", viewName: "traceVersion" },
+    { legacyColumn: "version", viewName: "traceVersion" },
   ],
 };
+
+const extraLegacyDashboardMappings = [
+  {
+    uiTableName: "Session",
+    uiTableId: "sessionId",
+    clickhouseTableName: "traces",
+    clickhouseSelect: 't."sessionId"',
+  },
+  {
+    uiTableName: "Observation Name",
+    uiTableId: "observationName",
+    clickhouseTableName: "observations",
+    clickhouseSelect: 'o."name"',
+  },
+  {
+    uiTableName: "Metadata",
+    uiTableId: "metadata",
+    clickhouseTableName: "traces",
+    clickhouseSelect: 't."metadata"',
+  },
+  {
+    uiTableName: "Score Value",
+    uiTableId: "value",
+    clickhouseTableName: "scores",
+    clickhouseSelect: 's."value"',
+  },
+  {
+    uiTableName: "Score String Value",
+    uiTableId: "stringValue",
+    clickhouseTableName: "scores",
+    clickhouseSelect: 's."string_value"',
+  },
+] as const;
+
+const legacyDashboardColumns = dashboardColumnDefinitions.concat(
+  extraLegacyDashboardMappings,
+);
+
+const legacyDashboardColumnSet = new Set(
+  legacyDashboardColumns.flatMap((columnDef) => [
+    columnDef.uiTableId,
+    columnDef.uiTableName,
+  ]),
+);
+
+const legacyAliases = new Set(["user", "session"]);
 
 const isLegacyUiTableFilter = (
   filter: z.infer<typeof singleFilter>,
 ): boolean => {
-  return dashboardColumnDefinitions
-    .concat([
-      {
-        uiTableName: "Session",
-        uiTableId: "sessionId",
-        clickhouseTableName: "traces",
-        clickhouseSelect: 't."sessionId"',
-      },
-      {
-        uiTableName: "Observation Name",
-        uiTableId: "observationName",
-        clickhouseTableName: "observations",
-        clickhouseSelect: 'o."name"',
-      },
-      {
-        uiTableName: "Metadata",
-        uiTableId: "metadata",
-        clickhouseTableName: "traces",
-        clickhouseSelect: 't."metadata"',
-      },
-      {
-        uiTableName: "Score Value",
-        uiTableId: "value",
-        clickhouseTableName: "scores",
-        clickhouseSelect: 's."value"',
-      },
-      {
-        uiTableName: "Score String Value",
-        uiTableId: "stringValue",
-        clickhouseTableName: "scores",
-        clickhouseSelect: 's."string_value"',
-      },
-    ])
-    .some((columnDef) => columnDef.uiTableName === filter.column);
+  return (
+    legacyDashboardColumnSet.has(filter.column) ||
+    legacyAliases.has(filter.column)
+  );
 };
 
 export const mapLegacyUiTableFilterToView = (
@@ -257,19 +181,18 @@ export const mapLegacyUiTableFilterToView = (
   filters: z.infer<typeof FilterArray>,
 ): z.infer<typeof FilterArray> => {
   return filters.flatMap((filter) => {
-    // If it's not a legacy filter, return it as is
     if (!isLegacyUiTableFilter(filter)) {
       return [filter];
     }
-    // Check if we have a match in our mapping
+
     const definition = viewMappings[view].find(
-      (def) => def.uiTableName === filter.column,
+      (def) => def.legacyColumn === filter.column,
     );
-    // Ignore if there is no match
+
     if (!definition) {
-      return [];
+      return [filter];
     }
-    // Overwrite column name if a match is found
+
     return [{ ...filter, column: definition.viewName }];
   });
 };
