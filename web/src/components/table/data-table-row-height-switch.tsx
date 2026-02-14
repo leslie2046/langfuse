@@ -60,13 +60,17 @@ export const DataTableRowHeightSwitch = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" title={t("table.rowHeight")}>
+        <Button
+          variant="outline"
+          size="icon"
+          title={t("common.table.rowHeight")}
+        >
           <Rows3 className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuPortal>
         <DropdownMenuContent>
-          <DropdownMenuLabel>{t("table.rowHeight")}</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("common.table.rowHeight")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {heightOptions.map(({ id, label }) => (
             <DropdownMenuCheckboxItem

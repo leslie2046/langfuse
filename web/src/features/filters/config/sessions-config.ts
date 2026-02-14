@@ -108,24 +108,24 @@ export const sessionFilterConfig: FilterConfig = {
     {
       type: "keyValue" as const,
       column: "score_categories",
-      label: "Categorical Scores",
+      label: "pages.sessions.columns.categoricalScores",
     },
     {
       type: "numericKeyValue" as const,
       column: "scores_avg",
-      label: "Numeric Scores",
+      label: "pages.sessions.columns.numericScores",
     },
     {
       type: "numeric" as const,
       column: "commentCount",
-      label: "Comment Count",
+      label: "pages.sessions.columns.commentCount",
       min: 0,
       max: 100,
     },
     {
       type: "string" as const,
       column: "commentContent",
-      label: "Comment Content",
+      label: "pages.sessions.columns.commentContent",
     },
   ],
 };

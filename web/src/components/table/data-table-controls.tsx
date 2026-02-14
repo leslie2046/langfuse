@@ -142,7 +142,9 @@ export function DataTableControls({
       )}
     >
       <div className="sticky top-0 z-20 mb-1 flex h-10 shrink-0 items-center justify-between border-b bg-background px-3">
-        <span className="text-sm font-medium">{t("common.filters.filters")}</span>
+        <span className="text-sm font-medium">
+          {t("common.filters.filters")}
+        </span>
         <div className="flex items-center gap-1">
           {queryFilter.isFiltered && (
             <Tooltip>
@@ -156,7 +158,9 @@ export function DataTableControls({
                   {t("common.filters.clearAll")}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>{t("common.filters.clearAllFilters")}</TooltipContent>
+              <TooltipContent>
+                {t("common.filters.clearAllFilters")}
+              </TooltipContent>
             </Tooltip>
           )}
           {filterWithAI && isLangfuseCloud && (
@@ -169,7 +173,9 @@ export function DataTableControls({
                     </Button>
                   </PopoverTrigger>
                 </TooltipTrigger>
-                <TooltipContent>{t("common.filters.createWithAI")}</TooltipContent>
+                <TooltipContent>
+                  {t("common.filters.createWithAI")}
+                </TooltipContent>
               </Tooltip>
               <PopoverContent align="center" className="w-[400px]">
                 <DataTableAIFilters
@@ -261,7 +267,7 @@ export function DataTableControls({
                   onChange={filter.onChange}
                   isActive={filter.isActive}
                   onReset={filter.onReset}
-                  keyPlaceholder="Name"
+                  keyPlaceholder={t("common.filters.keyPlaceholder")}
                 />
               );
             }
@@ -279,7 +285,7 @@ export function DataTableControls({
                   onChange={filter.onChange}
                   isActive={filter.isActive}
                   onReset={filter.onReset}
-                  keyPlaceholder="Name"
+                  keyPlaceholder={t("common.filters.keyPlaceholder")}
                 />
               );
             }
@@ -615,36 +621,34 @@ export function CategoricalFacet({
               <div className="py-1 text-xs text-muted-foreground">
                 {filterKey === "sessionId" ? (
                   <span>
-                    Sessions group traces together, which is useful for tracing
-                    multi-step workflows.{" "}
+                    {t("common.filters.sessionsDescription")}{" "}
                     <a
                       href="https://langfuse.com/docs/observability/features/sessions"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline hover:text-foreground"
                     >
-                      See docs
+                      {t("common.filters.seeDocs")}
                     </a>{" "}
-                    to learn how to add sessions to your traces.
+                    {t("common.filters.sessionsDescriptionSuffix")}
                   </span>
                 ) : filterKey === "name" ? (
-                  <span>No trace names found in the given time range.</span>
+                  <span>{t("common.filters.noTraceNamesFound")}</span>
                 ) : filterKey === "tags" ? (
                   <span>
-                    Tags let you filter traces according to custom categories
-                    (e.g. feature flags).{" "}
+                    {t("common.filters.tagsDescription")}{" "}
                     <a
                       href="https://langfuse.com/docs/observability/features/tags"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline hover:text-foreground"
                     >
-                      See docs
+                      {t("common.filters.seeDocs")}
                     </a>{" "}
-                    to learn how to add tags to your traces.
+                    {t("common.filters.tagsDescriptionSuffix")}
                   </span>
                 ) : (
-                  "No options found"
+                  t("common.filters.noOptions")
                 )}
               </div>
             ) : (
@@ -708,17 +712,16 @@ export function CategoricalFacet({
                 options.length === 1 &&
                 options[0]?.toLowerCase() === "default" ? (
                   <div className="mt-2 px-2 text-xs text-muted-foreground">
-                    Environments help you separate traces from different
-                    contexts (e.g. production, staging).{" "}
+                    {t("common.filters.environmentsDescription")}{" "}
                     <a
                       href="https://langfuse.com/docs/observability/features/environments"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline hover:text-foreground"
                     >
-                      See docs
+                      {t("common.filters.seeDocs")}
                     </a>{" "}
-                    on how to add environments to your traces.
+                    {t("common.filters.environmentsDescriptionSuffix")}
                   </div>
                 ) : null}
               </>
@@ -831,7 +834,9 @@ export function NumericFacet({
     >
       <div className="px-4 py-2">
         {loading ? (
-          <div className="text-sm text-muted-foreground">{t("common.table.loading")}</div>
+          <div className="text-sm text-muted-foreground">
+            {t("common.table.loading")}
+          </div>
         ) : (
           <div className="grid gap-4">
             <div className="flex items-center gap-4">
@@ -1101,7 +1106,9 @@ function FilterModeTabs({ mode, onModeChange }: FilterModeTabsProps) {
   const { t } = useTranslation();
   return (
     <div className="mb-2 flex flex-wrap items-center gap-1.5 px-4 @container">
-      <span className="text-[10px] text-muted-foreground/80">{t("common.filters.mode")}</span>
+      <span className="text-[10px] text-muted-foreground/80">
+        {t("common.filters.mode")}
+      </span>
       <div className="flex flex-1 flex-col rounded border border-input/50 bg-background text-[10px] @[7.5rem]:min-w-[140px] @[7.5rem]:flex-row">
         <button
           onClick={() => onModeChange("select")}
@@ -1221,7 +1228,9 @@ function TextFilterSection({
               className="group/textfilter flex items-center gap-2 rounded border border-border/40 bg-muted/30 px-2 py-1 text-xs"
             >
               <span className="shrink-0 text-[10px] font-medium text-muted-foreground">
-                {f.operator === "contains" ? t("common.filters.contains") : t("common.filters.doesNotContain")}
+                {f.operator === "contains"
+                  ? t("common.filters.contains")
+                  : t("common.filters.doesNotContain")}
               </span>
               <span
                 className="min-w-0 flex-1 truncate font-medium"
@@ -1268,7 +1277,10 @@ export function FilterValueCheckbox({
 }: FilterValueCheckboxProps) {
   const { t } = useTranslation();
   // Show "All" when clicking would reverse selection (only one item selected)
-  const labelText = checked && totalSelected === 1 ? t("common.filters.all") : t("common.filters.only");
+  const labelText =
+    checked && totalSelected === 1
+      ? t("common.filters.all")
+      : t("common.filters.only");
 
   // Display placeholder for empty strings to ensure clickable area
   const displayLabel = label === "" ? t("common.filters.empty") : label;

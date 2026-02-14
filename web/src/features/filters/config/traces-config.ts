@@ -53,8 +53,8 @@ export const traceFilterConfig: FilterConfig = {
       type: "boolean" as const,
       column: "bookmarked",
       label: "pages.traces.columns.bookmarked",
-      trueLabel: "Bookmarked",
-      falseLabel: "Not bookmarked",
+      trueLabel: "common.filters.bookmarked",
+      falseLabel: "common.filters.notBookmarked",
     },
     {
       type: "numeric" as const,

@@ -10,7 +10,7 @@ import { NumberParam, useQueryParams, withDefault } from "use-query-params";
 import { useQueryFilterState } from "@/src/features/filters/hooks/useFilterState";
 import { useSidebarFilterState } from "@/src/features/filters/hooks/useSidebarFilterState";
 import {
-  getEventsColumnName,
+  getEventsColumnName as getEventsColumnNameBase,
   observationEventsFilterConfig,
 } from "../config/filter-config";
 import { formatIntervalSeconds } from "@/src/utils/dates";
@@ -77,6 +77,7 @@ import {
 } from "@/src/components/table/data-table-refresh-button";
 import useSessionStorage from "@/src/components/useSessionStorage";
 import { api } from "@/src/utils/api";
+import { useTranslation } from "@/src/features/i18n";
 
 export type EventsTableRow = {
   // Identity fields
@@ -164,6 +165,8 @@ export default function ObservationsEventsTable({
   limitRows,
   sessionId,
 }: EventsTableProps) {
+  const { t } = useTranslation();
+  const getEventsColumnName = (id: string) => t(getEventsColumnNameBase(id));
   const router = useRouter();
   const { viewId } = router.query;
 
@@ -665,7 +668,7 @@ export default function ObservationsEventsTable({
     },
     {
       accessorKey: "metadata",
-      header: "Metadata",
+      header: getEventsColumnName("metadata"),
       size: 300,
       headerTooltip: {
         description: "Add metadata to traces to track additional information.",
@@ -781,7 +784,7 @@ export default function ObservationsEventsTable({
     },
     {
       accessorKey: "cost",
-      header: "Cost",
+      header: getEventsColumnName("cost"),
       id: "cost",
       enableHiding: true,
       defaultHidden: true,
@@ -851,8 +854,9 @@ export default function ObservationsEventsTable({
     },
     {
       accessorKey: "usage",
-      header: "Usage",
+      header: getEventsColumnName("usage"),
       id: "usage",
+      size: 150,
       enableHiding: true,
       defaultHidden: true,
       cell: () => {
