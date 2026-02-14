@@ -160,7 +160,7 @@ export const NewDatasetItemFromExistingObject = (props: {
               aria-hidden="true"
             />
           ) : null}
-          {t("datasets.addToDataset")}
+          {t("pages.datasets.addToDataset")}
           {!hasAccess ? (
             <LockIcon className={cn("ml-1.5 h-3 w-3")} aria-hidden="true" />
           ) : null}

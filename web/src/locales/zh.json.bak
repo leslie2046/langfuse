@@ -77,6 +77,7 @@
     "projects": "项目",
     "home": "首页",
     "dashboards": "仪表盘",
+
     "tracing": "追踪",
     "sessions": "会话",
     "users": "用户",
@@ -295,6 +296,7 @@
     "filters": {
       "filters": "筛选",
       "search": "搜索",
+
       "searchPlaceholder": "搜索...",
       "addFilter": "添加筛选",
       "clearFilters": "清除筛选",
@@ -360,6 +362,7 @@
       "allModels": "所有模型",
       "selectedModels": "已选 {count} 项"
     },
+
     "columns": {
       "showColumns": "列",
       "hideColumn": "隐藏列",
@@ -419,6 +422,111 @@
     "noAccess": "您没有访问此会话的权限。",
     "downloadAs": "下载会话为 JSON",
     "showCorrections": "显示修正"
+  },
+  "prompts": {
+    "title": "Prompts",
+    "helpDescription": "在 Langfuse 中管理和版本控制您的 Prompts。通过 UI 和 SDK 编辑和更新。通过 SDK 获取生产版本。查看文档了解更多。",
+    "newPrompt": "新建 Prompt",
+
+    "immutableNotice": "Langfuse 中的 Prompt 是不可变的。要更新 Prompt，请创建一个新版本。",
+
+    "table": {
+      "name": "名称",
+      "versions": "版本",
+      "type": "类型",
+      "latestVersionCreatedAt": "最新版本创建时间",
+      "numberOfObservations": "观察数量",
+      "tags": "标签",
+      "actions": "操作"
+    },
+    "form": {
+      "name": "名称",
+      "nameDescription": "在提示词名称中使用斜杠 '/' 将它们组织到文件夹中。",
+      "namePlaceholder": "为您的提示词命名",
+      "prompt": "提示词",
+      "promptDescription": "定义您的提示词模板。",
+      "config": "配置",
+      "configDescription": "提示词可用的任意 JSON 配置。使用此项跟踪 LLM 参数、函数定义或任何其他元数据。",
+      "productionLabel": "设置 \"production\" 标签",
+      "commitMessage": "提交信息",
+      "commitMessageDescription": "提供有关此版本更改的信息。有助于保持清晰的提示词迭代历史。",
+      "reviewChanges": "审查更改",
+      "saveNewVersion": "保存新提示词版本",
+      "createPrompt": "创建提示词",
+      "createVersionLink": "在此处为它创建一个新版本。",
+      "addReference": "添加提示词引用",
+      "backToPromptList": "返回提示词列表",
+      "chat": "对话",
+      "text": "文本"
+    },
+    "search": {
+      "namesTags": "名称，标签",
+      "fullText": "全文"
+    },
+    "newVersion": "新版本",
+    "runExperiment": "运行实验",
+    "tabs": {
+      "prompt": "Prompt",
+      "config": "配置",
+      "linkedGenerations": "关联生成",
+      "usePrompt": "使用 Prompt"
+    },
+    "resolvedPrompt": "已解析 Prompt",
+    "taggedPrompt": "带标签 Prompt",
+    "experimentTriggeredSuccess": "实验触发成功",
+    "experimentWaiting": "等待实验完成...",
+    "viewExperiment": "查看实验"
+  },
+  "scores": {
+    "title": "评分",
+    "columns": {
+      "id": "评分 ID",
+      "traceName": "追踪名称",
+      "trace": "追踪",
+      "executionTrace": "执行追踪",
+      "observation": "观察",
+      "session": "会话",
+      "environment": "环境",
+      "user": "用户",
+      "timestamp": "时间戳",
+      "source": "来源",
+      "name": "名称",
+      "dataType": "数据类型",
+      "value": "值",
+      "metadata": "元数据",
+      "comment": "评论",
+      "author": "作者",
+      "evalConfigId": "评估配置 ID",
+      "traceTags": "追踪标签"
+    },
+    "helpDescription": "评分是对追踪或观察数据的评估。它可以通过用户反馈、基于模型的评估或人工审核创建。查看文档了解更多。",
+    "annotate": {
+      "title": "标注",
+      "discardChanges": "放弃更改",
+      "saveChanges": "保存更改",
+      "saving": "正在保存评分数据",
+      "saved": "评分数据已保存",
+      "manageConfigs": "管理评分配置",
+      "apiEvalVisible": "API 和评估评分在左侧可见。在上方添加手动标注。",
+      "placeholders": {
+        "value": "值",
+        "selectCategory": "选择类别",
+        "searchCategories": "搜索类别...",
+        "noCategory": "未找到类别。"
+      },
+      "errors": {
+        "delete": "删除评分失败",
+        "update": "更新评分失败",
+        "create": "创建评分失败",
+        "updateComment": "更新评论失败"
+      }
+    },
+    "analytics": {
+      "noScoresAvailable": "无分数可用",
+      "noScoresDescription": "通过向您的追踪和观察添加评估来创建分数。",
+      "selectScore": "选择分数",
+      "selectScoreDescription": "从上面的下拉菜单中选择一个或两个分数以查看分析"
+    }
   },
   "comments": {
     "addComment": "添加评论",
@@ -980,6 +1088,23 @@
       "noAccess": "您没有访问此资源的权限。"
     }
   },
+  "evaluators": {
+    "defaultModel": {
+      "title": "默认评估模型",
+      "setUpMessage": "设置运行评估的默认模型。",
+      "setUp": "设置",
+      "configuration": "配置",
+      "functionCalling": "支持函数调用。",
+      "updatedToastTitle": "模型已更新",
+      "updatedToastDescription": "默认评估模型更新成功。",
+      "update": "更新",
+      "updateConfirmationTitle": "确认更新",
+      "updateConfirmationDescription": "您确定要更新默认模型吗？",
+      "typeToConfirm": "输入 \"{confirmation}\" 以确认",
+      "confirm": "确认",
+      "noModelSet": "未设置默认评估模型"
+    }
+  },
   "playground": {
     "title": "体验场",
     "helpDescription": "一个用于在多个窗口中测试和迭代您的 Prompt 的沙箱",
@@ -1039,6 +1164,7 @@
     "newSplitWindow": "新建分屏窗口",
     "promptsFromPlaygroundDescription": "体验场中的提示词只能保存为 'chat' 提示词，因为它们包含多个系统/用户消息。"
   },
+
   "pages": {
     "traces": {
       "title": "追踪",
@@ -1165,247 +1291,127 @@
         "sessionsAddedToQueueDesc": "选中的会话将被添加到队列 \"{queueName}\"。这可能需要一分钟。",
         "viewQueue": "查看队列 \"{queueName}\""
       }
-    },
-    "users": {
-      "title": "用户",
-      "helpDescription": "通过向追踪添加 userId 来将 Langfuse 中的数据归属到用户。查看文档了解更多。",
-      "columns": {
-        "timestamp": "时间戳",
-        "userId": "用户 ID",
-        "userIdTooltip": "在 Langfuse 中记录的用户唯一标识符。查看文档了解如何设置。",
-        "environment": "环境",
-        "firstEvent": "首次事件",
-        "firstEventTooltip": "该用户最早的追踪记录。",
-        "lastEvent": "最近事件",
-        "lastEventTooltip": "该用户最新的追踪记录。",
-        "totalEvents": "总事件数",
-        "totalEventsTooltip": "用户的总事件数，包括追踪和观察数据。查看数据模型了解更多详情。",
-        "totalTokens": "总 Token 数",
-        "totalTokensTooltip": "用户在所有生成中使用的总 Token 数。",
-        "totalCost": "总成本",
-        "totalCostTooltip": "用户在所有生成中的总成本。",
-        "noEventYet": "暂无事件"
-      },
-      "stats": {
-        "observations": "观察",
-        "traces": "追踪",
-        "totalTokens": "总 Token",
-        "totalCost": "总成本",
-        "active": "活跃时间",
-        "noActivity": "暂无活动",
-        "noTraces": "暂无追踪",
-        "dashboard": "仪表盘"
-      },
-      "tabs": {
-        "traces": "追踪",
-        "sessions": "会话",
-        "scores": "评分"
-      }
-    },
-    "prompts": {
-      "title": "Prompts",
-      "helpDescription": "在 Langfuse 中管理和版本控制您的 Prompts。通过 UI 和 SDK 编辑和更新。通过 SDK 获取生产版本。查看文档了解更多。",
-      "newPrompt": "新建 Prompt",
-      "immutableNotice": "Langfuse 中的 Prompt 是不可变的。要更新 Prompt，请创建一个新版本。",
-      "table": {
-        "name": "名称",
-        "versions": "版本",
-        "type": "类型",
-        "latestVersionCreatedAt": "最新版本创建时间",
-        "numberOfObservations": "观察数量",
-        "tags": "标签",
-        "actions": "操作"
-      },
-      "form": {
-        "name": "名称",
-        "nameDescription": "在提示词名称中使用斜杠 '/' 将它们组织到文件夹中。",
-        "namePlaceholder": "为您的提示词命名",
-        "prompt": "提示词",
-        "promptDescription": "定义您的提示词模板。",
-        "config": "配置",
-        "configDescription": "提示词可用的任意 JSON 配置。使用此项跟踪 LLM 参数、函数定义或任何其他元数据。",
-        "productionLabel": "设置 \"production\" 标签",
-        "commitMessage": "提交信息",
-        "commitMessageDescription": "提供有关此版本更改的信息。有助于保持清晰的提示词迭代历史。",
-        "reviewChanges": "审查更改",
-        "saveNewVersion": "保存新提示词版本",
-        "createPrompt": "创建提示词",
-        "createVersionLink": "在此处为它创建一个新版本。",
-        "addReference": "添加提示词引用",
-        "backToPromptList": "返回提示词列表",
-        "chat": "对话",
-        "text": "文本"
-      },
-      "search": {
-        "namesTags": "名称，标签",
-        "fullText": "全文"
-      },
-      "newVersion": "新版本",
-      "runExperiment": "运行实验",
-      "tabs": {
-        "prompt": "Prompt",
-        "config": "配置",
-        "linkedGenerations": "关联生成",
-        "usePrompt": "使用 Prompt"
-      },
-      "resolvedPrompt": "已解析 Prompt",
-      "taggedPrompt": "带标签 Prompt",
-      "experimentTriggeredSuccess": "实验触发成功",
-      "experimentWaiting": "等待实验完成...",
-      "viewExperiment": "查看实验"
-    },
-    "dashboards": {
-      "title": "仪表盘",
-      "traces": "追踪",
-      "observations": "观察",
-      "helpDescription": "管理和创建项目的仪表盘。",
-      "newDashboard": "新建仪表盘",
-      "create": {
-        "title": "创建仪表盘",
-        "description": "为您的项目创建一个新仪表盘",
-        "cancel": "取消",
-        "create": "创建",
-        "nameLabel": "仪表盘名称",
-        "namePlaceholder": "输入仪表盘名称",
-        "descLabel": "描述",
-        "descPlaceholder": "描述此仪表盘的用途。可选，但很有帮助。",
-        "helpText": "创建仪表盘后，您可以添加小部件以可视化您的数据。",
-        "successTitle": "仪表盘已创建",
-        "successDescription": "您的新仪表盘已成功创建",
-        "errorTitle": "创建仪表盘时出错",
-        "validationError": "验证错误",
-        "nameRequired": "仪表盘名称为必填项"
-      },
-      "edit": {
-        "title": "编辑仪表盘",
-        "name": "名称",
-        "description": "描述",
-        "cancel": "取消",
-        "save": "保存更改",
-        "successTitle": "仪表盘已更新",
-        "successDescription": "仪表盘已成功更新"
-      },
-      "table": {
-        "name": "名称",
-        "description": "描述",
-        "owner": "所有者",
-        "createdAt": "创建时间",
-        "updatedAt": "更新时间",
-        "actions": "操作",
-        "clone": "克隆",
-        "edit": "编辑",
-        "delete": "删除"
-      }
-    },
-    "datasets": {
-      "title": "数据集",
-      "addToDataset": "添加到数据集",
-      "helpDescription": "Langfuse 中的数据集是 LLM 应用的输入（和预期输出）集合。它们用于在部署到生产环境之前对新版本进行基准测试。查看文档了解更多。",
-      "form": {
-        "create": "创建新数据集",
-        "name": "名称",
-        "slugDescription": "在数据集名称中使用斜杠 '/' 将它们组织到文件夹中。",
-        "description": "描述（可选）",
-        "metadata": "元数据（可选）",
-        "inputSchema": "输入 Schema",
-        "inputSchemaDescription": "针对 JSON Schema 验证数据集项目输入。所有新项目和现有项目都必须符合此 Schema。",
-        "outputSchema": "预期输出 Schema",
-        "outputSchemaDescription": "针对 JSON Schema 验证数据集项目预期输出。所有新项目和现有项目都必须符合此 Schema。",
-        "deleteConfirmation": "输入 \"{name}\" 以确认删除",
-        "createDataset": "创建数据集",
-        "updateDataset": "更新数据集",
-        "deleteDataset": "删除数据集"
-      }
-    },
-    "traceDetail": {
-      "preview": "预览",
-      "logView": "日志视图",
-      "scores": "评分",
-      "formatted": "格式化",
-      "json": "JSON",
-      "metadata": "元数据",
-      "statusMessage": "状态信息",
-      "tags": "标签",
-      "latency": "延迟",
-      "timeToFirstToken": "首个 Token 时间",
+    }
+  },
+  "annotationQueues": {
+    "title": "标注队列",
+    "helpDescription": "标注队列用于管理 LLM 项目的评分工作流。查看文档了解更多。"
+  },
+  "users": {
+    "title": "用户",
+    "helpDescription": "通过向追踪添加 userId 来将 Langfuse 中的数据归属到用户。查看文档了解更多。",
+    "columns": {
+      "timestamp": "时间戳",
+      "userId": "用户 ID",
+      "userIdTooltip": "在 Langfuse 中记录的用户唯一标识符。查看文档了解如何设置。",
+      "environment": "环境",
+      "firstEvent": "首次事件",
+      "firstEventTooltip": "该用户最早的追踪记录。",
+      "lastEvent": "最近事件",
+      "lastEventTooltip": "该用户最新的追踪记录。",
+      "totalEvents": "总事件数",
+      "totalEventsTooltip": "用户的总事件数，包括追踪和观察数据。查看数据模型了解更多详情。",
+      "totalTokens": "总 Token 数",
+      "totalTokensTooltip": "用户在所有生成中使用的总 Token 数。",
       "totalCost": "总成本",
-      "version": "版本",
-      "release": "发布版本",
-      "targetTrace": "目标追踪",
-      "session": "会话",
-      "userId": "用户 ID"
+      "totalCostTooltip": "用户在所有生成中的总成本。",
+      "noEventYet": "暂无事件"
     },
-    "scores": {
-      "title": "评分",
-      "columns": {
-        "id": "评分 ID",
-        "traceName": "追踪名称",
-        "trace": "追踪",
-        "executionTrace": "执行追踪",
-        "observation": "观察",
-        "session": "会话",
-        "environment": "环境",
-        "user": "用户",
-        "timestamp": "时间戳",
-        "source": "来源",
-        "name": "名称",
-        "dataType": "数据类型",
-        "value": "值",
-        "metadata": "元数据",
-        "comment": "评论",
-        "author": "作者",
-        "evalConfigId": "评估配置 ID",
-        "traceTags": "追踪标签"
-      },
-      "helpDescription": "评分是对追踪或观察数据的评估。它可以通过用户反馈、基于模型的评估或人工审核创建。查看文档了解更多。",
-      "annotate": {
-        "title": "标注",
-        "discardChanges": "放弃更改",
-        "saveChanges": "保存更改",
-        "saving": "正在保存评分数据",
-        "saved": "评分数据已保存",
-        "manageConfigs": "管理评分配置",
-        "apiEvalVisible": "API 和评估评分在左侧可见。在上方添加手动标注。",
-        "placeholders": {
-          "value": "值",
-          "selectCategory": "选择类别",
-          "searchCategories": "搜索类别...",
-          "noCategory": "未找到类别。"
-        },
-        "errors": {
-          "delete": "删除评分失败",
-          "update": "更新评分失败",
-          "create": "创建评分失败",
-          "updateComment": "更新评论失败"
-        }
-      },
-      "analytics": {
-        "noScoresAvailable": "无分数可用",
-        "noScoresDescription": "通过向您的追踪和观察添加评估来创建分数。",
-        "selectScore": "选择分数",
-        "selectScoreDescription": "从上面的下拉菜单中选择一个或两个分数以查看分析"
-      }
+    "stats": {
+      "observations": "观察",
+      "traces": "追踪",
+      "totalTokens": "总 Token",
+      "totalCost": "总成本",
+      "active": "活跃时间",
+      "noActivity": "暂无活动",
+      "noTraces": "暂无追踪",
+      "dashboard": "仪表盘"
     },
-    "annotationQueues": {
-      "title": "标注队列",
-      "helpDescription": "标注队列用于管理 LLM 项目的评分工作流。查看文档了解更多。"
+    "tabs": {
+      "traces": "追踪",
+      "sessions": "会话",
+      "scores": "评分"
+    }
+  },
+  "traceDetail": {
+    "preview": "预览",
+    "logView": "日志视图",
+    "scores": "评分",
+    "formatted": "格式化",
+    "json": "JSON",
+    "metadata": "元数据",
+    "statusMessage": "状态信息",
+    "tags": "标签",
+    "latency": "延迟",
+    "timeToFirstToken": "首个 Token 时间",
+    "totalCost": "总成本",
+    "version": "版本",
+    "release": "发布版本",
+    "targetTrace": "目标追踪",
+    "session": "会话",
+    "userId": "用户 ID"
+  },
+  "dashboards": {
+    "title": "仪表盘",
+    "traces": "追踪",
+    "observations": "观察",
+    "helpDescription": "管理和创建项目的仪表盘。",
+    "newDashboard": "新建仪表盘",
+    "create": {
+      "title": "创建仪表盘",
+      "description": "为您的项目创建一个新仪表盘",
+      "cancel": "取消",
+      "create": "创建",
+      "nameLabel": "仪表盘名称",
+      "namePlaceholder": "输入仪表盘名称",
+      "descLabel": "描述",
+      "descPlaceholder": "描述此仪表盘的用途。可选，但很有帮助。",
+      "helpText": "创建仪表盘后，您可以添加小部件以可视化您的数据。",
+      "successTitle": "仪表盘已创建",
+      "successDescription": "您的新仪表盘已成功创建",
+      "errorTitle": "创建仪表盘时出错",
+      "validationError": "验证错误",
+      "nameRequired": "仪表盘名称为必填项"
     },
-    "evaluators": {
-      "defaultModel": {
-        "title": "默认评估模型",
-        "setUpMessage": "设置运行评估的默认模型。",
-        "setUp": "设置",
-        "configuration": "配置",
-        "functionCalling": "支持函数调用。",
-        "updatedToastTitle": "模型已更新",
-        "updatedToastDescription": "默认评估模型更新成功。",
-        "update": "更新",
-        "updateConfirmationTitle": "确认更新",
-        "updateConfirmationDescription": "您确定要更新默认模型吗？",
-        "typeToConfirm": "输入 \"{confirmation}\" 以确认",
-        "confirm": "确认",
-        "noModelSet": "未设置默认评估模型"
-      }
+    "edit": {
+      "title": "编辑仪表盘",
+      "name": "名称",
+      "description": "描述",
+      "cancel": "取消",
+      "save": "保存更改",
+      "successTitle": "仪表盘已更新",
+      "successDescription": "仪表盘已成功更新"
+    },
+    "table": {
+      "name": "名称",
+      "description": "描述",
+      "owner": "所有者",
+      "createdAt": "创建时间",
+      "updatedAt": "更新时间",
+      "actions": "操作",
+      "clone": "克隆",
+      "edit": "编辑",
+      "delete": "删除"
+    }
+  },
+  "datasets": {
+    "title": "数据集",
+    "addToDataset": "添加到数据集",
+    "helpDescription": "Langfuse 中的数据集是 LLM 应用的输入（和预期输出）集合。它们用于在部署到生产环境之前对新版本进行基准测试。查看文档了解更多。",
+    "form": {
+      "create": "创建新数据集",
+      "name": "名称",
+      "slugDescription": "在数据集名称中使用斜杠 '/' 将它们组织到文件夹中。",
+      "description": "描述（可选）",
+      "metadata": "元数据（可选）",
+      "inputSchema": "输入 Schema",
+      "inputSchemaDescription": "针对 JSON Schema 验证数据集项目输入。所有新项目和现有项目都必须符合此 Schema。",
+      "outputSchema": "预期输出 Schema",
+      "outputSchemaDescription": "针对 JSON Schema 验证数据集项目预期输出。所有新项目和现有项目都必须符合此 Schema。",
+      "deleteConfirmation": "输入 \"{name}\" 以确认删除",
+      "createDataset": "创建数据集",
+      "updateDataset": "更新数据集",
+      "deleteDataset": "删除数据集"
     }
   },
   "apiKeys": {
@@ -1667,6 +1673,7 @@
       "log": "日志"
     }
   },
+
   "organization": {
     "members": {
       "title": "组织成员",
@@ -1745,6 +1752,7 @@
       "apiKeys": "API 密钥",
       "auditLogs": "审计日志"
     },
+
     "rename": {
       "title": "组织名称",
       "currentName": "您的组织当前名称为",
@@ -1844,6 +1852,7 @@
     "secretKeyDescription": "此密钥只能查看一次。您随时可以在项目设置中创建新密钥。",
     "publicKey": "Public Key"
   },
+
   "theme": {
     "light": "亮色模式",
     "dark": "暗色模式",
