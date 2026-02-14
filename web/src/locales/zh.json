@@ -62,6 +62,13 @@
         "confirmInstruction": "确认操作，请在输入框中输入",
         "confirmSuffix": ""
       }
+    },
+    "delete": {
+      "button": "删除项目",
+      "title": "删除项目",
+      "confirmInstruction": "确认操作，请在输入框中输入 \"{{confirmMessage}}\"",
+      "submit": "删除项目",
+      "validationError": "请使用 \"{{confirmMessage}}\" 确认"
     }
   },
   "navigation": {
@@ -155,6 +162,13 @@
     "inactive": "非活动",
     "configure": "配置",
     "integrationDocs": "集成文档",
+    "feedback": {
+      "btn": "反馈",
+      "submitFeatureRequest": "提交功能请求",
+      "reportBug": "报告错误",
+      "provideFeedback": "提供反馈",
+      "description": "您对 Langfuse 怎么看？有什么可以改进的地方？请在 GitHub 上与社区分享，以共同塑造 Langfuse 的未来。"
+    },
     "datePicker": {
       "pickDate": "选择日期",
       "resetDate": "重置日期",
@@ -224,7 +238,15 @@
       "goToFirstPage": "跳转到第一页",
       "goToLastPage": "跳转到最后一页",
       "goToPreviousPage": "跳转到上一页",
-      "goToNextPage": "跳转到下一页"
+      "goToNextPage": "跳转到下一页",
+      "idsNames": "ID / 名称",
+      "fullText": "全文",
+      "searchPlaceholder": "搜索...",
+      "searchWithFields": "搜索 ({{fields}})",
+      "searchDescriptionFullText": "在输入/输出和 {{fields}} 中搜索。",
+      "searchDescriptionMetadata": "在 {{fields}} 中搜索。",
+      "searchPerformanceWarning": "为提高性能，请先筛选表格数据。",
+      "rowHeight": "行高"
     },
     "toolbar": {
       "hideFilters": "隐藏筛选",
@@ -1143,7 +1165,11 @@
         "dataset": "数据集",
         "inputTokens": "输入 Token",
         "outputTokens": "输出 Token",
-        "totalTokens": "总 Token"
+        "totalTokens": "总 Token",
+        "traceName": "追踪名称",
+        "traceId": "Trace ID",
+        "numericScores": "数值评分",
+        "categoricalScores": "分类评分"
       }
     },
     "sessions": {
@@ -1176,6 +1202,7 @@
         "viewQueue": "查看队列 \"{queueName}\""
       }
     },
+
     "users": {
       "title": "用户",
       "helpDescription": "通过向追踪添加 userId 来将 Langfuse 中的数据归属到用户。查看文档了解更多。",
@@ -1203,6 +1230,8 @@
     },
     "dashboards": {
       "title": "仪表盘",
+      "traces": "追踪",
+      "observations": "观察",
       "helpDescription": "管理和创建项目的仪表盘。",
       "newDashboard": "新建仪表盘",
       "create": {
