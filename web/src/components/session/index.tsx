@@ -403,9 +403,10 @@ export const SessionPage: React.FC<{
       headerProps={{
         title: sessionId,
         itemType: "SESSION",
+        itemTypeLabel: t("pages.traceDetail.session"),
         breadcrumb: [
           {
-            name: "Sessions",
+            name: t("pages.sessions.title"),
             href: `/project/${projectId}/sessions`,
           },
         ],
@@ -574,6 +575,7 @@ export const SessionEventsPage: React.FC<{
   projectId: string;
 }> = ({ sessionId, projectId }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { setDetailPageList, detailPagelists } = useDetailPageLists();
   const userSession = useSession();
   const parentRef = useRef<HTMLDivElement>(null);
@@ -893,9 +895,10 @@ export const SessionEventsPage: React.FC<{
       headerProps={{
         title: sessionId,
         itemType: "SESSION",
+        itemTypeLabel: t("pages.traceDetail.session"),
         breadcrumb: [
           {
-            name: "Sessions",
+            name: t("pages.sessions.title"),
             href: `/project/${projectId}/sessions`,
           },
         ],
@@ -965,7 +968,7 @@ export const SessionEventsPage: React.FC<{
                 className="scale-75"
               />
               <span className="text-xs text-muted-foreground">
-                Show corrections
+                {t("session.showCorrections")}
               </span>
             </div>
           </>
@@ -1004,11 +1007,12 @@ export const SessionEventsPage: React.FC<{
 
           {/* Stats */}
           <Badge variant="outline">
-            Total traces: {session.data?.countTraces ?? 0}
+            {t("session.totalTraces")}: {session.data?.countTraces ?? 0}
           </Badge>
           {session.data && (
             <Badge variant="outline">
-              Total cost: {usdFormatter(session.data.totalCost ?? 0, 2)}
+              {t("session.totalCost")}:{" "}
+              {usdFormatter(session.data.totalCost ?? 0, 2)}
             </Badge>
           )}
 

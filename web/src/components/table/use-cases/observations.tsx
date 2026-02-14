@@ -77,6 +77,7 @@ import {
   type RefreshInterval,
   REFRESH_INTERVALS,
 } from "@/src/components/table/data-table-refresh-button";
+import { useTranslation } from "@/src/features/i18n";
 
 export type ObservationsTableRow = {
   // Shown by default
@@ -146,6 +147,7 @@ export default function ObservationsTable({
   externalDateRange,
   limitRows,
 }: ObservationsTableProps) {
+  const { t } = useTranslation();
   const router = useRouter();
   const { viewId } = router.query;
   const utils = api.useUtils();
@@ -589,7 +591,7 @@ export default function ObservationsTable({
     {
       accessorKey: "startTime",
       id: "startTime",
-      header: "Start Time",
+      header: t("pages.observations.columns.startTime"),
       size: 150,
       enableHiding: true,
       enableSorting,
@@ -601,7 +603,7 @@ export default function ObservationsTable({
     {
       accessorKey: "type",
       id: "type",
-      header: "Type",
+      header: t("pages.observations.columns.type"),
       size: 50,
       enableSorting,
       cell: ({ row }) => {
@@ -616,7 +618,7 @@ export default function ObservationsTable({
     {
       accessorKey: "name",
       id: "name",
-      header: "Name",
+      header: t("pages.observations.columns.name"),
       size: 150,
       enableSorting,
       cell: ({ row }) => {
@@ -626,7 +628,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "input",
-      header: "Input",
+      header: t("pages.observations.columns.input"),
       id: "input",
       size: 300,
       cell: ({ row }) => {
@@ -648,7 +650,7 @@ export default function ObservationsTable({
     {
       accessorKey: "output",
       id: "output",
-      header: "Output",
+      header: t("pages.observations.columns.output"),
       size: 300,
       cell: ({ row }) => {
         const observationId: string = row.getValue("id");
@@ -669,7 +671,7 @@ export default function ObservationsTable({
     {
       accessorKey: "level",
       id: "level",
-      header: "Level",
+      header: t("pages.observations.columns.level"),
       size: 100,
       headerTooltip: {
         description:
@@ -709,7 +711,7 @@ export default function ObservationsTable({
     {
       accessorKey: "latency",
       id: "latency",
-      header: "Latency",
+      header: t("pages.observations.columns.latency"),
       size: 100,
       cell: ({ row }) => {
         const latency: number | undefined = row.getValue("latency");
@@ -722,7 +724,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "totalCost",
-      header: "Total Cost",
+      header: t("pages.observations.columns.totalCost"),
       id: "totalCost",
       size: 120,
       cell: ({ row }) => {
@@ -777,7 +779,7 @@ export default function ObservationsTable({
     {
       accessorKey: "timeToFirstToken",
       id: "timeToFirstToken",
-      header: "Time to First Token",
+      header: t("pages.observations.columns.timeToFirstToken"),
       size: 150,
       enableHiding: true,
       enableSorting,
@@ -794,7 +796,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "tokens",
-      header: "Tokens",
+      header: t("pages.observations.columns.totalTokens"),
       id: "tokens",
       size: 150,
       cell: ({ row }) => {

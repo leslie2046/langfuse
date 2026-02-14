@@ -1226,6 +1226,7 @@
         "productionLabel": "Set the \"production\" label",
         "commitMessage": "Commit message",
         "commitMessageDescription": "Provide information about the changes made in this version. Helps maintain a clear history of prompt iterations.",
+        "commitMessagePlaceholder": "Describe what changed in this version...",
         "reviewChanges": "Review changes",
         "saveNewVersion": "Save new prompt version",
         "createPrompt": "Create prompt",
@@ -1319,6 +1320,7 @@
     "traceDetail": {
       "preview": "Preview",
       "logView": "Log View",
+      "timeline": "Timeline",
       "scores": "Scores",
       "formatted": "Formatted",
       "json": "JSON",
@@ -1390,10 +1392,21 @@
       "helpDescription": "Annotation queues are used to manage scoring workflows for your LLM projects. See docs to learn more."
     },
     "evaluators": {
+      "title": "LLM-as-a-Judge",
+      "helpDescription": "Create evaluation templates and evaluators to automatically score your traces with LLM-as-a-judge. Set up custom evaluation criteria and let AI help you measure the quality of your outputs.",
+      "setupEvaluator": "Create Evaluator",
+      "new": {
+        "title": "Create Evaluator",
+        "breadcrumb": "LLM-as-a-Judge",
+        "step0": "Set up default model",
+        "step1": "Select evaluator",
+        "step2": "Configure evaluator"
+      },
       "defaultModel": {
         "title": "Default Evaluation Model",
         "setUpMessage": "Set up a default model to run evaluations.",
         "setUp": "Set up",
+        "currentDefault": "Current default model: ",
         "configuration": "Configuration",
         "functionCalling": "Function calling is supported.",
         "updatedToastTitle": "Model updated",

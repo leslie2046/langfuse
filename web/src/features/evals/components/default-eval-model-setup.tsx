@@ -54,8 +54,10 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
     api.defaultLlmModel.upsertDefaultModel.useMutation({
       onSuccess: () => {
         showSuccessToast({
-          title: t("evaluators.defaultModel.updatedToastTitle"),
-          description: t("evaluators.defaultModel.updatedToastDescription"),
+          title: t("pages.evaluators.defaultModel.updatedToastTitle"),
+          description: t(
+            "pages.evaluators.defaultModel.updatedToastDescription",
+          ),
         });
 
         utils.defaultLlmModel.fetchDefaultModel.invalidate({ projectId });
@@ -86,12 +88,12 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
       <Card className="mt-3 flex flex-col gap-6">
         <CardContent>
           <p className="my-2 text-lg font-semibold">
-            {t("evaluators.defaultModel.title")}
+            {t("pages.evaluators.defaultModel.title")}
           </p>
           <ManageDefaultEvalModel
             projectId={projectId}
             variant="color-coded"
-            setUpMessage={t("evaluators.defaultModel.setUpMessage")}
+            setUpMessage={t("pages.evaluators.defaultModel.setUpMessage")}
             className="text-sm font-normal"
             showEditButton={false}
           />
@@ -125,14 +127,14 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
               <Pencil className="mr-2 h-4 w-4" />
               {selectedModel
                 ? t("common.edit")
-                : t("evaluators.defaultModel.setUp")}
+                : t("pages.evaluators.defaultModel.setUp")}
             </Button>
           </DialogTrigger>
           <DialogContent className="px-3 py-10">
             <ModelParameters
               customHeader={
                 <p className="font-medium leading-none">
-                  {t("evaluators.defaultModel.configuration")}
+                  {t("pages.evaluators.defaultModel.configuration")}
                 </p>
               }
               {...{
@@ -146,7 +148,7 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
               formDisabled={!hasWriteAccess}
             />
             <div className="my-2 text-xs text-muted-foreground">
-              {t("evaluators.defaultModel.functionCalling")}
+              {t("pages.evaluators.defaultModel.functionCalling")}
             </div>
             <div className="flex flex-col gap-2">
               <div className="mt-2 flex justify-end gap-2">
@@ -209,7 +211,7 @@ function UpdateButton({
             e.stopPropagation();
           }}
         >
-          {t("evaluators.defaultModel.update")}
+          {t("pages.evaluators.defaultModel.update")}
         </Button>
       </PopoverTrigger>
       <PopoverContent
@@ -217,14 +219,14 @@ function UpdateButton({
         className="w-fit max-w-[500px]"
       >
         <h2 className="text-md mb-3 font-semibold">
-          {t("evaluators.defaultModel.updateConfirmationTitle")}
+          {t("pages.evaluators.defaultModel.updateConfirmationTitle")}
         </h2>
         <p className="mb-3 text-sm">
-          {t("evaluators.defaultModel.updateConfirmationDescription")}
+          {t("pages.evaluators.defaultModel.updateConfirmationDescription")}
         </p>
         <div className="mb-4 grid w-full gap-1.5">
           <Label htmlFor="update-confirmation">
-            {t("evaluators.defaultModel.typeToConfirm", {
+            {t("pages.evaluators.defaultModel.typeToConfirm", {
               confirmation: CONFIRMATION,
             })}
           </Label>
@@ -246,7 +248,7 @@ function UpdateButton({
               executeUpsertMutation();
             }}
           >
-            {t("evaluators.defaultModel.confirm")}
+            {t("pages.evaluators.defaultModel.confirm")}
           </Button>
         </div>
       </PopoverContent>

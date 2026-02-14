@@ -376,7 +376,7 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
             {props.mode === "delete" ? (
               <div className="mb-8 grid w-full gap-1.5">
                 <Label htmlFor="delete-confirmation">
-                  {t("datasets.form.deleteConfirmation").replace(
+                  {t("pages.datasets.form.deleteConfirmation").replace(
                     "{name}",
                     props.datasetName,
                   )}
@@ -394,9 +394,9 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("datasets.form.name")}</FormLabel>
+                      <FormLabel>{t("pages.datasets.form.name")}</FormLabel>
                       <FormDescription>
-                        {t("datasets.form.slugDescription")}
+                        {t("pages.datasets.form.slugDescription")}
                       </FormDescription>
                       <FormControl>
                         <Input {...field} />
@@ -410,7 +410,9 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("datasets.form.description")}</FormLabel>
+                      <FormLabel>
+                        {t("pages.datasets.form.description")}
+                      </FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -423,7 +425,7 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
                   name="metadata"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("datasets.form.metadata")}</FormLabel>
+                      <FormLabel>{t("pages.datasets.form.metadata")}</FormLabel>
                       <FormControl>
                         <CodeMirrorEditor
                           mode="json"
@@ -442,8 +444,10 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
                   name="inputSchema"
                   render={({ field }) => (
                     <DatasetSchemaInput
-                      label={t("datasets.form.inputSchema")}
-                      description={t("datasets.form.inputSchemaDescription")}
+                      label={t("pages.datasets.form.inputSchema")}
+                      description={t(
+                        "pages.datasets.form.inputSchemaDescription",
+                      )}
                       value={field.value}
                       onChange={field.onChange}
                       initialValue={inputSchemaString}
@@ -455,8 +459,10 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
                   name="expectedOutputSchema"
                   render={({ field }) => (
                     <DatasetSchemaInput
-                      label={t("datasets.form.outputSchema")}
-                      description={t("datasets.form.outputSchemaDescription")}
+                      label={t("pages.datasets.form.outputSchema")}
+                      description={t(
+                        "pages.datasets.form.outputSchemaDescription",
+                      )}
                       value={field.value}
                       onChange={field.onChange}
                       initialValue={expectedOutputSchemaString}
@@ -492,10 +498,10 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
                   className="w-full"
                 >
                   {props.mode === "create"
-                    ? t("datasets.form.createDataset")
+                    ? t("pages.datasets.form.createDataset")
                     : props.mode === "delete"
-                      ? t("datasets.form.deleteDataset")
-                      : t("datasets.form.updateDataset")}
+                      ? t("pages.datasets.form.deleteDataset")
+                      : t("pages.datasets.form.updateDataset")}
                 </Button>
                 {formError && (
                   <p className="mt-4 text-center text-sm text-red-500">

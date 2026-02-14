@@ -64,7 +64,7 @@ export function AnnotateDrawer<Target extends ScoreTarget>({
               }
             />
           )}
-          <span>{t("scores.annotate.title")}</span>
+          <span>{t("pages.scores.annotate.title")}</span>
         </Button>
       </DrawerTrigger>
       <DrawerContent className="p-3">
@@ -76,7 +76,7 @@ export function AnnotateDrawer<Target extends ScoreTarget>({
         />
         {hasNonAnnotationScores && (
           <div className="mt-4 text-xs text-muted-foreground">
-            {t("scores.annotate.apiEvalVisible")}
+            {t("pages.scores.annotate.apiEvalVisible")}
           </div>
         )}
       </DrawerContent>

@@ -50,7 +50,7 @@ export function ManageDefaultEvalModel({
             className,
           )}
         >
-          {t("evaluators.defaultModel.currentDefault")}
+          {t("pages.evaluators.defaultModel.currentDefault")}
           {defaultModel.provider} / {defaultModel.model}
         </span>
       ) : (
@@ -61,7 +61,7 @@ export function ManageDefaultEvalModel({
             className,
           )}
         >
-          {setUpMessage ?? t("evaluators.defaultModel.noModelSet")}
+          {setUpMessage ?? t("pages.evaluators.defaultModel.noModelSet")}
         </span>
       )}
       {showEditButton && (

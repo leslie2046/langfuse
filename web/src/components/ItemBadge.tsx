@@ -93,11 +93,13 @@ export function ItemBadge({
   showLabel = false,
   isSmall = false,
   className,
+  label,
 }: {
   type: LangfuseItemType;
   showLabel?: boolean;
   isSmall?: boolean;
   className?: string;
+  label?: string;
 }) {
   const Icon = iconMap[type] || ListTree; // Default to ListTree if unknown type
 
@@ -108,13 +110,14 @@ export function ItemBadge({
     className,
   );
 
-  const label =
+  const defaultLabel =
     String(type).charAt(0).toUpperCase() + String(type).slice(1).toLowerCase();
+  const resolvedLabel = label ?? defaultLabel;
 
   return (
     <Badge
       variant="outline"
-      title={label}
+      title={resolvedLabel}
       className={cn(
         "flex max-w-fit items-center gap-1 overflow-hidden whitespace-nowrap border-2 bg-background px-1",
         isSmall && "h-4",
@@ -122,8 +125,8 @@ export function ItemBadge({
     >
       <Icon className={iconClass} />
       {showLabel && (
-        <span className="truncate" title={label.replace(/_/g, " ")}>
-          {label.replace(/_/g, " ")}
+        <span className="truncate" title={resolvedLabel.replace(/_/g, " ")}>
+          {resolvedLabel.replace(/_/g, " ")}
         </span>
       )}
     </Badge>

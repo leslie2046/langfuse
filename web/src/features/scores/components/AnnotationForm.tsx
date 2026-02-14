@@ -135,7 +135,7 @@ function CommentField({
                 setLocalValue(savedComment || "");
               }}
             >
-              {t("scores.annotate.discardChanges")}
+              {t("pages.scores.annotate.discardChanges")}
             </Button>
           </PopoverClose>
           <PopoverClose asChild>
@@ -149,7 +149,7 @@ function CommentField({
                 onSave(localValue);
               }}
             >
-              {t("scores.annotate.saveChanges")}
+              {t("pages.scores.annotate.saveChanges")}
             </Button>
           </PopoverClose>
         </div>
@@ -182,7 +182,7 @@ function AnnotateHeader({
   const { t } = useTranslation();
   return (
     <Header
-      title={t("scores.annotate.title")}
+      title={t("pages.scores.annotate.title")}
       help={{
         description,
         href: "https://langfuse.com/docs/evaluation/evaluation-methods/annotation",
@@ -199,8 +199,8 @@ function AnnotateHeader({
           </div>
           <span className="text-xs text-muted-foreground">
             {showSaving
-              ? t("scores.annotate.saving")
-              : t("scores.annotate.saved")}
+              ? t("pages.scores.annotate.saving")
+              : t("pages.scores.annotate.saved")}
           </span>
         </div>,
         actionButtons,
@@ -303,7 +303,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
     form.setValue(`scoreData.${index}.timestamp`, previousScore.timestamp);
     form.setError(`scoreData.${index}.value`, {
       type: "server",
-      message: t("scores.annotate.errors.delete"),
+      message: t("pages.scores.annotate.errors.delete"),
     });
   };
 
@@ -357,7 +357,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
     form.setValue(`scoreData.${index}.stringValue`, previousStringValue);
     form.setError(`scoreData.${index}.value`, {
       type: "server",
-      message: t("scores.annotate.errors.update"),
+      message: t("pages.scores.annotate.errors.update"),
     });
   };
 
@@ -374,7 +374,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
     form.setValue(`scoreData.${index}.stringValue`, previousStringValue);
     form.setError(`scoreData.${index}.value`, {
       type: "server",
-      message: t("scores.annotate.errors.create"),
+      message: t("pages.scores.annotate.errors.create"),
     });
   };
 
@@ -504,7 +504,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
     });
     form.setError(`scoreData.${index}.comment`, {
       type: "server",
-      message: t("scores.annotate.errors.updateComment"),
+      message: t("pages.scores.annotate.errors.updateComment"),
     });
   };
 
@@ -545,7 +545,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
         {allowManualSelection ? (
           <div className="grid grid-flow-col items-center">
             <MultiSelectKeyValues
-              placeholder={t("scores.annotate.placeholders.value")}
+              placeholder={t("pages.scores.annotate.placeholders.value")}
               align="end"
               items="empty scores"
               className="grid grid-cols-[auto,1fr,auto,auto] gap-2"
@@ -572,7 +572,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
                     );
                   }}
                 >
-                  {t("scores.annotate.manageConfigs")}
+                  {t("pages.scores.annotate.manageConfigs")}
                 </DropdownMenuItem>
               }
             />
@@ -729,13 +729,13 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
                                         disabled: category.isOutdated,
                                       }))}
                                       placeholder={t(
-                                        "scores.annotate.placeholders.selectCategory",
+                                        "pages.scores.annotate.placeholders.selectCategory",
                                       )}
                                       searchPlaceholder={t(
-                                        "scores.annotate.placeholders.searchCategories",
+                                        "pages.scores.annotate.placeholders.searchCategories",
                                       )}
                                       emptyText={t(
-                                        "scores.annotate.placeholders.noCategory",
+                                        "pages.scores.annotate.placeholders.noCategory",
                                       )}
                                     />
                                   </FormControl>

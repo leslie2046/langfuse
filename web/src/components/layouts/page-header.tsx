@@ -41,6 +41,7 @@ export type PageHeaderProps = {
   help?: { description: React.ReactNode; href?: string; className?: string };
   titleTooltip?: string;
   itemType?: LangfuseItemType;
+  itemTypeLabel?: string;
   container?: boolean;
   tabsProps?: PageTabsProps;
   className?: string;
@@ -53,6 +54,7 @@ export type PageHeaderProps = {
 const PageHeader = ({
   title,
   itemType,
+  itemTypeLabel,
   actionButtonsLeft,
   actionButtonsRight,
   breadcrumb,
@@ -114,7 +116,11 @@ const PageHeader = ({
               <div className="mr-2 flex items-center gap-1">
                 {itemType && (
                   <div className="flex items-center">
-                    <ItemBadge type={itemType} showLabel />
+                    <ItemBadge
+                      type={itemType}
+                      showLabel
+                      label={itemTypeLabel}
+                    />
                   </div>
                 )}
                 <div className="relative inline-block max-w-md md:max-w-none">

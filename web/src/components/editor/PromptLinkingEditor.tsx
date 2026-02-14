@@ -73,7 +73,7 @@ export function PromptLinkingEditor({
         onClick={() => setIsDialogOpen(true)}
       >
         <Plus className="mr-2 h-4 w-4" />
-        <span className="text-xs">{t("prompts.form.addReference")}</span>
+        <span className="text-xs">{t("pages.prompts.form.addReference")}</span>
       </Button>
 
       {projectId && (

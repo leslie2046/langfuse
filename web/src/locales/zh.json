@@ -1227,6 +1227,7 @@
         "productionLabel": "设置 \"production\" 标签",
         "commitMessage": "提交信息",
         "commitMessageDescription": "提供有关此版本更改的信息。有助于保持清晰的提示词迭代历史。",
+        "commitMessagePlaceholder": "请描述此版本的更改...",
         "reviewChanges": "审查更改",
         "saveNewVersion": "保存新提示词版本",
         "createPrompt": "创建提示词",
@@ -1320,6 +1321,7 @@
     "traceDetail": {
       "preview": "预览",
       "logView": "日志视图",
+      "timeline": "时间线",
       "scores": "评分",
       "formatted": "格式化",
       "json": "JSON",
@@ -1391,10 +1393,21 @@
       "helpDescription": "标注队列用于管理 LLM 项目的评分工作流。查看文档了解更多。"
     },
     "evaluators": {
+      "title": "LLM 评估器",
+      "helpDescription": "创建评估模板和评估器，使用 LLM-as-a-judge 自动为您的追踪评分。设置自定义评估标准，让 AI 帮助您衡量输出质量。",
+      "setupEvaluator": "创建评估器",
+      "new": {
+        "title": "创建评估器",
+        "breadcrumb": "LLM 评估器",
+        "step0": "设置默认模型",
+        "step1": "选择评估器",
+        "step2": "配置评估器"
+      },
       "defaultModel": {
         "title": "默认评估模型",
         "setUpMessage": "设置运行评估的默认模型。",
         "setUp": "设置",
+        "currentDefault": "当前默认模型：",
         "configuration": "配置",
         "functionCalling": "支持函数调用。",
         "updatedToastTitle": "模型已更新",

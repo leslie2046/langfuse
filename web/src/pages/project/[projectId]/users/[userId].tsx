@@ -74,8 +74,11 @@ export default function UserPage() {
     <Page
       headerProps={{
         title: userId,
-        breadcrumb: [{ name: "Users", href: `/project/${projectId}/users` }],
+        breadcrumb: [
+          { name: t("pages.users.title"), href: `/project/${projectId}/users` },
+        ],
         itemType: "USER",
+        itemTypeLabel: t("pages.scores.columns.user"),
         actionButtonsRight: (
           <>
             <ActionButton
@@ -83,7 +86,7 @@ export default function UserPage() {
               variant="secondary"
               icon={<LayoutDashboard className="h-4 w-4" />}
             >
-              {t("users.stats.dashboard")}
+              {t("pages.users.stats.dashboard")}
             </ActionButton>
             <DetailPageNav
               currentId={encodeURIComponent(userId)}
@@ -100,30 +103,30 @@ export default function UserPage() {
         {user.data && (
           <div className="flex flex-wrap gap-2 px-4 py-4">
             <Badge variant="outline">
-              {t("users.stats.observations")}:{" "}
+              {t("pages.users.stats.observations")}:{" "}
               {compactNumberFormatter(user.data.totalObservations)}
             </Badge>
             <Badge variant="outline">
-              {t("users.stats.traces")}:{" "}
+              {t("pages.users.stats.traces")}:{" "}
               {compactNumberFormatter(user.data.totalTraces)}
             </Badge>
             <Badge variant="outline">
-              {t("users.stats.totalTokens")}:{" "}
+              {t("pages.users.stats.totalTokens")}:{" "}
               {compactNumberFormatter(user.data.totalTokens)}
             </Badge>
             <Badge variant="outline">
               <span className="flex items-center gap-1">
-                {t("users.stats.totalCost")}:{" "}
+                {t("pages.users.stats.totalCost")}:{" "}
                 {usdFormatter(user.data.sumCalculatedTotalCost)}
               </span>
             </Badge>
             <Badge variant="outline">
-              {t("users.stats.active")}:{" "}
+              {t("pages.users.stats.active")}:{" "}
               {user.data.firstTrace
                 ? `${user.data.firstTrace.toLocaleString()} - ${user.data.lastTrace?.toLocaleString()}`
                 : isBetaEnabled
-                  ? t("users.stats.noActivity")
-                  : t("users.stats.noTraces")}
+                  ? t("pages.users.stats.noActivity")
+                  : t("pages.users.stats.noTraces")}
             </Badge>
           </div>
         )}
@@ -144,7 +147,7 @@ export default function UserPage() {
             >
               {tabs.map((tab) => (
                 <option key={tab}>
-                  {t(`users.tabs.${tab.toLowerCase()}`)}
+                  {t(`pages.users.tabs.${tab.toLowerCase()}`)}
                 </option>
               ))}
             </select>
@@ -164,7 +167,7 @@ export default function UserPage() {
                     aria-current={tab === currentTab ? "page" : undefined}
                     onClick={() => handleTabChange(tab)}
                   >
-                    {t(`users.tabs.${tab.toLowerCase()}`)}
+                    {t(`pages.users.tabs.${tab.toLowerCase()}`)}
                   </button>
                 ))}
               </nav>
