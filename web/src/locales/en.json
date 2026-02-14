@@ -62,6 +62,13 @@
         "confirmInstruction": "To confirm, type",
         "confirmSuffix": "in the input box"
       }
+    },
+    "delete": {
+      "button": "Delete Project",
+      "title": "Delete Project",
+      "confirmInstruction": "To confirm, type \"{{confirmMessage}}\" in the input box",
+      "submit": "Delete project",
+      "validationError": "Please confirm with \"{{confirmMessage}}\""
     }
   },
   "navigation": {
@@ -147,6 +154,9 @@
     "docs": "Docs",
     "default": "Default",
     "more": "More",
+    "small": "Small",
+    "medium": "Medium",
+    "large": "Large",
     "yes": "Yes",
     "no": "No",
     "enabled": "Enabled",
@@ -155,6 +165,13 @@
     "inactive": "Inactive",
     "configure": "Configure",
     "integrationDocs": "Integration Docs",
+    "feedback": {
+      "btn": "Feedback",
+      "submitFeatureRequest": "Submit Feature Request",
+      "reportBug": "Report a Bug",
+      "provideFeedback": "Provide Feedback",
+      "description": "What do you think about Langfuse? What can be improved? Please share it with the community on GitHub to shape the future of Langfuse."
+    },
     "datePicker": {
       "pickDate": "Pick a date",
       "resetDate": "Reset date",
@@ -217,8 +234,16 @@
       "noData": "No data available",
       "loading": "Loading...",
       "error": "Error loading data",
+      "idsNames": "IDs / Names",
+      "fullText": "Full Text",
+      "searchPlaceholder": "Search...",
+      "searchWithFields": "Search ({{fields}})",
+      "searchDescriptionFullText": "Searches in Input/Output and {{fields}}.",
+      "searchDescriptionMetadata": "Searches in {{fields}}.",
+      "searchPerformanceWarning": "For improved performance, please filter the table down.",
       "rows": "Rows",
       "rowsPerPage": "Rows per page",
+      "rowHeight": "Row height",
       "page": "Page",
       "pageOf": "of",
       "goToFirstPage": "Go to first page",
@@ -1142,7 +1167,11 @@
         "dataset": "Dataset",
         "inputTokens": "Input Tokens",
         "outputTokens": "Output Tokens",
-        "totalTokens": "Total Tokens"
+        "totalTokens": "Total Tokens",
+        "traceName": "Trace Name",
+        "traceId": "Trace ID",
+        "categoricalScores": "Categorical Scores",
+        "numericScores": "Numeric Scores"
       }
     },
     "sessions": {
@@ -1202,6 +1231,8 @@
     },
     "dashboards": {
       "title": "Dashboards",
+      "traces": "Traces",
+      "observations": "Observations",
       "helpDescription": "Manage and create dashboards for your project.",
       "newDashboard": "New dashboard",
       "create": {

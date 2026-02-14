@@ -452,7 +452,7 @@ export function FilterAccordionItem({
                 }
               }}
               className="inline-flex h-5 cursor-pointer items-center gap-1 rounded-full border bg-background px-2 text-xs hover:bg-accent hover:text-accent-foreground"
-              aria-label={`Clear ${label} filter`}
+              aria-label={`Clear ${t(label)} filter`}
             >
               <span>{t("common.filters.clear")}</span>
               <IconX className="h-3 w-3" />

@@ -97,7 +97,10 @@ export default function Traces() {
         tabsProps: isBetaEnabled
           ? undefined
           : {
-              tabs: getTracingTabs(projectId),
+              tabs: getTracingTabs(projectId).map((tab) => ({
+                ...tab,
+                label: t(tab.label),
+              })),
               activeTab: TRACING_TABS.TRACES,
             },
       }}
