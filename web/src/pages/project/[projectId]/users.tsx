@@ -174,6 +174,13 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     environmentFilter,
   );
 
+  const userFilterColumns = useMemo(() => {
+    return usersTableCols.map((column) => ({
+      ...column,
+      name: column.id,
+    }));
+  }, []);
+
   const [searchQuery, setSearchQuery] = useQueryParam(
     "search",
     withDefault(StringParam, null),
@@ -391,7 +398,7 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
   return (
     <>
       <DataTableToolbar
-        filterColumnDefinition={usersTableCols}
+        filterColumnDefinition={userFilterColumns}
         filterState={userFilterState}
         setFilterState={useDebounce(setUserFilterState)}
         columns={columns}
@@ -442,9 +449,7 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
                           : Number(row.totalTraces ?? 0) +
                               Number(row.totalObservations ?? 0),
                       ),
-                      totalTokens: compactNumberFormatter(
-                        row.totalTokens ?? 0,
-                      ),
+                      totalTokens: compactNumberFormatter(row.totalTokens ?? 0),
                       totalCost: usdFormatter(
                         row.sumCalculatedTotalCost ?? 0,
                         2,

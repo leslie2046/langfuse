@@ -12,9 +12,11 @@ import {
 import { type z } from "zod/v4";
 import { SelectDashboardDialog } from "@/src/features/dashboard/components/SelectDashboardDialog";
 import { useState } from "react";
+import { useTranslation } from "@/src/features/i18n";
 
 export default function NewWidget() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { projectId, dashboardId } = router.query as {
     projectId: string;
     dashboardId?: string;
@@ -80,9 +82,9 @@ export default function NewWidget() {
     <Page
       withPadding
       headerProps={{
-        title: "New Widget",
+        title: t("dashboard.widgets.newWidget"),
         help: {
-          description: "Create a new widget",
+          description: t("dashboard.widgets.description"),
         },
       }}
     >
