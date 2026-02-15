@@ -128,7 +128,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
   return (
     <I18nProvider>
-      <QueryParamProvider adapter={NextAdapterPages}>
+      <QueryParamProvider
+        adapter={NextAdapterPages}
+        options={{ enableBatching: true }}
+      >
         <TooltipProvider>
           <CommandMenuProvider>
             <PostHogProvider client={posthog}>
