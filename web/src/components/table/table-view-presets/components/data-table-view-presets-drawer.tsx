@@ -407,7 +407,6 @@ export function TableViewPresetsDrawer({
         }}
       >
         <DrawerTrigger asChild>
-<<<<<<< HEAD
           <Button
             variant="outline"
             title={selectedViewName ?? t("common.toolbar.savedViews")}
