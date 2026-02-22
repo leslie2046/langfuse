@@ -523,6 +523,7 @@
     },
     "charts": {
       "tracesByTime": "Traces by time",
+      "observationsByTime": "Observations by time",
       "traces": "Traces",
       "observationsByLevel": "Observations by Level",
       "tracesTracked": "Traces tracked",

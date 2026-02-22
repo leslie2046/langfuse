@@ -523,6 +523,7 @@
     },
     "charts": {
       "tracesByTime": "追踪随时间变化",
+      "observationsByTime": "观察随时间变化",
       "traces": "追踪",
       "observationsByLevel": "按级别的观察",
       "tracesTracked": "已追踪的追踪数",
