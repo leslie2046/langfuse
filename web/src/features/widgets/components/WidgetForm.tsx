@@ -1975,11 +1975,6 @@ export function WidgetForm({
           ) : (
             <CardContent>
               <div className="flex h-[300px] items-center justify-center">
-<<<<<<< HEAD
-                <p className="text-muted-foreground">
-                  {t("dashboard.widgets.form.loading")}
-                </p>
-=======
                 {chartLoadingState.isLoading ? (
                   <ChartLoadingState
                     isLoading={chartLoadingState.isLoading}
@@ -1990,10 +1985,9 @@ export function WidgetForm({
                   />
                 ) : (
                   <p className="text-muted-foreground">
-                    Waiting for Input / Loading...
+                    {t("dashboard.widgets.form.loading")}
                   </p>
                 )}
->>>>>>> main
               </div>
             </CardContent>
           )}
