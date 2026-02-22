@@ -17,6 +17,8 @@ import { Badge } from "@/src/components/ui/badge";
 import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
 import { useEventsTraceData } from "@/src/features/events/hooks/useEventsTraceData";
 import { useTranslation } from "@/src/features/i18n";
+import { showErrorToast } from "@/src/features/notifications/showErrorToast";
+import { useEffect } from "react";
 
 export function TracePage({
   traceId,
@@ -77,6 +79,16 @@ export function TracePage({
     "display",
     withDefault(StringParam, "details"),
   );
+
+  useEffect(() => {
+    if (isBetaEnabled && eventsData.cutoffObservationsAfterMaxCount) {
+      showErrorToast(
+        "Trace truncated",
+        "This trace has too many observations for the detail view. Only a subset is shown.",
+        "WARNING",
+      );
+    }
+  }, [isBetaEnabled, eventsData.cutoffObservationsAfterMaxCount]);
 
   // Handle errors - for events path, we check if there's no data after loading
   if (!isBetaEnabled && tracesQuery.error?.data?.code === "UNAUTHORIZED")

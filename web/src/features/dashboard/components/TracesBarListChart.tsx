@@ -4,16 +4,17 @@ import { ExpandListButton } from "@/src/features/dashboard/components/cards/Chev
 import { useState } from "react";
 import { DashboardCard } from "@/src/features/dashboard/components/cards/DashboardCard";
 import { TotalMetric } from "@/src/features/dashboard/components/TotalMetric";
-import { BarList } from "@tremor/react";
 import { compactNumberFormatter, numberFormatter } from "@/src/utils/numbers";
 import { NoDataOrLoading } from "@/src/components/NoDataOrLoading";
 import {
   type QueryType,
+  type ViewVersion,
   mapLegacyUiTableFilterToView,
 } from "@/src/features/query";
 import { useTranslation } from "@/src/features/i18n";
 import { Chart } from "@/src/features/widgets/chart-library/Chart";
-import { barListToDataPoints } from "@/src/features/dashboard/lib/tremorv4-recharts-chart-adapters";
+import { barListToDataPoints } from "@/src/features/dashboard/lib/chart-data-adapters";
+import { traceViewQuery } from "@/src/features/dashboard/lib/dashboard-utils";
 
 export const TracesBarListChart = ({
   className,
@@ -22,7 +23,7 @@ export const TracesBarListChart = ({
   fromTimestamp,
   toTimestamp,
   isLoading = false,
-  isDashboardChartsBeta = false,
+  metricsVersion,
 }: {
   className?: string;
   projectId: string;
@@ -30,17 +31,19 @@ export const TracesBarListChart = ({
   fromTimestamp: Date;
   toTimestamp: Date;
   isLoading?: boolean;
-  isDashboardChartsBeta?: boolean;
+  metricsVersion?: ViewVersion;
 }) => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
 
+  const isV2 = metricsVersion === "v2";
+  const traceNameField = isV2 ? "traceName" : "name";
+  const countField = isV2 ? "uniq_traceId" : "count_count";
+
   // Total traces query using executeQuery
   const totalTracesQuery: QueryType = {
-    view: "traces",
+    ...traceViewQuery({ metricsVersion, globalFilterState }),
     dimensions: [],
-    metrics: [{ measure: "count", aggregation: "count" }],
-    filters: mapLegacyUiTableFilterToView("traces", globalFilterState),
     timeDimension: null,
     fromTimestamp: fromTimestamp.toISOString(),
     toTimestamp: toTimestamp.toISOString(),
@@ -51,6 +54,7 @@ export const TracesBarListChart = ({
     {
       projectId,
       query: totalTracesQuery,
+      version: metricsVersion,
     },
     {
       trpc: {
@@ -64,20 +68,24 @@ export const TracesBarListChart = ({
 
   // Traces grouped by name query using executeQuery
   const tracesQuery: QueryType = {
-    view: "traces",
-    dimensions: [{ field: "name" }],
-    metrics: [{ measure: "count", aggregation: "count" }],
-    filters: mapLegacyUiTableFilterToView("traces", globalFilterState),
+    ...traceViewQuery({
+      metricsVersion,
+      globalFilterState,
+      groupedByName: true,
+    }),
+    dimensions: [{ field: traceNameField }],
     timeDimension: null,
     fromTimestamp: fromTimestamp.toISOString(),
     toTimestamp: toTimestamp.toISOString(),
-    orderBy: null,
+    orderBy: [{ field: countField, direction: "desc" }],
+    chartConfig: { type: "table", row_limit: 20 },
   };
 
   const traces = api.dashboard.executeQuery.useQuery(
     {
       projectId,
       query: tracesQuery,
+      version: metricsVersion,
     },
     {
       trpc: {
@@ -93,8 +101,10 @@ export const TracesBarListChart = ({
   const transformedTraces =
     traces.data?.map((item: any) => {
       return {
-        name: item.name ? (item.name as string) : "Unknown",
-        value: Number(item.count_count),
+        name: item[traceNameField]
+          ? (item[traceNameField] as string)
+          : "Unknown",
+        value: Number(item[countField]),
       };
     }) ?? [];
 
@@ -118,48 +128,36 @@ export const TracesBarListChart = ({
       <>
         <TotalMetric
           metric={compactNumberFormatter(
-            totalTraces.data?.[0]?.count_count
-              ? Number(totalTraces.data[0].count_count)
+            totalTraces.data?.[0]?.[countField]
+              ? Number(totalTraces.data[0][countField])
               : 0,
           )}
           description={t("dashboard.totalTracesTracked")}
         />
         {adjustedData.length > 0 ? (
-          <>
-            {isDashboardChartsBeta ? (
-              <div
-                className="mt-4 w-full"
-                style={{
-                  minHeight: 200,
-                  height: Math.max(
-                    200,
-                    adjustedData.length * BAR_ROW_HEIGHT + CHART_AXIS_PADDING,
-                  ),
-                }}
-              >
-                <Chart
-                  chartType="HORIZONTAL_BAR"
-                  data={barListToDataPoints(adjustedData)}
-                  rowLimit={maxNumberOfEntries.expanded}
-                  chartConfig={{
-                    type: "HORIZONTAL_BAR",
-                    row_limit: maxNumberOfEntries.expanded,
-                    subtle_fill: true,
-                    show_value_labels: true,
-                  }}
-                  valueFormatter={(n) => numberFormatter(n, 0)}
-                />
-              </div>
-            ) : (
-              <BarList
-                data={adjustedData}
-                valueFormatter={(number: number) => numberFormatter(number, 0)}
-                className="mt-6 [&_*]:text-muted-foreground [&_p]:text-muted-foreground [&_span]:text-muted-foreground"
-                showAnimation={true}
-                color={"indigo"}
-              />
-            )}
-          </>
+          <div
+            className="mt-4 w-full"
+            style={{
+              minHeight: 200,
+              height: Math.max(
+                200,
+                adjustedData.length * BAR_ROW_HEIGHT + CHART_AXIS_PADDING,
+              ),
+            }}
+          >
+            <Chart
+              chartType="HORIZONTAL_BAR"
+              data={barListToDataPoints(adjustedData)}
+              rowLimit={maxNumberOfEntries.expanded}
+              chartConfig={{
+                type: "HORIZONTAL_BAR",
+                row_limit: maxNumberOfEntries.expanded,
+                subtle_fill: true,
+                show_value_labels: true,
+              }}
+              valueFormatter={(n) => numberFormatter(n, 0)}
+            />
+          </div>
         ) : (
           <NoDataOrLoading
             isLoading={isLoading || traces.isPending || totalTraces.isPending}

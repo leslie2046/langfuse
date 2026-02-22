@@ -17,6 +17,7 @@ import { NumericScoreHistogram } from "@/src/features/dashboard/components/score
 import DocPopup from "@/src/components/layouts/doc-popup";
 import { NoDataOrLoading } from "@/src/components/NoDataOrLoading";
 import useLocalStorage from "@/src/components/useLocalStorage";
+import { type ViewVersion } from "@/src/features/query";
 import {
   convertScoreColumnsToAnalyticsData,
   getScoreDataTypeIcon,
@@ -30,7 +31,7 @@ export function ScoreAnalytics(props: {
   toTimestamp: Date;
   projectId: string;
   isLoading?: boolean;
-  isDashboardChartsBeta?: boolean;
+  metricsVersion?: ViewVersion;
 }) {
   // Stale score selections in localStorage are ignored as we only show scores that exist in scoreAnalyticsOptions
   const [selectedDashboardScoreKeys, setSelectedDashboardScoreKeys] =
@@ -116,6 +117,8 @@ export function ScoreAnalytics(props: {
                     <div className="mb-2 text-sm text-muted-foreground">
                       {t("dashboard.scoresAnalytics.totalAggregateScores")}
                       {isNumericDataType(dataType) && (
+                        // TODO: v2 histogram aggregates all rows server-side (no 10k cap).
+                        // Make this tooltip conditional on metricsVersion.
                         <DocPopup description="Aggregate of up to 10,000 scores" />
                       )}
                     </div>
@@ -126,7 +129,7 @@ export function ScoreAnalytics(props: {
                         globalFilterState={props.globalFilterState}
                         fromTimestamp={props.fromTimestamp}
                         toTimestamp={props.toTimestamp}
-                        isDashboardChartsBeta={props.isDashboardChartsBeta}
+                        metricsVersion={props.metricsVersion}
                       />
                     )}
                     {(isNumericDataType(dataType) ||
@@ -142,7 +145,7 @@ export function ScoreAnalytics(props: {
                           >
                         }
                         globalFilterState={props.globalFilterState}
-                        isDashboardChartsBeta={props.isDashboardChartsBeta}
+                        metricsVersion={props.metricsVersion}
                       />
                     )}
                   </div>
@@ -161,7 +164,7 @@ export function ScoreAnalytics(props: {
                         globalFilterState={props.globalFilterState}
                         fromTimestamp={props.fromTimestamp}
                         toTimestamp={props.toTimestamp}
-                        isDashboardChartsBeta={props.isDashboardChartsBeta}
+                        metricsVersion={props.metricsVersion}
                       />
                     )}
                     {(isNumericDataType(dataType) ||
@@ -180,7 +183,7 @@ export function ScoreAnalytics(props: {
                         globalFilterState={props.globalFilterState}
                         fromTimestamp={props.fromTimestamp}
                         toTimestamp={props.toTimestamp}
-                        isDashboardChartsBeta={props.isDashboardChartsBeta}
+                        metricsVersion={props.metricsVersion}
                       />
                     )}
                   </div>

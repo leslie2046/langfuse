@@ -1,3 +1,4 @@
+import type React from "react";
 import {
   createContext,
   useContext,
@@ -24,13 +25,14 @@ import { Slider } from "@/src/components/ui/slider";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
 import { Skeleton } from "@/src/components/ui/skeleton";
-import { X as IconX, Search, WandSparkles } from "lucide-react";
+import { X as IconX, Search, WandSparkles, InfoIcon } from "lucide-react";
 import type {
   UIFilter,
   KeyValueFilterEntry,
   NumericKeyValueFilterEntry,
   StringKeyValueFilterEntry,
   TextFilterEntry,
+  PositionInTraceMode,
 } from "@/src/features/filters/hooks/useSidebarFilterState";
 import { KeyValueFilterBuilder } from "@/src/components/table/key-value-filter-builder";
 import {
@@ -200,6 +202,7 @@ export function DataTableControls({
                   key={filter.column}
                   filterKey={filter.column}
                   label={filter.label}
+                  tooltip={filter.tooltip}
                   expanded={filter.expanded}
                   options={filter.options}
                   counts={filter.counts}
@@ -207,6 +210,7 @@ export function DataTableControls({
                   value={filter.value}
                   onChange={filter.onChange}
                   onOnlyChange={filter.onOnlyChange}
+                  renderIcon={filter.renderIcon}
                   isActive={filter.isActive}
                   onReset={filter.onReset}
                   operator={filter.operator}
@@ -214,6 +218,8 @@ export function DataTableControls({
                   textFilters={filter.textFilters}
                   onTextFilterAdd={filter.onTextFilterAdd}
                   onTextFilterRemove={filter.onTextFilterRemove}
+                  isDisabled={filter.isDisabled}
+                  disabledReason={filter.disabledReason}
                 />
               );
             }
@@ -224,6 +230,7 @@ export function DataTableControls({
                   key={filter.column}
                   filterKey={filter.column}
                   label={filter.label}
+                  tooltip={filter.tooltip}
                   expanded={filter.expanded}
                   loading={filter.loading}
                   min={filter.min}
@@ -231,8 +238,11 @@ export function DataTableControls({
                   value={filter.value}
                   onChange={filter.onChange}
                   unit={filter.unit}
+                  step={filter.step}
                   isActive={filter.isActive}
                   onReset={filter.onReset}
+                  isDisabled={filter.isDisabled}
+                  disabledReason={filter.disabledReason}
                 />
               );
             }
@@ -243,12 +253,15 @@ export function DataTableControls({
                   key={filter.column}
                   filterKey={filter.column}
                   label={filter.label}
+                  tooltip={filter.tooltip}
                   expanded={filter.expanded}
                   loading={filter.loading}
                   value={filter.value}
                   onChange={filter.onChange}
                   isActive={filter.isActive}
                   onReset={filter.onReset}
+                  isDisabled={filter.isDisabled}
+                  disabledReason={filter.disabledReason}
                 />
               );
             }
@@ -259,6 +272,7 @@ export function DataTableControls({
                   key={filter.column}
                   filterKey={filter.column}
                   label={filter.label}
+                  tooltip={filter.tooltip}
                   expanded={filter.expanded}
                   loading={filter.loading}
                   keyOptions={filter.keyOptions}
@@ -268,6 +282,8 @@ export function DataTableControls({
                   isActive={filter.isActive}
                   onReset={filter.onReset}
                   keyPlaceholder={t("common.filters.keyPlaceholder")}
+                  isDisabled={filter.isDisabled}
+                  disabledReason={filter.disabledReason}
                 />
               );
             }
@@ -278,6 +294,7 @@ export function DataTableControls({
                   key={filter.column}
                   filterKey={filter.column}
                   label={filter.label}
+                  tooltip={filter.tooltip}
                   expanded={filter.expanded}
                   loading={filter.loading}
                   keyOptions={filter.keyOptions}
@@ -286,6 +303,8 @@ export function DataTableControls({
                   isActive={filter.isActive}
                   onReset={filter.onReset}
                   keyPlaceholder={t("common.filters.keyPlaceholder")}
+                  isDisabled={filter.isDisabled}
+                  disabledReason={filter.disabledReason}
                 />
               );
             }
@@ -296,6 +315,7 @@ export function DataTableControls({
                   key={filter.column}
                   filterKey={filter.column}
                   label={filter.label}
+                  tooltip={filter.tooltip}
                   expanded={filter.expanded}
                   loading={filter.loading}
                   keyOptions={filter.keyOptions}
@@ -303,6 +323,29 @@ export function DataTableControls({
                   onChange={filter.onChange}
                   isActive={filter.isActive}
                   onReset={filter.onReset}
+                  isDisabled={filter.isDisabled}
+                  disabledReason={filter.disabledReason}
+                />
+              );
+            }
+
+            if (filter.type === "positionInTrace") {
+              return (
+                <PositionInTraceFacetComponent
+                  key={filter.column}
+                  filterKey={filter.column}
+                  label={filter.label}
+                  tooltip={filter.tooltip}
+                  expanded={filter.expanded}
+                  loading={filter.loading}
+                  mode={filter.mode}
+                  nthValue={filter.nthValue}
+                  onModeChange={filter.onModeChange}
+                  onNthValueChange={filter.onNthValueChange}
+                  isActive={filter.isActive}
+                  onReset={filter.onReset}
+                  isDisabled={filter.isDisabled}
+                  disabledReason={filter.disabledReason}
                 />
               );
             }
@@ -317,12 +360,15 @@ export function DataTableControls({
 
 interface BaseFacetProps {
   label: string;
+  tooltip?: string;
   children?: React.ReactNode;
   filterKey: string;
   filterKeyShort?: string | null;
   expanded?: boolean;
   loading?: boolean;
   isActive?: boolean;
+  isDisabled?: boolean;
+  disabledReason?: string;
   onReset?: () => void;
 }
 
@@ -332,6 +378,7 @@ interface CategoricalFacetProps extends BaseFacetProps {
   value: string[];
   onChange: (values: string[]) => void;
   onOnlyChange?: (value: string) => void;
+  renderIcon?: (value: string) => React.ReactNode;
   operator?: "any of" | "all of";
   onOperatorChange?: (operator: "any of" | "all of") => void;
   textFilters?: TextFilterEntry[];
@@ -351,6 +398,7 @@ interface NumericFacetProps extends BaseFacetProps {
   value: [number, number];
   onChange: (value: [number, number]) => void;
   unit?: string;
+  step?: number;
 }
 
 interface StringFacetProps extends BaseFacetProps {
@@ -414,34 +462,81 @@ const FilterAccordionContent = ({
 
 interface FilterAccordionItemProps {
   label: string;
+  tooltip?: string;
   filterKey: string;
   filterKeyShort?: string | null;
   children: React.ReactNode;
   isActive?: boolean;
+  isDisabled?: boolean;
+  disabledReason?: string;
   onReset?: () => void;
 }
 
 export function FilterAccordionItem({
   label,
+  tooltip,
   filterKey,
   filterKeyShort,
   children,
   isActive,
+  isDisabled,
+  disabledReason,
   onReset,
 }: FilterAccordionItemProps) {
   const { t } = useTranslation();
   return (
     <FilterAccordionItemPrimitive value={filterKey} className="border-none">
-      <FilterAccordionTrigger className="px-3 py-1.5 text-sm font-normal text-muted-foreground hover:text-foreground hover:no-underline">
+      <FilterAccordionTrigger
+        className={cn(
+          "px-3 py-1.5 text-sm font-normal text-muted-foreground hover:text-foreground hover:no-underline",
+          isDisabled &&
+            "cursor-not-allowed text-muted-foreground/60 hover:text-muted-foreground/60",
+        )}
+      >
         <div className="flex grow items-center gap-1.5 pr-2">
-          <span className="flex grow items-baseline gap-1">
-            {t(label)}
-            {filterKeyShort && (
-              <code className="hidden font-mono text-xs text-muted-foreground/70">
-                {filterKeyShort}
-              </code>
-            )}
-          </span>
+          {isDisabled && disabledReason ? (
+            <Tooltip delayDuration={80}>
+              <TooltipTrigger asChild>
+                <span className="flex grow items-baseline gap-1">
+                  {label}
+                  {filterKeyShort && (
+                    <code className="hidden font-mono text-xs text-muted-foreground/70">
+                      {filterKeyShort}
+                    </code>
+                  )}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-80 text-xs">
+                {disabledReason}
+              </TooltipContent>
+            </Tooltip>
+          ) : tooltip ? (
+            <Tooltip delayDuration={80}>
+              <TooltipTrigger asChild>
+                <span className="flex grow items-center gap-1">
+                  {label}
+                  <InfoIcon className="h-3 w-3 shrink-0 text-muted-foreground" />
+                  {filterKeyShort && (
+                    <code className="hidden font-mono text-xs text-muted-foreground/70">
+                      {filterKeyShort}
+                    </code>
+                  )}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-80 text-xs">
+                {tooltip}
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            <span className="flex grow items-baseline gap-1">
+              {label}
+              {filterKeyShort && (
+                <code className="hidden font-mono text-xs text-muted-foreground/70">
+                  {filterKeyShort}
+                </code>
+              )}
+            </span>
+          )}
           {isActive && onReset && (
             <div
               role="button"
@@ -467,7 +562,15 @@ export function FilterAccordionItem({
         </div>
       </FilterAccordionTrigger>
       <FilterAccordionContent className="pb-2">
-        {children}
+        <fieldset
+          disabled={isDisabled}
+          className={cn(
+            "m-0 min-w-0 border-0 p-0",
+            isDisabled && "pointer-events-none opacity-60",
+          )}
+        >
+          {children}
+        </fieldset>
       </FilterAccordionContent>
     </FilterAccordionItemPrimitive>
   );
@@ -475,6 +578,7 @@ export function FilterAccordionItem({
 
 export function CategoricalFacet({
   label,
+  tooltip,
   filterKey,
   filterKeyShort,
   expanded,
@@ -484,7 +588,10 @@ export function CategoricalFacet({
   value,
   onChange,
   onOnlyChange,
+  renderIcon,
   isActive,
+  isDisabled,
+  disabledReason,
   onReset,
   operator,
   onOperatorChange,
@@ -539,9 +646,12 @@ export function CategoricalFacet({
   return (
     <FilterAccordionItem
       label={label}
+      tooltip={tooltip}
       filterKey={filterKey}
       filterKeyShort={filterKeyShort}
       isActive={isActive}
+      isDisabled={isDisabled}
+      disabledReason={disabledReason}
       onReset={onReset}
     >
       <div className="flex flex-col">
@@ -680,6 +790,7 @@ export function CategoricalFacet({
                         key={option}
                         id={`${filterKey}-${option}`}
                         label={t(option)}
+                        icon={renderIcon?.(option)}
                         count={counts.get(option) || 0}
                         checked={value.includes(option)}
                         onCheckedChange={(checked) => {
@@ -746,6 +857,7 @@ export function CategoricalFacet({
 
 export function NumericFacet({
   label,
+  tooltip,
   filterKey,
   filterKeyShort,
   expanded: _expanded,
@@ -755,7 +867,10 @@ export function NumericFacet({
   value,
   onChange,
   unit,
+  step: stepProp,
   isActive,
+  isDisabled,
+  disabledReason,
   onReset,
 }: NumericFacetProps) {
   const { t } = useTranslation();
@@ -827,9 +942,12 @@ export function NumericFacet({
   return (
     <FilterAccordionItem
       label={label}
+      tooltip={tooltip}
       filterKey={filterKey}
       filterKeyShort={filterKeyShort}
       isActive={isActive}
+      isDisabled={isDisabled}
+      disabledReason={disabledReason}
       onReset={onReset}
     >
       <div className="px-4 py-2">
@@ -854,7 +972,7 @@ export function NumericFacet({
                     value={isActive ? localValue[0] : ""}
                     placeholder={String(min)}
                     min={min}
-                    step="any"
+                    step={stepProp ?? "any"}
                     onChange={handleMinInputChange}
                     className="h-8"
                   />
@@ -879,7 +997,7 @@ export function NumericFacet({
                     value={isActive ? localValue[1] : ""}
                     placeholder={String(max)}
                     min={min}
-                    step="any"
+                    step={stepProp ?? "any"}
                     onChange={handleMaxInputChange}
                     className="h-8"
                   />
@@ -894,7 +1012,7 @@ export function NumericFacet({
             <Slider
               min={min}
               max={max}
-              step={max - min <= 1000 ? 0.01 : 1}
+              step={stepProp ?? (max - min <= 1000 ? 0.01 : 1)}
               value={localValue}
               onValueChange={handleSliderChange}
             />
@@ -907,6 +1025,7 @@ export function NumericFacet({
 
 export function StringFacet({
   label,
+  tooltip,
   filterKey,
   filterKeyShort,
   expanded: _expanded,
@@ -914,6 +1033,8 @@ export function StringFacet({
   value,
   onChange,
   isActive,
+  isDisabled,
+  disabledReason,
   onReset,
 }: StringFacetProps) {
   const { t } = useTranslation();
@@ -954,9 +1075,12 @@ export function StringFacet({
   return (
     <FilterAccordionItem
       label={label}
+      tooltip={tooltip}
       filterKey={filterKey}
       filterKeyShort={filterKeyShort}
       isActive={isActive}
+      isDisabled={isDisabled}
+      disabledReason={disabledReason}
       onReset={onReset}
     >
       <div className="px-4">
@@ -979,6 +1103,7 @@ export function StringFacet({
 
 export function KeyValueFacet({
   label,
+  tooltip,
   filterKey,
   filterKeyShort,
   expanded: _expanded,
@@ -988,6 +1113,8 @@ export function KeyValueFacet({
   value,
   onChange,
   isActive,
+  isDisabled,
+  disabledReason,
   onReset,
   keyPlaceholder,
 }: KeyValueFacetProps) {
@@ -995,9 +1122,12 @@ export function KeyValueFacet({
   return (
     <FilterAccordionItem
       label={label}
+      tooltip={tooltip}
       filterKey={filterKey}
       filterKeyShort={filterKeyShort}
       isActive={isActive}
+      isDisabled={isDisabled}
+      disabledReason={disabledReason}
       onReset={onReset}
     >
       {loading ? (
@@ -1020,6 +1150,7 @@ export function KeyValueFacet({
 
 export function NumericKeyValueFacet({
   label,
+  tooltip,
   filterKey,
   filterKeyShort,
   expanded: _expanded,
@@ -1028,6 +1159,8 @@ export function NumericKeyValueFacet({
   value,
   onChange,
   isActive,
+  isDisabled,
+  disabledReason,
   onReset,
   keyPlaceholder,
 }: NumericKeyValueFacetProps) {
@@ -1035,9 +1168,12 @@ export function NumericKeyValueFacet({
   return (
     <FilterAccordionItem
       label={label}
+      tooltip={tooltip}
       filterKey={filterKey}
       filterKeyShort={filterKeyShort}
       isActive={isActive}
+      isDisabled={isDisabled}
+      disabledReason={disabledReason}
       onReset={onReset}
     >
       {loading ? (
@@ -1059,6 +1195,7 @@ export function NumericKeyValueFacet({
 
 export function StringKeyValueFacet({
   label,
+  tooltip,
   filterKey,
   filterKeyShort,
   expanded: _expanded,
@@ -1067,6 +1204,8 @@ export function StringKeyValueFacet({
   value,
   onChange,
   isActive,
+  isDisabled,
+  disabledReason,
   onReset,
   keyPlaceholder,
 }: StringKeyValueFacetProps) {
@@ -1074,9 +1213,12 @@ export function StringKeyValueFacet({
   return (
     <FilterAccordionItem
       label={label}
+      tooltip={tooltip}
       filterKey={filterKey}
       filterKeyShort={filterKeyShort}
       isActive={isActive}
+      isDisabled={isDisabled}
+      disabledReason={disabledReason}
       onReset={onReset}
     >
       {loading ? (
@@ -1092,6 +1234,102 @@ export function StringKeyValueFacet({
           keyPlaceholder={keyPlaceholder}
         />
       )}
+    </FilterAccordionItem>
+  );
+}
+
+interface PositionInTraceFacetProps extends BaseFacetProps {
+  mode: PositionInTraceMode | null;
+  nthValue: number;
+  onModeChange: (mode: PositionInTraceMode | null) => void;
+  onNthValueChange: (value: number) => void;
+}
+
+const POSITION_MODES: {
+  key: PositionInTraceMode;
+  label: string;
+}[] = [
+  { key: "root", label: "1st" },
+  { key: "last", label: "Last" },
+  { key: "nthFromStart", label: "Nth from start" },
+  { key: "nthFromEnd", label: "Nth from end" },
+];
+
+function PositionInTraceFacetComponent({
+  label,
+  tooltip,
+  filterKey,
+  filterKeyShort,
+  expanded: _expanded,
+  loading,
+  mode,
+  nthValue,
+  onModeChange,
+  onNthValueChange,
+  isActive,
+  isDisabled,
+  disabledReason,
+  onReset,
+}: PositionInTraceFacetProps) {
+  const showNthInput = mode === "nthFromStart" || mode === "nthFromEnd";
+
+  return (
+    <FilterAccordionItem
+      label={label}
+      tooltip={tooltip}
+      filterKey={filterKey}
+      filterKeyShort={filterKeyShort}
+      isActive={isActive}
+      isDisabled={isDisabled}
+      disabledReason={disabledReason}
+      onReset={onReset}
+    >
+      <div className="px-4 py-1">
+        {loading ? (
+          <div className="text-sm text-muted-foreground">Loading...</div>
+        ) : (
+          <div className="space-y-2">
+            <div className="flex flex-wrap gap-1">
+              {POSITION_MODES.map(({ key, label: modeLabel }) => (
+                <button
+                  key={key}
+                  onClick={() => onModeChange(mode === key ? null : key)}
+                  className={cn(
+                    "rounded-md border px-2 py-1 text-xs transition-colors",
+                    mode === key
+                      ? "border-primary bg-primary/10 font-medium text-primary"
+                      : "border-input bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                  )}
+                >
+                  {modeLabel}
+                </button>
+              ))}
+            </div>
+            {showNthInput && (
+              <div className="flex items-center gap-2">
+                <Label
+                  htmlFor={`nth-${filterKey}`}
+                  className="text-xs text-muted-foreground"
+                >
+                  Position:
+                </Label>
+                <Input
+                  id={`nth-${filterKey}`}
+                  type="number"
+                  min={1}
+                  step={1}
+                  value={nthValue}
+                  onChange={(e) => {
+                    const v = parseInt(e.target.value, 10);
+                    if (!isNaN(v)) onNthValueChange(v);
+                  }}
+                  className="h-7 w-20 text-xs"
+                />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </FilterAccordionItem>
   );
 }
@@ -1257,6 +1495,7 @@ function TextFilterSection({
 interface FilterValueCheckboxProps {
   id: string;
   label: string;
+  icon?: React.ReactNode;
   count: number;
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
@@ -1268,6 +1507,7 @@ interface FilterValueCheckboxProps {
 export function FilterValueCheckbox({
   id,
   label,
+  icon,
   count,
   checked = false,
   onCheckedChange,
@@ -1312,6 +1552,7 @@ export function FilterValueCheckbox({
         )}
         onClick={onLabelClick}
       >
+        {icon ? <span className="mr-2">{icon}</span> : null}
         <span
           className={cn(
             "min-w-0 flex-1 truncate text-xs",
