@@ -114,6 +114,8 @@ export default function ScoresTable({
   disableUrlPersistence?: boolean;
 }) {
   const { isBetaEnabled } = useV4Beta();
+  // In v4beta, scores must exclusively use events-backed endpoints (no traces-table route).
+  const useEventsBackedScores = isBetaEnabled;
   const utils = api.useUtils();
   const { t } = useTranslation();
   const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
@@ -238,7 +240,7 @@ export default function ScoresTable({
     filterOptionsTimestampInput,
     {
       ...filterOptionsQueryConfig,
-      enabled: !isBetaEnabled,
+      enabled: !useEventsBackedScores,
     },
   );
 
@@ -246,11 +248,13 @@ export default function ScoresTable({
     filterOptionsTimestampInput,
     {
       ...filterOptionsQueryConfig,
-      enabled: isBetaEnabled,
+      enabled: useEventsBackedScores,
     },
   );
 
-  const filterOptions = isBetaEnabled ? filterOptionsV4 : filterOptionsV3;
+  const filterOptions = useEventsBackedScores
+    ? filterOptionsV4
+    : filterOptionsV3;
 
   const newFilterOptions = React.useMemo(
     () => ({
@@ -334,28 +338,28 @@ export default function ScoresTable({
 
   // Base data — v3 (existing, unchanged)
   const scoresV3 = api.scores.all.useQuery(getAllPayload, {
-    enabled: !environmentFilterOptions.isLoading && !isBetaEnabled,
+    enabled: !environmentFilterOptions.isLoading && !useEventsBackedScores,
   });
 
   // Base data — v4 (no traces JOIN)
   const scoresV4 = api.scores.allFromEvents.useQuery(getAllPayload, {
-    enabled: !environmentFilterOptions.isLoading && isBetaEnabled,
+    enabled: !environmentFilterOptions.isLoading && useEventsBackedScores,
   });
 
-  const scores = isBetaEnabled ? scoresV4 : scoresV3;
+  const scores = useEventsBackedScores ? scoresV4 : scoresV3;
 
   // Count — v3 vs v4
   const countV3 = api.scores.countAll.useQuery(getCountPayload, {
-    enabled: !environmentFilterOptions.isLoading && !isBetaEnabled,
+    enabled: !environmentFilterOptions.isLoading && !useEventsBackedScores,
   });
   const countV4 = api.scores.countAllFromEvents.useQuery(getCountPayload, {
-    enabled: !environmentFilterOptions.isLoading && isBetaEnabled,
+    enabled: !environmentFilterOptions.isLoading && useEventsBackedScores,
   });
-  const totalScoreCountQuery = isBetaEnabled ? countV4 : countV3;
+  const totalScoreCountQuery = useEventsBackedScores ? countV4 : countV3;
 
   const totalCount = totalScoreCountQuery.data?.totalCount ?? null;
 
-  // Metrics — v4 only (loads trace metadata from events_core)
+  // Metrics — v4 only (loads trace metadata from events-backed aggregations)
   const scoreMetrics = api.scores.metricsFromEvents.useQuery(
     {
       projectId,
@@ -368,7 +372,7 @@ export default function ScoresTable({
       ],
     },
     {
-      enabled: scoresV4.data !== undefined && isBetaEnabled,
+      enabled: scoresV4.data !== undefined && useEventsBackedScores,
     },
   );
 
