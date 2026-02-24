@@ -498,7 +498,7 @@ export function FilterAccordionItem({
             <Tooltip delayDuration={80}>
               <TooltipTrigger asChild>
                 <span className="flex grow items-baseline gap-1">
-                  {label}
+                  {t(label)}
                   {filterKeyShort && (
                     <code className="hidden font-mono text-xs text-muted-foreground/70">
                       {filterKeyShort}
@@ -514,7 +514,7 @@ export function FilterAccordionItem({
             <Tooltip delayDuration={80}>
               <TooltipTrigger asChild>
                 <span className="flex grow items-center gap-1">
-                  {label}
+                  {t(label)}
                   <InfoIcon className="h-3 w-3 shrink-0 text-muted-foreground" />
                   {filterKeyShort && (
                     <code className="hidden font-mono text-xs text-muted-foreground/70">
@@ -529,7 +529,7 @@ export function FilterAccordionItem({
             </Tooltip>
           ) : (
             <span className="flex grow items-baseline gap-1">
-              {label}
+              {t(label)}
               {filterKeyShort && (
                 <code className="hidden font-mono text-xs text-muted-foreground/70">
                   {filterKeyShort}
