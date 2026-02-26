@@ -58,7 +58,9 @@ export const ModelSelectorPopover = ({
             placeholder={t("common.filters.searchModels")}
             variant="bottom"
           />
-          <InputCommandEmpty>{t("common.filters.noModelFound")}</InputCommandEmpty>
+          <InputCommandEmpty>
+            {t("common.filters.noModelFound")}
+          </InputCommandEmpty>
           <InputCommandGroup>
             <InputCommandItem onSelect={handleSelectAll}>
               <Check

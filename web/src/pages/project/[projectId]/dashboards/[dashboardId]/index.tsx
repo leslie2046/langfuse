@@ -406,6 +406,12 @@ export default function DashboardDetail() {
           (dashboard.data?.owner === "LANGFUSE"
             ? " " + t("dashboard.detail.langfuseMaintained")
             : ""),
+        breadcrumb: [
+          {
+            name: "Dashboards",
+            href: `/project/${projectId}/dashboards`,
+          },
+        ],
         help: {
           description:
             dashboard.data?.description || t("dashboard.detail.noDescription"),

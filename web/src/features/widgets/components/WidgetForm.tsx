@@ -8,7 +8,8 @@ import {
 } from "@/src/components/ui/card";
 import { api } from "@/src/utils/api";
 import {
-  metricAggregations,
+  type metricAggregations,
+  getValidAggregationsForMeasureType,
   type QueryType,
   mapLegacyUiTableFilterToView,
 } from "@/src/features/query";
@@ -24,9 +25,12 @@ import {
 } from "@/src/components/ui/select";
 import { WidgetPropertySelectItem } from "@/src/features/widgets/components/WidgetPropertySelectItem";
 import { Label } from "@/src/components/ui/label";
-import { viewDeclarations } from "@/src/features/query/dataModel";
+import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
+import { viewDeclarations, requiresV2 } from "@/src/features/query/dataModel";
 import { type z } from "zod/v4";
-import { views } from "@/src/features/query/types";
+import { views, viewsV2 } from "@/src/features/query/types";
+import { type ViewVersion } from "@/src/features/query";
+import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
 import { Input } from "@/src/components/ui/input";
 
 import { DatePickerWithRange } from "@/src/components/date-picker";
@@ -54,6 +58,7 @@ import {
   Table,
   Plus,
   X,
+  AlertCircle,
 } from "lucide-react";
 import {
   buildWidgetName,
@@ -165,6 +170,53 @@ const getChartTypeName = (
 };
 
 /**
+ * Pure function that resolves the correct aggregation and chart type given the
+ * current selections and valid aggregation list. Returns null when no change is
+ * needed.
+ */
+export function resolveAggregationAndChartType(params: {
+  chartType: string;
+  measure: string;
+  currentAgg: string;
+  validAggs: z.infer<typeof metricAggregations>[];
+}): {
+  aggregation?: z.infer<typeof metricAggregations>;
+  chartType?: string;
+} | null {
+  const { chartType, measure, currentAgg, validAggs } = params;
+  const supportsHistogram = validAggs.includes("histogram");
+
+  // HISTOGRAM chart with a measure that doesn't support it — bail out of both
+  if (chartType === "HISTOGRAM" && !supportsHistogram) {
+    return { chartType: "NUMBER", aggregation: validAggs[0] ?? "count" };
+  }
+
+  // HISTOGRAM chart forces histogram aggregation
+  if (chartType === "HISTOGRAM" && currentAgg !== "histogram") {
+    return { aggregation: "histogram" };
+  }
+
+  // Switched away from HISTOGRAM chart but aggregation still histogram
+  if (chartType !== "HISTOGRAM" && currentAgg === "histogram") {
+    return {
+      aggregation: measure === "count" ? "count" : (validAggs[0] ?? "sum"),
+    };
+  }
+
+  // "count" measure always uses "count" aggregation (outside HISTOGRAM charts)
+  if (measure === "count" && currentAgg !== "count") {
+    return { aggregation: "count" };
+  }
+
+  // Current aggregation is not valid for the measure type
+  if (!validAggs.includes(currentAgg as z.infer<typeof metricAggregations>)) {
+    return { aggregation: validAggs[0] ?? "count" };
+  }
+
+  return null;
+}
+
+/**
  * Interface for representing a selected metric combination
  * Combines measure and aggregation into a single selectable entity
  */
@@ -198,6 +250,7 @@ export function WidgetForm({
     // Support for complete widget data (editing mode)
     metrics?: { measure: string; agg: string }[];
     dimensions?: { field: string }[];
+    minVersion?: number;
   };
   projectId: string;
   onSave: (widgetData: {
@@ -209,9 +262,12 @@ export function WidgetForm({
     filters: any[];
     chartType: DashboardWidgetChartType;
     chartConfig: ChartConfig;
+    minVersion: number;
   }) => void;
   widgetId?: string;
 }) {
+  const { isBetaEnabled } = useV4Beta();
+
   // State for form fields
   const { t } = useTranslation();
   const [widgetName, setWidgetName] = useState<string>(initialValues.name);
@@ -228,6 +284,15 @@ export function WidgetForm({
   const [selectedView, setSelectedView] = useState<z.infer<typeof views>>(
     initialValues.view,
   );
+
+  // Form definitions follow beta toggle, or v2 if widget already requires it.
+  // Traces view is excluded from beta-v2 because it has no v2-only fields.
+  const viewVersion: ViewVersion =
+    (isBetaEnabled && selectedView !== "traces") ||
+    (initialValues.minVersion ?? 1) >= 2
+      ? "v2"
+      : "v1";
+  const availableViewOptions = viewVersion === "v2" ? viewsV2 : views;
 
   // For regular charts: single metric selection
   const [selectedMeasure, setSelectedMeasure] = useState<string>(
@@ -636,80 +701,40 @@ export function WidgetForm({
     }
   }, [selectedChartType, selectedMetrics]);
 
-  // When chart type does not support breakdown, wipe the breakdown dimension
-  useEffect(() => {
-    if (
-      chartTypes.find((c) => c.value === selectedChartType)
-        ?.supportsBreakdown === false &&
-      selectedDimension !== "none"
-    ) {
-      setSelectedDimension("none");
-    }
-  }, [selectedChartType, selectedDimension]);
+  // Resolve valid aggregations for the currently selected measure
+  const validAggregationsForMeasure = useMemo(() => {
+    const measureType =
+      viewDeclarations[viewVersion][selectedView]?.measures?.[selectedMeasure]
+        ?.type;
+    return getValidAggregationsForMeasureType(measureType);
+  }, [viewVersion, selectedView, selectedMeasure]);
 
-  // Set aggregation based on chart type and metric, with histogram chart type taking priority
-  useEffect(() => {
-    // Histogram chart type always takes priority
-    if (
-      selectedChartType === "HISTOGRAM" &&
-      selectedAggregation !== "histogram"
-    ) {
-      setSelectedAggregation("histogram");
-    }
-    // If switching away from histogram chart type and aggregation is still histogram, reset to appropriate default
-    else if (
-      selectedChartType !== "HISTOGRAM" &&
-      selectedAggregation === "histogram"
-    ) {
-      if (selectedMeasure === "count") {
-        setSelectedAggregation("count");
-      } else {
-        setSelectedAggregation("sum"); // Default aggregation for non-count metrics
-      }
-    }
-    // Only set to "count" for count metric if not using histogram chart type
-    else if (
-      selectedMeasure === "count" &&
-      selectedChartType !== "HISTOGRAM" &&
-      selectedAggregation !== "count"
-    ) {
-      setSelectedAggregation("count");
-    }
-  }, [selectedMeasure, selectedAggregation, selectedChartType]);
+  const measureSupportsHistogram =
+    validAggregationsForMeasure.includes("histogram");
 
-  // Set aggregation based on chart type and metric, with histogram chart type taking priority
+  // Sync aggregation and chart type when selections change
   useEffect(() => {
-    // Histogram chart type always takes priority
-    if (
-      selectedChartType === "HISTOGRAM" &&
-      selectedAggregation !== "histogram"
-    ) {
-      setSelectedAggregation("histogram");
+    const resolved = resolveAggregationAndChartType({
+      chartType: selectedChartType,
+      measure: selectedMeasure,
+      currentAgg: selectedAggregation,
+      validAggs: validAggregationsForMeasure,
+    });
+    if (!resolved) return;
+    if (resolved.chartType) setSelectedChartType(resolved.chartType);
+    if (resolved.aggregation) {
+      setSelectedAggregation(resolved.aggregation);
     }
-    // If switching away from histogram chart type and aggregation is still histogram, reset to appropriate default
-    else if (
-      selectedChartType !== "HISTOGRAM" &&
-      selectedAggregation === "histogram"
-    ) {
-      if (selectedMeasure === "count") {
-        setSelectedAggregation("count");
-      } else {
-        setSelectedAggregation("sum"); // Default aggregation for non-count metrics
-      }
-    }
-    // Only set to "count" for count metric if not using histogram chart type
-    else if (
-      selectedMeasure === "count" &&
-      selectedChartType !== "HISTOGRAM" &&
-      selectedAggregation !== "count"
-    ) {
-      setSelectedAggregation("count");
-    }
-  }, [selectedMeasure, selectedAggregation, selectedChartType]);
+  }, [
+    selectedMeasure,
+    selectedAggregation,
+    selectedChartType,
+    validAggregationsForMeasure,
+  ]);
 
   // Get available metrics for the selected view
   const availableMetrics = useMemo(() => {
-    const viewDeclaration = viewDeclarations.v1[selectedView];
+    const viewDeclaration = viewDeclarations[viewVersion][selectedView];
 
     // For pivot tables, only show measures that still have available aggregations
     if (selectedChartType === "PIVOT_TABLE") {
@@ -725,12 +750,13 @@ export function WidgetForm({
             .filter((m) => m.measure === measureKey)
             .map((m) => m.aggregation);
 
-          const availableAggregationsForMeasure =
-            metricAggregations.options.filter(
-              (agg) =>
-                agg !== "histogram" &&
-                !selectedAggregationsForMeasure.includes(agg),
-            );
+          const measureType = viewDeclaration.measures[measureKey]?.type;
+          const validAggs = getValidAggregationsForMeasureType(measureType);
+          const availableAggregationsForMeasure = validAggs.filter(
+            (agg) =>
+              agg !== "histogram" &&
+              !selectedAggregationsForMeasure.includes(agg),
+          );
 
           return availableAggregationsForMeasure.length > 0;
         })
@@ -752,15 +778,18 @@ export function WidgetForm({
       .sort((a, b) =>
         a.label.localeCompare(b.label, "en", { sensitivity: "base" }),
       );
-  }, [selectedView, selectedChartType, selectedMetrics, t]);
+  }, [selectedView, selectedChartType, selectedMetrics, t, viewVersion]);
 
   // Get available aggregations for a specific metric index in pivot tables
   const getAvailableAggregations = (
     metricIndex: number,
     measureKey: string,
   ): z.infer<typeof metricAggregations>[] => {
+    const measureType =
+      viewDeclarations[viewVersion][selectedView]?.measures?.[measureKey]?.type;
+    const validAggs = getValidAggregationsForMeasureType(measureType);
     if (selectedChartType === "PIVOT_TABLE" && measureKey) {
-      return metricAggregations.options.filter(
+      return validAggs.filter(
         (agg) =>
           !selectedMetrics.some(
             (m, idx) =>
@@ -770,13 +799,13 @@ export function WidgetForm({
           ),
       ) as z.infer<typeof metricAggregations>[];
     }
-    return metricAggregations.options as z.infer<typeof metricAggregations>[];
+    return validAggs as z.infer<typeof metricAggregations>[];
   };
 
   // Get available metrics for a specific metric index in pivot tables
   const getAvailableMetrics = (metricIndex: number) => {
     if (selectedChartType === "PIVOT_TABLE") {
-      const viewDeclaration = viewDeclarations.v1[selectedView];
+      const viewDeclaration = viewDeclarations[viewVersion][selectedView];
       return Object.entries(viewDeclaration.measures)
         .filter(([measureKey]) => {
           // For count, there's only one aggregation option
@@ -791,12 +820,13 @@ export function WidgetForm({
             .filter((m, idx) => idx !== metricIndex && m.measure === measureKey)
             .map((m) => m.aggregation);
 
-          const availableAggregationsForMeasure =
-            metricAggregations.options.filter(
-              (agg) =>
-                agg !== "histogram" &&
-                !selectedAggregationsForMeasure.includes(agg),
-            );
+          const measureType = viewDeclaration.measures[measureKey]?.type;
+          const validAggs = getValidAggregationsForMeasureType(measureType);
+          const availableAggregationsForMeasure = validAggs.filter(
+            (agg) =>
+              agg !== "histogram" &&
+              !selectedAggregationsForMeasure.includes(agg),
+          );
 
           return availableAggregationsForMeasure.length > 0;
         })
@@ -813,7 +843,7 @@ export function WidgetForm({
 
   // Get available dimensions for the selected view
   const availableDimensions = useMemo(() => {
-    const viewDeclaration = viewDeclarations.v1[selectedView];
+    const viewDeclaration = viewDeclarations[viewVersion][selectedView];
     return Object.entries(viewDeclaration.dimensions)
       .map(([key]) => ({
         value: key,
@@ -822,7 +852,7 @@ export function WidgetForm({
       .sort((a, b) =>
         a.label.localeCompare(b.label, "en", { sensitivity: "base" }),
       );
-  }, [selectedView, t]);
+  }, [selectedView, t, viewVersion]);
 
   // Create a dynamic query based on the selected view
   const query = useMemo<QueryType>(() => {
@@ -918,6 +948,7 @@ export function WidgetForm({
     {
       projectId,
       query,
+      version: viewVersion,
     },
     {
       trpc: {
@@ -1007,28 +1038,31 @@ export function WidgetForm({
       return;
     }
 
+    const saveDimensions =
+      selectedChartType === "PIVOT_TABLE"
+        ? pivotDimensions.map((field) => ({ field }))
+        : selectedDimension !== "none"
+          ? [{ field: selectedDimension }]
+          : [];
+    const saveMetrics =
+      selectedChartType === "PIVOT_TABLE"
+        ? validMetrics.map((metric) => ({
+            measure: metric.measure,
+            agg: metric.aggregation,
+          }))
+        : [
+            {
+              measure: selectedMeasure,
+              agg: selectedAggregation,
+            },
+          ];
+
     onSave({
       name: widgetName,
       description: widgetDescription,
       view: selectedView,
-      dimensions:
-        selectedChartType === "PIVOT_TABLE"
-          ? pivotDimensions.map((field) => ({ field }))
-          : selectedDimension !== "none"
-            ? [{ field: selectedDimension }]
-            : [],
-      metrics:
-        selectedChartType === "PIVOT_TABLE"
-          ? validMetrics.map((metric) => ({
-              measure: metric.measure,
-              agg: metric.aggregation,
-            }))
-          : [
-              {
-                measure: selectedMeasure,
-                agg: selectedAggregation,
-              },
-            ],
+      dimensions: saveDimensions,
+      metrics: saveMetrics,
       filters: mapLegacyUiTableFilterToView(selectedView, userFilterState),
       chartType: selectedChartType as DashboardWidgetChartType,
       chartConfig: isTimeSeriesChart(
@@ -1056,6 +1090,13 @@ export function WidgetForm({
                 type: selectedChartType as DashboardWidgetChartType,
                 row_limit: rowLimit,
               },
+      minVersion: requiresV2({
+        view: selectedView,
+        dimensions: saveDimensions,
+        measures: saveMetrics.map((m) => ({ measure: m.measure })),
+      })
+        ? 2
+        : 1,
     });
   };
 
@@ -1168,6 +1209,22 @@ export function WidgetForm({
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 overflow-y-auto">
+            {isBetaEnabled && selectedView === "traces" && (
+              <Alert
+                variant="default"
+                className="border-yellow-500/50 bg-yellow-50 dark:bg-yellow-950/20"
+              >
+                <AlertCircle className="h-4 w-4 text-yellow-600 dark:text-yellow-500" />
+                <AlertTitle className="text-yellow-800 dark:text-yellow-400">
+                  Traces view is not available in v4
+                </AlertTitle>
+                <AlertDescription className="text-yellow-700 dark:text-yellow-500">
+                  This widget uses the traces view which is not supported in v4.
+                  It will continue to use v3 definitions. To use v4, change the
+                  view to observations or scores.
+                </AlertDescription>
+              </Alert>
+            )}
             {/* Data Selection Section */}
             <div className="space-y-4">
               <h3 className="text-lg font-bold">
@@ -1184,7 +1241,8 @@ export function WidgetForm({
                   onValueChange={(value) => {
                     if (value !== selectedView) {
                       const newView = value as z.infer<typeof views>;
-                      const newViewDeclaration = viewDeclarations.v1[newView];
+                      const newViewDeclaration =
+                        viewDeclarations[viewVersion][newView];
 
                       // Reset regular chart fields
                       setSelectedMeasure("count");
@@ -1245,14 +1303,14 @@ export function WidgetForm({
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    {views.options.map((view) => (
+                    {availableViewOptions.options.map((view) => (
                       <WidgetPropertySelectItem
                         key={view}
                         value={view}
                         label={t(`dashboard.widgets.views.${view}`)}
-                        description={t(
-                          `dashboard.widgets.views.${view}Description`,
-                        )}
+                        description={
+                          viewDeclarations[viewVersion][view].description
+                        }
                       />
                     ))}
                   </SelectContent>
@@ -1352,8 +1410,9 @@ export function WidgetForm({
                                   <SelectContent>
                                     {metricsForIndex.map((metric) => {
                                       const meta =
-                                        viewDeclarations.v1[selectedView]
-                                          ?.measures?.[metric.value];
+                                        viewDeclarations[viewVersion][
+                                          selectedView
+                                        ]?.measures?.[metric.value];
                                       return (
                                         <WidgetPropertySelectItem
                                           key={metric.value}
@@ -1448,9 +1507,8 @@ export function WidgetForm({
                       <SelectContent>
                         {availableMetrics.map((metric) => {
                           const meta =
-                            viewDeclarations.v1[selectedView]?.measures?.[
-                              metric.value
-                            ];
+                            viewDeclarations[viewVersion][selectedView]
+                              ?.measures?.[metric.value];
                           return (
                             <WidgetPropertySelectItem
                               key={metric.value}
@@ -1483,7 +1541,7 @@ export function WidgetForm({
                             />
                           </SelectTrigger>
                           <SelectContent>
-                            {metricAggregations.options.map((aggregation) => (
+                            {validAggregationsForMeasure.map((aggregation) => (
                               <SelectItem key={aggregation} value={aggregation}>
                                 {t(
                                   `dashboard.widgets.aggregations.${aggregation}`,
@@ -1549,9 +1607,8 @@ export function WidgetForm({
                         </SelectItem>
                         {availableDimensions.map((dimension) => {
                           const meta =
-                            viewDeclarations.v1[selectedView]?.dimensions?.[
-                              dimension.value
-                            ];
+                            viewDeclarations[viewVersion][selectedView]
+                              ?.dimensions?.[dimension.value];
                           return (
                             <WidgetPropertySelectItem
                               key={dimension.value}
@@ -1632,7 +1689,7 @@ export function WidgetForm({
                                 )
                                 .map((dimension) => {
                                   const meta =
-                                    viewDeclarations.v1[selectedView]
+                                    viewDeclarations[viewVersion][selectedView]
                                       ?.dimensions?.[dimension.value];
                                   return (
                                     <WidgetPropertySelectItem
@@ -1819,7 +1876,14 @@ export function WidgetForm({
                       {chartTypes
                         .filter((item) => item.group === "total-value")
                         .map((chart) => (
-                          <SelectItem key={chart.value} value={chart.value}>
+                          <SelectItem
+                            key={chart.value}
+                            value={chart.value}
+                            disabled={
+                              chart.value === "HISTOGRAM" &&
+                              !measureSupportsHistogram
+                            }
+                          >
                             <div className="flex items-center">
                               {React.createElement(chart.icon, {
                                 className: "mr-2 w-4",

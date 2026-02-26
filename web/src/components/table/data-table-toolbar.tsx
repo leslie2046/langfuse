@@ -180,7 +180,11 @@ export function DataTableToolbar<TData, TValue>({
             ) : (
               <PanelLeftOpen className="h-4 w-4" />
             )}
-            <span>{controlsPanelOpen ? t("common.toolbar.hideFilters") : t("common.toolbar.showFilters")} </span>
+            <span>
+              {controlsPanelOpen
+                ? t("common.toolbar.hideFilters")
+                : t("common.toolbar.showFilters")}{" "}
+            </span>
             {filterState && filterState.length > 0 && (
               <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-xs">
                 {filterState.length}
@@ -215,7 +219,10 @@ export function DataTableToolbar<TData, TValue>({
                   searchConfig.placeholder ??
                   (searchConfig.tableAllowsFullTextSearch
                     ? t("common.toolbar.search")
-                    : t("common.toolbar.searchIn", { fields: searchConfig.metadataSearchFields?.join(", ") ?? "" }))
+                    : t("common.toolbar.searchIn", {
+                        fields:
+                          searchConfig.metadataSearchFields?.join(", ") ?? "",
+                      }))
                 }
                 value={searchString}
                 onChange={(event) => {
@@ -257,13 +264,23 @@ export function DataTableToolbar<TData, TValue>({
                             "content",
                           ) ? (
                             <p className="text-xs font-normal text-primary">
-                              {t("common.toolbar.searchesInIO", { fields: searchConfig.metadataSearchFields?.join(", ") ?? "" })}
+                              {t("common.toolbar.searchesInIO", {
+                                fields:
+                                  searchConfig.metadataSearchFields?.join(
+                                    ", ",
+                                  ) ?? "",
+                              })}
                               {!searchConfig.hidePerformanceWarning &&
                                 t("common.toolbar.perfWarning")}
                             </p>
                           ) : (
                             <p className="text-xs font-normal text-primary">
-                              {t("common.toolbar.searchesIn", { fields: searchConfig.metadataSearchFields?.join(", ") ?? "" })}
+                              {t("common.toolbar.searchesIn", {
+                                fields:
+                                  searchConfig.metadataSearchFields?.join(
+                                    ", ",
+                                  ) ?? "",
+                              })}
                             </p>
                           )
                         }

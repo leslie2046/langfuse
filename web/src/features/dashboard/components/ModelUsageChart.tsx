@@ -153,6 +153,7 @@ export const ModelUsageChart = ({
         { column: "calculatedTotalCost", direction: "DESC", agg: "SUM" },
       ],
       queryName: "observations-cost-by-type-timeseries",
+      version: metricsVersion,
     },
     {
       enabled: !isLoading && selectedModels.length > 0 && allModels.length > 0,
@@ -202,6 +203,7 @@ export const ModelUsageChart = ({
       ],
       orderBy: [{ column: "totalTokens", direction: "DESC", agg: "SUM" }],
       queryName: "observations-usage-by-type-timeseries",
+      version: metricsVersion,
     },
     {
       enabled: !isLoading && selectedModels.length > 0 && allModels.length > 0,

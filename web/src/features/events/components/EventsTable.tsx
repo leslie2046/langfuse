@@ -1231,7 +1231,9 @@ export default function ObservationsEventsTable({
   }, [selectedObservationIds, observations.rows]);
 
   return (
-    <DataTableControlsProvider>
+    <DataTableControlsProvider
+      tableName={observationEventsFilterConfig.tableName}
+    >
       <div className="flex h-full w-full flex-col">
         {/* Toolbar spanning full width */}
         {!hideControls && (

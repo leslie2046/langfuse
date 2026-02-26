@@ -19,7 +19,11 @@ import { useRouter } from "next/router";
 import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAccess";
 import { showErrorToast } from "@/src/features/notifications/showErrorToast";
 import { DownloadButton } from "@/src/features/widgets/chart-library/DownloadButton";
-import { formatMetricName, buildWidgetName, buildWidgetDescription } from "@/src/features/widgets/utils";
+import {
+  formatMetricName,
+  buildWidgetName,
+  buildWidgetDescription,
+} from "@/src/features/widgets/utils";
 import { useTranslation } from "@/src/features/i18n";
 import { ChartLoadingState } from "@/src/features/widgets/chart-library/ChartLoadingState";
 import { getChartLoadingStateProps } from "@/src/features/widgets/chart-library/chartLoadingStateUtils";
@@ -57,7 +61,6 @@ export function DashboardWidget({
   const router = useRouter();
   const utils = api.useUtils();
   const { isBetaEnabled } = useV4Beta();
-  const metricsVersion: ViewVersion = isBetaEnabled ? "v2" : "v1";
   const widget = api.dashboardWidgets.get.useQuery(
     {
       widgetId: placement.widgetId,
@@ -67,6 +70,10 @@ export function DashboardWidget({
       enabled: Boolean(projectId),
     },
   );
+  // If widget requires v2 features (minVersion >= 2), must use v2.
+  // Otherwise follow the beta toggle.
+  const metricsVersion: ViewVersion =
+    (widget.data?.minVersion ?? 1) >= 2 || isBetaEnabled ? "v2" : "v1";
   const hasCUDAccess =
     useHasProjectAccess({ projectId, scope: "dashboards:CUD" }) &&
     dashboardOwner !== "LANGFUSE";
@@ -254,7 +261,9 @@ export function DashboardWidget({
       <div
         className={`flex items-center justify-center rounded-lg border bg-background p-4`}
       >
-        <div className="text-muted-foreground">{t("dashboard.detail.widgetNotFound")}</div>
+        <div className="text-muted-foreground">
+          {t("dashboard.detail.widgetNotFound")}
+        </div>
       </div>
     );
   }
@@ -275,7 +284,10 @@ export function DashboardWidget({
                 return buildWidgetName({
                   aggregation,
                   measure,
-                  dimension: dimension !== "none" ? t(`dashboard.widgets.dimensions.${dimension}`) : "none",
+                  dimension:
+                    dimension !== "none"
+                      ? t(`dashboard.widgets.dimensions.${dimension}`)
+                      : "none",
                   view,
                   t,
                 });
@@ -342,7 +354,10 @@ export function DashboardWidget({
               return buildWidgetDescription({
                 aggregation,
                 measure,
-                dimension: dimension !== "none" ? t(`dashboard.widgets.dimensions.${dimension}`) : "none",
+                dimension:
+                  dimension !== "none"
+                    ? t(`dashboard.widgets.dimensions.${dimension}`)
+                    : "none",
                 view,
                 filters: widget.data.filters ?? [],
                 t,

@@ -41,7 +41,6 @@ export const TracesAndObservationsTimeSeriesChart = ({
   const { t } = useTranslation();
   const isV2 = metricsVersion === "v2";
 
-
   const tracesQuery: QueryType = {
     view: "traces",
     dimensions: [],
@@ -179,7 +178,11 @@ export const TracesAndObservationsTimeSeriesChart = ({
   return (
     <DashboardCard
       className={className}
-      title={isV2 ? t("dashboard.charts.observationsByTime") : t("dashboard.charts.tracesByTime")}
+      title={
+        isV2
+          ? t("dashboard.charts.observationsByTime")
+          : t("dashboard.charts.tracesByTime")
+      }
       isLoading={
         isLoading || observations.isPending || (!isV2 && traces.isPending)
       }
