@@ -1,5 +1,3 @@
-import { api } from "@/src/utils/api";
-
 import { DashboardCard } from "@/src/features/dashboard/components/cards/DashboardCard";
 import { type ScoreDataTypeType, type FilterState } from "@langfuse/shared";
 import {
@@ -22,6 +20,7 @@ import { type DatabaseRow } from "@/src/server/api/services/sqlInterface";
 import { useTranslation } from "@/src/features/i18n";
 import { Chart } from "@/src/features/widgets/chart-library/Chart";
 import { timeSeriesToDataPoints } from "@/src/features/dashboard/lib/chart-data-adapters";
+import { useScheduledDashboardExecuteQuery } from "@/src/hooks/useDashboardQueryScheduler";
 
 export function ChartScores(props: {
   className?: string;
@@ -32,6 +31,7 @@ export function ChartScores(props: {
   projectId: string;
   isLoading?: boolean;
   metricsVersion?: ViewVersion;
+  schedulerId?: string;
 }) {
   const { t } = useTranslation();
   const scoresQuery: QueryType = {
@@ -51,7 +51,7 @@ export function ChartScores(props: {
     orderBy: null,
   };
 
-  const scores = api.dashboard.executeQuery.useQuery(
+  const scores = useScheduledDashboardExecuteQuery(
     {
       projectId: props.projectId,
       query: scoresQuery,
@@ -63,6 +63,7 @@ export function ChartScores(props: {
           skipBatch: true,
         },
       },
+      queryId: `${props.schedulerId ?? "home:chart-scores"}:scores`,
       enabled: !props.isLoading,
     },
   );

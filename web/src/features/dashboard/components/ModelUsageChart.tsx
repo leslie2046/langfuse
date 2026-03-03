@@ -28,6 +28,7 @@ import { type DatabaseRow } from "@/src/server/api/services/sqlInterface";
 import { useTranslation } from "@/src/features/i18n";
 import { Chart } from "@/src/features/widgets/chart-library/Chart";
 import { timeSeriesToDataPoints } from "@/src/features/dashboard/lib/chart-data-adapters";
+import { useScheduledDashboardExecuteQuery } from "@/src/hooks/useDashboardQueryScheduler";
 
 export const ModelUsageChart = ({
   className,
@@ -39,6 +40,7 @@ export const ModelUsageChart = ({
   userAndEnvFilterState,
   isLoading = false,
   metricsVersion,
+  schedulerId,
 }: {
   className?: string;
   projectId: string;
@@ -49,6 +51,7 @@ export const ModelUsageChart = ({
   userAndEnvFilterState: FilterState;
   isLoading?: boolean;
   metricsVersion?: ViewVersion;
+  schedulerId?: string;
 }) => {
   const { t } = useTranslation();
   const {
@@ -64,7 +67,13 @@ export const ModelUsageChart = ({
     fromTimestamp,
     toTimestamp,
     metricsVersion,
+    {
+      enabled: !isLoading,
+      queryId: `${schedulerId ?? "home:model-usage"}:all-models`,
+    },
   );
+  const hasModelSelection = selectedModels.length > 0 && allModels.length > 0;
+  const isModelUsageEnabled = !isLoading && hasModelSelection;
 
   const modelUsageQuery: QueryType = {
     view: "observations",
@@ -97,19 +106,21 @@ export const ModelUsageChart = ({
     orderBy: null,
   };
 
-  const queryResult = api.dashboard.executeQuery.useQuery(
+  const queryResult = useScheduledDashboardExecuteQuery(
     {
       projectId,
       query: modelUsageQuery,
       version: metricsVersion,
     },
     {
-      enabled: !isLoading && selectedModels.length > 0 && allModels.length > 0,
+      enabled: isModelUsageEnabled,
       trpc: {
         context: {
           skipBatch: true,
         },
       },
+      queryId: `${schedulerId ?? "home:model-usage"}:timeseries`,
+      priority: 1001,
     },
   );
 
@@ -156,7 +167,7 @@ export const ModelUsageChart = ({
       version: metricsVersion,
     },
     {
-      enabled: !isLoading && selectedModels.length > 0 && allModels.length > 0,
+      enabled: isModelUsageEnabled,
       trpc: {
         context: {
           skipBatch: true,
@@ -206,7 +217,7 @@ export const ModelUsageChart = ({
       version: metricsVersion,
     },
     {
-      enabled: !isLoading && selectedModels.length > 0 && allModels.length > 0,
+      enabled: isModelUsageEnabled,
       trpc: {
         context: {
           skipBatch: true,

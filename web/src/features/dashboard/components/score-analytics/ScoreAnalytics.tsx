@@ -32,6 +32,7 @@ export function ScoreAnalytics(props: {
   projectId: string;
   isLoading?: boolean;
   metricsVersion?: ViewVersion;
+  schedulerId?: string;
 }) {
   // Stale score selections in localStorage are ignored as we only show scores that exist in scoreAnalyticsOptions
   const [selectedDashboardScoreKeys, setSelectedDashboardScoreKeys] =
@@ -130,6 +131,7 @@ export function ScoreAnalytics(props: {
                         fromTimestamp={props.fromTimestamp}
                         toTimestamp={props.toTimestamp}
                         metricsVersion={props.metricsVersion}
+                        schedulerId={props.schedulerId}
                       />
                     )}
                     {(isNumericDataType(dataType) ||
@@ -165,6 +167,7 @@ export function ScoreAnalytics(props: {
                         fromTimestamp={props.fromTimestamp}
                         toTimestamp={props.toTimestamp}
                         metricsVersion={props.metricsVersion}
+                        schedulerId={props.schedulerId}
                       />
                     )}
                     {(isNumericDataType(dataType) ||
@@ -184,6 +187,7 @@ export function ScoreAnalytics(props: {
                         fromTimestamp={props.fromTimestamp}
                         toTimestamp={props.toTimestamp}
                         metricsVersion={props.metricsVersion}
+                        schedulerId={props.schedulerId}
                       />
                     )}
                   </div>

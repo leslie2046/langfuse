@@ -4,7 +4,6 @@ import { LeftAlignedCell } from "@/src/features/dashboard/components/LeftAligned
 import { DashboardCard } from "@/src/features/dashboard/components/cards/DashboardCard";
 import { DashboardTable } from "@/src/features/dashboard/components/cards/DashboardTable";
 import { type FilterState, getGenerationLikeTypes } from "@langfuse/shared";
-import { api } from "@/src/utils/api";
 import { compactNumberFormatter } from "@/src/utils/numbers";
 import { TotalMetric } from "./TotalMetric";
 import { totalCostDashboardFormatted } from "@/src/features/dashboard/lib/dashboard-utils";
@@ -15,6 +14,7 @@ import {
   mapLegacyUiTableFilterToView,
 } from "@/src/features/query";
 import { useTranslation } from "@/src/features/i18n";
+import { useScheduledDashboardExecuteQuery } from "@/src/hooks/useDashboardQueryScheduler";
 
 export const ModelCostTable = ({
   className,
@@ -24,6 +24,7 @@ export const ModelCostTable = ({
   toTimestamp,
   isLoading = false,
   metricsVersion,
+  schedulerId,
 }: {
   className: string;
   projectId: string;
@@ -32,6 +33,7 @@ export const ModelCostTable = ({
   toTimestamp: Date;
   isLoading?: boolean;
   metricsVersion?: ViewVersion;
+  schedulerId?: string;
 }) => {
   const { t } = useTranslation();
   const modelCostQuery: QueryType = {
@@ -57,7 +59,7 @@ export const ModelCostTable = ({
     chartConfig: { type: "table", row_limit: 20 },
   };
 
-  const metrics = api.dashboard.executeQuery.useQuery(
+  const metrics = useScheduledDashboardExecuteQuery(
     {
       projectId,
       query: modelCostQuery,
@@ -69,6 +71,7 @@ export const ModelCostTable = ({
           skipBatch: true,
         },
       },
+      queryId: `${schedulerId ?? "home:model-costs"}:metrics`,
       enabled: !isLoading,
     },
   );

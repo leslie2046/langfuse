@@ -30,8 +30,8 @@ export function TierPriceEditor({
         <span>{t("models.upsert.pricing.usageType")}</span>
         <span>{t("models.upsert.pricing.price")}</span>
       </div>
-      {Object.entries(prices).map(([key, value]) => (
-        <div key={key} className="grid grid-cols-2 gap-1">
+      {Object.entries(prices).map(([key, value], index) => (
+        <div key={index} className="grid grid-cols-2 gap-1">
           <Input
             placeholder={t("models.upsert.pricing.keyPlaceholder")}
             value={key}

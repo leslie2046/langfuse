@@ -1,4 +1,3 @@
-import { api } from "@/src/utils/api";
 import { type FilterState, getGenerationLikeTypes } from "@langfuse/shared";
 import { DashboardCard } from "@/src/features/dashboard/components/cards/DashboardCard";
 import { compactNumberFormatter } from "@/src/utils/numbers";
@@ -17,6 +16,7 @@ import { useTranslation } from "@/src/features/i18n";
 import { Chart } from "@/src/features/widgets/chart-library/Chart";
 import { barListToDataPoints } from "@/src/features/dashboard/lib/chart-data-adapters";
 import { traceViewQuery } from "@/src/features/dashboard/lib/dashboard-utils";
+import { useScheduledDashboardExecuteQuery } from "@/src/hooks/useDashboardQueryScheduler";
 
 type BarChartDataPoint = {
   name: string;
@@ -31,6 +31,7 @@ export const UserChart = ({
   toTimestamp,
   isLoading = false,
   metricsVersion,
+  schedulerId,
 }: {
   className?: string;
   projectId: string;
@@ -39,6 +40,7 @@ export const UserChart = ({
   toTimestamp: Date;
   isLoading?: boolean;
   metricsVersion?: ViewVersion;
+  schedulerId?: string;
 }) => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -64,7 +66,7 @@ export const UserChart = ({
     orderBy: null,
   };
 
-  const user = api.dashboard.executeQuery.useQuery(
+  const user = useScheduledDashboardExecuteQuery(
     {
       projectId,
       query: userCostQuery,
@@ -76,6 +78,7 @@ export const UserChart = ({
           skipBatch: true,
         },
       },
+      queryId: `${schedulerId ?? "home:users"}:cost`,
       enabled: !isLoading,
     },
   );
@@ -92,7 +95,7 @@ export const UserChart = ({
     orderBy: null,
   };
 
-  const traces = api.dashboard.executeQuery.useQuery(
+  const traces = useScheduledDashboardExecuteQuery(
     {
       projectId,
       query: traceCountQuery,
@@ -104,6 +107,7 @@ export const UserChart = ({
           skipBatch: true,
         },
       },
+      queryId: `${schedulerId ?? "home:users"}:traces`,
       enabled: !isLoading,
     },
   );

@@ -2,7 +2,6 @@ import { RightAlignedCell } from "@/src/features/dashboard/components/RightAlign
 import { DashboardCard } from "@/src/features/dashboard/components/cards/DashboardCard";
 import { DashboardTable } from "@/src/features/dashboard/components/cards/DashboardTable";
 import { type FilterState, getGenerationLikeTypes } from "@langfuse/shared";
-import { api } from "@/src/utils/api";
 
 import { formatIntervalSeconds } from "@/src/utils/dates";
 import { truncate } from "@/src/utils/string";
@@ -13,6 +12,7 @@ import {
   mapLegacyUiTableFilterToView,
 } from "@/src/features/query";
 import { useTranslation } from "@/src/features/i18n";
+import { useScheduledDashboardExecuteQuery } from "@/src/hooks/useDashboardQueryScheduler";
 
 export const LatencyTables = ({
   projectId,
@@ -21,6 +21,7 @@ export const LatencyTables = ({
   toTimestamp,
   isLoading = false,
   metricsVersion,
+  schedulerId,
 }: {
   projectId: string;
   globalFilterState: FilterState;
@@ -28,6 +29,7 @@ export const LatencyTables = ({
   toTimestamp: Date;
   isLoading?: boolean;
   metricsVersion?: ViewVersion;
+  schedulerId?: string;
 }) => {
   const { t } = useTranslation();
   const generationsLatenciesQuery: QueryType = {
@@ -55,7 +57,7 @@ export const LatencyTables = ({
     chartConfig: { type: "table", row_limit: 20 },
   };
 
-  const generationsLatencies = api.dashboard.executeQuery.useQuery(
+  const generationsLatencies = useScheduledDashboardExecuteQuery(
     {
       projectId,
       query: generationsLatenciesQuery,
@@ -67,6 +69,7 @@ export const LatencyTables = ({
           skipBatch: true,
         },
       },
+      queryId: `${schedulerId ?? "home:latency-tables"}:generations`,
       enabled: !isLoading,
     },
   );
@@ -96,7 +99,7 @@ export const LatencyTables = ({
     chartConfig: { type: "table", row_limit: 20 },
   };
 
-  const spansLatencies = api.dashboard.executeQuery.useQuery(
+  const spansLatencies = useScheduledDashboardExecuteQuery(
     {
       projectId,
       query: spansLatenciesQuery,
@@ -108,6 +111,7 @@ export const LatencyTables = ({
           skipBatch: true,
         },
       },
+      queryId: `${schedulerId ?? "home:latency-tables"}:spans`,
       enabled: !isLoading,
     },
   );
@@ -129,7 +133,7 @@ export const LatencyTables = ({
     chartConfig: { type: "table", row_limit: 20 },
   };
 
-  const tracesLatencies = api.dashboard.executeQuery.useQuery(
+  const tracesLatencies = useScheduledDashboardExecuteQuery(
     {
       projectId,
       query: tracesLatenciesQuery,
@@ -141,6 +145,7 @@ export const LatencyTables = ({
           skipBatch: true,
         },
       },
+      queryId: `${schedulerId ?? "home:latency-tables"}:traces`,
       enabled: !isLoading,
     },
   );

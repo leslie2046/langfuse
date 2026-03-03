@@ -1,4 +1,3 @@
-import { api } from "@/src/utils/api";
 import { type FilterState, getGenerationLikeTypes } from "@langfuse/shared";
 import {
   extractTimeSeriesData,
@@ -26,6 +25,7 @@ import type { DatabaseRow } from "@/src/server/api/services/sqlInterface";
 import { useTranslation } from "@/src/features/i18n";
 import { Chart } from "@/src/features/widgets/chart-library/Chart";
 import { timeSeriesToDataPoints } from "@/src/features/dashboard/lib/chart-data-adapters";
+import { useScheduledDashboardExecuteQuery } from "@/src/hooks/useDashboardQueryScheduler";
 
 export const GenerationLatencyChart = ({
   className,
@@ -36,6 +36,7 @@ export const GenerationLatencyChart = ({
   toTimestamp,
   isLoading = false,
   metricsVersion,
+  schedulerId,
 }: {
   className?: string;
   projectId: string;
@@ -45,6 +46,7 @@ export const GenerationLatencyChart = ({
   toTimestamp: Date;
   isLoading?: boolean;
   metricsVersion?: ViewVersion;
+  schedulerId?: string;
 }) => {
   const { t } = useTranslation();
   const {
@@ -60,7 +62,13 @@ export const GenerationLatencyChart = ({
     fromTimestamp,
     toTimestamp,
     metricsVersion,
+    {
+      enabled: !isLoading,
+      queryId: `${schedulerId ?? "home:generation-latency"}:all-models`,
+    },
   );
+  const hasModelSelection = selectedModels.length > 0 && allModels.length > 0;
+  const isLatencyEnabled = !isLoading && hasModelSelection;
 
   const latenciesQuery: QueryType = {
     view: "observations",
@@ -96,19 +104,21 @@ export const GenerationLatencyChart = ({
     orderBy: null,
   };
 
-  const latencies = api.dashboard.executeQuery.useQuery(
+  const latencies = useScheduledDashboardExecuteQuery(
     {
       projectId,
       query: latenciesQuery,
       version: metricsVersion,
     },
     {
-      enabled: !isLoading && selectedModels.length > 0 && allModels.length > 0,
+      enabled: isLatencyEnabled,
       trpc: {
         context: {
           skipBatch: true,
         },
       },
+      queryId: `${schedulerId ?? "home:generation-latency"}:latencies`,
+      priority: 1001,
     },
   );
 

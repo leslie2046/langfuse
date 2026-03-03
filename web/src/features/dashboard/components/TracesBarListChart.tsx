@@ -1,4 +1,3 @@
-import { api } from "@/src/utils/api";
 import { type FilterState } from "@langfuse/shared";
 import { ExpandListButton } from "@/src/features/dashboard/components/cards/ChevronButton";
 import { useState } from "react";
@@ -15,6 +14,7 @@ import { useTranslation } from "@/src/features/i18n";
 import { Chart } from "@/src/features/widgets/chart-library/Chart";
 import { barListToDataPoints } from "@/src/features/dashboard/lib/chart-data-adapters";
 import { traceViewQuery } from "@/src/features/dashboard/lib/dashboard-utils";
+import { useScheduledDashboardExecuteQuery } from "@/src/hooks/useDashboardQueryScheduler";
 
 export const TracesBarListChart = ({
   className,
@@ -24,6 +24,7 @@ export const TracesBarListChart = ({
   toTimestamp,
   isLoading = false,
   metricsVersion,
+  schedulerId,
 }: {
   className?: string;
   projectId: string;
@@ -32,6 +33,7 @@ export const TracesBarListChart = ({
   toTimestamp: Date;
   isLoading?: boolean;
   metricsVersion?: ViewVersion;
+  schedulerId?: string;
 }) => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -50,7 +52,7 @@ export const TracesBarListChart = ({
     orderBy: null,
   };
 
-  const totalTraces = api.dashboard.executeQuery.useQuery(
+  const totalTraces = useScheduledDashboardExecuteQuery(
     {
       projectId,
       query: totalTracesQuery,
@@ -62,6 +64,7 @@ export const TracesBarListChart = ({
           skipBatch: true,
         },
       },
+      queryId: `${schedulerId ?? "home:traces"}:total`,
       enabled: !isLoading,
     },
   );
@@ -81,7 +84,7 @@ export const TracesBarListChart = ({
     chartConfig: { type: "table", row_limit: 20 },
   };
 
-  const traces = api.dashboard.executeQuery.useQuery(
+  const traces = useScheduledDashboardExecuteQuery(
     {
       projectId,
       query: tracesQuery,
@@ -93,6 +96,7 @@ export const TracesBarListChart = ({
           skipBatch: true,
         },
       },
+      queryId: `${schedulerId ?? "home:traces"}:grouped`,
       enabled: !isLoading,
     },
   );
