@@ -34,7 +34,7 @@ import { MultiSelect } from "@/src/features/filters/components/multi-select";
 import {
   convertSelectedEnvironmentsToFilter,
   useEnvironmentFilter,
-} from "@/src/hooks/use-environment-filter";
+} from "@/src/hooks/useEnvironmentFilter";
 import { useTranslation } from "@/src/features/i18n";
 import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
 import { type ViewVersion } from "@/src/features/query";
