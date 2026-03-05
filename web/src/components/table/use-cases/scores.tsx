@@ -17,6 +17,7 @@ import {
   scoreFilterConfig,
   SCORE_COLUMN_TO_BACKEND_KEY,
 } from "@/src/features/filters/config/scores-config";
+import { DEFAULT_SIDEBAR_IMPLICIT_ENVIRONMENT_CONFIG } from "@/src/features/filters/constants/internal-environments";
 import { transformFiltersForBackend } from "@/src/features/filters/lib/filter-transform";
 import { isNumericDataType } from "@/src/features/scores/lib/helpers";
 import { useOrderByState } from "@/src/features/orderBy/hooks/useOrderByState";
@@ -290,9 +291,13 @@ export default function ScoresTable({
   const queryFilter = useSidebarFilterState(
     scoreFilterConfig,
     newFilterOptions,
-    projectId,
-    filterOptions.isPending || environmentFilterOptions.isPending,
-    disableUrlPersistence,
+    {
+      loading: filterOptions.isPending || environmentFilterOptions.isPending,
+      disableUrlPersistence,
+      sessionFilterContextId: projectId,
+      // Sidebar-only implicit environment defaults
+      implicitDefaultConfig: DEFAULT_SIDEBAR_IMPLICIT_ENVIRONMENT_CONFIG,
+    },
   );
 
   // Create ref-based wrapper to avoid stale closure when queryFilter updates
@@ -305,7 +310,7 @@ export default function ScoresTable({
   );
 
   const filterState = createFilterState(
-    queryFilter.filterState.concat(dateRangeFilter),
+    queryFilter.effectiveFilterState.concat(dateRangeFilter),
     [
       ...(userId ? [{ key: "User ID", value: userId }] : []),
       ...(traceId ? [{ key: "Trace ID", value: traceId }] : []),
@@ -817,7 +822,7 @@ export default function ScoresTable({
       columns,
       filterColumnDefinition: scoreFilterConfig.columnDefinitions,
     },
-    currentFilterState: queryFilter.filterState,
+    currentFilterState: queryFilter.explicitFilterState,
   });
 
   return (
@@ -829,7 +834,7 @@ export default function ScoresTable({
         {/* Toolbar spanning full width */}
         <DataTableToolbar
           columns={columns}
-          filterState={queryFilter.filterState}
+          filterState={queryFilter.explicitFilterState}
           columnVisibility={columnVisibility}
           setColumnVisibility={setColumnVisibility}
           columnOrder={columnOrder}

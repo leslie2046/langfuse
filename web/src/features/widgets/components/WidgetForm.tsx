@@ -879,6 +879,7 @@ export function WidgetForm({
   const availableDimensions = useMemo(() => {
     const viewDeclaration = viewDeclarations[viewVersion][selectedView];
     return Object.entries(viewDeclaration.dimensions)
+      .filter(([_, dim]) => !dim.uiHidden)
       .map(([key]) => ({
         value: key,
         label: t(`dashboard.widgets.dimensions.${key}`),

@@ -54,7 +54,11 @@ import {
   decodeAndNormalizeFilters,
   useSidebarFilterState,
 } from "@/src/features/filters/hooks/useSidebarFilterState";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import {
+  buildSidebarFilterQueryStorageKey,
+  readPersistedSidebarFilterQuery,
+} from "@/src/features/filters/lib/persistedSidebarFilterQuery";
+import { StringParam, useQueryParam } from "use-query-params";
 import { PopoverFilterBuilder } from "@/src/features/filters/components/filter-builder";
 import { useTableViewManager } from "@/src/components/table/table-view-presets/hooks/useTableViewManager";
 import {
@@ -667,8 +671,23 @@ export const SessionEventsPage: React.FC<{
     detailPagelists.traces,
   ]);
 
-  // Decode time filters from URL for scoping filter options
-  const [filtersQuery] = useQueryParam("filter", withDefault(StringParam, ""));
+  const sessionEventsTableName = "session-events";
+  const sessionFilterStorageKey = buildSidebarFilterQueryStorageKey({
+    tableName: sessionEventsTableName,
+    contextId: projectId,
+  });
+  const [urlFiltersQuery] = useQueryParam("filter", StringParam);
+  const filtersQuery = React.useMemo(
+    () =>
+      urlFiltersQuery ??
+      readPersistedSidebarFilterQuery({
+        storageKey: sessionFilterStorageKey,
+        contextId: projectId,
+      }),
+    [urlFiltersQuery, sessionFilterStorageKey, projectId],
+  );
+
+  // Decode time filters from URL/session filter state for scoping filter options
   const timeFiltersForOptions = React.useMemo(() => {
     const allFilters = decodeAndNormalizeFilters(
       filtersQuery,
@@ -689,7 +708,7 @@ export const SessionEventsPage: React.FC<{
   const sessionEventsFilterConfig = React.useMemo(() => {
     return {
       ...observationEventsFilterConfig,
-      tableName: "session-events",
+      tableName: sessionEventsTableName,
       columnDefinitions: observationEventsFilterConfig.columnDefinitions,
       facets: observationEventsFilterConfig.facets
         .filter(
@@ -703,7 +722,7 @@ export const SessionEventsPage: React.FC<{
           mutuallyExclusiveWith: undefined,
         })),
     };
-  }, []);
+  }, [sessionEventsTableName]);
 
   const filterColumns = React.useMemo<ColumnDefinition[]>(() => {
     const scoreCategoryOptions = filterOptions.score_categories
@@ -776,8 +795,10 @@ export const SessionEventsPage: React.FC<{
   const queryFilter = useSidebarFilterState(
     sessionEventsFilterConfig,
     filterOptions,
-    projectId,
-    isFilterOptionsPending,
+    {
+      loading: isFilterOptionsPending,
+      sessionFilterContextId: projectId,
+    },
   );
 
   const visibleFilterState = React.useMemo(

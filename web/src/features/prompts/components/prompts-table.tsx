@@ -232,8 +232,10 @@ export function PromptTable() {
   const queryFilter = useSidebarFilterState(
     promptFilterConfig,
     newFilterOptions,
-    projectId,
-    promptFilterOptions.isPending,
+    {
+      loading: promptFilterOptions.isPending,
+      sessionFilterContextId: projectId ?? null,
+    },
   );
 
   useEffect(() => {
