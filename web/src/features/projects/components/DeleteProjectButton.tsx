@@ -25,8 +25,10 @@ import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePos
 import { useQueryProject } from "@/src/features/projects/hooks";
 import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAccess";
 import { env } from "@/src/env.mjs";
+import { useTranslation } from "@/src/features/i18n";
 
 export function DeleteProjectButton() {
+  const { t } = useTranslation();
   const capture = usePostHogClientCapture();
 
   //code for dynamic confirmation message
@@ -37,7 +39,7 @@ export function DeleteProjectButton() {
 
   const formSchema = z.object({
     name: z.string().includes(confirmMessage, {
-      message: `Please confirm with "${confirmMessage}"`,
+      message: t("project.delete.validationError", { confirmMessage }),
     }),
   });
 
@@ -75,16 +77,16 @@ export function DeleteProjectButton() {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="destructive-secondary" disabled={!hasAccess}>
-          Delete Project
+          {t("project.delete.button")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
-            Delete Project
+            {t("project.delete.title")}
           </DialogTitle>
           <DialogDescription className=" ">
-            {`To confirm, type "${confirmMessage}" in the input box `}
+            {t("project.delete.confirmInstruction", { confirmMessage })}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -110,7 +112,7 @@ export function DeleteProjectButton() {
                 loading={deleteProject.isPending}
                 className="w-full"
               >
-                Delete project
+                {t("project.delete.submit")}
               </Button>
             </DialogFooter>
           </form>

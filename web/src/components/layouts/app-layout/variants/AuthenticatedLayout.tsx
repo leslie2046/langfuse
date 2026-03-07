@@ -12,6 +12,8 @@ import { Toaster } from "@/src/components/ui/sonner";
 import { TopBannerProvider } from "@/src/features/top-banner";
 import { ResizableContent } from "../components/ResizableContent";
 import { ThemeToggle } from "@/src/features/theming/ThemeToggle";
+import { LanguageToggle } from "@/src/features/i18n";
+import { useTranslation } from "@/src/features/i18n";
 import type { Session } from "next-auth";
 import type { NavigationItem } from "@/src/components/layouts/utilities/routes";
 import type { RouteGroup } from "@/src/components/layouts/routes";
@@ -90,6 +92,7 @@ export function AuthenticatedLayout({
 }: AuthenticatedLayoutProps) {
   // Safe assertion: AuthenticatedLayout is only rendered after auth checks pass
   // in AppLayout, which guarantees session.user exists at this point
+  const { t } = useTranslation();
   const user = session.user;
   if (!user) {
     // This should never happen due to guards in AppLayout, but TypeScript needs this
@@ -104,9 +107,14 @@ export function AuthenticatedLayout({
       avatar: user.image ?? "",
     },
     items: [
-      { name: "Account Settings", href: "/account/settings" },
-      { name: "Theme", onClick: () => {}, content: <ThemeToggle /> },
-      { name: "Sign out", onClick: onSignOut },
+      { name: t("navigation.settings"), href: "/account/settings" },
+      { name: t("common.theme"), onClick: () => {}, content: <ThemeToggle /> },
+      {
+        name: t("common.language"),
+        onClick: () => {},
+        content: <LanguageToggle />,
+      },
+      { name: t("common.signOut"), onClick: onSignOut },
     ],
   };
 

@@ -14,6 +14,7 @@ import { env } from "@/src/env.mjs";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import { useDebounce } from "@/src/hooks/useDebounce";
 import { useCommandMenu } from "@/src/features/command-k-menu/CommandMenuProvider";
+import { useTranslation } from "@/src/features/i18n";
 import { useProjectSettingsPages } from "@/src/pages/project/[projectId]/settings";
 import { useOrganizationSettingsPages } from "@/src/pages/organization/[organizationId]/settings";
 import { useAccountSettingsPages } from "@/src/pages/account/settings";
@@ -30,9 +31,10 @@ function MainNavigationGroup({
 }) {
   const router = useRouter();
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
 
   return (
-    <CommandGroup heading="Main Navigation">
+    <CommandGroup heading={t("command.mainNavigation")}>
       {navItems.map((item) => (
         <CommandItem
           key={item.url}
@@ -59,13 +61,14 @@ function ProjectsGroup({ onNavigate }: { onNavigate: () => void }) {
   const router = useRouter();
   const capture = usePostHogClientCapture();
   const { allProjectItems } = useNavigationItems();
+  const { t } = useTranslation();
 
   if (allProjectItems.length === 0) return null;
 
   return (
     <>
       <CommandSeparator />
-      <CommandGroup heading="Projects">
+      <CommandGroup heading={t("command.projects")}>
         {allProjectItems.map((item) => (
           <CommandItem
             key={item.url}
@@ -112,17 +115,18 @@ function DashboardsGroup({ onNavigate }: { onNavigate: () => void }) {
   );
 
   const dashboards = dashboardsQuery.data?.dashboards ?? [];
+  const { t } = useTranslation();
 
   if (dashboards.length === 0) return null;
 
   return (
     <>
       <CommandSeparator />
-      <CommandGroup heading="Dashboards">
+      <CommandGroup heading={t("command.dashboards")}>
         {dashboards.map((dashboard) => (
           <CommandItem
             key={dashboard.id}
-            value={`Dashboard > ${dashboard.name}`}
+            value={`${t("command.dashboards")} > ${dashboard.name}`}
             keywords={[
               "dashboard",
               dashboard.name.toLowerCase(),
@@ -134,7 +138,7 @@ function DashboardsGroup({ onNavigate }: { onNavigate: () => void }) {
               router.push(url);
               capture("cmd_k_menu:navigated", {
                 type: "dashboard",
-                title: `Dashboard > ${dashboard.name}`,
+                title: `${t("command.dashboards")} > ${dashboard.name}`,
                 url: url,
               });
               onNavigate();
@@ -153,11 +157,12 @@ function ProjectSettingsGroup({ onNavigate }: { onNavigate: () => void }) {
   const capture = usePostHogClientCapture();
   const settingsPages = useProjectSettingsPages();
   const { project } = useQueryProjectOrOrganization();
+  const { t } = useTranslation();
 
   const projectSettingsItems = settingsPages
     .filter((page) => page.show !== false && !("href" in page))
     .map((page) => ({
-      title: `Project Settings > ${page.title}`,
+      title: `${t("command.projectSettings")} > ${page.title}`,
       url: `/project/${project?.id}/settings${page.slug === "index" ? "" : `/${page.slug}`}`,
       keywords: page.cmdKKeywords || [],
     }));
@@ -167,7 +172,7 @@ function ProjectSettingsGroup({ onNavigate }: { onNavigate: () => void }) {
   return (
     <>
       <CommandSeparator />
-      <CommandGroup heading="Project Settings">
+      <CommandGroup heading={t("command.projectSettings")}>
         {projectSettingsItems.map((item) => (
           <CommandItem
             key={item.url}
@@ -196,11 +201,12 @@ function OrganizationSettingsGroup({ onNavigate }: { onNavigate: () => void }) {
   const capture = usePostHogClientCapture();
   const orgSettingsPages = useOrganizationSettingsPages();
   const { organization } = useQueryProjectOrOrganization();
+  const { t } = useTranslation();
 
   const orgSettingsItems = orgSettingsPages
     .filter((page) => page.show !== false && !("href" in page))
     .map((page) => ({
-      title: `Organization Settings > ${page.title}`,
+      title: `${t("command.organizationSettings")} > ${page.title}`,
       url: `/organization/${organization?.id}/settings${page.slug === "index" ? "" : `/${page.slug}`}`,
       keywords: page.cmdKKeywords || [],
     }));
@@ -210,7 +216,7 @@ function OrganizationSettingsGroup({ onNavigate }: { onNavigate: () => void }) {
   return (
     <>
       <CommandSeparator />
-      <CommandGroup heading="Organization Settings">
+      <CommandGroup heading={t("command.organizationSettings")}>
         {orgSettingsItems.map((item) => (
           <CommandItem
             key={item.url}
@@ -238,9 +244,10 @@ function AccountSettingsGroup({ onNavigate }: { onNavigate: () => void }) {
   const router = useRouter();
   const capture = usePostHogClientCapture();
   const accountSettingsPages = useAccountSettingsPages();
+  const { t } = useTranslation();
 
   const accountSettingsItems = accountSettingsPages.map((page) => ({
-    title: `Account Settings > ${page.title}`,
+    title: `${t("command.accountSettings")} > ${page.title}`,
     url: `/account/settings${page.slug === "index" ? "" : `/${page.slug}`}`,
     keywords: page.cmdKKeywords || [],
   }));
@@ -250,7 +257,7 @@ function AccountSettingsGroup({ onNavigate }: { onNavigate: () => void }) {
   return (
     <>
       <CommandSeparator />
-      <CommandGroup heading="Account Settings">
+      <CommandGroup heading={t("command.accountSettings")}>
         {accountSettingsItems.map((item) => (
           <CommandItem
             key={item.url}
@@ -281,6 +288,7 @@ function CommandMenuComponent({
 }) {
   const { open, setOpen } = useCommandMenu();
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
 
   const debouncedSearchChange = useDebounce(
     (value: string) => {
@@ -346,12 +354,12 @@ function CommandMenuComponent({
       }}
     >
       <CommandInput
-        placeholder="Type a command or search..."
+        placeholder={t("command.placeholder")}
         className="border-none focus:border-none focus:outline-none focus:ring-0 focus:ring-transparent"
         onValueChange={debouncedSearchChange}
       />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandEmpty>{t("command.noResults")}</CommandEmpty>
         <MainNavigationGroup navItems={navItems} onNavigate={handleNavigate} />
         <ProjectsGroup onNavigate={handleNavigate} />
         <DashboardsGroup onNavigate={handleNavigate} />

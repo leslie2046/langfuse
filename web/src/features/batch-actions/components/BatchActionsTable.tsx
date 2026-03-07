@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@/src/components/ui/tooltip";
 import { LocalIsoDate } from "@/src/components/LocalIsoDate";
+import { useTranslation } from "@/src/features/i18n";
 
 type BatchActionRow = {
   id: string;
@@ -36,6 +37,7 @@ export function BatchActionsTable(props: { projectId: string }) {
     pageIndex: withDefault(NumberParam, 0),
     pageSize: withDefault(NumberParam, 10),
   });
+  const { t } = useTranslation();
 
   const batchActions = api.batchAction.all.useQuery({
     projectId: props.projectId,
@@ -47,7 +49,7 @@ export function BatchActionsTable(props: { projectId: string }) {
     {
       accessorKey: "actionType",
       id: "actionType",
-      header: "Action Type",
+      header: t("batchActions.table.actionType"),
       size: 200,
       cell: ({ row }) => {
         const actionType = row.getValue("actionType") as string;
@@ -61,7 +63,7 @@ export function BatchActionsTable(props: { projectId: string }) {
     {
       accessorKey: "tableName",
       id: "tableName",
-      header: "Table",
+      header: t("batchActions.table.table"),
       size: 120,
       cell: ({ row }) => {
         const tableName = row.getValue("tableName") as string;
@@ -71,7 +73,7 @@ export function BatchActionsTable(props: { projectId: string }) {
     {
       accessorKey: "status",
       id: "status",
-      header: "Status",
+      header: t("batchActions.table.status"),
       size: 110,
       cell: ({ row }) => {
         const status = row.getValue("status") as string;
@@ -83,7 +85,7 @@ export function BatchActionsTable(props: { projectId: string }) {
     {
       accessorKey: "progress",
       id: "progress",
-      header: "Progress",
+      header: t("batchActions.table.progress"),
       size: 150,
       cell: ({ row }) => {
         const totalCount = row.original.totalCount;
@@ -100,7 +102,7 @@ export function BatchActionsTable(props: { projectId: string }) {
             </div>
             {failedCount > 0 && (
               <div className="text-xs text-destructive">
-                {failedCount} failed
+                {failedCount} {t("batchActions.table.failed")}
               </div>
             )}
           </div>
@@ -110,7 +112,7 @@ export function BatchActionsTable(props: { projectId: string }) {
     {
       accessorKey: "createdAt",
       id: "createdAt",
-      header: "Created",
+      header: t("batchActions.table.created"),
       size: 150,
       cell: ({ row }) => {
         const createdAt = row.getValue("createdAt") as Date;
@@ -120,7 +122,7 @@ export function BatchActionsTable(props: { projectId: string }) {
     {
       accessorKey: "finishedAt",
       id: "finishedAt",
-      header: "Finished",
+      header: t("batchActions.table.finished"),
       size: 150,
       cell: ({ row }) => {
         const finishedAt = row.getValue("finishedAt") as Date | null;
@@ -134,7 +136,7 @@ export function BatchActionsTable(props: { projectId: string }) {
     {
       accessorKey: "user",
       id: "user",
-      header: "Created By",
+      header: t("batchActions.table.createdBy"),
       size: 150,
       cell: ({ row }) => {
         const user = row.getValue("user") as {
@@ -157,7 +159,7 @@ export function BatchActionsTable(props: { projectId: string }) {
     {
       accessorKey: "log",
       id: "log",
-      header: "Log",
+      header: t("batchActions.table.log"),
       size: 300,
       cell: ({ row }) => {
         const log = row.getValue("log") as string | null;

@@ -20,7 +20,12 @@ import { useRouter } from "next/router";
 import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAccess";
 import { showErrorToast } from "@/src/features/notifications/showErrorToast";
 import { DownloadButton } from "@/src/features/widgets/chart-library/DownloadButton";
-import { formatMetricName } from "@/src/features/widgets/utils";
+import {
+  formatMetricName,
+  buildWidgetName,
+  buildWidgetDescription,
+} from "@/src/features/widgets/utils";
+import { useTranslation } from "@/src/features/i18n";
 import { ChartLoadingState } from "@/src/features/widgets/chart-library/ChartLoadingState";
 import { getChartLoadingStateProps } from "@/src/features/widgets/chart-library/chartLoadingStateUtils";
 import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
@@ -62,6 +67,7 @@ export function DashboardWidget({
   dashboardOwner: "LANGFUSE" | "PROJECT";
   schedulerId?: string;
 }) {
+  const { t } = useTranslation();
   const router = useRouter();
   const utils = api.useUtils();
   const { isBetaEnabled } = useV4Beta();
@@ -240,14 +246,14 @@ export function DashboardWidget({
                 // Objects / numbers / booleans are stringified to avoid React key issues
                 return String(val);
               })()
-            : formatMetricName(metricField),
+            : formatMetricName(metricField, t),
         metric: Array.isArray(metricValue)
           ? metricValue
           : Number(metricValue || 0),
         time_dimension: item["time_dimension"],
       };
     });
-  }, [queryResult.data, widget.data]);
+  }, [queryResult.data, widget.data, t]);
 
   const handleEdit = () => {
     router.push(
@@ -264,7 +270,7 @@ export function DashboardWidget({
       });
     },
     onError: (e) => {
-      showErrorToast("Failed to clone widget", e.message);
+      showErrorToast(t("dashboard.detail.failedCloneWidget"), e.message);
     },
   });
   const handleCopy = () => {
@@ -277,7 +283,7 @@ export function DashboardWidget({
   };
 
   const handleDelete = () => {
-    if (onDeleteWidget && confirm("Please confirm deletion")) {
+    if (onDeleteWidget && confirm(t("dashboard.detail.confirmDeletion"))) {
       onDeleteWidget(placement.id);
     }
   };
@@ -287,7 +293,7 @@ export function DashboardWidget({
       <div
         className={`flex items-center justify-center rounded-lg border bg-background p-4`}
       >
-        <div className="text-muted-foreground">Loading...</div>
+        <div className="text-muted-foreground">{t("common.loading")}...</div>
       </div>
     );
   }
@@ -297,7 +303,9 @@ export function DashboardWidget({
       <div
         className={`flex items-center justify-center rounded-lg border bg-background p-4`}
       >
-        <div className="text-muted-foreground">Widget not found</div>
+        <div className="text-muted-foreground">
+          {t("dashboard.detail.widgetNotFound")}
+        </div>
       </div>
     );
   }
@@ -308,7 +316,25 @@ export function DashboardWidget({
     >
       <div className="flex items-center justify-between">
         <span className="truncate font-medium" title={widget.data.name}>
-          {widget.data.name}{" "}
+          {widget.data.owner === "LANGFUSE" && widget.data.metrics.length > 0
+            ? (() => {
+                const firstMetric = widget.data.metrics[0];
+                const measure = firstMetric?.measure ?? "count";
+                const aggregation = firstMetric?.agg ?? "count";
+                const dimension = widget.data.dimensions?.[0]?.field ?? "none";
+                const view = widget.data.view ?? "traces";
+                return buildWidgetName({
+                  aggregation,
+                  measure,
+                  dimension:
+                    dimension !== "none"
+                      ? t(`dashboard.widgets.dimensions.${dimension}`)
+                      : "none",
+                  view,
+                  t,
+                });
+              })()
+            : widget.data.name}{" "}
           {dashboardOwner === "PROJECT" && widget.data.owner === "LANGFUSE"
             ? " ( 🪢 )"
             : null}
@@ -360,7 +386,26 @@ export function DashboardWidget({
         className="mb-4 truncate text-sm text-muted-foreground"
         title={widget.data.description}
       >
-        {widget.data.description}
+        {widget.data.owner === "LANGFUSE" && widget.data.metrics.length > 0
+          ? (() => {
+              const firstMetric = widget.data.metrics[0];
+              const measure = firstMetric?.measure ?? "count";
+              const aggregation = firstMetric?.agg ?? "count";
+              const dimension = widget.data.dimensions?.[0]?.field ?? "none";
+              const view = widget.data.view ?? "traces";
+              return buildWidgetDescription({
+                aggregation,
+                measure,
+                dimension:
+                  dimension !== "none"
+                    ? t(`dashboard.widgets.dimensions.${dimension}`)
+                    : "none",
+                view,
+                filters: widget.data.filters ?? [],
+                t,
+              });
+            })()
+          : widget.data.description}
       </div>
       <div className="relative min-h-0 flex-1">
         {!queryValidation.valid ? (

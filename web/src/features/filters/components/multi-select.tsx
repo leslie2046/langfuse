@@ -33,6 +33,8 @@ const getFreeTextInput = (
     ? Array.from(values.values()).find((value) => !optionValues.has(value))
     : undefined;
 
+import { useTranslation } from "@/src/features/i18n";
+
 export function MultiSelect({
   title,
   label,
@@ -54,6 +56,7 @@ export function MultiSelect({
   isCustomSelectEnabled?: boolean;
   labelTruncateCutOff?: number;
 }) {
+  const { t } = useTranslation();
   const selectedValues = useMemo(() => new Set(values), [values]);
   const optionValues = new Set(options.map((option) => option.value));
   const freeTextInput = getFreeTextInput(
@@ -211,7 +214,9 @@ export function MultiSelect({
                       <Check className={cn("h-4 w-4")} />
                     </div>
                     <div className="font-medium">
-                      {allSelectedState ? "Deselect All" : "Select All"}
+                      {allSelectedState
+                        ? t("filters.deselectAll")
+                        : t("filters.selectAll")}
                     </div>
                   </InputCommandItem>
                   <InputCommandSeparator />
@@ -347,7 +352,7 @@ export function MultiSelect({
                     onSelect={() => onValueChange([])}
                     className="justify-center text-center"
                   >
-                    Clear filters
+                    {t("filters.clearFilters")}
                   </InputCommandItem>
                 </InputCommandGroup>
               </>

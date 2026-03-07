@@ -2,12 +2,14 @@ import Decimal from "decimal.js";
 
 import { PriceMapSchema } from "@/src/features/models/validation";
 import { getMaxDecimals } from "@/src/features/models/utils";
+import { useTranslation } from "@/src/features/i18n";
 
 export function PricePreview({
   prices,
 }: {
   prices: Record<string, number | undefined>;
 }) {
+  const { t } = useTranslation();
   const parsedPrices = PriceMapSchema.safeParse(prices);
 
   const getMaxDecimalsForPriceGroup = (
@@ -28,17 +30,23 @@ export function PricePreview({
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2">
           <h4 className="text-sm font-medium text-muted-foreground">
-            Price Preview
+            {t("models.upsert.pricing.preview.title")}
           </h4>
         </div>
 
         {parsedPrices.success ? (
           <div className="space-y-2">
             <div className="grid grid-cols-[2fr_1fr_1fr_1fr] gap-2 border-b border-border pb-2 text-xs font-medium text-muted-foreground">
-              <span>Usage Type</span>
-              <span className="text-right">per unit</span>
-              <span className="text-right">per 1K</span>
-              <span className="text-right">per 1M</span>
+              <span>{t("models.upsert.pricing.preview.usageType")}</span>
+              <span className="text-right">
+                {t("models.upsert.pricing.preview.perUnit")}
+              </span>
+              <span className="text-right">
+                {t("models.upsert.pricing.preview.per1K")}
+              </span>
+              <span className="text-right">
+                {t("models.upsert.pricing.preview.per1M")}
+              </span>
             </div>
 
             {Object.entries(parsedPrices.data)
@@ -72,7 +80,7 @@ export function PricePreview({
           </div>
         ) : (
           <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-            Invalid price entries. Please check your input format.
+            {t("models.upsert.pricing.preview.invalidInput")}
           </div>
         )}
       </div>

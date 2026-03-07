@@ -13,6 +13,7 @@ import PromptMetrics from "./metrics";
 import { useQueryParams, StringParam } from "use-query-params";
 import React from "react";
 import { AutomationButton } from "@/src/features/automations/components/AutomationButton";
+import { useTranslation } from "@/src/features/i18n";
 
 export default function PromptsWithFolder() {
   const router = useRouter();
@@ -38,6 +39,7 @@ export default function PromptsWithFolder() {
       : "";
 
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
   const hasCUDAccess = useHasProjectAccess({
     projectId,
     scope: "prompts:CUD",
@@ -82,10 +84,9 @@ export default function PromptsWithFolder() {
   return (
     <Page
       headerProps={{
-        title: "Prompts",
+        title: t("pages.prompts.title"),
         help: {
-          description:
-            "Manage and version your prompts in Langfuse. Edit and update them via the UI and SDK. Retrieve the production version via the SDKs. Learn more in the docs.",
+          description: t("pages.prompts.helpDescription"),
           href: "https://langfuse.com/docs/prompt-management/get-started",
         },
         actionButtonsRight: (
@@ -102,7 +103,7 @@ export default function PromptsWithFolder() {
                 capture("prompts:new_form_open");
               }}
             >
-              New prompt
+              {t("pages.prompts.newPrompt")}
             </ActionButton>
           </>
         ),

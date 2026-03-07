@@ -104,7 +104,7 @@ const getCommaArrayParam = (table: TableName) => ({
 
         if (DEBUG_QUERY_STATE) console.log("parsedValue", parsedValue);
         const parsed = singleFilter.safeParse({
-          column: getColumnName(table, column),
+          column: getColumnId(table, column) ?? column,
           key: key !== "" ? key : undefined,
           operator,
           value: parsedValue,
@@ -183,20 +183,21 @@ const tableCols = {
   dataset_runs: datasetRunsTableCols,
   dataset_run_items_by_run: datasetRunItemsTableCols,
   widgets: [
-    { id: "environment", name: "Environment" },
-    { id: "traceName", name: "Trace Name" },
-    { id: "tags", name: "Tags" },
-    { id: "release", name: "Release" },
-    { id: "user", name: "User" },
-    { id: "session", name: "Session" },
-    { id: "version", name: "Version" },
+    { id: "environment", name: "environment" },
+    { id: "traceName", name: "traceName" },
+    { id: "tags", name: "tags" },
+    { id: "release", name: "release" },
+    { id: "userId", name: "userId" },
+    { id: "sessionId", name: "sessionId" },
+    { id: "version", name: "version" },
   ],
   dashboard: [
-    { id: "traceName", name: "Trace Name" },
-    { id: "tags", name: "Tags" },
-    { id: "release", name: "Release" },
-    { id: "user", name: "User" },
-    { id: "version", name: "Version" },
+    { id: "traceName", name: "traceName" },
+    { id: "tags", name: "tags" },
+    { id: "release", name: "release" },
+    { id: "userId", name: "userId" },
+    { id: "sessionId", name: "sessionId" },
+    { id: "version", name: "version" },
   ],
 };
 
@@ -205,8 +206,4 @@ function getColumnId(table: TableName, name: string): string | undefined {
   // to give more leeway to LLMs, we check against name or id
   return tableCols[table]?.find((col) => col.name === name || col.id === name)
     ?.id;
-}
-
-function getColumnName(table: TableName, id: string): string | undefined {
-  return tableCols[table]?.find((col) => col.id === id)?.name;
 }

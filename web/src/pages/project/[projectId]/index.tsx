@@ -35,6 +35,7 @@ import {
   convertSelectedEnvironmentsToFilter,
   useEnvironmentFilter,
 } from "@/src/hooks/useEnvironmentFilter";
+import { useTranslation } from "@/src/features/i18n";
 import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
 import { type ViewVersion } from "@/src/features/query";
 import { useEnvironmentFilterOptionsCache } from "@/src/hooks/use-environment-filter-options-cache";
@@ -62,6 +63,7 @@ export default function Dashboard() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
   const { timeRange, setTimeRange } = useDashboardDateRange();
+  const { t } = useTranslation();
   const { isBetaEnabled } = useV4Beta();
   const metricsVersion: ViewVersion = isBetaEnabled ? "v2" : "v1";
 
@@ -115,33 +117,33 @@ export default function Dashboard() {
 
   const filterColumns: ColumnDefinition[] = [
     {
-      name: "Trace Name",
+      name: t("dashboard.columns.traceName"),
       id: "traceName",
       type: "stringOptions",
       options: nameOptions,
       internal: "internalValue",
     },
     {
-      name: "Tags",
+      name: t("dashboard.columns.tags"),
       id: "tags",
       type: "arrayOptions",
       options: tagsOptions,
       internal: "internalValue",
     },
     {
-      name: "User",
+      name: t("dashboard.columns.user"),
       id: "user",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: "Release",
+      name: t("dashboard.columns.release"),
       id: "release",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: "Version",
+      name: t("dashboard.columns.version"),
       id: "version",
       type: "string",
       internal: "internalValue",
@@ -219,7 +221,7 @@ export default function Dashboard() {
         withPadding
         scrollable
         headerProps={{
-          title: "Home",
+          title: t("navigation.home"),
           actionButtonsLeft: (
             <>
               <TimeRangePicker
@@ -239,8 +241,8 @@ export default function Dashboard() {
                 }
               />
               <MultiSelect
-                title="Environment"
-                label="Env"
+                title={t("dashboard.environment")}
+                label={t("dashboard.env")}
                 values={selectedEnvironments}
                 onValueChange={useDebounce(setSelectedEnvironments)}
                 options={environmentOptions.map((env) => ({
@@ -259,8 +261,8 @@ export default function Dashboard() {
             <>
               {uiCustomization?.feedbackHref === undefined && (
                 <FeedbackButtonWrapper
-                  title="Request Chart"
-                  description="Your feedback matters! Let the Langfuse team know what additional data or metrics you'd like to see in your dashboard."
+                  title={t("dashboard.requestChart")}
+                  description={t("dashboard.feedbackDescription")}
                   className="hidden lg:flex"
                 >
                   <Button
@@ -274,7 +276,7 @@ export default function Dashboard() {
                       className="hidden h-6 w-6 shrink-0 text-primary group-hover:text-primary-accent lg:block"
                       aria-hidden="true"
                     />
-                    Request Chart
+                    {t("dashboard.requestChart")}
                   </Button>
                 </FeedbackButtonWrapper>
               )}

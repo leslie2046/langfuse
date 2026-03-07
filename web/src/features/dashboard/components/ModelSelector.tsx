@@ -19,6 +19,7 @@ import { type FilterState } from "@langfuse/shared";
 import { type ViewVersion } from "@/src/features/query";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "@/src/features/i18n";
 
 export const ModelSelectorPopover = ({
   allModels,
@@ -35,6 +36,7 @@ export const ModelSelectorPopover = ({
   isAllSelected: boolean;
   handleSelectAll: () => void;
 }) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   return (
@@ -52,8 +54,13 @@ export const ModelSelectorPopover = ({
       </PopoverTrigger>
       <PopoverContent className="w-56 p-0">
         <InputCommand>
-          <InputCommandInput placeholder="Search models..." variant="bottom" />
-          <InputCommandEmpty>No model found.</InputCommandEmpty>
+          <InputCommandInput
+            placeholder={t("common.filters.searchModels")}
+            variant="bottom"
+          />
+          <InputCommandEmpty>
+            {t("common.filters.noModelFound")}
+          </InputCommandEmpty>
           <InputCommandGroup>
             <InputCommandItem onSelect={handleSelectAll}>
               <Check
@@ -63,7 +70,7 @@ export const ModelSelectorPopover = ({
                 )}
               />
               <span>
-                <p className="font-semibold">Select All</p>
+                <p className="font-semibold">{t("common.filters.selectAll")}</p>
               </span>
             </InputCommandItem>
             <InputCommandSeparator className="my-1" />
@@ -125,11 +132,13 @@ export const useModelSelection = (
   const [selectedModels, setSelectedModels] = useState<string[]>([]);
   const [firstAllModelUpdate, setFirstAllModelUpdate] = useState(true);
 
+  const { t } = useTranslation();
+
   const isAllSelected = selectedModels.length === allModels.length;
 
   const buttonText = isAllSelected
-    ? "All models"
-    : `${selectedModels.length} selected`;
+    ? t("common.filters.allModels")
+    : t("common.filters.selectedModels", { count: selectedModels.length });
 
   const handleSelectAll = () => {
     setSelectedModels(isAllSelected ? [] : [...allModels.map((m) => m.model)]);

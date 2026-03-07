@@ -20,6 +20,7 @@ import { useLangfuseEnvCode } from "@/src/features/public-api/hooks/useLangfuseE
 import { Label } from "@/src/components/ui/label";
 import { cn } from "@/src/utils/tailwind";
 import { SubHeader } from "@/src/components/layouts/header";
+import { useTranslation } from "@/src/features/i18n";
 
 type ApiKeyScope = "project" | "organization";
 
@@ -29,6 +30,7 @@ export function CreateApiKeyButton(props: {
 }) {
   const utils = api.useUtils();
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
 
   const hasProjectAccess = useHasProjectAccess({
     projectId: props.entityId,
@@ -108,13 +110,13 @@ export function CreateApiKeyButton(props: {
       <DialogTrigger asChild>
         <Button variant="secondary">
           <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
-          Create new API keys
+          {t("apiKeys.createBtn")}
         </Button>
       </DialogTrigger>
       <DialogContent onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>
-            {generatedKeys ? "API Keys" : "Create API Keys"}
+            {generatedKeys ? "API Keys" : t("apiKeys.createDialog.title")}
           </DialogTitle>
         </DialogHeader>
         <DialogBody>
@@ -123,10 +125,12 @@ export function CreateApiKeyButton(props: {
           ) : (
             <div className="space-y-4">
               <div>
-                <Label htmlFor="note">Note (optional)</Label>
+                <Label htmlFor="note">
+                  {t("apiKeys.createDialog.noteLabel")}
+                </Label>
                 <Input
                   id="note"
-                  placeholder="Production key"
+                  placeholder={t("apiKeys.createDialog.notePlaceholder")}
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   onKeyDown={(e) => {
@@ -148,7 +152,7 @@ export function CreateApiKeyButton(props: {
                 mutCreateProjectApiKey.isPending || mutCreateOrgApiKey.isPending
               }
             >
-              Create API keys
+              {t("apiKeys.createDialog.submit")}
             </Button>
           </DialogFooter>
         )}
@@ -167,24 +171,24 @@ export const ApiKeyRender = ({
   className?: string;
 }) => {
   const envCode = useLangfuseEnvCode(generatedKeys);
+  const { t } = useTranslation();
 
   return (
     <div className={cn("space-y-6", className)}>
       <div>
-        <SubHeader title="Secret Key" />
+        <SubHeader title={t("apiKeys.secretKey")} />
         <div className="text-sm text-muted-foreground">
-          This key can only be viewed once. You can always create new keys in
-          the {scope} settings.
+          {t("apiKeys.secretKeyDescription", { scope })}
         </div>
         <CodeView
-          content={generatedKeys?.secretKey ?? "Loading ..."}
+          content={generatedKeys?.secretKey ?? t("common.loading")}
           className="mt-2"
         />
       </div>
       <div>
-        <SubHeader title="Public Key" />
+        <SubHeader title={t("apiKeys.publicKey")} />
         <CodeView
-          content={generatedKeys?.publicKey ?? "Loading ..."}
+          content={generatedKeys?.publicKey ?? t("common.loading")}
           className="mt-2"
         />
       </div>

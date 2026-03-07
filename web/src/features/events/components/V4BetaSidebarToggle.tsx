@@ -8,8 +8,10 @@ import {
 import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import { cn } from "@/src/utils/tailwind";
+import { useTranslation } from "@/src/features/i18n";
 
 export function V4BetaSidebarToggle() {
+  const { t } = useTranslation();
   const { isBetaEnabled, setBetaEnabled, isLoading } = useV4Beta();
   const capture = usePostHogClientCapture();
 
@@ -37,12 +39,12 @@ export function V4BetaSidebarToggle() {
             htmlFor="v4-beta-toggle"
             className="cursor-pointer text-sm font-normal group-data-[collapsible=icon]:hidden"
           >
-            v4 Beta
+            {t("navigation.v4Beta")}
           </Label>
         </div>
       </TooltipTrigger>
       <TooltipContent className="max-w-xs text-xs">
-        Toggle to use new events based v4 architecture.
+        {t("navigation.v4BetaTooltip")}
       </TooltipContent>
     </Tooltip>
   );

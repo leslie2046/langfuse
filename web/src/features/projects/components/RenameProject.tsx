@@ -19,8 +19,10 @@ import { LockIcon } from "lucide-react";
 import { useQueryProject } from "@/src/features/projects/hooks";
 import { useSession } from "next-auth/react";
 import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAccess";
+import { useTranslation } from "@/src/features/i18n";
 
 export default function RenameProject() {
+  const { t } = useTranslation();
   const { update: updateSession } = useSession();
   const { project } = useQueryProject();
   const capture = usePostHogClientCapture();
@@ -60,18 +62,18 @@ export default function RenameProject() {
 
   return (
     <div>
-      <Header title="Project Name" />
+      <Header title={t("settings.projectName.title")} />
       <Card className="mb-4 p-3">
         {form.getValues().name !== "" ? (
           <p className="mb-4 text-sm text-primary">
-            Your Project will be renamed from &quot;
+            {t("settings.projectName.willBeRenamed")} &quot;
             {project?.name ?? ""}
-            &quot; to &quot;
+            &quot; {t("settings.projectName.to")} &quot;
             <b>{form.watch().name}</b>&quot;.
           </p>
         ) : (
           <p className="mb-4 text-sm text-primary">
-            Your Project is currently named &quot;
+            {t("settings.projectName.currentName")} &quot;
             <b>{project?.name ?? ""}</b>
             &quot;.
           </p>
@@ -114,7 +116,7 @@ export default function RenameProject() {
                 disabled={form.getValues().name === "" || !hasAccess}
                 className="mt-4"
               >
-                Save
+                {t("common.save")}
               </Button>
             )}
           </form>

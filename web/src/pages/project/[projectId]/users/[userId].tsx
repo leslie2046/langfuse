@@ -13,6 +13,7 @@ import { LayoutDashboard } from "lucide-react";
 import Page from "@/src/components/layouts/page";
 import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
 import { ObservationsEventsTable } from "@/src/features/events/components";
+import { useTranslation } from "@/src/features/i18n";
 
 const tabs = ["Traces", "Sessions", "Scores"] as const;
 
@@ -21,6 +22,7 @@ export default function UserPage() {
   const userId = router.query.userId as string;
   const projectId = router.query.projectId as string;
   const { isBetaEnabled } = useV4Beta();
+  const { t } = useTranslation();
 
   const userV3 = api.users.byId.useQuery(
     {
@@ -72,8 +74,11 @@ export default function UserPage() {
     <Page
       headerProps={{
         title: userId,
-        breadcrumb: [{ name: "Users", href: `/project/${projectId}/users` }],
+        breadcrumb: [
+          { name: t("pages.users.title"), href: `/project/${projectId}/users` },
+        ],
         itemType: "USER",
+        itemTypeLabel: t("pages.scores.columns.user"),
         actionButtonsRight: (
           <>
             <ActionButton
@@ -81,7 +86,7 @@ export default function UserPage() {
               variant="secondary"
               icon={<LayoutDashboard className="h-4 w-4" />}
             >
-              Dashboard
+              {t("pages.users.stats.dashboard")}
             </ActionButton>
             <DetailPageNav
               currentId={encodeURIComponent(userId)}
@@ -98,27 +103,30 @@ export default function UserPage() {
         {user.data && (
           <div className="flex flex-wrap gap-2 px-4 py-4">
             <Badge variant="outline">
-              Observations:{" "}
+              {t("pages.users.stats.observations")}:{" "}
               {compactNumberFormatter(user.data.totalObservations)}
             </Badge>
             <Badge variant="outline">
-              Traces: {compactNumberFormatter(user.data.totalTraces)}
+              {t("pages.users.stats.traces")}:{" "}
+              {compactNumberFormatter(user.data.totalTraces)}
             </Badge>
             <Badge variant="outline">
-              Total Tokens: {compactNumberFormatter(user.data.totalTokens)}
+              {t("pages.users.stats.totalTokens")}:{" "}
+              {compactNumberFormatter(user.data.totalTokens)}
             </Badge>
             <Badge variant="outline">
               <span className="flex items-center gap-1">
-                Total Cost: {usdFormatter(user.data.sumCalculatedTotalCost)}
+                {t("pages.users.stats.totalCost")}:{" "}
+                {usdFormatter(user.data.sumCalculatedTotalCost)}
               </span>
             </Badge>
             <Badge variant="outline">
-              Active:{" "}
+              {t("pages.users.stats.active")}:{" "}
               {user.data.firstTrace
                 ? `${user.data.firstTrace.toLocaleString()} - ${user.data.lastTrace?.toLocaleString()}`
                 : isBetaEnabled
-                  ? "No activity yet"
-                  : "No traces yet"}
+                  ? t("pages.users.stats.noActivity")
+                  : t("pages.users.stats.noTraces")}
             </Badge>
           </div>
         )}
@@ -138,7 +146,9 @@ export default function UserPage() {
               onChange={(e) => handleTabChange(e.currentTarget.value)}
             >
               {tabs.map((tab) => (
-                <option key={tab}>{tab}</option>
+                <option key={tab}>
+                  {t(`pages.users.tabs.${tab.toLowerCase()}`)}
+                </option>
               ))}
             </select>
           </div>
@@ -157,7 +167,7 @@ export default function UserPage() {
                     aria-current={tab === currentTab ? "page" : undefined}
                     onClick={() => handleTabChange(tab)}
                   >
-                    {tab}
+                    {t(`pages.users.tabs.${tab.toLowerCase()}`)}
                   </button>
                 ))}
               </nav>

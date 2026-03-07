@@ -23,7 +23,9 @@ import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePos
 import { showErrorToast } from "@/src/features/notifications/showErrorToast";
 import { useRouter } from "next/router";
 import { getChartTypeDisplayName } from "@/src/features/widgets/chart-library/utils";
+
 import { type DashboardWidgetChartType } from "@langfuse/shared/src/db";
+import { useTranslation } from "@/src/features/i18n";
 
 type WidgetTableRow = {
   id: string;
@@ -46,6 +48,7 @@ export function DeleteWidget({
   const projectId = useProjectIdFromURL();
   const utils = api.useUtils();
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
   const hasAccess =
     useHasProjectAccess({ projectId, scope: "dashboards:CUD" }) &&
     owner !== "LANGFUSE";
@@ -59,11 +62,11 @@ export function DeleteWidget({
     onError: (error) => {
       if (error.data?.code === "CONFLICT") {
         showErrorToast(
-          "Widget in use",
-          "Widget is still in use. Please remove it from all dashboards before deleting it.",
+          t("dashboard.widgets.delete.inUseTitle"),
+          t("dashboard.widgets.delete.inUseDescription"),
         );
       } else {
-        showErrorToast("Failed to delete widget", error.message);
+        showErrorToast(t("dashboard.widgets.delete.error"), error.message);
       }
     },
   });
@@ -76,11 +79,11 @@ export function DeleteWidget({
         </Button>
       </PopoverTrigger>
       <PopoverContent>
-        <h2 className="text-md mb-3 font-semibold">Please confirm</h2>
+        <h2 className="text-md mb-3 font-semibold">
+          {t("dashboard.widgets.delete.confirmTitle")}
+        </h2>
         <p className="mb-3 text-sm">
-          This action permanently deletes this widget. If the widget is
-          currently used in any dashboard, you will need to remove it from those
-          dashboards first.
+          {t("dashboard.widgets.delete.confirmDescription")}
         </p>
         <div className="flex justify-end space-x-4">
           <Button
@@ -100,7 +103,7 @@ export function DeleteWidget({
               setIsOpen(false);
             }}
           >
-            Delete Widget
+            {t("dashboard.widgets.delete.button")}
           </Button>
         </div>
       </PopoverContent>
@@ -112,6 +115,7 @@ export function DashboardWidgetTable() {
   const projectId = useProjectIdFromURL();
   const { setDetailPageList } = useDetailPageLists();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const [orderByState, setOrderByState] = useOrderByState({
     column: "updatedAt",
@@ -152,7 +156,7 @@ export function DashboardWidgetTable() {
   const columnHelper = createColumnHelper<WidgetTableRow>();
   const widgetColumns = [
     columnHelper.accessor("name", {
-      header: "Name",
+      header: t("dashboard.widgets.table.name"),
       id: "name",
       enableSorting: true,
       size: 200,
@@ -167,7 +171,7 @@ export function DashboardWidgetTable() {
       },
     }),
     columnHelper.accessor("description", {
-      header: "Description",
+      header: t("dashboard.widgets.table.description"),
       id: "description",
       size: 300,
       cell: (row) => {
@@ -175,7 +179,7 @@ export function DashboardWidgetTable() {
       },
     }),
     columnHelper.accessor("view", {
-      header: "View Type",
+      header: t("dashboard.widgets.table.viewType"),
       id: "view",
       enableSorting: true,
       size: 100,
@@ -184,7 +188,7 @@ export function DashboardWidgetTable() {
       },
     }),
     columnHelper.accessor("chartType", {
-      header: "Chart Type",
+      header: t("dashboard.widgets.table.chartType"),
       id: "chartType",
       enableSorting: true,
       size: 100,
@@ -192,7 +196,7 @@ export function DashboardWidgetTable() {
         getChartTypeDisplayName(row.getValue() as DashboardWidgetChartType),
     }),
     columnHelper.accessor("createdAt", {
-      header: "Created At",
+      header: t("dashboard.widgets.table.createdAt"),
       id: "createdAt",
       enableSorting: true,
       size: 150,
@@ -202,7 +206,7 @@ export function DashboardWidgetTable() {
       },
     }),
     columnHelper.accessor("updatedAt", {
-      header: "Updated At",
+      header: t("dashboard.widgets.table.updatedAt"),
       id: "updatedAt",
       enableSorting: true,
       size: 150,
@@ -213,7 +217,7 @@ export function DashboardWidgetTable() {
     }),
     columnHelper.display({
       id: "actions",
-      header: "Actions",
+      header: t("dashboard.widgets.table.actions"),
       size: 70,
       cell: (row) => {
         const id = row.row.original.id;

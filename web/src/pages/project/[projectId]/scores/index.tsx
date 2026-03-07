@@ -7,10 +7,12 @@ import {
   getScoresTabs,
   SCORES_TABS,
 } from "@/src/features/navigation/utils/scores-tabs";
+import { useTranslation } from "@/src/features/i18n";
 
 export default function ScoresPage() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
+  const { t } = useTranslation();
 
   // Check if the user has any scores
   const { data: hasAnyScore, isLoading } = api.scores.hasAny.useQuery(
@@ -31,14 +33,13 @@ export default function ScoresPage() {
   return (
     <Page
       headerProps={{
-        title: "Scores",
+        title: t("pages.scores.title"),
         help: {
-          description:
-            "A scores is an evaluation of a traces or observations. It can be created from user feedback, model-based evaluations, or manual review. See docs to learn more.",
+          description: t("pages.scores.helpDescription"),
           href: "https://langfuse.com/docs/evaluation/overview",
         },
         tabsProps: {
-          tabs: getScoresTabs(projectId),
+          tabs: getScoresTabs(projectId, t),
           activeTab: SCORES_TABS.SCORES,
         },
       }}

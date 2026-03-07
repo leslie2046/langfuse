@@ -26,6 +26,7 @@ import Link from "next/link";
 import { ErrorPage } from "@/src/components/error-page";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import { passwordSchema } from "@/src/features/auth/lib/signupSchema";
+import { useTranslation } from "@/src/features/i18n";
 
 const resetPasswordSchema = z
   .object({
@@ -51,6 +52,7 @@ export function ResetPasswordPage({
     useState(false);
 
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
 
   const mutResetPassword = api.credentials.resetPassword.useMutation();
   const emailVerified = isEmailVerifiedWithinCutoff(
@@ -89,7 +91,7 @@ export function ResetPasswordPage({
           setFormError(error.message);
         } else {
           console.error(error);
-          setFormError("An unknown error occurred");
+          setFormError(t("errors.unknownError"));
         }
       });
   }
@@ -97,10 +99,10 @@ export function ResetPasswordPage({
   if (!passwordResetAvailable)
     return (
       <ErrorPage
-        title="Not available"
-        message="Password reset is not configured on this instance"
+        title={t("errors.notAvailable")}
+        message={t("errors.passwordResetNotConfigured")}
         additionalButton={{
-          label: "Setup instructions",
+          label: t("auth.setupInstructions"),
           href: "https://langfuse.com/self-hosting/security/authentication-and-sso#auth-email-password",
         }}
       />
@@ -109,7 +111,7 @@ export function ResetPasswordPage({
   return (
     <>
       <Head>
-        <title>Reset Password | Langfuse</title>
+        <title>{t("auth.resetPasswordTitle")} | Langfuse</title>
       </Head>
       <div className="flex flex-1 flex-col py-6 sm:min-h-full sm:justify-center sm:px-6 sm:py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -117,14 +119,14 @@ export function ResetPasswordPage({
             <LangfuseIcon className="mx-auto" />
           </Link>
           <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-primary">
-            Reset your password
+            {t("auth.resetPasswordTitle")}
           </h2>
           {session.status !== "authenticated" && (
             <div className="mt-2 flex justify-center">
               <Button asChild variant="ghost">
                 <Link href="/auth/sign-in">
                   <ArrowLeft className="mr-2 h-3 w-3" />
-                  Back to sign in
+                  {t("auth.backToSignIn")}
                 </Link>
               </Button>
             </div>
@@ -143,7 +145,7 @@ export function ResetPasswordPage({
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t("common.email")}</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
@@ -171,7 +173,7 @@ export function ResetPasswordPage({
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>New Password</FormLabel>
+                          <FormLabel>{t("auth.newPassword")}</FormLabel>
                           <FormControl>
                             <PasswordInput
                               autoComplete="new-password"
@@ -187,7 +189,7 @@ export function ResetPasswordPage({
                       name="confirmPassword"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Confirm New Password</FormLabel>
+                          <FormLabel>{t("auth.confirmNewPassword")}</FormLabel>
                           <FormControl>
                             <PasswordInput
                               autoComplete="new-password"
@@ -211,7 +213,7 @@ export function ResetPasswordPage({
                         showResetPasswordEmailButton ? "secondary" : "default"
                       }
                     >
-                      Update Password
+                      {t("auth.updatePassword")}
                     </Button>
                   ) : (
                     <RequestResetPasswordEmailButton
@@ -229,7 +231,7 @@ export function ResetPasswordPage({
             ) : null}
             {isSuccess && (
               <div className="text-center text-sm font-medium">
-                Password successfully updated. Redirecting ...
+                {t("auth.passwordUpdatedRedirecting")}
               </div>
             )}
             {showResetPasswordEmailButton && (
@@ -242,11 +244,9 @@ export function ResetPasswordPage({
         </div>
         {session.status !== "authenticated" && (
           <div className="mx-auto mt-10 max-w-lg text-center text-xs text-muted-foreground">
-            You will only receive an email if an account with this email exists
-            and you have signed up with email and password. If you used an
-            authentication provider like Google, Gitlab, Okta, or GitHub, please{" "}
+            {t("auth.resetPasswordEmailNote")}{" "}
             <Link href="/auth/sign-in" className="underline">
-              sign in
+              {t("common.signIn")}
             </Link>
             .
           </div>

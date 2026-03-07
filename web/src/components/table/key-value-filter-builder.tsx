@@ -69,13 +69,16 @@ const STRING_OPERATOR_LABELS = {
   "does not contain": "does not contain",
 } as const;
 
+import { useTranslation } from "@/src/features/i18n";
+
 export function KeyValueFilterBuilder(props: KeyValueFilterBuilderProps) {
+  const { t } = useTranslation();
   const {
     mode,
     keyOptions,
     activeFilters,
     onChange,
-    keyPlaceholder = "Key",
+    keyPlaceholder = t("common.filters.keyPlaceholder") || "Key",
   } = props;
   const availableValues = mode === "categorical" ? props.availableValues : {};
 
@@ -400,7 +403,7 @@ export function KeyValueFilterBuilder(props: KeyValueFilterBuilderProps) {
         className="w-full"
       >
         <Plus className="mr-2 h-4 w-4" />
-        Add filter
+        {t("common.filters.addFilter")}
       </Button>
     </div>
   );

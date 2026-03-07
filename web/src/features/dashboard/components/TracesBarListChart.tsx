@@ -5,7 +5,12 @@ import { DashboardCard } from "@/src/features/dashboard/components/cards/Dashboa
 import { TotalMetric } from "@/src/features/dashboard/components/TotalMetric";
 import { compactNumberFormatter, numberFormatter } from "@/src/utils/numbers";
 import { NoDataOrLoading } from "@/src/components/NoDataOrLoading";
-import { type QueryType, type ViewVersion } from "@/src/features/query";
+import {
+  type QueryType,
+  type ViewVersion,
+  mapLegacyUiTableFilterToView,
+} from "@/src/features/query";
+import { useTranslation } from "@/src/features/i18n";
 import { Chart } from "@/src/features/widgets/chart-library/Chart";
 import { barListToDataPoints } from "@/src/features/dashboard/lib/chart-data-adapters";
 import { traceViewQuery } from "@/src/features/dashboard/lib/dashboard-utils";
@@ -30,6 +35,7 @@ export const TracesBarListChart = ({
   metricsVersion?: ViewVersion;
   schedulerId?: string;
 }) => {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const isV2 = metricsVersion === "v2";
@@ -119,7 +125,7 @@ export const TracesBarListChart = ({
   return (
     <DashboardCard
       className={className}
-      title={"Traces"}
+      title={t("dashboard.traces")}
       description={null}
       isLoading={isLoading || traces.isPending || totalTraces.isPending}
     >
@@ -130,7 +136,7 @@ export const TracesBarListChart = ({
               ? Number(totalTraces.data[0][countField])
               : 0,
           )}
-          description={"Total traces tracked"}
+          description={t("dashboard.totalTracesTracked")}
         />
         {adjustedData.length > 0 ? (
           <div
@@ -159,7 +165,7 @@ export const TracesBarListChart = ({
         ) : (
           <NoDataOrLoading
             isLoading={isLoading || traces.isPending || totalTraces.isPending}
-            description="Traces contain details about LLM applications and can be created using the SDK."
+            description={t("dashboard.emptyState.traces")}
             href="https://langfuse.com/docs/get-started"
           />
         )}
@@ -170,8 +176,8 @@ export const TracesBarListChart = ({
           maxLength={maxNumberOfEntries.collapsed}
           expandText={
             transformedTraces.length > maxNumberOfEntries.expanded
-              ? `Show top ${maxNumberOfEntries.expanded}`
-              : "Show all"
+              ? `${t("dashboard.showTop")} ${maxNumberOfEntries.expanded}`
+              : t("dashboard.showAll")
           }
         />
       </>

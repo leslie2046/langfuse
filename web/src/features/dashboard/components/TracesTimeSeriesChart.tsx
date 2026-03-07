@@ -14,6 +14,7 @@ import {
   type ViewVersion,
   mapLegacyUiTableFilterToView,
 } from "@/src/features/query";
+import { useTranslation } from "@/src/features/i18n";
 import { Chart } from "@/src/features/widgets/chart-library/Chart";
 import { timeSeriesToDataPoints } from "@/src/features/dashboard/lib/chart-data-adapters";
 import { useScheduledDashboardExecuteQuery } from "@/src/hooks/useDashboardQueryScheduler";
@@ -39,6 +40,7 @@ export const TracesAndObservationsTimeSeriesChart = ({
   metricsVersion?: ViewVersion;
   schedulerId?: string;
 }) => {
+  const { t } = useTranslation();
   const isV2 = metricsVersion === "v2";
 
   const tracesQuery: QueryType = {
@@ -78,7 +80,7 @@ export const TracesAndObservationsTimeSeriesChart = ({
           ts: new Date(item.time_dimension as any).getTime(),
           values: [
             {
-              label: "Traces",
+              label: t("dashboard.charts.traces"),
               value: Number(item.count_count),
             },
           ],
@@ -156,31 +158,35 @@ export const TracesAndObservationsTimeSeriesChart = ({
   const data = isV2
     ? [
         {
-          tabTitle: "Observations by Level",
+          tabTitle: t("dashboard.charts.observationsByLevel"),
           data: transformedObservations,
           totalMetric: totalObservations,
-          metricDescription: `Observations tracked`,
+          metricDescription: t("dashboard.charts.observationsTracked"),
         },
       ]
     : [
         {
-          tabTitle: "Traces",
+          tabTitle: t("dashboard.charts.traces"),
           data: transformedTraces,
           totalMetric: total,
-          metricDescription: `Traces tracked`,
+          metricDescription: t("dashboard.charts.tracesTracked"),
         },
         {
-          tabTitle: "Observations by Level",
+          tabTitle: t("dashboard.charts.observationsByLevel"),
           data: transformedObservations,
           totalMetric: totalObservations,
-          metricDescription: `Observations tracked`,
+          metricDescription: t("dashboard.charts.observationsTracked"),
         },
       ];
 
   return (
     <DashboardCard
       className={className}
-      title={isV2 ? "Observations by time" : "Traces by time"}
+      title={
+        isV2
+          ? t("dashboard.charts.observationsByTime")
+          : t("dashboard.charts.tracesByTime")
+      }
       isLoading={
         isLoading || observations.isPending || (!isV2 && traces.isPending)
       }

@@ -1,4 +1,5 @@
 import { PrettyJsonView } from "@/src/components/ui/PrettyJsonView";
+import { useTranslation } from "@/src/features/i18n";
 import {
   AnnotationQueueObjectType,
   type ScoreDomain,
@@ -82,6 +83,7 @@ export const ObservationPreview = ({
   const [currentView, setCurrentView] = useLocalStorage<
     "pretty" | "json" | "json-beta"
   >("jsonViewPreference", "pretty");
+  const { t } = useTranslation();
   const {
     jsonBetaEnabled,
     selectedViewTab,
@@ -271,7 +273,7 @@ export const ObservationPreview = ({
                 <Fragment>
                   {preloadedObservation.endTime ? (
                     <Badge variant="tertiary">
-                      Latency:{" "}
+                      {t("traceDetail.latency")}:{" "}
                       {formatIntervalSeconds(
                         (preloadedObservation.endTime.getTime() -
                           preloadedObservation.startTime.getTime()) /
@@ -282,7 +284,7 @@ export const ObservationPreview = ({
 
                   {preloadedObservation.timeToFirstToken ? (
                     <Badge variant="tertiary">
-                      Time to first token:{" "}
+                      {t("traceDetail.timeToFirstToken")}:{" "}
                       {formatIntervalSeconds(
                         preloadedObservation.timeToFirstToken,
                       )}
@@ -358,7 +360,7 @@ export const ObservationPreview = ({
                     })()}
                   {preloadedObservation.version ? (
                     <Badge variant="tertiary">
-                      Version: {preloadedObservation.version}
+                      {t("traceDetail.version")}: {preloadedObservation.version}
                     </Badge>
                   ) : undefined}
                   {preloadedObservation.model ? (
@@ -450,9 +452,13 @@ export const ObservationPreview = ({
         >
           {viewType === "detailed" && (
             <TabsBarList>
-              <TabsBarTrigger value="preview">Preview</TabsBarTrigger>
+              <TabsBarTrigger value="preview">
+                {t("traceDetail.preview")}
+              </TabsBarTrigger>
               {showScoresTab && (
-                <TabsBarTrigger value="scores">Scores</TabsBarTrigger>
+                <TabsBarTrigger value="scores">
+                  {t("traceDetail.scores")}
+                </TabsBarTrigger>
               )}
               {selectedTab.includes("preview") && isPrettyViewAvailable && (
                 <>
@@ -469,10 +475,10 @@ export const ObservationPreview = ({
                         value="pretty"
                         className="h-fit px-1 text-xs"
                       >
-                        Formatted
+                        {t("traceDetail.formatted")}
                       </TabsTrigger>
                       <TabsTrigger value="json" className="h-fit px-1 text-xs">
-                        JSON
+                        {t("traceDetail.json")}
                       </TabsTrigger>
                     </TabsList>
                   </Tabs>
@@ -553,7 +559,7 @@ export const ObservationPreview = ({
                 {preloadedObservation.statusMessage && (
                   <PrettyJsonView
                     key={preloadedObservation.id + "-status"}
-                    title="Status Message"
+                    title={t("traceDetail.statusMessage")}
                     json={preloadedObservation.statusMessage}
                     currentView={
                       currentView === "json-beta" ? "pretty" : currentView
@@ -565,7 +571,7 @@ export const ObservationPreview = ({
                 {observationWithIO?.metadata && (
                   <PrettyJsonView
                     key={observationWithIO.id + "-metadata"}
-                    title="Metadata"
+                    title={t("traceDetail.metadata")}
                     json={observationWithIO.metadata}
                     media={observationMedia.data?.filter(
                       (m) => m.field === "metadata",

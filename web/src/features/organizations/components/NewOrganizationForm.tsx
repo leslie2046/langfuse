@@ -26,6 +26,7 @@ import { organizationFormSchema } from "@/src/features/organizations/utils/organ
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import { SurveyName } from "@prisma/client";
 import { useLangfuseCloudRegion } from "@/src/features/organizations/hooks";
+import { useTranslation } from "@/src/features/i18n";
 
 export const NewOrganizationForm = ({
   onSuccess,
@@ -33,6 +34,7 @@ export const NewOrganizationForm = ({
   onSuccess: (orgId: string) => void;
 }) => {
   const { update: updateSession } = useSession();
+  const { t } = useTranslation();
 
   const form = useForm({
     resolver: zodResolver(organizationFormSchema),
@@ -112,10 +114,10 @@ export const NewOrganizationForm = ({
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Organization name</FormLabel>
+              <FormLabel>{t("setup.newOrganization.nameLabel")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="my-org"
+                  placeholder={t("setup.newOrganization.namePlaceholder")}
                   {...field}
                   data-testid="new-org-name-input"
                 />
@@ -188,7 +190,7 @@ export const NewOrganizationForm = ({
           </>
         )}
         <Button type="submit" loading={createOrgMutation.isPending}>
-          Create
+          {t("setup.newOrganization.create")}
         </Button>
       </form>
     </Form>

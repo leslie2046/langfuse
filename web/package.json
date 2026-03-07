@@ -7,8 +7,8 @@
     "node": "24"
   },
   "scripts": {
-    "build": "INLINE_RUNTIME_CHUNK=false dotenv -e ../.env -- next build",
-    "build:check": "NEXT_DIST_DIR=.next-check INLINE_RUNTIME_CHUNK=false dotenv -e ../.env -- next build",
+    "build": "cross-env INLINE_RUNTIME_CHUNK=false dotenv -e ../.env -- next build",
+    "build:check": "cross-env NEXT_DIST_DIR=.next-check INLINE_RUNTIME_CHUNK=false dotenv -e ../.env -- next build",
     "typecheck": "dotenv -e ../.env -- tsgo -p tsconfig.build.json --noEmit --skipLibCheck --incremental --tsBuildInfoFile .tsbuildinfo",
     "dev": "dotenv -e ../.env -- next dev --turbopack",
     "dev:http": "dotenv -e ../.env -- next dev --experimental-https --experimental-https-key ./localhost+1-key.pem --experimental-https-cert ./localhost+1.pem",

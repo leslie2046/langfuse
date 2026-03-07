@@ -29,6 +29,7 @@ import { useFolderPagination } from "@/src/features/folders/hooks/useFolderPagin
 import { buildFullPath } from "@/src/features/folders/utils";
 import { FolderBreadcrumb } from "@/src/features/folders/components/FolderBreadcrumb";
 import { FolderBreadcrumbLink } from "@/src/features/folders/components/FolderBreadcrumbLink";
+import { useTranslation } from "@/src/features/i18n";
 
 type PromptTableRow = {
   id: string;
@@ -63,6 +64,7 @@ function createRow(
 export function PromptTable() {
   const projectId = useProjectIdFromURL();
   const { setDetailPageList } = useDetailPageLists();
+  const { t } = useTranslation();
 
   const [filterState] = useQueryFilterState([], "prompts", projectId);
 
@@ -112,7 +114,7 @@ export function PromptTable() {
     {
       projectId: projectId as string,
       promptNames:
-        prompts.data?.prompts.map((p) =>
+        prompts.data?.prompts.map((p: any) =>
           buildFullPath(currentFolderPath, p.name),
         ) ?? [],
     },
@@ -133,11 +135,11 @@ export function PromptTable() {
   type MetricType = Omit<MetricsOutput, "promptName"> & { id: string };
 
   const promptsRowData = joinTableCoreAndMetrics<CoreType, MetricType>(
-    prompts.data?.prompts.map((p) => ({
+    prompts.data?.prompts.map((p: any) => ({
       ...p,
       id: buildFullPath(currentFolderPath, p.name),
     })),
-    promptMetrics.data?.map((pm) => ({
+    promptMetrics.data?.map((pm: any) => ({
       ...pm,
       id: pm.promptName,
     })),
@@ -198,14 +200,14 @@ export function PromptTable() {
     },
   );
   const filterOptionTags = promptFilterOptions.data?.tags ?? [];
-  const allTags = filterOptionTags.map((t) => t.value);
+  const allTags = filterOptionTags.map((tag: any) => tag.value);
   const totalCount = prompts.data?.totalCount ?? null;
 
   const newFilterOptions = useMemo(
     () => ({
       type: ["text", "chat"],
       labels:
-        promptFilterOptions.data?.labels?.map((l) => {
+        promptFilterOptions.data?.labels?.map((l: any) => {
           // API type says { value: string }[], but for some items, there is an optional count
           const item = l as { value: string; count?: number };
           return {
@@ -214,9 +216,9 @@ export function PromptTable() {
           };
         }) ?? undefined,
       tags:
-        promptFilterOptions.data?.tags?.map((t) => {
+        promptFilterOptions.data?.tags?.map((tag: any) => {
           // API type says { value: string }[], but for some items, there is an optional count
-          const item = t as { value: string; count?: number };
+          const item = tag as { value: string; count?: number };
           return {
             value: item.value,
             count: item.count !== undefined ? Number(item.count) : undefined,
@@ -240,7 +242,7 @@ export function PromptTable() {
     if (prompts.isSuccess) {
       setDetailPageList(
         "prompts",
-        prompts.data.prompts.map((t) => ({ id: t.name })),
+        prompts.data.prompts.map((p: any) => ({ id: p.name })),
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -249,7 +251,7 @@ export function PromptTable() {
   const columnHelper = createColumnHelper<PromptTableRow>();
   const promptColumns = [
     columnHelper.accessor("name", {
-      header: "Name",
+      header: t("prompts.table.name"),
       id: "name",
       enableSorting: true,
       size: 250,
@@ -276,7 +278,7 @@ export function PromptTable() {
       },
     }),
     columnHelper.accessor("version", {
-      header: "Versions",
+      header: t("prompts.table.versions"),
       id: "version",
       enableSorting: true,
       size: 70,
@@ -286,7 +288,7 @@ export function PromptTable() {
       },
     }),
     columnHelper.accessor("type", {
-      header: "Type",
+      header: t("prompts.table.type"),
       id: "type",
       enableSorting: true,
       size: 60,
@@ -295,7 +297,7 @@ export function PromptTable() {
       },
     }),
     columnHelper.accessor("createdAt", {
-      header: "Latest Version Created At",
+      header: t("prompts.table.latestVersionCreatedAt"),
       id: "createdAt",
       enableSorting: true,
       size: 200,
@@ -306,7 +308,7 @@ export function PromptTable() {
       },
     }),
     columnHelper.accessor("numberOfObservations", {
-      header: "Number of Observations",
+      header: t("prompts.table.numberOfObservations"),
       size: 170,
       cell: (row) => {
         if (row.row.original.type === "folder") return null;
@@ -328,7 +330,7 @@ export function PromptTable() {
       },
     }),
     columnHelper.accessor("tags", {
-      header: "Tags",
+      header: t("prompts.table.tags"),
       id: "tags",
       enableSorting: true,
       size: 120,
@@ -358,7 +360,7 @@ export function PromptTable() {
     }),
     columnHelper.display({
       id: "actions",
-      header: "Actions",
+      header: t("prompts.table.actions"),
       size: 70,
       cell: (row) => {
         const rowData = row.row.original;
@@ -397,8 +399,8 @@ export function PromptTable() {
             setSearchType,
             searchType,
             customDropdownLabels: {
-              metadata: "Names, Tags",
-              fullText: "Full Text",
+              metadata: t("prompts.search.namesTags"),
+              fullText: t("prompts.search.fullText"),
             },
             hidePerformanceWarning: true,
           }}

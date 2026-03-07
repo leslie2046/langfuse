@@ -30,6 +30,7 @@ import {
   convertSelectedEnvironmentsToFilter,
 } from "@/src/hooks/useEnvironmentFilter";
 import { Badge } from "@/src/components/ui/badge";
+import { useTranslation } from "@/src/features/i18n";
 
 type RowData = {
   userId: string;
@@ -45,6 +46,7 @@ export default function UsersPage() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
   const { isBetaEnabled } = useV4Beta();
+  const { t } = useTranslation();
 
   // Check if the user has any users
   const { data: hasAnyUser, isLoading } = api.users.hasAny.useQuery(
@@ -81,24 +83,9 @@ export default function UsersPage() {
   return (
     <Page
       headerProps={{
-        title: "Users",
+        title: t("pages.users.title"),
         help: {
-          description: (
-            <>
-              Attribute data in Langfuse to a user by adding a userId to your
-              traces. See{" "}
-              <a
-                href="https://langfuse.com/docs/observability/features/users"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline decoration-primary/30 hover:decoration-primary"
-                onClick={(e) => e.stopPropagation()}
-              >
-                docs
-              </a>{" "}
-              to learn more.
-            </>
-          ),
+          description: t("pages.users.helpDescription"),
           href: "https://langfuse.com/docs/observability/features/users",
         },
       }}
@@ -117,6 +104,7 @@ export default function UsersPage() {
 const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
   const router = useRouter();
   const projectId = router.query.projectId as string;
+  const { t } = useTranslation();
 
   const [userFilterState, setUserFilterState] = useQueryFilterState(
     [],
@@ -185,6 +173,13 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     dateRangeFilter,
     environmentFilter,
   );
+
+  const userFilterColumns = useMemo(() => {
+    return usersTableCols.map((column) => ({
+      ...column,
+      name: column.id,
+    }));
+  }, []);
 
   const [searchQuery, setSearchQuery] = useQueryParam(
     "search",
@@ -284,10 +279,9 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     {
       accessorKey: "userId",
       enableColumnFilter: true,
-      header: "User ID",
+      header: t("pages.users.columns.userId"),
       headerTooltip: {
-        description:
-          "The unique identifier for the user that was logged in Langfuse. See docs for more details on how to set this up.",
+        description: t("pages.users.columns.userIdTooltip"),
         href: "https://langfuse.com/docs/observability/features/users",
       },
       size: 150,
@@ -305,7 +299,7 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     },
     {
       accessorKey: "environment",
-      header: "Environment",
+      header: t("pages.users.columns.environment"),
       id: "environment",
       size: 150,
       enableHiding: true,
@@ -323,9 +317,9 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     },
     {
       accessorKey: "firstEvent",
-      header: "First Event",
+      header: t("pages.users.columns.firstEvent"),
       headerTooltip: {
-        description: "The earliest trace recorded for this user.",
+        description: t("pages.users.columns.firstEventTooltip"),
       },
       size: 150,
       cell: ({ row }) => {
@@ -338,9 +332,9 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     },
     {
       accessorKey: "lastEvent",
-      header: "Last Event",
+      header: t("pages.users.columns.lastEvent"),
       headerTooltip: {
-        description: "The latest trace recorded for this user.",
+        description: t("pages.users.columns.lastEventTooltip"),
       },
       size: 150,
       cell: ({ row }) => {
@@ -353,10 +347,9 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     },
     {
       accessorKey: "totalEvents",
-      header: "Total Events",
+      header: t("pages.users.columns.totalEvents"),
       headerTooltip: {
-        description:
-          "Total number of events for the user, includes traces and observations. See data model for more details.",
+        description: t("pages.users.columns.totalEventsTooltip"),
         href: "https://langfuse.com/docs/observability/data-model",
       },
       size: 120,
@@ -370,10 +363,9 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     },
     {
       accessorKey: "totalTokens",
-      header: "Total Tokens",
+      header: t("pages.users.columns.totalTokens"),
       headerTooltip: {
-        description:
-          "Total number of tokens used for the user across all generations.",
+        description: t("pages.users.columns.totalTokensTooltip"),
         href: "https://langfuse.com/docs/model-usage-and-cost",
       },
       size: 120,
@@ -387,9 +379,9 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
     },
     {
       accessorKey: "totalCost",
-      header: "Total Cost",
+      header: t("pages.users.columns.totalCost"),
       headerTooltip: {
-        description: "Total cost for the user across all generations.",
+        description: t("pages.users.columns.totalCostTooltip"),
         href: "https://langfuse.com/docs/model-usage-and-cost",
       },
       size: 120,
@@ -406,14 +398,14 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
   return (
     <>
       <DataTableToolbar
-        filterColumnDefinition={usersTableCols}
+        filterColumnDefinition={userFilterColumns}
         filterState={userFilterState}
         setFilterState={useDebounce(setUserFilterState)}
         columns={columns}
         timeRange={timeRange}
         setTimeRange={setTimeRange}
         searchConfig={{
-          metadataSearchFields: ["User ID"],
+          metadataSearchFields: [t("pages.users.columns.userId")],
           updateQuery: setSearchQuery,
           currentQuery: searchQuery ?? undefined,
           tableAllowsFullTextSearch: false,
@@ -441,23 +433,25 @@ const UsersTable = ({ isBetaEnabled }: { isBetaEnabled: boolean }) => {
               : {
                   isLoading: false,
                   isError: false,
-                  data: userRowData.rows?.map((t) => {
+                  data: userRowData.rows?.map((row) => {
                     return {
-                      userId: t.id,
-                      environment: t.environment ?? undefined,
+                      userId: row.id,
+                      environment: row.environment ?? undefined,
                       firstEvent:
-                        t.firstTrace?.toLocaleString() ?? "No event yet",
+                        row.firstTrace?.toLocaleString() ??
+                        t("pages.users.columns.noEventYet"),
                       lastEvent:
-                        t.lastTrace?.toLocaleString() ?? "No event yet",
+                        row.lastTrace?.toLocaleString() ??
+                        t("pages.users.columns.noEventYet"),
                       totalEvents: compactNumberFormatter(
                         isBetaEnabled
-                          ? Number(t.totalObservations ?? 0)
-                          : Number(t.totalTraces ?? 0) +
-                              Number(t.totalObservations ?? 0),
+                          ? Number(row.totalObservations ?? 0)
+                          : Number(row.totalTraces ?? 0) +
+                              Number(row.totalObservations ?? 0),
                       ),
-                      totalTokens: compactNumberFormatter(t.totalTokens ?? 0),
+                      totalTokens: compactNumberFormatter(row.totalTokens ?? 0),
                       totalCost: usdFormatter(
-                        t.sumCalculatedTotalCost ?? 0,
+                        row.sumCalculatedTotalCost ?? 0,
                         2,
                         2,
                       ),

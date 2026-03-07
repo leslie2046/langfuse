@@ -22,6 +22,7 @@ import { useCallback } from "react";
 import { TraceSettingsDropdown } from "../TraceSettingsDropdown";
 import { downloadTraceAsJson } from "../../lib/download-trace";
 import { TracePanelNavigationButton } from "./TracePanelNavigationButton";
+import { useTranslation } from "@/src/features/i18n";
 
 interface TracePanelNavigationHeaderProps {
   isPanelCollapsed: boolean;
@@ -61,6 +62,7 @@ function TracePanelNavigationHeaderExpanded({
 }: TracePanelNavigationHeaderProps) {
   const { searchInputValue, setSearchInputValue, setSearchQueryImmediate } =
     useSearch();
+  const { t } = useTranslation();
   const { expandAll, collapseAll, collapsedNodes } = useSelection();
   const { roots, trace, observations } = useTraceData();
   const { isGraphViewAvailable } = useTraceGraphData();
@@ -119,7 +121,7 @@ function TracePanelNavigationHeaderExpanded({
         <div className="relative flex-1">
           <CommandInput
             showBorder={false}
-            placeholder="Search"
+            placeholder={t("common.search")}
             className="h-7 min-w-20 border-0 pr-0 focus:ring-0"
             value={searchInputValue}
             onValueChange={setSearchInputValue}
@@ -166,7 +168,7 @@ function TracePanelNavigationHeaderExpanded({
               isTimelineView && "bg-primary text-primary-foreground",
             )}
           >
-            <span className="text-xs">Timeline</span>
+            <span className="text-xs">{t("pages.traceDetail.timeline")}</span>
           </Button>
         </div>
       </div>

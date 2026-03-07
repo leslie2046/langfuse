@@ -1782,18 +1782,10 @@
               "rain_sum": "mm"
             },
             "daily": {
-              "time": [
-                "2025-08-01"
-              ],
-              "temperature_2m_max": [
-                29
-              ],
-              "temperature_2m_min": [
-                20.6
-              ],
-              "rain_sum": [
-                0
-              ]
+              "time": ["2025-08-01"],
+              "temperature_2m_max": [29],
+              "temperature_2m_min": [20.6],
+              "rain_sum": [0]
             }
           },
           "output.mime_type": "application/json",
@@ -1872,18 +1864,10 @@
           "rain_sum": "mm"
         },
         "daily": {
-          "time": [
-            "2025-08-01"
-          ],
-          "temperature_2m_max": [
-            29
-          ],
-          "temperature_2m_min": [
-            20.6
-          ],
-          "rain_sum": [
-            0
-          ]
+          "time": ["2025-08-01"],
+          "temperature_2m_max": [29],
+          "temperature_2m_min": [20.6],
+          "rain_sum": [0]
         }
       }
     },
@@ -2387,18 +2371,10 @@
               "rain_sum": "mm"
             },
             "daily": {
-              "time": [
-                "2025-08-01"
-              ],
-              "temperature_2m_max": [
-                29
-              ],
-              "temperature_2m_min": [
-                20.6
-              ],
-              "rain_sum": [
-                0
-              ]
+              "time": ["2025-08-01"],
+              "temperature_2m_max": [29],
+              "temperature_2m_min": [20.6],
+              "rain_sum": [0]
             }
           },
           "output.mime_type": "application/json",
@@ -2477,18 +2453,10 @@
           "rain_sum": "mm"
         },
         "daily": {
-          "time": [
-            "2025-08-01"
-          ],
-          "temperature_2m_max": [
-            29
-          ],
-          "temperature_2m_min": [
-            20.6
-          ],
-          "rain_sum": [
-            0
-          ]
+          "time": ["2025-08-01"],
+          "temperature_2m_max": [29],
+          "temperature_2m_min": [20.6],
+          "rain_sum": [0]
         }
       }
     },

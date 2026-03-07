@@ -6,14 +6,7 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { type ObjectType } from "@/src/features/score-analytics/lib/analytics-url-state";
-
-const OBJECT_TYPE_OPTIONS: Array<{ value: ObjectType; label: string }> = [
-  { value: "all", label: "All Objects" },
-  { value: "trace", label: "Traces" },
-  { value: "session", label: "Sessions" },
-  { value: "observation", label: "Observations" },
-  { value: "dataset_run", label: "Dataset Runs" },
-];
+import { useTranslation } from "@/src/features/i18n";
 
 interface ObjectTypeFilterProps {
   value: ObjectType;
@@ -26,13 +19,34 @@ export function ObjectTypeFilter({
   onChange,
   className,
 }: ObjectTypeFilterProps) {
+  const { t } = useTranslation();
+
+  const options: Array<{ value: ObjectType; label: string }> = [
+    { value: "all", label: t("dashboard.scoresAnalytics.objectType.all") },
+    { value: "trace", label: t("dashboard.scoresAnalytics.objectType.trace") },
+    {
+      value: "session",
+      label: t("dashboard.scoresAnalytics.objectType.session"),
+    },
+    {
+      value: "observation",
+      label: t("dashboard.scoresAnalytics.objectType.observation"),
+    },
+    {
+      value: "dataset_run",
+      label: t("dashboard.scoresAnalytics.objectType.dataset_run"),
+    },
+  ];
+
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className={className} aria-label="Object type">
-        <SelectValue placeholder="Object type" />
+        <SelectValue
+          placeholder={t("dashboard.scoresAnalytics.objectType.prompt")}
+        />
       </SelectTrigger>
       <SelectContent>
-        {OBJECT_TYPE_OPTIONS.map((option) => (
+        {options.map((option) => (
           <SelectItem key={option.value} value={option.value}>
             {option.label}
           </SelectItem>

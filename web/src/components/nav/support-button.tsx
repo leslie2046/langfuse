@@ -1,10 +1,12 @@
 import { LifeBuoy } from "lucide-react";
 import { SidebarMenuButton, useSidebar } from "@/src/components/ui/sidebar";
 import { useSupportDrawer } from "@/src/features/support-chat/SupportDrawerProvider";
+import { useTranslation } from "@/src/features/i18n";
 
 export const SupportButton = () => {
   const { setOpen: setSupportDrawerOpen } = useSupportDrawer();
   const { isMobile, setOpenMobile: setOpenMobileSidebar } = useSidebar();
+  const { t } = useTranslation();
 
   return (
     <SidebarMenuButton
@@ -19,7 +21,7 @@ export const SupportButton = () => {
       }}
     >
       <LifeBuoy className="h-4 w-4" />
-      Support
+      {t("navigation.support")}
     </SidebarMenuButton>
   );
 };

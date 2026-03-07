@@ -71,6 +71,7 @@ import {
   type VisibilityState,
   type ColumnOrderState,
 } from "@tanstack/react-table";
+import { useTranslation } from "@/src/features/i18n";
 
 // some projects have thousands of users in a session, paginate to avoid rendering all at once
 const INITIAL_USERS_DISPLAY_COUNT = 10;
@@ -133,6 +134,7 @@ export function SessionUsers({
   users?: string[];
 }) {
   const [page, setPage] = useState(0);
+  const { t } = useTranslation();
 
   if (!users) return null;
 
@@ -149,7 +151,9 @@ export function SessionUsers({
           rel="noopener noreferrer"
         >
           <Badge className="max-w-[300px]">
-            <span className="truncate">User ID: {userId}</span>
+            <span className="truncate">
+              {t("session.userId")}: {userId}
+            </span>
             <ExternalLinkIcon className="ml-1 h-3 w-3" />
           </Badge>
         </Link>
@@ -159,11 +163,16 @@ export function SessionUsers({
         <Popover modal>
           <PopoverTrigger asChild>
             <Button variant="outline" size="sm" className="mt-0.5">
-              +{remainingUsers.length} more users
+              {t("session.moreUsers").replace(
+                "{count}",
+                String(remainingUsers.length),
+              )}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[300px]">
-            <Label className="text-base capitalize">Session Users</Label>
+            <Label className="text-base capitalize">
+              {t("session.sessionUsers")}
+            </Label>
             <ScrollArea className="h-[300px]">
               <div className="flex flex-col gap-2 p-2">
                 {remainingUsers
@@ -180,7 +189,9 @@ export function SessionUsers({
                       rel="noopener noreferrer"
                     >
                       <Badge className="max-w-[260px]">
-                        <span className="truncate">User ID: {userId}</span>
+                        <span className="truncate">
+                          {t("session.userId")}: {userId}
+                        </span>
                         <ExternalLinkIcon className="ml-1 h-3 w-3" />
                       </Badge>
                     </Link>
@@ -195,11 +206,19 @@ export function SessionUsers({
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page === 0}
                 >
-                  Previous
+                  {t("session.previous")}
                 </Button>
                 <span className="text-sm text-muted-foreground">
-                  Page {page + 1} of{" "}
-                  {Math.ceil(remainingUsers.length / USERS_PER_PAGE_IN_POPOVER)}
+                  {t("session.pageOf")
+                    .replace("{current}", String(page + 1))
+                    .replace(
+                      "{total}",
+                      String(
+                        Math.ceil(
+                          remainingUsers.length / USERS_PER_PAGE_IN_POPOVER,
+                        ),
+                      ),
+                    )}
                 </span>
                 <Button
                   variant="outline"
@@ -210,7 +229,7 @@ export function SessionUsers({
                     remainingUsers.length
                   }
                 >
-                  Next
+                  {t("session.next")}
                 </Button>
               </div>
             )}
@@ -242,6 +261,7 @@ export const SessionPage: React.FC<{
   const capture = usePostHogClientCapture();
   const utils = api.useUtils();
   const parentRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
   const session = api.sessions.byIdWithScores.useQuery(
     {
       sessionId,
@@ -368,15 +388,15 @@ export const SessionPage: React.FC<{
   });
 
   if (session.error?.data?.code === "UNAUTHORIZED")
-    return <ErrorPage message="You do not have access to this session." />;
+    return <ErrorPage message={t("session.noAccess")} />;
 
   if (session.error?.data?.code === "NOT_FOUND")
     return (
       <ErrorPage
-        title="Session not found"
-        message="The session is either still being processed or has been deleted."
+        title={t("session.notFound")}
+        message={t("session.notFoundMessage")}
         additionalButton={{
-          label: "Retry",
+          label: t("errors.retry"),
           onClick: () => void window.location.reload(),
         }}
       />
@@ -387,9 +407,10 @@ export const SessionPage: React.FC<{
       headerProps={{
         title: sessionId,
         itemType: "SESSION",
+        itemTypeLabel: t("pages.traceDetail.session"),
         breadcrumb: [
           {
-            name: "Sessions",
+            name: t("pages.sessions.title"),
             href: `/project/${projectId}/sessions`,
           },
         ],
@@ -427,7 +448,7 @@ export const SessionPage: React.FC<{
               variant="outline"
               size="icon"
               onClick={downloadSessionAsJson}
-              title="Download session as JSON"
+              title={t("session.downloadAs")}
             >
               <Download className="h-4 w-4" />
             </Button>
@@ -467,7 +488,7 @@ export const SessionPage: React.FC<{
                 className="scale-75"
               />
               <span className="text-xs text-muted-foreground">
-                Show corrections
+                {t("session.showCorrections")}
               </span>
             </div>
           </>
@@ -480,11 +501,12 @@ export const SessionPage: React.FC<{
             <SessionUsers projectId={projectId} users={session.data.users} />
           ) : null}
           <Badge variant="outline">
-            Total traces: {session.data?.traces.length}
+            {t("session.totalTraces")}: {session.data?.traces.length}
           </Badge>
           {session.data && (
             <Badge variant="outline">
-              Total cost: {usdFormatter(session.data.totalCost, 2)}
+              {t("session.totalCost")}:{" "}
+              {usdFormatter(session.data.totalCost, 2)}
             </Badge>
           )}
           <SessionScores scores={session.data?.scores ?? []} />
@@ -556,6 +578,7 @@ export const SessionEventsPage: React.FC<{
   projectId: string;
 }> = ({ sessionId, projectId }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { setDetailPageList, detailPagelists } = useDetailPageLists();
   const userSession = useSession();
   const parentRef = useRef<HTMLDivElement>(null);
@@ -886,9 +909,10 @@ export const SessionEventsPage: React.FC<{
       headerProps={{
         title: sessionId,
         itemType: "SESSION",
+        itemTypeLabel: t("pages.traceDetail.session"),
         breadcrumb: [
           {
-            name: "Sessions",
+            name: t("pages.sessions.title"),
             href: `/project/${projectId}/sessions`,
           },
         ],
@@ -958,7 +982,7 @@ export const SessionEventsPage: React.FC<{
                 className="scale-75"
               />
               <span className="text-xs text-muted-foreground">
-                Show corrections
+                {t("session.showCorrections")}
               </span>
             </div>
           </>
@@ -997,11 +1021,12 @@ export const SessionEventsPage: React.FC<{
 
           {/* Stats */}
           <Badge variant="outline">
-            Total traces: {session.data?.countTraces ?? 0}
+            {t("session.totalTraces")}: {session.data?.countTraces ?? 0}
           </Badge>
           {session.data && (
             <Badge variant="outline">
-              Total cost: {usdFormatter(session.data.totalCost ?? 0, 2)}
+              {t("session.totalCost")}:{" "}
+              {usdFormatter(session.data.totalCost ?? 0, 2)}
             </Badge>
           )}
 

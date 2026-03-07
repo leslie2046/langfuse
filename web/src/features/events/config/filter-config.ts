@@ -5,11 +5,7 @@ import { renderFilterIcon } from "@/src/components/ItemBadge";
 
 // Helper function to get column name from eventsTableCols by ID
 export const getEventsColumnName = (id: string): string => {
-  const column = eventsTableCols.find((col) => col.id === id);
-  if (!column) {
-    throw new Error(`Column ${id} not found in eventsTableCols`);
-  }
-  return column?.name;
+  return `pages.observations.columns.${id}`;
 };
 
 /**

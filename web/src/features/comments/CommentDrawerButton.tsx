@@ -14,6 +14,7 @@ import { MessageCircleIcon, MessageCircleOff } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { type SelectionData } from "./contexts/InlineCommentSelectionContext";
+import { useTranslation } from "@/src/features/i18n";
 
 export function CommentDrawerButton({
   projectId,
@@ -41,6 +42,7 @@ export function CommentDrawerButton({
   onOpenChange?: (open: boolean) => void;
 }) {
   const router = useRouter();
+  const { t } = useTranslation();
   const [isMentionDropdownOpen, setIsMentionDropdownOpen] = useState(false);
   const [internalIsDrawerOpen, setInternalIsDrawerOpen] = useState(false);
   const hasAutoOpenedRef = useRef(false); // Track if we've already auto-opened for current deep link
@@ -165,7 +167,7 @@ export function CommentDrawerButton({
               <MessageCircleIcon
                 className={size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4"}
               />
-              <span>Add comment</span>
+              <span>{t("comments.addComment")}</span>
               <span className="flex h-3.5 w-fit items-center justify-center rounded-sm bg-primary/50 px-1 text-xs text-primary-foreground shadow-sm">
                 {count > 99 ? "99+" : count}
               </span>
@@ -175,7 +177,7 @@ export function CommentDrawerButton({
               <MessageCircleIcon
                 className={size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4"}
               />
-              <span>Add comment</span>
+              <span>{t("comments.addComment")}</span>
             </div>
           )}
         </Button>
@@ -194,7 +196,7 @@ export function CommentDrawerButton({
         >
           <DrawerHeader className="sr-only flex-shrink-0 rounded-sm bg-background">
             <DrawerTitle>
-              <Header title="Comments"></Header>
+              <Header title={t("comments.title")}></Header>
             </DrawerTitle>
           </DrawerHeader>
           <div data-vaul-no-drag className="min-h-0 flex-1 px-2 pt-2">

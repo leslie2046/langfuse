@@ -12,6 +12,7 @@ import {
   type ViewVersion,
   mapLegacyUiTableFilterToView,
 } from "@/src/features/query";
+import { useTranslation } from "@/src/features/i18n";
 import { Chart } from "@/src/features/widgets/chart-library/Chart";
 import { barListToDataPoints } from "@/src/features/dashboard/lib/chart-data-adapters";
 import { traceViewQuery } from "@/src/features/dashboard/lib/dashboard-utils";
@@ -41,6 +42,7 @@ export const UserChart = ({
   metricsVersion?: ViewVersion;
   schedulerId?: string;
 }) => {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
   const maxNumberOfEntries = { collapsed: 5, expanded: 20 } as const;
 
@@ -170,30 +172,30 @@ export const UserChart = ({
 
   const data = [
     {
-      tabTitle: "Token cost",
+      tabTitle: t("dashboard.tokenCost"),
       data: isExpanded
         ? transformedCost.slice(0, maxNumberOfEntries.expanded)
         : transformedCost.slice(0, maxNumberOfEntries.collapsed),
       totalMetric: totalCostDashboardFormatted(totalCost),
-      metricDescription: "Total cost",
+      metricDescription: t("dashboard.totalCost"),
       formatter: localUsdFormatter,
     },
     {
-      tabTitle: "Count of Traces",
+      tabTitle: t("dashboard.countOfTraces"),
       data: isExpanded
         ? transformedNumberOfTraces.slice(0, maxNumberOfEntries.expanded)
         : transformedNumberOfTraces.slice(0, maxNumberOfEntries.collapsed),
       totalMetric: totalTraces
         ? compactNumberFormatter(totalTraces)
         : compactNumberFormatter(0),
-      metricDescription: "Total traces",
+      metricDescription: t("dashboard.totalTraces"),
     },
   ];
 
   return (
     <DashboardCard
       className={className}
-      title="User consumption"
+      title={t("dashboard.userConsumption")}
       isLoading={isLoading || user.isPending}
     >
       <TabComponent

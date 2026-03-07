@@ -9,13 +9,17 @@ import { Label } from "@/src/components/ui/label";
 import { showSuccessToast } from "@/src/features/notifications/showSuccessToast";
 import { showErrorToast } from "@/src/features/notifications/showErrorToast";
 import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAccess";
+import { useTranslation } from "@/src/features/i18n";
 
 export default function NewDashboard() {
   const router = useRouter();
   const { projectId } = router.query as { projectId: string };
+  const { t } = useTranslation();
 
   // State for new dashboard
-  const [dashboardName, setDashboardName] = useState("New Dashboard");
+  const [dashboardName, setDashboardName] = useState(
+    t("pages.dashboards.create.title"),
+  );
   const [dashboardDescription, setDashboardDescription] = useState("");
 
   // Check project access
@@ -28,14 +32,14 @@ export default function NewDashboard() {
   const createDashboard = api.dashboard.createDashboard.useMutation({
     onSuccess: (data) => {
       showSuccessToast({
-        title: "Dashboard created",
-        description: "Your new dashboard has been created successfully",
+        title: t("pages.dashboards.create.successTitle"),
+        description: t("pages.dashboards.create.successDescription"),
       });
       // Navigate to the newly created dashboard
       router.push(`/project/${projectId}/dashboards/${data.id}`);
     },
     onError: (error) => {
-      showErrorToast("Error creating dashboard", error.message);
+      showErrorToast(t("pages.dashboards.create.errorTitle"), error.message);
     },
   });
 
@@ -48,7 +52,10 @@ export default function NewDashboard() {
         description: dashboardDescription,
       });
     } else {
-      showErrorToast("Validation error", "Dashboard name is required");
+      showErrorToast(
+        t("pages.dashboards.create.validationError"),
+        t("pages.dashboards.create.nameRequired"),
+      );
     }
   };
 
@@ -56,9 +63,9 @@ export default function NewDashboard() {
     <Page
       withPadding
       headerProps={{
-        title: "Create Dashboard",
+        title: t("pages.dashboards.create.title"),
         help: {
-          description: "Create a new dashboard for your project",
+          description: t("pages.dashboards.create.description"),
         },
         actionButtonsRight: (
           <>
@@ -66,7 +73,7 @@ export default function NewDashboard() {
               variant="outline"
               onClick={() => router.push(`/project/${projectId}/dashboards`)}
             >
-              Cancel
+              {t("pages.dashboards.create.cancel")}
             </Button>
             <Button
               onClick={handleCreateDashboard}
@@ -77,7 +84,7 @@ export default function NewDashboard() {
               }
               loading={createDashboard.isPending}
             >
-              Create
+              {t("pages.dashboards.create.create")}
             </Button>
           </>
         ),
@@ -85,36 +92,37 @@ export default function NewDashboard() {
     >
       <div className="mx-auto my-8 max-w-xl space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="dashboard-name">Dashboard Name</Label>
+          <Label htmlFor="dashboard-name">
+            {t("pages.dashboards.create.nameLabel")}
+          </Label>
           <Input
             id="dashboard-name"
             value={dashboardName}
             onChange={(e) => {
               setDashboardName(e.target.value);
             }}
-            placeholder="Enter dashboard name"
+            placeholder={t("pages.dashboards.create.namePlaceholder")}
             required
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="dashboard-description">Description</Label>
+          <Label htmlFor="dashboard-description">
+            {t("pages.dashboards.create.descLabel")}
+          </Label>
           <Textarea
             id="dashboard-description"
             value={dashboardDescription}
             onChange={(e) => {
               setDashboardDescription(e.target.value);
             }}
-            placeholder="Describe the purpose of this dashboard. Optional, but very helpful."
+            placeholder={t("pages.dashboards.create.descPlaceholder")}
             rows={4}
           />
         </div>
 
         <div className="text-sm text-muted-foreground">
-          <p>
-            After creating the dashboard, you can add widgets to visualize your
-            data.
-          </p>
+          <p>{t("pages.dashboards.create.helpText")}</p>
         </div>
       </div>
     </Page>

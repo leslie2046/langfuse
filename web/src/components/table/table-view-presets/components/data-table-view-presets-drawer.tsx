@@ -81,6 +81,7 @@ import { useUniqueNameValidation } from "@/src/hooks/useUniqueNameValidation";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAccess";
 import isEqual from "lodash/isEqual";
+import { useTranslation } from "@/src/features/i18n";
 import { useDefaultViewMutations } from "../hooks/useDefaultViewMutations";
 import { DropdownMenuSeparator } from "@/src/components/ui/dropdown-menu";
 
@@ -174,6 +175,7 @@ export function TableViewPresetsDrawer({
   } = useViewMutations({ handleSetViewId });
   const utils = api.useUtils();
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
 
   const form = useForm({
     resolver: zodResolver(z.object({ name: z.string().min(1) })),
@@ -407,13 +409,9 @@ export function TableViewPresetsDrawer({
         <DrawerTrigger asChild>
           <Button
             variant="outline"
-            title={
-              selectedViewName ? `View: ${selectedViewName}` : "Saved Views"
-            }
+            title={selectedViewName ?? t("common.toolbar.savedViews")}
           >
-            <span>
-              {selectedViewName ? `View: ${selectedViewName}` : "Saved Views"}
-            </span>
+            <span>{selectedViewName ?? t("common.toolbar.savedViews")}</span>
             {selectedViewId ? (
               <ChevronDown className="ml-1 h-4 w-4" />
             ) : (

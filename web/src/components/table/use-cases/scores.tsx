@@ -1,4 +1,5 @@
 import { DataTable } from "@/src/components/table/data-table";
+import { useTranslation } from "@/src/features/i18n";
 import { useRowHeightLocalStorage } from "@/src/components/table/data-table-row-height-switch";
 import { DataTableToolbar } from "@/src/components/table/data-table-toolbar";
 import {
@@ -117,6 +118,7 @@ export default function ScoresTable({
   // In v4beta, scores must exclusively use events-backed endpoints (no traces-table route).
   const useEventsBackedScores = isBetaEnabled;
   const utils = api.useUtils();
+  const { t } = useTranslation();
   const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
   const [paginationState, setPaginationState] = usePaginationState(0, 50, {
     page: "pageIndex",
@@ -391,7 +393,7 @@ export default function ScoresTable({
       accessorKey: "id",
       id: "id",
       enableColumnFilter: false,
-      header: "Score ID",
+      header: t("pages.scores.columns.id"),
       size: 100,
       enableSorting: false,
       defaultHidden: true,
@@ -405,7 +407,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "traceName",
-      header: "Trace Name",
+      header: t("pages.scores.columns.traceName"),
       id: "traceName",
       enableHiding: true,
       enableSorting: true,
@@ -429,7 +431,7 @@ export default function ScoresTable({
       accessorKey: "traceId",
       id: "traceId",
       enableColumnFilter: true,
-      header: "Trace",
+      header: t("pages.scores.columns.trace"),
       enableSorting: true,
       size: 100,
       cell: ({ row }) => {
@@ -447,7 +449,7 @@ export default function ScoresTable({
     {
       accessorKey: "executionTraceId",
       id: "executionTraceId",
-      header: "Execution Trace",
+      header: t("pages.scores.columns.executionTrace"),
       enableSorting: false,
       enableHiding: true,
       defaultHidden: true,
@@ -465,7 +467,7 @@ export default function ScoresTable({
     {
       accessorKey: "observationId",
       id: "observationId",
-      header: "Observation",
+      header: t("pages.scores.columns.observation"),
       enableSorting: true,
       size: 100,
       cell: ({ row }) => {
@@ -483,7 +485,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "sessionId",
-      header: "Session",
+      header: t("pages.scores.columns.session"),
       id: "sessionId",
       enableHiding: true,
       enableSorting: true,
@@ -500,7 +502,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "environment",
-      header: "Environment",
+      header: t("pages.scores.columns.environment"),
       id: "environment",
       size: 150,
       enableHiding: true,
@@ -518,7 +520,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "userId",
-      header: "User",
+      header: t("pages.scores.columns.user"),
       id: "userId",
       headerTooltip: {
         description: "The user ID associated with the trace.",
@@ -543,7 +545,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "timestamp",
-      header: "Timestamp",
+      header: t("pages.scores.columns.timestamp"),
       id: "timestamp",
       enableHiding: true,
       enableSorting: true,
@@ -555,7 +557,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "source",
-      header: "Source",
+      header: t("pages.scores.columns.source"),
       id: "source",
       enableHiding: true,
       enableSorting: true,
@@ -563,7 +565,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "name",
-      header: "Name",
+      header: t("pages.scores.columns.name"),
       id: "name",
       enableHiding: true,
       enableSorting: true,
@@ -571,7 +573,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "dataType",
-      header: "Data Type",
+      header: t("pages.scores.columns.dataType"),
       id: "dataType",
       enableHiding: true,
       enableSorting: true,
@@ -579,7 +581,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "value",
-      header: "Value",
+      header: t("pages.scores.columns.value"),
       id: "value",
       enableHiding: true,
       enableSorting: true,
@@ -587,7 +589,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "metadata",
-      header: "Metadata",
+      header: t("pages.scores.columns.metadata"),
       id: "metadata",
       size: 400,
       headerTooltip: {
@@ -609,7 +611,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "comment",
-      header: "Comment",
+      header: t("pages.scores.columns.comment"),
       id: "comment",
       enableHiding: true,
       size: 400,
@@ -623,7 +625,7 @@ export default function ScoresTable({
     {
       accessorKey: "author",
       id: "author",
-      header: "Author",
+      header: t("pages.scores.columns.author"),
       enableHiding: true,
       size: 150,
       cell: ({ row }) => {
@@ -645,7 +647,7 @@ export default function ScoresTable({
     },
     {
       accessorKey: "jobConfigurationId",
-      header: "Eval Configuration ID",
+      header: t("pages.scores.columns.evalConfigId"),
       id: "jobConfigurationId",
       headerTooltip: {
         description: "The Job Configuration ID associated with the trace.",
@@ -669,7 +671,7 @@ export default function ScoresTable({
     {
       accessorKey: "traceTags",
       id: "traceTags",
-      header: "Trace Tags",
+      header: t("pages.scores.columns.traceTags"),
       size: 250,
       enableHiding: true,
       defaultHidden: true,
@@ -885,14 +887,14 @@ export default function ScoresTable({
               columns={columns}
               noResultsMessage={
                 <div className="flex flex-col items-center">
-                  <span>No scores found.</span>
+                  <span>{t("pages.scores.noScoresFound")}</span>
                   <a
                     href="https://langfuse.com/faq/all/what-are-scores"
                     className="pointer-events-auto italic text-primary underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    What are scores?
+                    {t("pages.scores.whatAreScores")}
                   </a>
                 </div>
               }

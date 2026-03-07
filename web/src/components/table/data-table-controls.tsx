@@ -43,6 +43,7 @@ import {
 import { DataTableAIFilters } from "@/src/components/table/data-table-ai-filters";
 import { type FilterState } from "@langfuse/shared";
 import { useLangfuseCloudRegion } from "@/src/features/organizations/hooks";
+import { useTranslation } from "@/src/features/i18n";
 
 interface ControlsContextType {
   open: boolean;
@@ -111,6 +112,7 @@ export function DataTableControls({
   filterWithAI,
 }: DataTableControlsProps) {
   const { isLangfuseCloud } = useLangfuseCloudRegion();
+  const { t } = useTranslation();
   const [aiPopoverOpen, setAiPopoverOpen] = useState(false);
 
   const handleFiltersGenerated = useCallback(
@@ -142,7 +144,9 @@ export function DataTableControls({
       )}
     >
       <div className="sticky top-0 z-20 mb-1 flex h-10 shrink-0 items-center justify-between border-b bg-background px-3">
-        <span className="text-sm font-medium">Filters</span>
+        <span className="text-sm font-medium">
+          {t("common.filters.filters")}
+        </span>
         <div className="flex items-center gap-1">
           {queryFilter.isFiltered && (
             <Tooltip>
@@ -153,10 +157,12 @@ export function DataTableControls({
                   onClick={() => queryFilter.clearAll()}
                   className="h-7 px-2 text-xs"
                 >
-                  Clear all
+                  {t("common.filters.clearAll")}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>Clear all filters</TooltipContent>
+              <TooltipContent>
+                {t("common.filters.clearAllFilters")}
+              </TooltipContent>
             </Tooltip>
           )}
           {filterWithAI && isLangfuseCloud && (
@@ -169,7 +175,9 @@ export function DataTableControls({
                     </Button>
                   </PopoverTrigger>
                 </TooltipTrigger>
-                <TooltipContent>Filter with AI</TooltipContent>
+                <TooltipContent>
+                  {t("common.filters.createWithAI")}
+                </TooltipContent>
               </Tooltip>
               <PopoverContent align="center" className="w-[400px]">
                 <DataTableAIFilters
@@ -272,7 +280,7 @@ export function DataTableControls({
                   onChange={filter.onChange}
                   isActive={filter.isActive}
                   onReset={filter.onReset}
-                  keyPlaceholder="Name"
+                  keyPlaceholder={t("common.filters.keyPlaceholder")}
                   isDisabled={filter.isDisabled}
                   disabledReason={filter.disabledReason}
                 />
@@ -293,7 +301,7 @@ export function DataTableControls({
                   onChange={filter.onChange}
                   isActive={filter.isActive}
                   onReset={filter.onReset}
-                  keyPlaceholder="Name"
+                  keyPlaceholder={t("common.filters.keyPlaceholder")}
                   isDisabled={filter.isDisabled}
                   disabledReason={filter.disabledReason}
                 />
@@ -473,6 +481,7 @@ export function FilterAccordionItem({
   disabledReason,
   onReset,
 }: FilterAccordionItemProps) {
+  const { t } = useTranslation();
   return (
     <FilterAccordionItemPrimitive value={filterKey} className="border-none">
       <FilterAccordionTrigger
@@ -487,7 +496,7 @@ export function FilterAccordionItem({
             <Tooltip delayDuration={80}>
               <TooltipTrigger asChild>
                 <span className="flex grow items-baseline gap-1">
-                  {label}
+                  {t(label)}
                   {filterKeyShort && (
                     <code className="hidden font-mono text-xs text-muted-foreground/70">
                       {filterKeyShort}
@@ -503,7 +512,7 @@ export function FilterAccordionItem({
             <Tooltip delayDuration={80}>
               <TooltipTrigger asChild>
                 <span className="flex grow items-center gap-1">
-                  {label}
+                  {t(label)}
                   <InfoIcon className="h-3 w-3 shrink-0 text-muted-foreground" />
                   {filterKeyShort && (
                     <code className="hidden font-mono text-xs text-muted-foreground/70">
@@ -518,7 +527,7 @@ export function FilterAccordionItem({
             </Tooltip>
           ) : (
             <span className="flex grow items-baseline gap-1">
-              {label}
+              {t(label)}
               {filterKeyShort && (
                 <code className="hidden font-mono text-xs text-muted-foreground/70">
                   {filterKeyShort}
@@ -542,9 +551,9 @@ export function FilterAccordionItem({
                 }
               }}
               className="inline-flex h-5 cursor-pointer items-center gap-1 rounded-full border bg-background px-2 text-xs hover:bg-accent hover:text-accent-foreground"
-              aria-label={`Clear ${label} filter`}
+              aria-label={`Clear ${t(label)} filter`}
             >
-              <span>Clear</span>
+              <span>{t("common.filters.clear")}</span>
               <IconX className="h-3 w-3" />
             </div>
           )}
@@ -588,6 +597,7 @@ export function CategoricalFacet({
   onTextFilterAdd,
   onTextFilterRemove,
 }: CategoricalFacetProps) {
+  const { t } = useTranslation();
   const [showAll, setShowAll] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   // Track which filter mode is active (select checkboxes vs text filters)
@@ -670,7 +680,7 @@ export function CategoricalFacet({
             {onOperatorChange && value.length > 0 && (
               <div className="mb-1.5 flex items-center gap-1.5 px-2">
                 <span className="text-[10px] text-muted-foreground/80">
-                  Match:
+                  {t("common.filters.match")}
                 </span>
                 <div className="inline-flex rounded border border-input/50 bg-background text-[10px]">
                   <button
@@ -682,7 +692,7 @@ export function CategoricalFacet({
                         : "text-muted-foreground hover:text-foreground",
                     )}
                   >
-                    SOME
+                    {t("common.filters.some")}
                   </button>
                   <div className="w-px bg-border/50" />
                   <button
@@ -694,7 +704,7 @@ export function CategoricalFacet({
                         : "text-muted-foreground hover:text-foreground",
                     )}
                   >
-                    ALL
+                    {t("common.filters.all")}
                   </button>
                 </div>
               </div>
@@ -719,36 +729,34 @@ export function CategoricalFacet({
               <div className="py-1 text-xs text-muted-foreground">
                 {filterKey === "sessionId" ? (
                   <span>
-                    Sessions group traces together, which is useful for tracing
-                    multi-step workflows.{" "}
+                    {t("common.filters.sessionsDescription")}{" "}
                     <a
                       href="https://langfuse.com/docs/observability/features/sessions"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline hover:text-foreground"
                     >
-                      See docs
+                      {t("common.filters.seeDocs")}
                     </a>{" "}
-                    to learn how to add sessions to your traces.
+                    {t("common.filters.sessionsDescriptionSuffix")}
                   </span>
                 ) : filterKey === "name" ? (
-                  <span>No trace names found in the given time range.</span>
+                  <span>{t("common.filters.noTraceNamesFound")}</span>
                 ) : filterKey === "tags" ? (
                   <span>
-                    Tags let you filter traces according to custom categories
-                    (e.g. feature flags).{" "}
+                    {t("common.filters.tagsDescription")}{" "}
                     <a
                       href="https://langfuse.com/docs/observability/features/tags"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline hover:text-foreground"
                     >
-                      See docs
+                      {t("common.filters.seeDocs")}
                     </a>{" "}
-                    to learn how to add tags to your traces.
+                    {t("common.filters.tagsDescriptionSuffix")}
                   </span>
                 ) : (
-                  "No options found"
+                  t("common.filters.noOptions")
                 )}
               </div>
             ) : (
@@ -759,7 +767,7 @@ export function CategoricalFacet({
                     <div className="relative">
                       <Search className="absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
                       <Input
-                        placeholder="Filter values"
+                        placeholder={t("common.filters.filterValues")}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="h-8 pl-7 text-xs"
@@ -771,7 +779,7 @@ export function CategoricalFacet({
                 {/* Checkbox list */}
                 {filteredOptions.length === 0 ? (
                   <div className="py-1 text-center text-sm text-muted-foreground">
-                    No matches found
+                    {t("common.filters.noMatches")}
                   </div>
                 ) : (
                   <>
@@ -779,7 +787,7 @@ export function CategoricalFacet({
                       <FilterValueCheckbox
                         key={option}
                         id={`${filterKey}-${option}`}
-                        label={option}
+                        label={t(option)}
                         icon={renderIcon?.(option)}
                         count={counts.get(option) || 0}
                         checked={value.includes(option)}
@@ -803,7 +811,7 @@ export function CategoricalFacet({
                           onClick={() => setShowAll(true)}
                           className="text-normal mt-1 h-auto w-full justify-start py-1 pl-7 text-xs"
                         >
-                          Show more values
+                          {t("common.filters.showMore")}
                         </Button>
                       </div>
                     )}
@@ -813,17 +821,16 @@ export function CategoricalFacet({
                 options.length === 1 &&
                 options[0]?.toLowerCase() === "default" ? (
                   <div className="mt-2 px-2 text-xs text-muted-foreground">
-                    Environments help you separate traces from different
-                    contexts (e.g. production, staging).{" "}
+                    {t("common.filters.environmentsDescription")}{" "}
                     <a
                       href="https://langfuse.com/docs/observability/features/environments"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline hover:text-foreground"
                     >
-                      See docs
+                      {t("common.filters.seeDocs")}
                     </a>{" "}
-                    on how to add environments to your traces.
+                    {t("common.filters.environmentsDescriptionSuffix")}
                   </div>
                 ) : null}
               </>
@@ -863,6 +870,7 @@ export function NumericFacet({
   disabledReason,
   onReset,
 }: NumericFacetProps) {
+  const { t } = useTranslation();
   const [localValue, setLocalValue] = useState<[number, number]>(value);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -941,7 +949,9 @@ export function NumericFacet({
     >
       <div className="px-4 py-2">
         {loading ? (
-          <div className="text-sm text-muted-foreground">Loading...</div>
+          <div className="text-sm text-muted-foreground">
+            {t("common.table.loading")}
+          </div>
         ) : (
           <div className="grid gap-4">
             <div className="flex items-center gap-4">
@@ -950,7 +960,7 @@ export function NumericFacet({
                   htmlFor={`min-${filterKey}`}
                   className="text-xs text-muted-foreground"
                 >
-                  Min.
+                  {t("common.filters.min")}
                 </Label>
                 <div className="flex items-center gap-1">
                   <Input
@@ -975,7 +985,7 @@ export function NumericFacet({
                   htmlFor={`max-${filterKey}`}
                   className="text-xs text-muted-foreground"
                 >
-                  Max.
+                  {t("common.filters.max")}
                 </Label>
                 <div className="flex items-center gap-1">
                   <Input
@@ -1024,6 +1034,7 @@ export function StringFacet({
   disabledReason,
   onReset,
 }: StringFacetProps) {
+  const { t } = useTranslation();
   const [localValue, setLocalValue] = useState<string>(value);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -1077,7 +1088,7 @@ export function StringFacet({
             type="text"
             id={`string-${filterKey}`}
             value={localValue}
-            placeholder="Search"
+            placeholder={t("common.filters.search")}
             onChange={handleInputChange}
             className="h-8"
           />
@@ -1104,6 +1115,7 @@ export function KeyValueFacet({
   onReset,
   keyPlaceholder,
 }: KeyValueFacetProps) {
+  const { t } = useTranslation();
   return (
     <FilterAccordionItem
       label={label}
@@ -1117,7 +1129,7 @@ export function KeyValueFacet({
     >
       {loading ? (
         <div className="px-4 py-2 text-sm text-muted-foreground">
-          Loading...
+          {t("common.table.loading")}
         </div>
       ) : (
         <KeyValueFilterBuilder
@@ -1149,6 +1161,7 @@ export function NumericKeyValueFacet({
   onReset,
   keyPlaceholder,
 }: NumericKeyValueFacetProps) {
+  const { t } = useTranslation();
   return (
     <FilterAccordionItem
       label={label}
@@ -1162,7 +1175,7 @@ export function NumericKeyValueFacet({
     >
       {loading ? (
         <div className="px-4 py-2 text-sm text-muted-foreground">
-          Loading...
+          {t("common.table.loading")}
         </div>
       ) : (
         <KeyValueFilterBuilder
@@ -1193,6 +1206,7 @@ export function StringKeyValueFacet({
   onReset,
   keyPlaceholder,
 }: StringKeyValueFacetProps) {
+  const { t } = useTranslation();
   return (
     <FilterAccordionItem
       label={label}
@@ -1206,7 +1220,7 @@ export function StringKeyValueFacet({
     >
       {loading ? (
         <div className="px-4 py-2 text-sm text-muted-foreground">
-          Loading...
+          {t("common.table.loading")}
         </div>
       ) : (
         <KeyValueFilterBuilder
@@ -1324,9 +1338,12 @@ interface FilterModeTabsProps {
 }
 
 function FilterModeTabs({ mode, onModeChange }: FilterModeTabsProps) {
+  const { t } = useTranslation();
   return (
     <div className="mb-2 flex flex-wrap items-center gap-1.5 px-4 @container">
-      <span className="text-[10px] text-muted-foreground/80">Mode:</span>
+      <span className="text-[10px] text-muted-foreground/80">
+        {t("common.filters.mode")}
+      </span>
       <div className="flex flex-1 flex-col rounded border border-input/50 bg-background text-[10px] @[7.5rem]:min-w-[140px] @[7.5rem]:flex-row">
         <button
           onClick={() => onModeChange("select")}
@@ -1337,7 +1354,7 @@ function FilterModeTabs({ mode, onModeChange }: FilterModeTabsProps) {
               : "text-muted-foreground hover:text-foreground",
           )}
         >
-          SELECT
+          {t("common.filters.select")}
         </button>
         <div className="h-px bg-border/50 @[7.5rem]:h-auto @[7.5rem]:w-px" />
         <button
@@ -1349,7 +1366,7 @@ function FilterModeTabs({ mode, onModeChange }: FilterModeTabsProps) {
               : "text-muted-foreground hover:text-foreground",
           )}
         >
-          TEXT
+          {t("common.filters.text")}
         </button>
       </div>
     </div>
@@ -1367,6 +1384,7 @@ function TextFilterSection({
   onAdd?: (op: "contains" | "does not contain", val: string) => void;
   onRemove?: (op: "contains" | "does not contain", val: string) => void;
 }) {
+  const { t } = useTranslation();
   const [inputValue, setInputValue] = useState("");
   const [selectedOperator, setSelectedOperator] = useState<
     "contains" | "does not contain"
@@ -1394,7 +1412,7 @@ function TextFilterSection({
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
-            contains
+            {t("common.filters.contains")}
           </button>
           <div className="w-px bg-border/50" />
           <button
@@ -1406,7 +1424,7 @@ function TextFilterSection({
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
-            does not contain
+            {t("common.filters.doesNotContain")}
           </button>
         </div>
       </div>
@@ -1422,7 +1440,7 @@ function TextFilterSection({
               handleAdd();
             }
           }}
-          placeholder="Enter value..."
+          placeholder={t("common.filters.enterValue")}
           className="h-7 flex-1 text-xs"
         />
         <Button
@@ -1432,7 +1450,7 @@ function TextFilterSection({
           disabled={inputValue.length === 0}
           className="h-7 shrink-0 px-2 text-xs"
         >
-          Add
+          {t("common.filters.add")}
         </Button>
       </div>
 
@@ -1445,7 +1463,9 @@ function TextFilterSection({
               className="group/textfilter flex items-center gap-2 rounded border border-border/40 bg-muted/30 px-2 py-1 text-xs"
             >
               <span className="shrink-0 text-[10px] font-medium text-muted-foreground">
-                {f.operator === "contains" ? "contains" : "does not contain"}
+                {f.operator === "contains"
+                  ? t("common.filters.contains")
+                  : t("common.filters.doesNotContain")}
               </span>
               <span
                 className="min-w-0 flex-1 truncate font-medium"
@@ -1492,12 +1512,16 @@ export function FilterValueCheckbox({
   totalSelected,
   disabled = false,
 }: FilterValueCheckboxProps) {
+  const { t } = useTranslation();
   // Show "All" when clicking would reverse selection (only one item selected)
-  const labelText = checked && totalSelected === 1 ? "All" : "Only";
+  const labelText =
+    checked && totalSelected === 1
+      ? t("common.filters.all")
+      : t("common.filters.only");
 
   // Display placeholder for empty strings to ensure clickable area
-  const displayLabel = label === "" ? "(empty)" : label;
-  const displayTitle = label === "" ? "(empty)" : label;
+  const displayLabel = label === "" ? t("common.filters.empty") : label;
+  const displayTitle = label === "" ? t("common.filters.empty") : label;
 
   return (
     <div

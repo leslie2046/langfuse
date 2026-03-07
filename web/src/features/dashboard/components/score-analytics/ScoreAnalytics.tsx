@@ -1,5 +1,6 @@
 import { api } from "@/src/utils/api";
 import { DashboardCard } from "@/src/features/dashboard/components/cards/DashboardCard";
+import { useTranslation } from "@/src/features/i18n";
 import { type ScoreDataTypeType, type FilterState } from "@langfuse/shared";
 import { type DashboardDateRangeAggregationOption } from "@/src/utils/date-range-utils";
 import { MultiSelectKeyValues } from "@/src/features/scores/components/multi-select-key-values";
@@ -61,11 +62,13 @@ export function ScoreAnalytics(props: {
     selectedDashboardScoreKeys.includes(option.key),
   );
 
+  const { t } = useTranslation();
+
   return (
     <DashboardCard
       className={props.className}
-      title="Scores Analytics"
-      description="Aggregate scores and averages over time"
+      title={t("dashboard.scoresAnalytics.title")}
+      description={t("dashboard.scoresAnalytics.description")}
       isLoading={props.isLoading || scoreKeysAndProps.isPending}
       headerClassName={"grid grid-cols-[1fr,auto,auto] items-center"}
       headerChildren={
@@ -113,7 +116,7 @@ export function ScoreAnalytics(props: {
                   {/* aggregate */}
                   <div>
                     <div className="mb-2 text-sm text-muted-foreground">
-                      Total aggregate scores
+                      {t("dashboard.scoresAnalytics.totalAggregateScores")}
                       {isNumericDataType(dataType) && (
                         // TODO: v2 histogram aggregates all rows server-side (no 10k cap).
                         // Make this tooltip conditional on metricsVersion.
@@ -152,8 +155,8 @@ export function ScoreAnalytics(props: {
                   <div>
                     <div className="mb-2 text-sm text-muted-foreground">
                       {isNumericDataType(dataType)
-                        ? "Moving average over time"
-                        : "Scores over time"}
+                        ? t("dashboard.scoresAnalytics.movingAverage")
+                        : t("dashboard.scoresAnalytics.scoresOverTime")}
                     </div>
                     {isCategoricalDataType(dataType) && (
                       <CategoricalScoreChart
@@ -199,7 +202,7 @@ export function ScoreAnalytics(props: {
       ) : Boolean(scoreKeysAndProps.data?.scoreColumns.length) ? (
         <div className="flex min-h-[9rem] w-full flex-1 items-center justify-center rounded-md border">
           <p className="text-muted-foreground">
-            Select a score to view analytics
+            {t("dashboard.scoresAnalytics.selectScore")}
           </p>
         </div>
       ) : (

@@ -83,10 +83,11 @@ const nextConfig = {
    * @see https://github.com/vercel/next.js/issues/41980
    */
   i18n: {
-    locales: ["en"],
+    locales: ["en", "zh"],
     defaultLocale: "en",
   },
-  output: "standalone",
+  output:
+    process.env.NEXT_OUTPUT_STANDALONE === "false" ? undefined : "standalone",
 
   async headers() {
     return [

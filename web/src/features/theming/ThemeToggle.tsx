@@ -3,14 +3,16 @@ import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/src/utils/tailwind";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
+import { useTranslation } from "@/src/features/i18n";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const capture = usePostHogClientCapture();
+  const { t } = useTranslation();
   return (
     <div className="flex items-center space-x-1">
-      <span className="mr-2">Theme</span>
-      <div title="Light mode">
+      <span className="mr-2">{t("common.theme")}</span>
+      <div title={t("theme.light")}>
         <Sun
           className={cn(
             theme === "light" ? "text-primary-accent" : "",
@@ -25,7 +27,7 @@ export function ThemeToggle() {
           }}
         />
       </div>
-      <div title="Dark mode">
+      <div title={t("theme.dark")}>
         <Moon
           className={cn(
             theme === "dark" ? "text-primary-accent" : "",
@@ -40,7 +42,7 @@ export function ThemeToggle() {
           }}
         />
       </div>
-      <div title="System mode">
+      <div title={t("theme.system")}>
         <Monitor
           className={cn(
             theme === "system" ? "text-primary-accent" : "",

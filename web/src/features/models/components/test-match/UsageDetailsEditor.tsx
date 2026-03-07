@@ -10,10 +10,13 @@ type UsageDetailsEditorProps = {
 
 export type { UsageDetailsEditorProps };
 
+import { useTranslation } from "@/src/features/i18n";
+
 export function UsageDetailsEditor({
   usageDetails,
   onChange,
 }: UsageDetailsEditorProps) {
+  const { t } = useTranslation();
   const [entries, setEntries] = useState<Array<{ key: string; value: number }>>(
     Object.entries(usageDetails).map(([key, value]) => ({ key, value })),
   );
@@ -59,17 +62,18 @@ export function UsageDetailsEditor({
   return (
     <div className="space-y-4">
       <div>
-        <div className="pb-2 text-sm font-medium">Usage Details (optional)</div>
+        <div className="pb-2 text-sm font-medium">
+          {t("models.testMatch.usageDetails")}
+        </div>
         <div className="text-sm text-muted-foreground">
-          Add usage details to test pricing tier matching. Leave empty to match
-          the default tier.
+          {t("models.testMatch.description")}
         </div>
       </div>
 
       {/* Template Buttons */}
       <div className="space-y-2">
         <div className="text-sm text-muted-foreground">
-          Prefill from template:
+          {t("models.testMatch.prefill")}
         </div>
         <div className="flex gap-2">
           <Button
@@ -83,7 +87,7 @@ export function UsageDetailsEditor({
               })
             }
           >
-            OpenAI
+            {t("models.testMatch.openAI")}
           </Button>
           <Button
             type="button"
@@ -97,7 +101,7 @@ export function UsageDetailsEditor({
               })
             }
           >
-            Anthropic
+            {t("models.testMatch.anthropic")}
           </Button>
         </div>
       </div>
@@ -106,8 +110,8 @@ export function UsageDetailsEditor({
       {entries.length > 0 ? (
         <div className="space-y-2 rounded-lg border p-3">
           <div className="grid grid-cols-[1fr,1fr,auto] gap-2 text-sm font-medium">
-            <div>Usage Type</div>
-            <div>Value</div>
+            <div>{t("models.testMatch.usageType")}</div>
+            <div>{t("models.testMatch.value")}</div>
             <div className="w-10" />
           </div>
           {entries.map((entry, index) => (
@@ -145,7 +149,7 @@ export function UsageDetailsEditor({
         className="w-full"
       >
         <PlusCircle className="mr-2 h-4 w-4" />
-        Add Usage Type
+        {t("models.testMatch.addUsageType")}
       </Button>
     </div>
   );

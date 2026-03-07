@@ -1,14 +1,19 @@
 import { ErrorPageWithSentry } from "@/src/components/error-page";
 import { useRouter } from "next/router";
+import { useTranslation } from "@/src/features/i18n";
 
 export default function AuthError() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { error } = router.query;
   const errorMessage = error
     ? decodeURIComponent(String(error))
-    : "An authentication error occurred. Please reach out to support.";
+    : t("errors.authErrorDefault");
 
   return (
-    <ErrorPageWithSentry title="Authentication Error" message={errorMessage} />
+    <ErrorPageWithSentry
+      title={t("errors.authenticationError")}
+      message={errorMessage}
+    />
   );
 }

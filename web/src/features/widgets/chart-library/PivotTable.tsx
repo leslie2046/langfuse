@@ -44,6 +44,8 @@ import { type ChartProps } from "@/src/features/widgets/chart-library/chart-prop
 import { numberFormatter } from "@/src/utils/numbers";
 import { formatMetricName } from "@/src/features/widgets/utils";
 import { type OrderByState } from "@langfuse/shared";
+import { Loader2 } from "lucide-react";
+import { useTranslation } from "@/src/features/i18n";
 import { ChartLoadingState } from "@/src/features/widgets/chart-library/ChartLoadingState";
 
 /**
@@ -215,10 +217,14 @@ function formatMetricValue(value: number | string): string {
  * Formats metric names for column headers
  *
  * @param metricName - The metric field name
+ * @param t - The translation function
  * @returns Formatted column header
  */
-function formatColumnHeader(metricName: string): string {
-  return formatMetricName(metricName);
+function formatColumnHeader(
+  metricName: string,
+  t: (key: string) => string,
+): string {
+  return formatMetricName(metricName, t);
 }
 
 /**
@@ -239,6 +245,7 @@ export const PivotTable: React.FC<PivotTableProps> = ({
   onSortChange,
   isLoading = false,
 }) => {
+  const { t } = useTranslation();
   // Transform chart data into pivot table structure
   const pivotTableRows = useMemo(() => {
     if (!data || data.length === 0) {
@@ -394,8 +401,10 @@ export const PivotTable: React.FC<PivotTableProps> = ({
             <StaticHeader
               label={
                 config?.dimensions && config.dimensions.length > 0
-                  ? config.dimensions.map(formatColumnHeader).join(" / ") // Show all dimensions
-                  : "Dimension"
+                  ? config.dimensions
+                      .map((d) => formatColumnHeader(d, t))
+                      .join(" / ") // Show all dimensions
+                  : t("dashboard.widgets.dataSelection.breakdownDimension")
               }
               className="p-2 text-left font-medium first:pl-2"
             />
@@ -405,7 +414,7 @@ export const PivotTable: React.FC<PivotTableProps> = ({
               <SortableHeader
                 key={metric}
                 column={metric}
-                label={formatColumnHeader(metric)}
+                label={formatColumnHeader(metric, t)}
                 sortState={sortState}
                 onSort={handleSort}
                 className="p-2 font-medium"

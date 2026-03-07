@@ -25,6 +25,7 @@ import {
   mapLegacyUiTableFilterToView,
 } from "@/src/features/query";
 import { type DatabaseRow } from "@/src/server/api/services/sqlInterface";
+import { useTranslation } from "@/src/features/i18n";
 import { Chart } from "@/src/features/widgets/chart-library/Chart";
 import { timeSeriesToDataPoints } from "@/src/features/dashboard/lib/chart-data-adapters";
 import { useScheduledDashboardExecuteQuery } from "@/src/hooks/useDashboardQueryScheduler";
@@ -52,6 +53,7 @@ export const ModelUsageChart = ({
   metricsVersion?: ViewVersion;
   schedulerId?: string;
 }) => {
+  const { t } = useTranslation();
   const {
     allModels,
     selectedModels,
@@ -300,41 +302,41 @@ export const ModelUsageChart = ({
 
   const data = [
     {
-      tabTitle: "Cost by model",
+      tabTitle: t("dashboard.costByModel"),
       data: costByModel,
       totalMetric: totalCostDashboardFormatted(totalCost),
-      metricDescription: `Cost`,
+      metricDescription: t("dashboard.cost"),
       formatter: totalCostDashboardFormatted,
     },
     {
-      tabTitle: "Cost by type",
+      tabTitle: t("dashboard.costByType"),
       data: costByType,
       totalMetric: totalCostDashboardFormatted(totalCost),
-      metricDescription: `Cost`,
+      metricDescription: t("dashboard.cost"),
       formatter: totalCostDashboardFormatted,
     },
     {
-      tabTitle: "Usage by model",
+      tabTitle: t("dashboard.usageByModel"),
       data: unitsByModel,
       totalMetric: totalTokens
         ? compactNumberFormatter(totalTokens)
         : compactNumberFormatter(0),
-      metricDescription: `Units`,
+      metricDescription: t("dashboard.units"),
     },
     {
-      tabTitle: "Usage by type",
+      tabTitle: t("dashboard.usageByType"),
       data: unitsByType,
       totalMetric: totalTokens
         ? compactNumberFormatter(totalTokens)
         : compactNumberFormatter(0),
-      metricDescription: `Units`,
+      metricDescription: t("dashboard.units"),
     },
   ];
 
   return (
     <DashboardCard
       className={className}
-      title="Model Usage"
+      title={t("dashboard.modelUsage")}
       isLoading={
         isLoading || (queryResult.isPending && selectedModels.length > 0)
       }

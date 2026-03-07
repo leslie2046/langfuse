@@ -1,4 +1,5 @@
 import { PrettyJsonView } from "@/src/components/ui/PrettyJsonView";
+import { useTranslation } from "@/src/features/i18n";
 import {
   type ScoreDomain,
   type TraceDomain,
@@ -99,6 +100,7 @@ export const TracePreview = ({
   const [currentView, setCurrentView] = useLocalStorage<
     "pretty" | "json" | "json-beta"
   >("jsonViewPreference", "pretty");
+  const { t } = useTranslation();
   const {
     jsonBetaEnabled,
     selectedViewTab,
@@ -275,7 +277,9 @@ export const TracePreview = ({
                   className="inline-flex"
                 >
                   <Badge>
-                    <span className="truncate">Session: {trace.sessionId}</span>
+                    <span className="truncate">
+                      {t("traceDetail.session")}: {trace.sessionId}
+                    </span>
                     <ExternalLinkIcon className="ml-1 h-3 w-3" />
                   </Badge>
                 </Link>
@@ -286,7 +290,9 @@ export const TracePreview = ({
                   className="inline-flex"
                 >
                   <Badge>
-                    <span className="truncate">User ID: {trace.userId}</span>
+                    <span className="truncate">
+                      {t("traceDetail.userId")}: {trace.userId}
+                    </span>
                     <ExternalLinkIcon className="ml-1 h-3 w-3" />
                   </Badge>
                 </Link>
@@ -324,7 +330,8 @@ export const TracePreview = ({
                     >
                       <Badge variant="tertiary">
                         <span className="flex items-center gap-1">
-                          Total Cost: {usdFormatter(totalCost.toNumber())}
+                          {t("traceDetail.totalCost")}:{" "}
+                          {usdFormatter(totalCost.toNumber())}
                           <InfoIcon className="h-3 w-3" />
                         </span>
                       </Badge>
@@ -378,12 +385,14 @@ export const TracePreview = ({
           {viewType === "detailed" && (
             <TooltipProvider>
               <TabsBarList>
-                <TabsBarTrigger value="preview">Preview</TabsBarTrigger>
+                <TabsBarTrigger value="preview">
+                  {t("traceDetail.preview")}
+                </TabsBarTrigger>
                 {showLogViewTab && (
                   <TabsBarTrigger value="log" disabled={isLogViewDisabled}>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <span>Log View</span>
+                        <span>{t("traceDetail.logView")}</span>
                       </TooltipTrigger>
                       <TooltipContent className="text-xs">
                         {isLogViewDisabled
@@ -396,7 +405,9 @@ export const TracePreview = ({
                   </TabsBarTrigger>
                 )}
                 {showScoresTab && (
-                  <TabsBarTrigger value="scores">Scores</TabsBarTrigger>
+                  <TabsBarTrigger value="scores">
+                    {t("traceDetail.scores")}
+                  </TabsBarTrigger>
                 )}
                 {selectedTab.includes("preview") && isPrettyViewAvailable && (
                   <>
@@ -529,7 +540,9 @@ export const TracePreview = ({
 
               {trace.tags.length > 0 && (
                 <>
-                  <div className="px-2 text-sm font-medium">{"Tags"}</div>
+                  <div className="px-2 text-sm font-medium">
+                    {t("traceDetail.tags")}
+                  </div>
                   <div className="flex flex-wrap gap-x-1 gap-y-1 px-2">
                     <TagList selectedTags={trace.tags} isLoading={false} />
                   </div>
@@ -539,7 +552,7 @@ export const TracePreview = ({
               <div className="px-2">
                 <PrettyJsonView
                   key={trace.id + "-metadata"}
-                  title="Metadata"
+                  title={t("traceDetail.metadata")}
                   json={trace.metadata}
                   media={
                     traceMedia.data?.filter((m) => m.field === "metadata") ?? []

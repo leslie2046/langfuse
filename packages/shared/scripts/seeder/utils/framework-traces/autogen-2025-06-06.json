@@ -5,10 +5,7 @@
     "name": "autogen-chat-trace",
     "timestamp": "2025-06-06T11:31:33.965Z",
     "environment": "default",
-    "tags": [
-      "autogen",
-      "dev"
-    ],
+    "tags": ["autogen", "dev"],
     "bookmarked": false,
     "release": null,
     "version": "1.0.0",

@@ -114,7 +114,8 @@ export const AutoComplete = ({
                     return (
                       <InputCommandItem
                         key={option.value}
-                        value={option.label}
+                        value={option.value}
+                        keywords={[option.label]}
                         onMouseDown={(event) => {
                           event.preventDefault();
                           event.stopPropagation();

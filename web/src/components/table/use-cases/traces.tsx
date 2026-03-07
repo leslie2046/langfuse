@@ -89,6 +89,7 @@ import {
 import { useScoreColumns } from "@/src/features/scores/hooks/useScoreColumns";
 import { scoreFilters } from "@/src/features/scores/lib/scoreColumns";
 import TagList from "@/src/features/tag/components/TagList";
+import { useTranslation } from "@/src/features/i18n";
 
 export type TracesTableRow = {
   // Shown by default
@@ -151,6 +152,7 @@ export default function TracesTable({
   externalDateRange,
   limitRows,
 }: TracesTableProps) {
+  const { t } = useTranslation();
   const utils = api.useUtils();
   const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
   const [rawRefreshInterval, setRawRefreshInterval] =
@@ -303,7 +305,7 @@ export default function TracesTable({
         environmentFilterOptions.data?.map((value) => value.environment) ??
         undefined,
       level: ["DEFAULT", "DEBUG", "WARNING", "ERROR"],
-      bookmarked: ["Bookmarked", "Not bookmarked"],
+      bookmarked: ["common.filters.bookmarked", "common.filters.notBookmarked"],
       userId:
         traceFilterOptionsResponse.data?.users?.map((u) => ({
           value: u.value,
@@ -588,7 +590,7 @@ export default function TracesTable({
         ]),
     {
       accessorKey: "timestamp",
-      header: "Timestamp",
+      header: t("pages.traces.columns.timestamp"),
       id: "timestamp",
       size: 150,
       enableHiding: true,
@@ -600,7 +602,7 @@ export default function TracesTable({
     },
     {
       accessorKey: "name",
-      header: "Name",
+      header: t("pages.traces.columns.name"),
       id: "name",
       size: 150,
       enableHiding: true,
@@ -612,7 +614,7 @@ export default function TracesTable({
     },
     {
       accessorKey: "input",
-      header: "Input",
+      header: t("pages.traces.columns.input"),
       id: "input",
       size: 400,
       cell: ({ row }) => {
@@ -633,7 +635,7 @@ export default function TracesTable({
     },
     {
       accessorKey: "output",
-      header: "Output",
+      header: t("pages.traces.columns.output"),
       id: "output",
       size: 400,
       cell: ({ row }) => {
@@ -655,7 +657,7 @@ export default function TracesTable({
     {
       accessorKey: "levelCounts",
       id: "levelCounts",
-      header: "Observation Levels",
+      header: t("pages.traces.columns.observationLevels"),
       size: 150,
       cell: ({ row }) => {
         const value: TracesTableRow["levelCounts"] =
@@ -677,7 +679,7 @@ export default function TracesTable({
     {
       accessorKey: "latency",
       id: "latency",
-      header: "Latency",
+      header: t("pages.traces.columns.latency"),
       size: 100,
       // add seconds to the end of the latency
       cell: ({ row }) => {
@@ -693,7 +695,7 @@ export default function TracesTable({
 
     {
       accessorKey: "tokens",
-      header: "Tokens",
+      header: t("pages.traces.columns.tokens"),
       id: "tokens",
       size: 180,
       cell: ({ row }) => {
@@ -723,7 +725,7 @@ export default function TracesTable({
     {
       accessorKey: "totalCost",
       id: "totalCost",
-      header: "Total Cost",
+      header: t("pages.traces.columns.totalCost"),
       size: 130,
       cell: ({ row }) => {
         const cost: TracesTableRow["totalCost"] = row.getValue("totalCost");
@@ -746,7 +748,7 @@ export default function TracesTable({
     },
     {
       accessorKey: "environment",
-      header: "Environment",
+      header: t("pages.traces.columns.environment"),
       id: "environment",
       size: 150,
       enableHiding: true,
@@ -766,7 +768,7 @@ export default function TracesTable({
     {
       accessorKey: "tags",
       id: "tags",
-      header: "Tags",
+      header: t("pages.traces.columns.tags"),
       size: 150,
       headerTooltip: {
         description: (
@@ -805,7 +807,7 @@ export default function TracesTable({
     },
     {
       accessorKey: "metadata",
-      header: "Metadata",
+      header: t("pages.traces.columns.metadata"),
       size: 400,
       headerTooltip: {
         description: (

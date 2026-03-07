@@ -81,6 +81,7 @@ import {
   type RefreshInterval,
   REFRESH_INTERVALS,
 } from "@/src/components/table/data-table-refresh-button";
+import { useTranslation } from "@/src/features/i18n";
 
 export type ObservationsTableRow = {
   // Shown by default
@@ -150,6 +151,7 @@ export default function ObservationsTable({
   externalDateRange,
   limitRows,
 }: ObservationsTableProps) {
+  const { t } = useTranslation();
   const router = useRouter();
   const { viewId } = router.query;
   const utils = api.useUtils();
@@ -597,7 +599,7 @@ export default function ObservationsTable({
     {
       accessorKey: "startTime",
       id: "startTime",
-      header: "Start Time",
+      header: t("pages.observations.columns.startTime"),
       size: 150,
       enableHiding: true,
       enableSorting,
@@ -609,7 +611,7 @@ export default function ObservationsTable({
     {
       accessorKey: "type",
       id: "type",
-      header: "Type",
+      header: t("pages.observations.columns.type"),
       size: 50,
       enableSorting,
       cell: ({ row }) => {
@@ -624,7 +626,7 @@ export default function ObservationsTable({
     {
       accessorKey: "name",
       id: "name",
-      header: "Name",
+      header: t("pages.observations.columns.name"),
       size: 150,
       enableSorting,
       cell: ({ row }) => {
@@ -634,7 +636,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "input",
-      header: "Input",
+      header: t("pages.observations.columns.input"),
       id: "input",
       size: 300,
       cell: ({ row }) => {
@@ -656,7 +658,7 @@ export default function ObservationsTable({
     {
       accessorKey: "output",
       id: "output",
-      header: "Output",
+      header: t("pages.observations.columns.output"),
       size: 300,
       cell: ({ row }) => {
         const observationId: string = row.getValue("id");
@@ -677,7 +679,7 @@ export default function ObservationsTable({
     {
       accessorKey: "level",
       id: "level",
-      header: "Level",
+      header: t("pages.observations.columns.level"),
       size: 100,
       headerTooltip: {
         description:
@@ -703,7 +705,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "statusMessage",
-      header: "Status Message",
+      header: t("pages.observations.columns.statusMessage"),
       id: "statusMessage",
       size: 150,
       headerTooltip: {
@@ -717,7 +719,7 @@ export default function ObservationsTable({
     {
       accessorKey: "latency",
       id: "latency",
-      header: "Latency",
+      header: t("pages.observations.columns.latency"),
       size: 100,
       cell: ({ row }) => {
         const latency: number | undefined = row.getValue("latency");
@@ -730,7 +732,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "totalCost",
-      header: "Total Cost",
+      header: t("pages.observations.columns.totalCost"),
       id: "totalCost",
       size: 120,
       cell: ({ row }) => {
@@ -755,7 +757,7 @@ export default function ObservationsTable({
     {
       accessorKey: "toolDefinitions",
       id: "toolDefinitions",
-      header: "Available Tools",
+      header: t("pages.observations.columns.toolDefinitions"),
       size: 120,
       enableHiding: true,
       enableSorting,
@@ -770,7 +772,7 @@ export default function ObservationsTable({
     {
       accessorKey: "toolCalls",
       id: "toolCalls",
-      header: "Tool Calls",
+      header: t("pages.observations.columns.toolCalls"),
       size: 100,
       enableHiding: true,
       enableSorting,
@@ -785,7 +787,7 @@ export default function ObservationsTable({
     {
       accessorKey: "timeToFirstToken",
       id: "timeToFirstToken",
-      header: "Time to First Token",
+      header: t("pages.observations.columns.timeToFirstToken"),
       size: 150,
       enableHiding: true,
       enableSorting,
@@ -802,7 +804,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "tokens",
-      header: "Tokens",
+      header: t("pages.observations.columns.totalTokens"),
       id: "tokens",
       size: 150,
       cell: ({ row }) => {
@@ -832,7 +834,7 @@ export default function ObservationsTable({
     {
       accessorKey: "model",
       id: "model",
-      header: "Model",
+      header: t("pages.observations.columns.model"),
       size: 150,
       enableHiding: true,
       enableSorting,
@@ -876,7 +878,7 @@ export default function ObservationsTable({
     {
       accessorKey: "promptName",
       id: "promptName",
-      header: "Prompt",
+      header: t("pages.observations.columns.promptName"),
       headerTooltip: {
         description: "Link to prompt version in Langfuse prompt management.",
         href: "https://langfuse.com/docs/prompt-management/get-started",
@@ -893,7 +895,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "environment",
-      header: "Environment",
+      header: t("pages.observations.columns.environment"),
       id: "environment",
       size: 150,
       enableHiding: true,
@@ -913,7 +915,7 @@ export default function ObservationsTable({
     {
       accessorKey: "traceTags",
       id: "traceTags",
-      header: "Trace Tags",
+      header: t("pages.observations.columns.traceTags"),
       size: 250,
       enableHiding: true,
       cell: ({ row }) => {
@@ -934,7 +936,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "metadata",
-      header: "Metadata",
+      header: t("pages.observations.columns.metadata"),
       size: 300,
       headerTooltip: {
         description: "Add metadata to traces to track additional information.",
@@ -958,7 +960,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "scores",
-      header: "Scores",
+      header: t("pages.observations.columns.scores"),
       id: "scores",
       enableHiding: true,
       defaultHidden: true,
@@ -970,7 +972,7 @@ export default function ObservationsTable({
     {
       accessorKey: "endTime",
       id: "endTime",
-      header: "End Time",
+      header: t("pages.observations.columns.endTime"),
       size: 150,
       enableHiding: true,
       enableSorting,
@@ -983,7 +985,7 @@ export default function ObservationsTable({
     {
       accessorKey: "id",
       id: "id",
-      header: "ObservationID",
+      header: t("pages.observations.columns.observationId"),
       size: 100,
       defaultHidden: true,
       enableSorting,
@@ -1000,7 +1002,7 @@ export default function ObservationsTable({
     {
       accessorKey: "traceName",
       id: "traceName",
-      header: "Trace Name",
+      header: t("pages.observations.columns.traceName"),
       size: 150,
       enableHiding: true,
       enableSorting,
@@ -1009,7 +1011,7 @@ export default function ObservationsTable({
     {
       accessorKey: "traceId",
       id: "traceId",
-      header: "Trace ID",
+      header: t("pages.observations.columns.traceId"),
       size: 100,
       cell: ({ row }) => {
         const value = row.getValue("traceId");
@@ -1024,7 +1026,7 @@ export default function ObservationsTable({
     {
       accessorKey: "modelId",
       id: "modelId",
-      header: "Model ID",
+      header: t("pages.observations.columns.modelId"),
       size: 100,
       enableHiding: true,
       defaultHidden: true,
@@ -1032,7 +1034,7 @@ export default function ObservationsTable({
     {
       accessorKey: "version",
       id: "version",
-      header: "Version",
+      header: t("pages.observations.columns.version"),
       size: 100,
       headerTooltip: {
         description: "Track changes via the version tag.",
@@ -1044,7 +1046,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "usage",
-      header: "Usage",
+      header: t("pages.observations.columns.usage"),
       id: "usage",
       enableHiding: true,
       defaultHidden: true,
@@ -1057,7 +1059,7 @@ export default function ObservationsTable({
         {
           accessorKey: "tokensPerSecond",
           id: "tokensPerSecond",
-          header: "Tokens per second",
+          header: t("pages.observations.columns.tokensPerSecond"),
           size: 200,
           cell: ({ row }: { row: Row<ObservationsTableRow> }) => {
             const latency: number | undefined = row.getValue("latency");
@@ -1082,7 +1084,7 @@ export default function ObservationsTable({
         {
           accessorKey: "inputTokens",
           id: "inputTokens",
-          header: "Input Tokens",
+          header: t("pages.observations.columns.inputTokens"),
           size: 100,
           enableHiding: true,
           defaultHidden: true,
@@ -1099,7 +1101,7 @@ export default function ObservationsTable({
         {
           accessorKey: "outputTokens",
           id: "outputTokens",
-          header: "Output Tokens",
+          header: t("pages.observations.columns.outputTokens"),
           size: 100,
           enableHiding: true,
           defaultHidden: true,
@@ -1116,7 +1118,7 @@ export default function ObservationsTable({
         {
           accessorKey: "totalTokens",
           id: "totalTokens",
-          header: "Total Tokens",
+          header: t("pages.observations.columns.totalTokens"),
           size: 100,
           enableHiding: true,
           defaultHidden: true,
@@ -1134,7 +1136,7 @@ export default function ObservationsTable({
     },
     {
       accessorKey: "cost",
-      header: "Cost",
+      header: t("pages.observations.columns.cost"),
       id: "cost",
       enableHiding: true,
       defaultHidden: true,
@@ -1147,7 +1149,7 @@ export default function ObservationsTable({
         {
           accessorKey: "inputCost",
           id: "inputCost",
-          header: "Input Cost",
+          header: t("pages.observations.columns.inputCost"),
           size: 120,
           cell: ({ row }: { row: Row<ObservationsTableRow> }) => {
             const value: {
@@ -1166,7 +1168,7 @@ export default function ObservationsTable({
         {
           accessorKey: "outputCost",
           id: "outputCost",
-          header: "Output Cost",
+          header: t("pages.observations.columns.outputCost"),
           size: 120,
           cell: ({ row }: { row: Row<ObservationsTableRow> }) => {
             const value: {

@@ -17,6 +17,7 @@ import {
   mapLegacyUiTableFilterToView,
 } from "@/src/features/query";
 import { type DatabaseRow } from "@/src/server/api/services/sqlInterface";
+import { useTranslation } from "@/src/features/i18n";
 import { Chart } from "@/src/features/widgets/chart-library/Chart";
 import { timeSeriesToDataPoints } from "@/src/features/dashboard/lib/chart-data-adapters";
 import { useScheduledDashboardExecuteQuery } from "@/src/hooks/useDashboardQueryScheduler";
@@ -32,6 +33,7 @@ export function ChartScores(props: {
   metricsVersion?: ViewVersion;
   schedulerId?: string;
 }) {
+  const { t } = useTranslation();
   const scoresQuery: QueryType = {
     view: "scores-numeric",
     dimensions: [{ field: "name" }, { field: "dataType" }, { field: "source" }],
@@ -91,8 +93,8 @@ export function ChartScores(props: {
   return (
     <DashboardCard
       className={props.className}
-      title="Scores"
-      description="Moving average per score"
+      title={t("dashboard.scores")}
+      description={t("dashboard.movingAveragePerScore")}
       isLoading={props.isLoading || scores.isPending}
     >
       {!isEmptyTimeSeries({ data: extractedScores }) ? (
