@@ -132,7 +132,7 @@ export const SaveToPromptButton: React.FC<SaveToPromptButtonProps> = ({
             {t("playground.saveAsNewPrompt")}
           </Button>
           <Divider />
-          <InputCommand className="min-h-[8rem]">
+          <InputCommand className="min-h-32">
             <InputCommandInput
               placeholder={t("playground.searchChatPrompts")}
               variant="bottom"

@@ -123,7 +123,7 @@ export const ModelParameters: React.FC<ModelParamsContext> = ({
         >
           <Settings2 size={14} />
           {modelSettingsUsed && (
-            <div className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-primary" />
+            <div className="bg-primary absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full" />
           )}
         </Button>
       </PopoverTrigger>
@@ -134,7 +134,7 @@ export const ModelParameters: React.FC<ModelParamsContext> = ({
       >
         <div className="mb-3">
           <h4 className="mb-1 text-sm font-medium">Model Advanced Settings</h4>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             Configure advanced parameters for your model.
           </p>
         </div>
@@ -227,7 +227,7 @@ export const ModelParameters: React.FC<ModelParamsContext> = ({
     };
 
     return (
-      <div className="flex flex-col space-y-2 pb-1 pr-1 pt-2">
+      <div className="flex flex-col space-y-2 pt-2 pr-1 pb-1">
         <div className="flex items-center gap-2">
           <div className="min-w-0 flex-1 space-y-1">
             <Select
@@ -257,11 +257,11 @@ export const ModelParameters: React.FC<ModelParamsContext> = ({
               </FormDescription>
             ) : undefined}
           </div>
-          <div className="flex-shrink-0">{SettingsButton}</div>
+          <div className="shrink-0">{SettingsButton}</div>
         </div>
 
         {modelParams.model.value?.startsWith("o1-") ? (
-          <p className="mt-1 text-xs text-dark-yellow">
+          <p className="text-dark-yellow mt-1 text-xs">
             For {modelParams.model.value}, the system message and the
             temperature, max_tokens and top_p setting are not supported while it
             is in beta.{" "}
@@ -281,7 +281,7 @@ export const ModelParameters: React.FC<ModelParamsContext> = ({
   // Vertical layout (default) - existing behavior
   return (
     <div
-      className={cn("flex flex-col", !isEmbedded && "space-y-2 pb-1 pr-1 pt-2")}
+      className={cn("flex flex-col", !isEmbedded && "space-y-2 pt-2 pr-1 pb-1")}
     >
       {!isEmbedded ? (
         <div className="flex items-center justify-between">
@@ -388,7 +388,7 @@ const ModelParamsSelect = ({
   // Vertical layout (default) - existing behavior
   return (
     <div className="flex items-center gap-4">
-      <div className="w-24 flex-shrink-0">
+      <div className="w-24 shrink-0">
         <p
           className={cn(
             "text-xs font-semibold",
@@ -551,7 +551,7 @@ const ProviderOptionsInput = ({
           </span>
           <Tooltip>
             <TooltipTrigger>
-              <InfoIcon className="size-3 text-muted-foreground" />
+              <InfoIcon className="text-muted-foreground size-3" />
             </TooltipTrigger>
             <TooltipContent className="max-w-[200px] p-2">
               Additional options to pass to the invocation. Please check your

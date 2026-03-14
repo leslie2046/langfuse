@@ -890,7 +890,7 @@ export default function ScoresTable({
                   <span>{t("pages.scores.noScoresFound")}</span>
                   <a
                     href="https://langfuse.com/faq/all/what-are-scores"
-                    className="pointer-events-auto italic text-primary underline"
+                    className="text-primary pointer-events-auto italic underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

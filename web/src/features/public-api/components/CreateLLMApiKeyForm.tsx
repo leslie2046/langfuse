@@ -643,7 +643,7 @@ export function CreateLLMApiKeyForm({
                         (existingKey.config as BedrockConfig).region && (
                           <span className="text-sm">
                             {t("llmApiKeys.form.current")}{" "}
-                            <code className="rounded bg-muted px-1 py-0.5">
+                            <code className="bg-muted rounded px-1 py-0.5">
                               {(existingKey.config as BedrockConfig).region}
                             </code>
                           </span>
@@ -673,7 +673,7 @@ export function CreateLLMApiKeyForm({
                     <FormLabel>
                       {t("llmApiKeys.form.awsAccessKeyId")}
                       {!isLangfuseCloud && (
-                        <span className="font-normal text-muted-foreground">
+                        <span className="text-muted-foreground font-normal">
                           {" "}
                           {t("llmApiKeys.form.optional")}
                         </span>
@@ -713,7 +713,7 @@ export function CreateLLMApiKeyForm({
                     <FormLabel>
                       {t("llmApiKeys.form.awsSecretAccessKey")}
                       {!isLangfuseCloud && (
-                        <span className="font-normal text-muted-foreground">
+                        <span className="text-muted-foreground font-normal">
                           {" "}
                           {t("llmApiKeys.form.optional")}
                         </span>
@@ -742,7 +742,7 @@ export function CreateLLMApiKeyForm({
                 )}
               />
               {!isLangfuseCloud && (
-                <div className="space-y-2 border-l-2 border-blue-200 pl-4 text-sm text-muted-foreground">
+                <div className="text-muted-foreground space-y-2 border-l-2 border-blue-200 pl-4 text-sm">
                   <p>
                     <strong>{t("llmApiKeys.form.awsDefaultChainTitle")}</strong>{" "}
                     {t("llmApiKeys.form.awsDefaultChainDescription")}
@@ -858,7 +858,7 @@ export function CreateLLMApiKeyForm({
               {!isLangfuseCloud &&
                 form.watch("secretKey") ===
                   VERTEXAI_USE_DEFAULT_CREDENTIALS && (
-                  <div className="space-y-2 border-l-2 border-blue-200 pl-4 text-sm text-muted-foreground">
+                  <div className="text-muted-foreground space-y-2 border-l-2 border-blue-200 pl-4 text-sm">
                     <p>
                       <strong>{t("llmApiKeys.form.adcTitle")}</strong>{" "}
                       {t("llmApiKeys.form.adcCheckDescription")}

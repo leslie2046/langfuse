@@ -90,7 +90,7 @@ export default function NewEvaluatorPage() {
                   className={cn(
                     stepInt !== 0
                       ? "text-muted-foreground"
-                      : "font-semibold text-foreground",
+                      : "text-foreground font-semibold",
                   )}
                 >
                   {t("pages.evaluators.new.step0")}
@@ -110,7 +110,7 @@ export default function NewEvaluatorPage() {
               className={cn(
                 stepInt !== 1
                   ? "text-muted-foreground"
-                  : "font-semibold text-foreground",
+                  : "text-foreground font-semibold",
               )}
             >
               {t("pages.evaluators.new.step1")}
@@ -123,7 +123,7 @@ export default function NewEvaluatorPage() {
               className={cn(
                 stepInt !== 2
                   ? "text-muted-foreground"
-                  : "font-semibold text-foreground",
+                  : "text-foreground font-semibold",
               )}
             >
               <div className="flex flex-row">
