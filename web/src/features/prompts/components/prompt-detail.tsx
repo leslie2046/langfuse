@@ -59,7 +59,10 @@ import { TagPromptDetailsPopover } from "@/src/features/tag/components/TagPrompt
 import { SetPromptVersionLabels } from "@/src/features/prompts/components/SetPromptVersionLabels";
 import { CommentDrawerButton } from "@/src/features/comments/CommentDrawerButton";
 import { Command, CommandInput } from "@/src/components/ui/command";
-import { renderRichPromptContent } from "@/src/features/prompts/components/prompt-content-utils";
+import {
+  PromptReferenceProvider,
+  renderRichPromptContent,
+} from "@/src/components/ui/PromptReferences";
 import { PromptVariableListPreview } from "@/src/features/prompts/components/PromptVariableListPreview";
 import { createBreadcrumbItems } from "@/src/features/folders/utils";
 import { useTranslation } from "@/src/features/i18n";
@@ -344,7 +347,7 @@ export const PromptDetail = ({
             <CommandInput
               showBorder={false}
               placeholder="Search..."
-              className="h-fit border-none py-0 text-sm font-light text-muted-foreground focus:ring-0"
+              className="text-muted-foreground h-fit border-none py-0 text-sm font-light focus:ring-0"
             />
 
             <Button
@@ -564,14 +567,13 @@ export const PromptDetail = ({
                       title="Text Prompt (resolved)"
                     />
                   ) : (
-                    <CodeView
-                      content={renderRichPromptContent(
-                        projectId as string,
-                        prompt.prompt,
-                      )}
-                      originalContent={prompt.prompt}
-                      title="Text Prompt"
-                    />
+                    <PromptReferenceProvider projectId={projectId as string}>
+                      <CodeView
+                        content={renderRichPromptContent(prompt.prompt)}
+                        originalContent={prompt.prompt}
+                        title="Text Prompt"
+                      />
+                    </PromptReferenceProvider>
                   )
                 ) : (
                   <JSONView json={prompt.prompt} title="Prompt" />
@@ -598,7 +600,7 @@ export const PromptDetail = ({
               <div className="flex h-full min-h-0 w-full flex-col gap-2 overflow-y-auto pb-4">
                 {pythonCode && <CodeView content={pythonCode} title="Python" />}
                 {jsCode && <CodeView content={jsCode} title="JS/TS" />}
-                <p className="pl-1 text-xs text-muted-foreground">
+                <p className="text-muted-foreground pl-1 text-xs">
                   See{" "}
                   <a
                     href="https://langfuse.com/docs/prompts"
