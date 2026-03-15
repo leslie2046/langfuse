@@ -556,7 +556,6 @@ export const PromptDetail = ({
                       currentView="pretty"
                       messageToToolCallNumbers={new Map()}
                       collapseLongHistory={false}
-                      projectIdForPromptButtons={projectId}
                     />
                   </div>
                 ) : typeof prompt.prompt === "string" ? (

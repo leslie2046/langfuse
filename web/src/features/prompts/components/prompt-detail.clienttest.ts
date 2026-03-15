@@ -16,6 +16,7 @@ describe("PromptDetail prompt reference wiring", () => {
       /from\s+["']@\/src\/components\/ui\/PromptReferences["']/,
     );
     expect(source).not.toContain("prompt-content-utils");
+    expect(source).not.toContain("projectIdForPromptButtons");
     expect(source).toContain("<PromptReferenceProvider");
     expect(source).toMatch(/renderRichPromptContent\(\s*prompt\.prompt\s*\)/);
   });
