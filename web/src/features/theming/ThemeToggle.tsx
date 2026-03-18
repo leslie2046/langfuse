@@ -16,7 +16,7 @@ export function ThemeToggle() {
         <Sun
           className={cn(
             theme === "light" ? "text-primary-accent" : "",
-            "text:primary h-[1.6rem] w-[1.6rem] rounded-sm p-1 hover:bg-input hover:text-primary-accent",
+            "text:primary hover:bg-input hover:text-primary-accent h-[1.6rem] w-[1.6rem] rounded-sm p-1",
           )}
           onClick={(e) => {
             e.preventDefault();
@@ -31,7 +31,7 @@ export function ThemeToggle() {
         <Moon
           className={cn(
             theme === "dark" ? "text-primary-accent" : "",
-            "h-[1.6rem] w-[1.6rem] rounded-sm p-1 hover:bg-input hover:text-primary-accent",
+            "hover:bg-input hover:text-primary-accent h-[1.6rem] w-[1.6rem] rounded-sm p-1",
           )}
           onClick={(e) => {
             e.preventDefault();
@@ -46,7 +46,7 @@ export function ThemeToggle() {
         <Monitor
           className={cn(
             theme === "system" ? "text-primary-accent" : "",
-            "h-[1.6rem] w-[1.6rem] rounded-sm p-1 hover:bg-input hover:text-primary-accent",
+            "hover:bg-input hover:text-primary-accent h-[1.6rem] w-[1.6rem] rounded-sm p-1",
           )}
           onClick={(e) => {
             e.preventDefault();

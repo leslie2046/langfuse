@@ -9,8 +9,13 @@ import { type MultiWindowState } from "@/src/features/playground/page/types";
 import Page from "@/src/components/layouts/page";
 import MultiWindowPlayground from "@/src/features/playground/page/components/MultiWindowPlayground";
 import { NoModelConfiguredAlert } from "@/src/features/playground/page/components/NoModelConfiguredAlert";
+import {
+  MessageSearchProvider,
+  MessageSearchToolbar,
+} from "@/src/components/ChatMessages/MessageSearch";
 import useProjectIdFromURL from "@/src/hooks/useProjectIdFromURL";
 import { useTranslation } from "@/src/features/i18n";
+import { useIsMobile } from "@/src/hooks/use-mobile";
 
 /**
  * PlaygroundPage Component
@@ -36,6 +41,7 @@ import { useTranslation } from "@/src/features/i18n";
 export default function PlaygroundPage() {
   const projectId = useProjectIdFromURL();
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
   const { windowIds, isLoaded, addWindowWithCopy, removeWindowId } =
     usePersistedWindowIds();
 
@@ -80,10 +86,18 @@ export default function PlaygroundPage() {
     executeAllWindows();
   }, [executeAllWindows]);
 
+  const searchableWindowIds = isMobile ? windowIds.slice(0, 1) : windowIds;
+
   // Handle command+enter for "Run All" button
   useCommandEnter(!globalIsExecutingAll, async () => {
     executeAllWindows();
   });
+
+  const getMessageSearchPageLabel = useCallback(
+    (_pageId: string, pageIndex: number) =>
+      windowIds.length > 1 ? `Window ${pageIndex + 1}` : null,
+    [windowIds.length],
+  );
 
   // Don't render until window IDs are loaded
   if (!isLoaded) {
@@ -118,76 +132,85 @@ export default function PlaygroundPage() {
   };
 
   return (
-    <Page
-      scrollable={false}
-      withPadding={false}
-      headerProps={{
-        title: t("playground.title"),
-        help: {
-          description: t("playground.helpDescription"),
-          href: "https://langfuse.com/docs/prompt-management/features/playground",
-        },
-        actionButtonsRight: (
-          <div className="flex flex-nowrap items-center gap-2">
-            {/* Window Count Display - Hidden on mobile */}
-            <div className="hidden items-center gap-2 text-sm text-muted-foreground md:flex">
-              <span className="whitespace-nowrap">
-                {windowIds.length}{" "}
-                {windowIds.length === 1
-                  ? t("playground.window")
-                  : t("playground.windows")}
-              </span>
-              {executionStatus && (
-                <>
-                  <span className="hidden sm:inline">•</span>
-                  <div className="flex items-center gap-1">
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                    <span className="hidden whitespace-nowrap sm:inline">
-                      {executionStatus}
-                    </span>
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Multi-Window Controls - Hidden on mobile */}
-            <Button
-              variant="outline"
-              onClick={handleExecuteAll}
-              disabled={isRunAllDisabled}
-              className="hidden flex-shrink-0 gap-1 md:flex"
-              title={
-                !hasAnyModelConfigured
-                  ? t("playground.configureModelFirst")
-                  : t("playground.executeAllWindows")
-              }
-            >
-              {globalIsExecutingAll ? (
-                <Loader2 className="h-3 w-3 animate-spin" />
-              ) : (
-                <Play className="h-3 w-3" />
-              )}
-              <span className="hidden lg:inline">{t("playground.runAll")}</span>
-            </Button>
-
-            {/* Reset Playground Button */}
-            <ResetPlaygroundButton />
-          </div>
-        ),
-      }}
+    <MessageSearchProvider
+      pageIds={searchableWindowIds}
+      getPageLabel={getMessageSearchPageLabel}
     >
-      <div className="flex h-full flex-col">
-        {!hasAnyModelConfigured && projectId && (
-          <NoModelConfiguredAlert projectId={projectId} />
-        )}
-        <div className="flex-1 overflow-hidden">
-          <MultiWindowPlayground
-            windowState={windowState}
-            onRemoveWindow={removeWindow}
-            onAddWindow={addWindow}
-          />
+      <Page
+        scrollable={false}
+        withPadding={false}
+        headerProps={{
+          title: t("playground.title"),
+          help: {
+            description: t("playground.helpDescription"),
+            href: "https://langfuse.com/docs/prompt-management/features/playground",
+          },
+          actionButtonsRight: (
+            <div className="flex flex-nowrap items-center gap-2">
+              <MessageSearchToolbar className="max-w-96" />
+
+              {/* Window Count Display - Hidden on mobile */}
+              <div className="text-muted-foreground hidden items-center gap-2 text-sm md:flex">
+                <span className="whitespace-nowrap">
+                  {windowIds.length}{" "}
+                  {windowIds.length === 1
+                    ? t("playground.window")
+                    : t("playground.windows")}
+                </span>
+                {executionStatus && (
+                  <>
+                    <span className="hidden sm:inline">•</span>
+                    <div className="flex items-center gap-1">
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                      <span className="hidden whitespace-nowrap sm:inline">
+                        {executionStatus}
+                      </span>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Multi-Window Controls - Hidden on mobile */}
+              <Button
+                variant="outline"
+                onClick={handleExecuteAll}
+                disabled={isRunAllDisabled}
+                className="hidden shrink-0 gap-1 md:flex"
+                title={
+                  !hasAnyModelConfigured
+                    ? t("playground.configureModelFirst")
+                    : t("playground.executeAllWindows")
+                }
+              >
+                {globalIsExecutingAll ? (
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                ) : (
+                  <Play className="h-3 w-3" />
+                )}
+                <span className="hidden lg:inline">
+                  {t("playground.runAll")}
+                </span>
+              </Button>
+
+              {/* Reset Playground Button */}
+              <ResetPlaygroundButton />
+            </div>
+          ),
+        }}
+      >
+        <div className="flex h-full flex-col">
+          {!hasAnyModelConfigured && projectId && (
+            <NoModelConfiguredAlert projectId={projectId} />
+          )}
+          <div className="flex-1 overflow-hidden">
+            <MultiWindowPlayground
+              windowState={windowState}
+              onRemoveWindow={removeWindow}
+              onAddWindow={addWindow}
+            />
+          </div>
         </div>
-      </div>
-    </Page>
+      </Page>
+    </MessageSearchProvider>
   );
 }

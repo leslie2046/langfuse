@@ -59,7 +59,10 @@ import { TagPromptDetailsPopover } from "@/src/features/tag/components/TagPrompt
 import { SetPromptVersionLabels } from "@/src/features/prompts/components/SetPromptVersionLabels";
 import { CommentDrawerButton } from "@/src/features/comments/CommentDrawerButton";
 import { Command, CommandInput } from "@/src/components/ui/command";
-import { renderRichPromptContent } from "@/src/features/prompts/components/prompt-content-utils";
+import {
+  PromptReferenceProvider,
+  renderRichPromptContent,
+} from "@/src/components/ui/PromptReferences";
 import { PromptVariableListPreview } from "@/src/features/prompts/components/PromptVariableListPreview";
 import { createBreadcrumbItems } from "@/src/features/folders/utils";
 import { useTranslation } from "@/src/features/i18n";
@@ -339,12 +342,12 @@ export const PromptDetail = ({
       }}
     >
       <div className="grid flex-1 grid-cols-3 gap-4 overflow-hidden px-3 md:grid-cols-4">
-        <Command className="flex flex-col gap-2 overflow-y-auto rounded-none border-r pr-3 font-medium focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 data-[focus]:ring-0">
+        <Command className="flex flex-col gap-2 overflow-y-auto rounded-none border-r pr-3 font-medium focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none data-[focus]:ring-0">
           <div className="mt-3 flex items-center justify-between">
             <CommandInput
               showBorder={false}
               placeholder="Search..."
-              className="h-fit border-none py-0 text-sm font-light text-muted-foreground focus:ring-0"
+              className="text-muted-foreground h-fit border-none py-0 text-sm font-light focus:ring-0"
             />
 
             <Button
@@ -382,8 +385,8 @@ export const PromptDetail = ({
         <div className="col-span-2 mt-3 flex max-h-full min-h-0 flex-col md:col-span-3">
           <div className="flex flex-col items-start gap-2">
             <div className="grid w-full min-w-0 grid-cols-[auto,auto] items-center justify-between">
-              <div className="flex min-w-0 max-w-full flex-shrink flex-col">
-                <div className="flex min-w-0 max-w-full flex-wrap items-start gap-1">
+              <div className="flex max-w-full min-w-0 flex-shrink flex-col">
+                <div className="flex max-w-full min-w-0 flex-wrap items-start gap-1">
                   <SetPromptVersionLabels
                     title={
                       <div
@@ -396,7 +399,7 @@ export const PromptDetail = ({
                         >
                           # {prompt.version}
                         </Badge>
-                        <span className="mb-0 line-clamp-2 min-w-0 break-all text-lg font-medium md:break-normal md:break-words">
+                        <span className="mb-0 line-clamp-2 min-w-0 text-lg font-medium break-all md:break-normal md:break-words">
                           {prompt.commitMessage ?? prompt.name}
                         </span>
                       </div>
@@ -488,7 +491,7 @@ export const PromptDetail = ({
             className="min-h-0"
             onValueChange={(value) => setCurrentTab(value)}
           >
-            <TabsBarList className="min-w-0 max-w-full justify-start overflow-x-auto">
+            <TabsBarList className="max-w-full min-w-0 justify-start overflow-x-auto">
               <TabsBarTrigger value="prompt">
                 {t("prompts.tabs.prompt")}
               </TabsBarTrigger>
@@ -504,7 +507,7 @@ export const PromptDetail = ({
             </TabsBarList>
             <TabsBarContent
               value="linked-generations"
-              className="mb-2 mt-0 flex max-h-full min-h-0 flex-1 flex-col overflow-hidden"
+              className="mt-0 mb-2 flex max-h-full min-h-0 flex-1 flex-col overflow-hidden"
             >
               <div className="flex h-full flex-1 flex-col overflow-hidden">
                 <Generations
@@ -547,14 +550,15 @@ export const PromptDetail = ({
                 )}
                 {prompt.type === PromptType.Chat && chatMessages ? (
                   <div className="w-full">
-                    <OpenAiMessageView
-                      messages={chatMessages}
-                      shouldRenderMarkdown={true}
-                      currentView="pretty"
-                      messageToToolCallNumbers={new Map()}
-                      collapseLongHistory={false}
-                      projectIdForPromptButtons={projectId}
-                    />
+                    <PromptReferenceProvider projectId={projectId}>
+                      <OpenAiMessageView
+                        messages={chatMessages}
+                        shouldRenderMarkdown={true}
+                        currentView="pretty"
+                        messageToToolCallNumbers={new Map()}
+                        collapseLongHistory={false}
+                      />
+                    </PromptReferenceProvider>
                   </div>
                 ) : typeof prompt.prompt === "string" ? (
                   resolutionMode === "resolved" &&
@@ -565,10 +569,7 @@ export const PromptDetail = ({
                     />
                   ) : (
                     <CodeView
-                      content={renderRichPromptContent(
-                        projectId as string,
-                        prompt.prompt,
-                      )}
+                      content={renderRichPromptContent(prompt.prompt)}
                       originalContent={prompt.prompt}
                       title="Text Prompt"
                     />
@@ -598,7 +599,7 @@ export const PromptDetail = ({
               <div className="flex h-full min-h-0 w-full flex-col gap-2 overflow-y-auto pb-4">
                 {pythonCode && <CodeView content={pythonCode} title="Python" />}
                 {jsCode && <CodeView content={jsCode} title="JS/TS" />}
-                <p className="pl-1 text-xs text-muted-foreground">
+                <p className="text-muted-foreground pl-1 text-xs">
                   See{" "}
                   <a
                     href="https://langfuse.com/docs/prompts"

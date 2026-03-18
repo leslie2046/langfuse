@@ -312,6 +312,10 @@ export const openAIModels = [
   "gpt-4.1-mini-2025-04-14",
   "gpt-4.1-nano",
   "gpt-4.1-nano-2025-04-14",
+  "gpt-5.4",
+  "gpt-5.4-2026-03-05",
+  "gpt-5.4-pro",
+  "gpt-5.4-pro-2026-03-05",
   "gpt-5.2-2025-12-11",
   "gpt-5.1",
   "gpt-5.1-2025-11-13",
@@ -355,6 +359,10 @@ export const openAIModels = [
 type OpenAIReasoningMap = Record<OpenAIModel, boolean>;
 export const openAIModelToReasoning: OpenAIReasoningMap = {
   // reasoning models
+  "gpt-5.4": true,
+  "gpt-5.4-2026-03-05": true,
+  "gpt-5.4-pro": true,
+  "gpt-5.4-pro-2026-03-05": true,
   "gpt-5.2-2025-12-11": true,
   "gpt-5.1": true,
   "gpt-5.1-2025-11-13": true,
@@ -442,6 +450,7 @@ export const vertexAIModels = [
   "gemini-2.5-flash-preview-09-2025",
   "gemini-2.5-flash-lite",
   "gemini-2.5-flash-lite-preview-09-2025",
+  "gemini-live-2.5-flash-native-audio",
   "gemini-2.0-flash",
   "gemini-2.0-pro-exp-02-05",
   "gemini-2.0-flash-001",

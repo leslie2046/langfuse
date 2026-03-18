@@ -127,9 +127,9 @@ TraceLayoutDesktop.NavigationPanel = function Navigation({
       id={RESIZABLE_PANEL_NAVIGATION_ID}
       panelRef={panelRef}
       collapsible={true}
-      collapsedSize="40px"
-      minSize="260px"
-      defaultSize="450px"
+      collapsedSize={4}
+      minSize={26}
+      defaultSize={45}
       onResize={() => {
         setIsNavigationPanelCollapsed(panelRef.current?.isCollapsed() ?? false);
       }}
@@ -146,7 +146,7 @@ TraceLayoutDesktop.ResizeHandle = function ResizeHandle() {
   return (
     <Separator
       id={RESIZABLE_PANEL_HANDLE_ID}
-      className="relative w-px bg-border transition-colors duration-200 after:absolute after:inset-y-0 after:left-0 after:w-1 after:bg-blue-200 after:opacity-0 after:transition-opacity after:duration-200 hover:after:opacity-100 active:after:opacity-100"
+      className="bg-border relative w-px transition-colors duration-200 after:absolute after:inset-y-0 after:left-0 after:w-1 after:bg-blue-200 after:opacity-0 after:transition-opacity after:duration-200 hover:after:opacity-100 active:after:opacity-100"
       onDoubleClick={handleTogglePanel}
     />
   );
@@ -159,7 +159,7 @@ TraceLayoutDesktop.DetailPanel = function Detail({
   children: ReactNode;
 }) {
   return (
-    <Panel id={RESIZABLE_PANEL_PREVIEW_ID} defaultSize="70%" minSize="50%">
+    <Panel id={RESIZABLE_PANEL_PREVIEW_ID} defaultSize={70} minSize={50}>
       {children}
     </Panel>
   );

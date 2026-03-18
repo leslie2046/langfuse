@@ -524,6 +524,83 @@ describe("Clickhouse Events Repository Test", () => {
       });
     });
 
+    describe("Prompt Filters", () => {
+      it("should filter observations by prompt name and prompt version", async () => {
+        const uniqueProjectId = randomUUID();
+        const traceId = randomUUID();
+        const matchingEventId = randomUUID();
+
+        const events = [
+          createEvent({
+            id: matchingEventId,
+            span_id: matchingEventId,
+            project_id: uniqueProjectId,
+            trace_id: traceId,
+            type: "GENERATION",
+            name: "prompt-match",
+            prompt_name: "chat-parent",
+            prompt_version: 1,
+          }),
+          createEvent({
+            id: randomUUID(),
+            span_id: randomUUID(),
+            project_id: uniqueProjectId,
+            trace_id: traceId,
+            type: "GENERATION",
+            name: "wrong-version",
+            prompt_name: "chat-parent",
+            prompt_version: 2,
+          }),
+          createEvent({
+            id: randomUUID(),
+            span_id: randomUUID(),
+            project_id: uniqueProjectId,
+            trace_id: traceId,
+            type: "GENERATION",
+            name: "wrong-name",
+            prompt_name: "other-prompt",
+            prompt_version: 1,
+          }),
+        ];
+
+        await createEventsCh(events);
+
+        const filter: FilterCondition[] = [
+          {
+            type: "string",
+            column: "Prompt Name",
+            operator: "=",
+            value: "chat-parent",
+          },
+          {
+            type: "number",
+            column: "Prompt Version",
+            operator: "=",
+            value: 1,
+          },
+        ];
+
+        const [observations, count] = await Promise.all([
+          getObservationsWithModelDataFromEventsTable({
+            projectId: uniqueProjectId,
+            filter,
+            limit: 100,
+            offset: 0,
+          }),
+          getObservationsCountFromEventsTable({
+            projectId: uniqueProjectId,
+            filter,
+          }),
+        ]);
+
+        expect(count).toBe(1);
+        expect(observations).toHaveLength(1);
+        expect(observations[0]?.id).toBe(matchingEventId);
+        expect(observations[0]?.promptName).toBe("chat-parent");
+        expect(observations[0]?.promptVersion).toBe(1);
+      });
+    });
+
     describe("Trace ID Filters", () => {
       it("should filter observations by multiple trace IDs with 'any of' operator", async () => {
         const traceId1 = randomUUID();
@@ -952,6 +1029,125 @@ describe("Clickhouse Events Repository Test", () => {
 
         expect(result.length).toBe(1);
         expect(result[0].name).toBe("md1");
+      });
+
+      it("should return the first value when metadata_names contains duplicates", async () => {
+        const traceId = randomUUID();
+        const observationId = randomUUID();
+        const now = Date.now();
+
+        // Insert event with duplicate key "foo" in metadata_names.
+        // metadata_names = ["foo", "foo"], metadata_raw_values = ["bar", "baz"]
+        // Expected: reading metadata["foo"] should return "bar" (first occurrence wins).
+        const event = createEvent({
+          id: observationId,
+          span_id: observationId,
+          project_id: projectId,
+          trace_id: traceId,
+          type: "SPAN",
+          name: "duplicate-metadata-read",
+          metadata_names: ["foo", "foo"],
+          metadata_values: ["bar", "baz"],
+          start_time: now * 1000,
+        });
+
+        await createEventsCh([event]);
+
+        const result = await getObservationsWithModelDataFromEventsTable({
+          projectId,
+          filter: [idFilter(observationId)],
+          limit: 1000,
+          offset: 0,
+          selectIOAndMetadata: true,
+        });
+
+        expect(result.length).toBe(1);
+        expect(result[0].metadata).toBeDefined();
+        expect((result[0].metadata as Record<string, string>)["foo"]).toBe(
+          "bar",
+        );
+      });
+
+      it("should filter on the first value when metadata_names contains duplicates", async () => {
+        const traceId = randomUUID();
+        const now = Date.now();
+        const filterTime = new Date(now - 5000);
+
+        const matchId = randomUUID();
+        const matchEvent = createEvent({
+          id: matchId,
+          span_id: matchId,
+          project_id: projectId,
+          trace_id: traceId,
+          type: "SPAN",
+          name: "dup-filter-match",
+          metadata_names: ["foo", "foo"],
+          metadata_values: ["bar", "baz"],
+          start_time: now * 1000,
+        });
+
+        await createEventsCh([matchEvent]);
+
+        // Filter for foo = "bar" (first value) should match
+        const resultBar = await getObservationsWithModelDataFromEventsTable({
+          projectId,
+          filter: [
+            {
+              type: "stringObject",
+              column: "metadata",
+              operator: "=",
+              key: "foo",
+              value: "bar",
+            },
+            {
+              type: "datetime",
+              column: "startTime",
+              operator: ">=",
+              value: filterTime,
+            },
+            {
+              type: "string",
+              column: "traceId",
+              operator: "=",
+              value: traceId,
+            },
+          ],
+          limit: 1000,
+          offset: 0,
+        });
+
+        expect(resultBar.length).toBe(1);
+        expect(resultBar[0].name).toBe("dup-filter-match");
+
+        // Filter for foo = "baz" (second value) should NOT match
+        const resultBaz = await getObservationsWithModelDataFromEventsTable({
+          projectId,
+          filter: [
+            {
+              type: "stringObject",
+              column: "metadata",
+              operator: "=",
+              key: "foo",
+              value: "baz",
+            },
+            {
+              type: "datetime",
+              column: "startTime",
+              operator: ">=",
+              value: filterTime,
+            },
+            {
+              type: "string",
+              column: "traceId",
+              operator: "=",
+              value: traceId,
+            },
+          ],
+          limit: 1000,
+          offset: 0,
+        });
+
+        expect(resultBaz.length).toBe(0);
       });
     });
   });

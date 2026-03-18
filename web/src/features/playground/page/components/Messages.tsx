@@ -23,15 +23,15 @@ import {
 
 export const Messages: React.FC<MessagesContext> = (props) => {
   return (
-    <div className="flex h-full flex-col space-y-4 pr-4 pt-2">
+    <div className="flex h-full flex-col space-y-4 pt-2 pr-4">
       <ResizablePanelGroup orientation="vertical">
-        <ResizablePanel minSize="10%">
+        <ResizablePanel minSize={10}>
           <ChatMessages {...props} />
         </ResizablePanel>
         <ResizableHandle withHandle className="bg-transparent" />
         <ResizablePanel
-          minSize="20%"
-          defaultSize="20%"
+          minSize={20}
+          defaultSize={20}
           className="flex flex-col space-y-4"
         >
           <GenerationOutput />
@@ -68,7 +68,7 @@ const SubmitButton = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 focus:outline-none focus:ring-0 focus-visible:ring-0"
+            className="h-8 w-8 focus:ring-0 focus:outline-none focus-visible:ring-0"
             disabled={isStreaming}
           >
             <Settings className="h-4 w-4" />
@@ -83,7 +83,7 @@ const SubmitButton = () => {
               <span className="font-medium">
                 {t("playground.streamResponses")}
               </span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-xs">
                 {streamingEnabled
                   ? t("playground.streamResponsesDescription")
                   : t("playground.completeResponseDescription")}

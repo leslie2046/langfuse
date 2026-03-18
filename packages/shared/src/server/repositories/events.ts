@@ -72,6 +72,8 @@ import {
 } from "../queries/clickhouse-sql/event-query-builder";
 import { type EventsObservationPublic } from "../queries/createGenerationsQuery";
 import { UiColumnMappings } from "../../tableDefinitions";
+import { eventsTableCols } from "../../eventsTable";
+import { tracesTableCols } from "../../tableDefinitions/tracesTable";
 import { parseMetadataCHRecordToDomain } from "../utils/metadata_conversion";
 
 /**
@@ -428,13 +430,33 @@ async function getObservationsFromEventsTableInternal<T>(
 
   // Build filter list from baseFilter (without positionInTrace)
   const observationsFilter = new FilterList(
-    createFilterFromFilterState(baseFilter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      baseFilter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const startTimeFrom = extractTimeFilter(observationsFilter);
-  const hasScoresFilter = baseFilter.some((f) =>
-    f.column.toLowerCase().includes("score"),
-  );
+  const hasObservationScoresFilter = baseFilter.some((f) => {
+    const column = f.column.toLowerCase();
+    return (
+      column === "scores" ||
+      column === "scores_avg" ||
+      column === "score_categories" ||
+      column === "scores (numeric)" ||
+      column === "scores (categorical)"
+    );
+  });
+  const hasTraceScoresFilter = baseFilter.some((f) => {
+    const column = f.column.toLowerCase();
+    return (
+      column === "trace_scores_avg" ||
+      column === "trace_score_categories" ||
+      column === "trace scores (numeric)" ||
+      column === "trace scores (categorical)"
+    );
+  });
   const search = clickhouseSearchCondition(
     opts.searchQuery,
     opts.searchType,
@@ -512,10 +534,20 @@ async function getObservationsFromEventsTableInternal<T>(
   }
 
   queryBuilder
-    .when(hasScoresFilter, (b) =>
+    .when(hasObservationScoresFilter, (b) =>
       b.withCTE(
         "scores_agg",
         eventsScoresAggregation({ projectId, startTimeFrom }),
+      ),
+    )
+    .when(hasTraceScoresFilter, (b) =>
+      b.withCTE(
+        "trace_scores_agg",
+        eventsTracesScoresAggregation({
+          projectId,
+          startTimeFrom,
+          hasScoreAggregationFilters: true,
+        }),
       ),
     )
     .when(Boolean(needsTraceJoin), (b) =>
@@ -530,8 +562,14 @@ async function getObservationsFromEventsTableInternal<T>(
         "ON t.id = e.trace_id AND t.project_id = e.project_id",
       ),
     )
-    .when(hasScoresFilter, (b) =>
+    .when(hasObservationScoresFilter, (b) =>
       b.leftJoin("scores_agg AS s", "ON s.observation_id = e.span_id"),
+    )
+    .when(hasTraceScoresFilter, (b) =>
+      b.leftJoin(
+        "trace_scores_agg AS ts",
+        "ON ts.trace_id = e.trace_id AND ts.project_id = e.project_id",
+      ),
     )
     .applyFilters(observationsFilter)
     .where(search)
@@ -878,6 +916,7 @@ function buildObservationsQueryComponents(
     PUBLIC_API_EVENTS_COLUMN_MAPPING,
     advancedFilters,
     columnDefinitions,
+    eventsTableCols,
   );
 
   // Determine if we need to join traces (check both simple params and advanced filters)
@@ -1219,6 +1258,7 @@ async function getTracesFromEventsTableForPublicApiInternal<T>(
     PUBLIC_API_TRACES_COLUMN_MAPPING,
     advancedFilters,
     TRACES_FROM_EVENTS_UI_COLUMN_DEFINITIONS,
+    tracesTableCols,
   );
 
   // Extract time filter for cut-off point in eventsTracesAggregation
@@ -1478,7 +1518,11 @@ export const getEventsGroupedByModel = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -1519,7 +1563,11 @@ export const getEventsGroupedByModelId = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -1558,7 +1606,11 @@ export const getEventsGroupedByName = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -1598,7 +1650,11 @@ export const getEventsGroupedByTraceName = async (
   opts?: { extraWhereRaw?: string },
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -1647,7 +1703,11 @@ export const getEventsGroupedByTraceTags = async (
   opts?: { extraWhereRaw?: string },
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -1704,7 +1764,11 @@ export const getEventsGroupedByPromptName = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -1745,7 +1809,11 @@ export const getEventsGroupedByType = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -1785,7 +1853,11 @@ export const getEventsGroupedByUserId = async (
   opts?: { extraWhereRaw?: string },
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -1828,7 +1900,11 @@ export const getEventsGroupedByVersion = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -1869,7 +1945,11 @@ export const getEventsGroupedBySessionId = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -1910,7 +1990,11 @@ export const getEventsGroupedByLevel = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -1951,7 +2035,11 @@ export const getEventsGroupedByEnvironment = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -1992,7 +2080,11 @@ export const getEventsGroupedByExperimentDatasetId = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -2037,7 +2129,11 @@ export const getEventsGroupedByExperimentId = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -2076,7 +2172,11 @@ export const getEventsGroupedByExperimentName = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -2115,7 +2215,11 @@ export const getEventsGroupedByHasParentObservation = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -2153,7 +2257,11 @@ export const getEventsGroupedByToolName = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -2193,7 +2301,11 @@ export const getEventsGroupedByCalledToolName = async (
   filter: FilterState,
 ) => {
   const eventsFilter = new FilterList(
-    createFilterFromFilterState(filter, eventsTableUiColumnDefinitions),
+    createFilterFromFilterState(
+      filter,
+      eventsTableUiColumnDefinitions,
+      eventsTableCols,
+    ),
   );
 
   const appliedEventsFilter = eventsFilter.apply();
@@ -2374,8 +2486,8 @@ export async function getAgentGraphDataFromEventsTable(params: {
       e.name as name,
       e.start_time as start_time,
       e.end_time as end_time,
-      mapFromArrays(e.metadata_names, e.metadata_values)['langgraph_node'] AS node,
-      mapFromArrays(e.metadata_names, e.metadata_values)['langgraph_step'] AS step
+      mapFromArrays(arrayReverse(e.metadata_names), arrayReverse(e.metadata_values))['langgraph_node'] AS node,
+      mapFromArrays(arrayReverse(e.metadata_names), arrayReverse(e.metadata_values))['langgraph_step'] AS step
     FROM events_core e
     WHERE
       e.project_id = {projectId: String}
@@ -2513,7 +2625,7 @@ export const getObservationsBatchIOFromEventsTable = async (opts: {
       e.span_id as id,
       ${inputSelect},
       ${outputSelect},
-      mapFromArrays(e.metadata_names, e.metadata_values) as metadata
+      mapFromArrays(arrayReverse(e.metadata_names), arrayReverse(e.metadata_values)) as metadata
     FROM ${tableName} e
     WHERE e.project_id = {projectId: String}
       AND e.span_id IN {observationIds: Array(String)}
@@ -2854,8 +2966,8 @@ export const getEventsForAnalyticsIntegrations = async function* (
       "e.usage_details['output'] as output_tokens",
       "e.usage_details['total'] as total_tokens",
       // Analytics integration session IDs from metadata (constructed from array columns)
-      "mapFromArrays(e.metadata_names, e.metadata_prefixes)['$posthog_session_id'] as posthog_session_id",
-      "mapFromArrays(e.metadata_names, e.metadata_prefixes)['$mixpanel_session_id'] as mixpanel_session_id",
+      "mapFromArrays(arrayReverse(e.metadata_names), arrayReverse(e.metadata_values))['$posthog_session_id'] as posthog_session_id",
+      "mapFromArrays(arrayReverse(e.metadata_names), arrayReverse(e.metadata_values))['$mixpanel_session_id'] as mixpanel_session_id",
     )
     .whereRaw(
       "e.start_time >= {minTimestamp: DateTime64(3)} AND e.start_time <= {maxTimestamp: DateTime64(3)}",
@@ -3010,9 +3122,9 @@ export const getAvgCostByEvaluatorIds = async (
   const builder = new EventsAggQueryBuilder({
     projectId,
     groupByColumn:
-      "mapFromArrays(e.metadata_names, e.metadata_values)['job_configuration_id']",
+      "mapFromArrays(arrayReverse(e.metadata_names), arrayReverse(e.metadata_values))['job_configuration_id']",
     selectExpression: [
-      "mapFromArrays(e.metadata_names, e.metadata_values)['job_configuration_id'] as evaluator_id",
+      "mapFromArrays(arrayReverse(e.metadata_names), arrayReverse(e.metadata_values))['job_configuration_id'] as evaluator_id",
       "avg(e.total_cost) as avg_cost",
       "count(*) as execution_count",
     ].join(", "),
@@ -3020,7 +3132,7 @@ export const getAvgCostByEvaluatorIds = async (
     .whereRaw("e.type = 'GENERATION'")
     .whereRaw("has(e.metadata_names, 'job_configuration_id')")
     .whereRaw(
-      "mapFromArrays(e.metadata_names, e.metadata_values)['job_configuration_id'] IN ({evaluatorIds: Array(String)})",
+      "mapFromArrays(arrayReverse(e.metadata_names), arrayReverse(e.metadata_values))['job_configuration_id'] IN ({evaluatorIds: Array(String)})",
       { evaluatorIds },
     )
     .whereRaw("e.start_time > today() - 7");
