@@ -182,7 +182,7 @@ export function PopoverFilterBuilder({
               {filterState.length > 0 ? (
                 <span
                   className={cn(
-                    "ml-1.5 rounded-sm bg-input px-1 text-xs shadow-sm @6xl:hidden",
+                    "bg-input ml-1.5 rounded-sm px-1 text-xs shadow-sm @6xl:hidden",
                     filterState.length > 2 && "@6xl:inline",
                   )}
                 >
@@ -203,7 +203,7 @@ export function PopoverFilterBuilder({
               {filterState.length > 0 && (
                 <span
                   className={cn(
-                    "absolute -right-1 top-0 flex h-4 min-w-4 items-center justify-center rounded-sm bg-input px-1 text-xs shadow-sm",
+                    "bg-input absolute top-0 -right-1 flex h-4 min-w-4 items-center justify-center rounded-sm px-1 text-xs shadow-sm",
                   )}
                 >
                   {filterState.length}
@@ -250,7 +250,7 @@ export function PopoverFilterBuilder({
                 variant="ghost"
                 type="button"
                 size="icon-xs"
-                className="ml-0.5 hover:bg-background"
+                className="hover:bg-background ml-0.5"
               >
                 <X className="h-3 w-3" />
               </Button>
@@ -275,7 +275,7 @@ export function InlineFilterState({
       <span
         key={i}
         className={cn(
-          "ml-2 whitespace-nowrap rounded-md bg-input px-2 py-1 text-xs",
+          "bg-input ml-2 rounded-md px-2 py-1 text-xs whitespace-nowrap",
           className,
         )}
       >
@@ -520,7 +520,7 @@ function FilterBuilderForm({
                 ? t("common.filters.aiDisabled")
                 : undefined
             }
-            className="w-full justify-start text-muted-foreground"
+            className="text-muted-foreground w-full justify-start"
           >
             <WandSparkles className="mr-2 h-4 w-4" />
             {!organization?.aiFeaturesEnabled ? (
@@ -581,7 +581,7 @@ function FilterBuilderForm({
                 </Button>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Info className="h-4 w-4 text-muted-foreground" />
+                    <Info className="text-muted-foreground h-4 w-4" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <p className="max-w-xs">{t("common.filters.aiTooltip")}</p>

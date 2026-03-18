@@ -175,7 +175,7 @@ export default function PlaygroundPage() {
                 variant="outline"
                 onClick={handleExecuteAll}
                 disabled={isRunAllDisabled}
-                className="hidden shrink-0 gap-1 md:flex"
+                className="hidden flex-shrink-0 gap-1 md:flex"
                 title={
                   !hasAnyModelConfigured
                     ? t("playground.configureModelFirst")

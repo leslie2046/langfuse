@@ -138,7 +138,7 @@ const Base = (props: {
                 <Label className="text-base capitalize">
                   {props.itemName} {t("trace.shared")}
                 </Label>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-muted-foreground text-sm">
                   {t("trace.sharedDescription").replace(
                     /\{item\}/g,
                     props.itemName,
@@ -173,7 +173,7 @@ const Base = (props: {
                 <Label className="text-base capitalize">
                   {props.itemName} {t("trace.private")}
                 </Label>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-muted-foreground text-sm">
                   {t("trace.privateDescription").replace(
                     /\{item\}/g,
                     props.itemName,

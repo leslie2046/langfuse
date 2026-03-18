@@ -1,15 +1,15 @@
 import { Switch } from "@/src/components/ui/switch";
 import { Label } from "@/src/components/ui/label";
-import { SidebarMenuButton } from "@/src/components/ui/sidebar";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/src/components/ui/tooltip";
+import { SidebarMenuButton } from "@/src/components/ui/sidebar";
 import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
-import { V4BetaIntroDialog } from "@/src/features/events/components/V4BetaIntroDialog";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import { ZapIcon } from "lucide-react";
+import { V4BetaIntroDialog } from "@/src/features/events/components/V4BetaIntroDialog";
 
 const PREVIEW_FAST_DESCRIPTION =
   "Get a more performant Langfuse experience. Upgrade SDKs to the latest major for real-time data. This is a personal setting.";
@@ -28,19 +28,17 @@ export function V4BetaSidebarToggle() {
   const capture = usePostHogClientCapture();
 
   const handleToggle = (enabled: boolean) => {
-    if (enabled) {
+    if (enabled && !isBetaEnabled) {
       enableWithIntro({
         onSuccess: () => {
           capture("sidebar:v4_beta_toggled", { enabled: true });
         },
       });
-    } else {
-      setBetaEnabled(false, {
-        onSuccess: () => {
-          capture("sidebar:v4_beta_toggled", { enabled: false });
-        },
-      });
+      return;
     }
+
+    setBetaEnabled(enabled);
+    capture("sidebar:v4_beta_toggled", { enabled });
   };
 
   return (
