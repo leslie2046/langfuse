@@ -186,7 +186,6 @@ export function TracePage({
               <PublishTraceSwitch
                 traceId={trace.data.id}
                 projectId={trace.data.projectId}
-                timestamp={timestamp}
                 isPublic={trace.data.public}
                 size="icon-xs"
               />

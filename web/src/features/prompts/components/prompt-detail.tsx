@@ -342,7 +342,7 @@ export const PromptDetail = ({
       }}
     >
       <div className="grid flex-1 grid-cols-3 gap-4 overflow-hidden px-3 md:grid-cols-4">
-        <Command className="flex flex-col gap-2 overflow-y-auto rounded-none border-r pr-3 font-medium focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 data-[focus]:ring-0">
+        <Command className="flex flex-col gap-2 overflow-y-auto rounded-none border-r pr-3 font-medium focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none data-[focus]:ring-0">
           <div className="mt-3 flex items-center justify-between">
             <CommandInput
               showBorder={false}
@@ -385,8 +385,8 @@ export const PromptDetail = ({
         <div className="col-span-2 mt-3 flex max-h-full min-h-0 flex-col md:col-span-3">
           <div className="flex flex-col items-start gap-2">
             <div className="grid w-full min-w-0 grid-cols-[auto,auto] items-center justify-between">
-              <div className="flex min-w-0 max-w-full flex-shrink flex-col">
-                <div className="flex min-w-0 max-w-full flex-wrap items-start gap-1">
+              <div className="flex max-w-full min-w-0 flex-shrink flex-col">
+                <div className="flex max-w-full min-w-0 flex-wrap items-start gap-1">
                   <SetPromptVersionLabels
                     title={
                       <div
@@ -399,7 +399,7 @@ export const PromptDetail = ({
                         >
                           # {prompt.version}
                         </Badge>
-                        <span className="mb-0 line-clamp-2 min-w-0 break-all text-lg font-medium md:break-normal md:break-words">
+                        <span className="mb-0 line-clamp-2 min-w-0 text-lg font-medium break-all md:break-normal md:break-words">
                           {prompt.commitMessage ?? prompt.name}
                         </span>
                       </div>
@@ -491,7 +491,7 @@ export const PromptDetail = ({
             className="min-h-0"
             onValueChange={(value) => setCurrentTab(value)}
           >
-            <TabsBarList className="min-w-0 max-w-full justify-start overflow-x-auto">
+            <TabsBarList className="max-w-full min-w-0 justify-start overflow-x-auto">
               <TabsBarTrigger value="prompt">
                 {t("prompts.tabs.prompt")}
               </TabsBarTrigger>
@@ -507,7 +507,7 @@ export const PromptDetail = ({
             </TabsBarList>
             <TabsBarContent
               value="linked-generations"
-              className="mb-2 mt-0 flex max-h-full min-h-0 flex-1 flex-col overflow-hidden"
+              className="mt-0 mb-2 flex max-h-full min-h-0 flex-1 flex-col overflow-hidden"
             >
               <div className="flex h-full flex-1 flex-col overflow-hidden">
                 <Generations
@@ -550,13 +550,15 @@ export const PromptDetail = ({
                 )}
                 {prompt.type === PromptType.Chat && chatMessages ? (
                   <div className="w-full">
-                    <OpenAiMessageView
-                      messages={chatMessages}
-                      shouldRenderMarkdown={true}
-                      currentView="pretty"
-                      messageToToolCallNumbers={new Map()}
-                      collapseLongHistory={false}
-                    />
+                    <PromptReferenceProvider projectId={projectId}>
+                      <OpenAiMessageView
+                        messages={chatMessages}
+                        shouldRenderMarkdown={true}
+                        currentView="pretty"
+                        messageToToolCallNumbers={new Map()}
+                        collapseLongHistory={false}
+                      />
+                    </PromptReferenceProvider>
                   </div>
                 ) : typeof prompt.prompt === "string" ? (
                   resolutionMode === "resolved" &&
@@ -566,13 +568,11 @@ export const PromptDetail = ({
                       title="Text Prompt (resolved)"
                     />
                   ) : (
-                    <PromptReferenceProvider projectId={projectId as string}>
-                      <CodeView
-                        content={renderRichPromptContent(prompt.prompt)}
-                        originalContent={prompt.prompt}
-                        title="Text Prompt"
-                      />
-                    </PromptReferenceProvider>
+                    <CodeView
+                      content={renderRichPromptContent(prompt.prompt)}
+                      originalContent={prompt.prompt}
+                      title="Text Prompt"
+                    />
                   )
                 ) : (
                   <JSONView json={prompt.prompt} title="Prompt" />

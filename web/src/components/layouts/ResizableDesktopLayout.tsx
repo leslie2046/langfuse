@@ -97,11 +97,11 @@ export function ResizableDesktopLayout({
         <ResizablePanel
           id={SIDEBAR_PANEL_ID}
           panelRef={sidebarPanelRef}
-          defaultSize={`${defaultSidebarSize}%`}
-          minSize="0%"
-          maxSize={`${maxSidebarSize}%`}
+          defaultSize={defaultSidebarSize}
+          minSize={0}
+          maxSize={maxSidebarSize}
           collapsible={true}
-          collapsedSize="0%"
+          collapsedSize={0}
           className={open ? "visible" : "invisible"}
           style={{ overscrollBehaviorY: "none" }}
         >
@@ -111,8 +111,8 @@ export function ResizableDesktopLayout({
       {sidebarPosition === "left" && open && <ResizableHandle withHandle />}
       <ResizablePanel
         id={MAIN_PANEL_ID}
-        defaultSize={`${defaultMainSize}%`}
-        minSize={`${minMainSize}%`}
+        defaultSize={defaultMainSize}
+        minSize={minMainSize}
       >
         <div
           className="relative h-full w-full overflow-scroll"
@@ -126,11 +126,11 @@ export function ResizableDesktopLayout({
         <ResizablePanel
           id={SIDEBAR_PANEL_ID}
           panelRef={sidebarPanelRef}
-          defaultSize={`${defaultSidebarSize}%`}
-          minSize="0%"
-          maxSize={`${maxSidebarSize}%`}
+          defaultSize={defaultSidebarSize}
+          minSize={0}
+          maxSize={maxSidebarSize}
           collapsible={true}
-          collapsedSize="0%"
+          collapsedSize={0}
           className={open ? "visible" : "invisible"}
           style={{ overscrollBehaviorY: "none" }}
         >

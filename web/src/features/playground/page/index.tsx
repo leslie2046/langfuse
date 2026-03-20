@@ -15,6 +15,7 @@ import {
 } from "@/src/components/ChatMessages/MessageSearch";
 import useProjectIdFromURL from "@/src/hooks/useProjectIdFromURL";
 import { useTranslation } from "@/src/features/i18n";
+import { useIsMobile } from "@/src/hooks/use-mobile";
 
 /**
  * PlaygroundPage Component
@@ -40,6 +41,7 @@ import { useTranslation } from "@/src/features/i18n";
 export default function PlaygroundPage() {
   const projectId = useProjectIdFromURL();
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
   const { windowIds, isLoaded, addWindowWithCopy, removeWindowId } =
     usePersistedWindowIds();
 
@@ -83,6 +85,8 @@ export default function PlaygroundPage() {
   const handleExecuteAll = useCallback(() => {
     executeAllWindows();
   }, [executeAllWindows]);
+
+  const searchableWindowIds = isMobile ? windowIds.slice(0, 1) : windowIds;
 
   // Handle command+enter for "Run All" button
   useCommandEnter(!globalIsExecutingAll, async () => {
@@ -129,7 +133,7 @@ export default function PlaygroundPage() {
 
   return (
     <MessageSearchProvider
-      pageIds={windowIds}
+      pageIds={searchableWindowIds}
       getPageLabel={getMessageSearchPageLabel}
     >
       <Page

@@ -52,7 +52,7 @@ import {
   type OrderByState,
   type FilterState,
   type TableViewPresetTableName,
-  type TableViewPresetState,
+  type TableViewPresetDomain,
 } from "@langfuse/shared";
 import { useCallback, useMemo, useState } from "react";
 import {
@@ -84,7 +84,6 @@ import isEqual from "lodash/isEqual";
 import { useTranslation } from "@/src/features/i18n";
 import { useDefaultViewMutations } from "../hooks/useDefaultViewMutations";
 import { DropdownMenuSeparator } from "@/src/components/ui/dropdown-menu";
-import { summarizeTableViewPreset } from "../lib/viewPreview";
 
 /**
  * Prefix for system preset IDs. These are page-specific presets defined in code
@@ -140,7 +139,7 @@ interface TableViewPresetsDrawerProps {
     controllers: {
       selectedViewId: string | null;
       handleSetViewId: (viewId: string | null) => void;
-      applyViewState: (viewData: TableViewPresetState) => void;
+      applyViewState: (viewData: TableViewPresetDomain) => void;
     };
   };
   currentState: {
@@ -156,18 +155,6 @@ interface TableViewPresetsDrawerProps {
 
 function formatOrderBy(orderBy?: OrderByState) {
   return orderBy?.column ? `${orderBy.column} ${orderBy.order}` : "none";
-}
-
-function buildSystemFilterPresetState(
-  preset: SystemFilterPreset,
-): TableViewPresetState {
-  return {
-    filters: preset.filters,
-    columnOrder: [],
-    columnVisibility: {},
-    orderBy: null,
-    searchQuery: "",
-  };
 }
 
 export function TableViewPresetsDrawer({
@@ -202,11 +189,10 @@ export function TableViewPresetsDrawer({
     scope: "TableViewPresets:CUD",
   });
 
-  const { data: defaultAssignments } =
-    api.TableViewPresets.getDefaultAssignments.useQuery(
-      { projectId, viewName: tableName },
-      { enabled: !!projectId },
-    );
+  const { data: currentDefault } = api.TableViewPresets.getDefault.useQuery(
+    { projectId, viewName: tableName },
+    { enabled: !!projectId },
+  );
 
   const { setViewAsDefault, clearViewDefault, isSettingDefault } =
     useDefaultViewMutations({ tableName, projectId });
@@ -224,7 +210,7 @@ export function TableViewPresetsDrawer({
       // Normalize both to handle missing vs undefined property mismatch
       const normalizedCurrent = normalizeForComparison(currentState.filters);
       const normalizedPreset = normalizeForComparison(systemPreset.filters);
-      // If filters have been modified from the preset, show the generic trigger label instead
+      // If filters have been modified from the preset, show "Saved Views" instead
       if (!isEqual(normalizedCurrent, normalizedPreset)) {
         return undefined;
       }
@@ -251,14 +237,35 @@ export function TableViewPresetsDrawer({
     errorMessage: "View name already exists.",
   });
 
-  const handleSelectView = (view: TableViewPresetState & { id: string }) => {
+  const handleSelectView = async (viewId: string) => {
+    // Handle system preset - just select it like any view
+    if (viewId === SYSTEM_PRESETS.DEFAULT.id) {
+      handleSetViewId(null);
+      return;
+    }
+
     capture("saved_views:view_selected", {
       tableName,
-      viewId: view.id,
+      viewId,
     });
 
-    handleSetViewId(view.id);
-    applyViewState(view);
+    handleSetViewId(viewId);
+    try {
+      const fetchedViewData = await utils.TableViewPresets.getById.fetch({
+        projectId,
+        viewId,
+      });
+
+      if (fetchedViewData) {
+        applyViewState(fetchedViewData);
+      }
+    } catch {
+      showErrorToast(
+        "Failed to apply view selection",
+        "Please try again",
+        "WARNING",
+      );
+    }
   };
 
   const handleSelectSystemFilterPreset = useCallback(
@@ -268,9 +275,23 @@ export function TableViewPresetsDrawer({
         presetId: preset.id,
       });
       handleSetViewId(preset.id);
-      applyViewState(buildSystemFilterPresetState(preset));
+      applyViewState({
+        id: preset.id,
+        name: preset.name,
+        filters: preset.filters,
+        columnOrder: [],
+        columnVisibility: {},
+        orderBy: null,
+        searchQuery: "",
+        tableName,
+        projectId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        createdBy: "",
+        createdByUser: null,
+      } as TableViewPresetDomain);
     },
-    [capture, tableName, handleSetViewId, applyViewState],
+    [capture, tableName, handleSetViewId, applyViewState, projectId],
   );
 
   const handleCreateView = (createdView: { name: string }) => {
@@ -377,7 +398,6 @@ export function TableViewPresetsDrawer({
   return (
     <>
       <Drawer
-        forceDirection="responsive-left"
         onOpenChange={(open) => {
           if (open) {
             capture("saved_views:drawer_open", { tableName });
@@ -405,7 +425,7 @@ export function TableViewPresetsDrawer({
           <div className="mx-auto w-full">
             <DrawerHeader className="bg-background flex flex-row items-center justify-between rounded-sm px-3 py-1.5">
               <DrawerTitle className="flex flex-row items-center gap-1">
-                Views{" "}
+                Saved Views{" "}
                 <a
                   href="https://github.com/orgs/langfuse/discussions/4657"
                   target="_blank"
@@ -424,19 +444,21 @@ export function TableViewPresetsDrawer({
 
             <Command className="h-fit rounded-none border-none pb-1 shadow-none">
               <CommandInput
-                placeholder="Search views..."
+                placeholder="Search saved views..."
                 value={searchQuery}
                 onValueChange={setSearchQueryLocal}
                 className="h-9 border-none focus:ring-0"
               />
               <CommandList className="max-h-[calc(100vh-150px)]">
-                <CommandEmpty>No views found</CommandEmpty>
+                <CommandEmpty>No saved views found</CommandEmpty>
                 <CommandGroup className="pb-0">
                   {/* System Preset: Langfuse Default - hidden when page-specific presets exist */}
                   {!systemFilterPresets?.length && (
                     <CommandItem
                       key={SYSTEM_PRESETS.DEFAULT.id}
-                      onSelect={() => handleSetViewId(null)}
+                      onSelect={() =>
+                        handleSelectView(SYSTEM_PRESETS.DEFAULT.id)
+                      }
                       className={cn(
                         "hover:bg-muted/50 group mt-1 flex cursor-pointer items-center justify-between rounded-md p-2 transition-colors",
                         selectedViewId === null && "bg-muted",
@@ -492,25 +514,24 @@ export function TableViewPresetsDrawer({
                   {/* User Presets */}
                   {TableViewPresetsList?.map((view) => {
                     const isUserDefault =
-                      defaultAssignments?.userDefaultViewId === view.id;
+                      currentDefault?.viewId === view.id &&
+                      currentDefault?.scope === "user";
                     const isProjectDefault =
-                      defaultAssignments?.projectDefaultViewId === view.id;
-                    const previewText = summarizeTableViewPreset(view);
+                      currentDefault?.viewId === view.id &&
+                      currentDefault?.scope === "project";
 
                     return (
                       <CommandItem
                         key={view.id}
-                        onSelect={() => handleSelectView(view)}
+                        onSelect={() => handleSelectView(view.id)}
                         className={cn(
                           "hover:bg-muted/50 group mt-1 flex cursor-pointer items-center justify-between rounded-md p-2 transition-colors",
                           selectedViewId === view.id && "bg-muted",
                         )}
                       >
-                        <div className="flex min-w-0 flex-1 flex-col">
+                        <div className="flex flex-col">
                           <div className="flex items-center gap-2">
-                            <span className="truncate text-sm">
-                              {view.name}
-                            </span>
+                            <span className="text-sm">{view.name}</span>
                             {isUserDefault && (
                               <Badge variant="secondary" className="text-xs">
                                 Your default
@@ -522,14 +543,6 @@ export function TableViewPresetsDrawer({
                               </Badge>
                             )}
                           </div>
-                          {previewText ? (
-                            <span
-                              className="text-muted-foreground truncate text-xs"
-                              title={previewText}
-                            >
-                              {previewText}
-                            </span>
-                          ) : null}
                           {view.id === selectedViewId && (
                             <Button
                               variant="ghost"
@@ -582,7 +595,7 @@ export function TableViewPresetsDrawer({
                                 <MoreVertical className="h-4 w-4" />
                               </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className="flex flex-col *:w-full *:justify-start">
+                            <DropdownMenuContent className="flex flex-col [&>*]:w-full [&>*]:justify-start">
                               <DropdownMenuItem asChild>
                                 <Popover
                                   key={view.id + "-edit"}
@@ -712,7 +725,7 @@ export function TableViewPresetsDrawer({
                                   itemId={view.id}
                                   projectId={projectId}
                                   scope="TableViewPresets:CUD"
-                                  entityToDeleteName="view"
+                                  entityToDeleteName="saved view"
                                   executeDeleteMutation={async () => {
                                     await handleDeleteView(view.id);
                                   }}
