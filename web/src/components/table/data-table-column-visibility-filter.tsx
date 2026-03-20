@@ -112,7 +112,7 @@ function ColumnVisibilityListItem<TData, TValue>({
       className={cn(
         "flex w-full items-center justify-between rounded-md p-2",
         isDragging ? "opacity-80" : "opacity-100",
-        "group transition-colors hover:bg-muted/50",
+        "hover:bg-muted/50 group transition-colors",
       )}
       style={{
         transform: transform
@@ -202,9 +202,9 @@ function GroupVisibilityHeader<TData, TValue>({
         <div
           ref={setNodeRef}
           className={cn(
-            "flex w-full items-center justify-between gap-2 rounded-md bg-muted/30 p-2",
+            "bg-muted/30 flex w-full items-center justify-between gap-2 rounded-md p-2",
             isDragging ? "opacity-80" : "opacity-100",
-            "group cursor-pointer hover:bg-muted",
+            "hover:bg-muted group cursor-pointer",
           )}
           style={{
             transform: transform
@@ -221,7 +221,7 @@ function GroupVisibilityHeader<TData, TValue>({
                 ? column.header
                 : column.accessorKey}
             </span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               ({groupVisibleCount}/{groupTotalCount})
             </span>
           </div>
@@ -399,13 +399,13 @@ export function DataTableColumnVisibilityFilter<TData, TValue>({
         <DrawerTrigger asChild>
           <Button variant="outline" title={t("common.columns.showColumns")}>
             <span>{t("common.columns.showColumns")}</span>
-            <div className="ml-1 rounded-sm bg-input px-1 text-xs">{`${count}/${total}`}</div>
+            <div className="bg-input ml-1 rounded-sm px-1 text-xs">{`${count}/${total}`}</div>
           </Button>
         </DrawerTrigger>
         <DrawerContent overlayClassName="bg-primary/10">
           <div className="mx-auto w-full overflow-y-auto md:max-h-full">
             <div className="sticky top-0 z-10">
-              <DrawerHeader className="flex flex-row items-center justify-between rounded-sm bg-background px-3 py-2">
+              <DrawerHeader className="bg-background flex flex-row items-center justify-between rounded-sm px-3 py-2">
                 <DrawerTitle>{t("common.columns.showColumns")}</DrawerTitle>
                 <div className="flex flex-row gap-2">
                   <Button
@@ -430,7 +430,7 @@ export function DataTableColumnVisibilityFilter<TData, TValue>({
             </div>
             <div>
               <div
-                className="my-1 flex w-full cursor-pointer items-center justify-between rounded-md p-2 hover:bg-muted/50"
+                className="hover:bg-muted/50 my-1 flex w-full cursor-pointer items-center justify-between rounded-md p-2"
                 onClick={() => toggleAllColumns(count, total)}
               >
                 <div className="flex items-center gap-2">
@@ -446,7 +446,7 @@ export function DataTableColumnVisibilityFilter<TData, TValue>({
                         ? t("common.columns.hideColumn")
                         : t("common.columns.showAllColumns")}
                     </span>
-                    <div className="ml-1 rounded-sm bg-input px-1 text-xs">{`${count}/${total}`}</div>
+                    <div className="bg-input ml-1 rounded-sm px-1 text-xs">{`${count}/${total}`}</div>
                   </Button>
                 </div>
               </div>

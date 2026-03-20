@@ -1252,6 +1252,7 @@ export default function TracesTable({
       filterColumnDefinition: traceFilterConfig.columnDefinitions,
     },
     currentFilterState: queryFilter.explicitFilterState,
+    disabled: hideControls,
   });
 
   const rows = useMemo(() => {

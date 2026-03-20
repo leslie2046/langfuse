@@ -1162,6 +1162,7 @@ export default function ObservationsEventsTable({
       filterColumnDefinition: observationEventsFilterConfig.columnDefinitions,
     },
     currentFilterState: queryFilter.explicitFilterState,
+    disabled: hideControls,
   });
 
   const peekConfig: DataTablePeekViewProps | undefined = useMemo(() => {
