@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod";
 import { dashboardColumnDefinitions, singleFilter } from "@langfuse/shared";
 import { type views } from "@/src/features/query/types";
 
@@ -54,6 +54,8 @@ const viewMappings: Record<z.infer<typeof views>, LegacyViewMapping[]> = {
     { legacyColumn: "tags", viewName: "tags" },
     { legacyColumn: "Model", viewName: "providedModelName" },
     { legacyColumn: "model", viewName: "providedModelName" },
+    { legacyColumn: "Level", viewName: "level" },
+    { legacyColumn: "level", viewName: "level" },
     { legacyColumn: "Tool Names", viewName: "toolNames" },
     { legacyColumn: "toolNames", viewName: "toolNames" },
     { legacyColumn: "Environment", viewName: "environment" },
