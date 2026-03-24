@@ -213,10 +213,11 @@ async function enrichObservationsWithTraceFields(
  * Internal helper: extract and convert time filter from FilterList
  * Common pattern: find time filter and convert to ClickHouse DateTime format
  */
-function extractTimeFilter(
+export function extractTimeFilter(
   filter: FilterList,
   tableName: "events_proto" | "traces" = "events_proto",
   fieldName: "start_time" | "timestamp" = "start_time",
+  prefix?: "e" | "t",
 ): string | null {
   const timeFilter = filter.find(
     (f) =>
@@ -224,7 +225,7 @@ function extractTimeFilter(
       (tableName === "events_proto"
         ? f.clickhouseTable.startsWith("events_")
         : f.clickhouseTable === tableName) &&
-      f.field === fieldName &&
+      f.field === (prefix ? `${prefix}.${fieldName}` : fieldName) &&
       (f.operator === ">=" || f.operator === ">"),
   );
 
@@ -449,11 +450,6 @@ async function getObservationsFromEventsTableInternal<T>(
     ["span_id", "name", "user_id", "session_id", "trace_id"],
   );
 
-  // Query optimization: joining traces onto observations is expensive.
-  // Only join if search query requires it.
-  // TODO further optimize by checking if specific trace fields are filtered on.
-  const needsTraceJoin = search.query;
-
   const orderByEntries = orderByToEntries(
     [orderBy ?? null],
     eventsTableUiColumnDefinitions,
@@ -533,18 +529,6 @@ async function getObservationsFromEventsTableInternal<T>(
           startTimeFrom,
           hasScoreAggregationFilters: true,
         }),
-      ),
-    )
-    .when(Boolean(needsTraceJoin), (b) =>
-      b.withCTE(
-        "traces",
-        eventsTracesAggregation({ projectId, startTimeFrom }).buildWithParams(),
-      ),
-    )
-    .when(Boolean(needsTraceJoin), (b) =>
-      b.leftJoin(
-        "traces t",
-        "ON t.id = e.trace_id AND t.project_id = e.project_id",
       ),
     )
     .when(hasObservationScoresFilter, (b) =>

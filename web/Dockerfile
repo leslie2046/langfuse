@@ -3,9 +3,9 @@ FROM --platform=${TARGETPLATFORM:-linux/amd64} node:24-alpine AS alpine
 
 # It's important to update the index before installing packages to ensure you're getting the latest versions.
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk update && apk upgrade --no-cache libcrypto3 libssl3 libc6-compat busybox ssl_client
+RUN apk update && apk upgrade --no-cache libcrypto3 libssl3 libc6-compat busybox ssl_client zlib
 
-FROM --platform=${TARGETPLATFORM:-linux/amd64} alpine AS base
+FROM --platform=${TARGETPLATFORM:-linux/amd64} alpine AS build-base
 # Pin turbo to avoid nondeterministic prune output from future patch releases.
 RUN npm install turbo@2.8.20 --global
 ENV PNPM_HOME="/pnpm"
@@ -13,14 +13,19 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 RUN corepack prepare pnpm@9.5.0 --activate
 
-FROM --platform=${TARGETPLATFORM:-linux/amd64} base AS pruner
+FROM --platform=${TARGETPLATFORM:-linux/amd64} alpine AS runtime-base
+# Remove package managers from the runtime image; only build stages need them.
+RUN rm -rf /usr/local/lib/node_modules/corepack && \
+    rm -f /usr/local/bin/corepack /usr/local/bin/pnpm /usr/local/bin/pnpx /usr/local/bin/yarn /usr/local/bin/yarnpkg
+
+FROM --platform=${TARGETPLATFORM:-linux/amd64} build-base AS pruner
 
 WORKDIR /app
 
 COPY . .
 RUN turbo prune --scope=web --docker
 
-FROM --platform=${TARGETPLATFORM:-linux/amd64} base AS builder
+FROM --platform=${TARGETPLATFORM:-linux/amd64} build-base AS builder
 
 WORKDIR /app
 
@@ -98,7 +103,7 @@ RUN NODE_OPTIONS="--max-old-space-size=4096" \
 
 
 # Production image, copy all the files and run next
-FROM --platform=${TARGETPLATFORM:-linux/amd64} base AS runner
+FROM --platform=${TARGETPLATFORM:-linux/amd64} runtime-base AS runner
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
@@ -134,9 +139,10 @@ RUN if [ -n "$NEXT_PUBLIC_LANGFUSE_CLOUD_REGION" ]; then \
     npm install --no-package-lock --no-save dd-trace@5.65.0; \
     fi
 
-#RUN MIGRATE_TARGET_ARCH=$(echo ${TARGETPLATFORM:-linux/amd64} | sed 's/\//-/g') && \
-#    wget -q -O- https://github.com/golang-migrate/migrate/releases/download/v4.19.1/migrate.$MIGRATE_TARGET_ARCH.tar.gz | tar xvz && \
-#    mv migrate /usr/bin/migrate
+# Runtime images do not need npm once explicit runtime tools are installed.
+RUN rm -rf /usr/local/lib/node_modules/npm && \
+    rm -f /usr/local/bin/npm /usr/local/bin/npx
+
 RUN apk add --no-cache curl tar ca-certificates
 RUN set -eux; \
     MIGRATE_TARGET_ARCH=$(echo ${TARGETPLATFORM:-linux/amd64} | sed 's/\//-/g'); \
@@ -147,7 +153,6 @@ RUN set -eux; \
     mv /tmp/migrate /usr/bin/migrate; \
     chmod +x /usr/bin/migrate; \
     rm -f /tmp/migrate.tar.gz
-
 
 COPY --from=builder --chown=nextjs:nodejs /app/web/next.config.mjs .
 COPY --from=builder --chown=nextjs:nodejs /app/web/package.json .
