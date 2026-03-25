@@ -75,6 +75,7 @@ import {
 } from "@/src/features/widgets/utils/pivot-table-utils";
 import { useTranslation } from "@/src/features/i18n";
 import { ChartLoadingState } from "@/src/features/widgets/chart-library/ChartLoadingState";
+import { QueryStatusFooter } from "@/src/features/widgets/chart-library/QueryStatusFooter";
 import { getChartLoadingStateProps } from "@/src/features/widgets/chart-library/chartLoadingStateUtils";
 
 type ChartType = {
@@ -1432,7 +1433,7 @@ export function WidgetForm({
                                   variant="ghost"
                                   size="sm"
                                   onClick={() => removeMetricSlot(index)}
-                                  className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
+                                  className="text-muted-foreground hover:text-destructive h-6 w-6 p-0"
                                 >
                                   <X className="h-4 w-4" />
                                 </Button>
@@ -1614,7 +1615,7 @@ export function WidgetForm({
                           </SelectContent>
                         </Select>
                         {selectedChartType === "HISTOGRAM" && (
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-muted-foreground text-xs">
                             {t(
                               "dashboard.widgets.dataSelection.histogramAggNote",
                             )}
@@ -1695,7 +1696,7 @@ export function WidgetForm({
                     <h4 className="mb-2 text-sm font-semibold">
                       {t("dashboard.widgets.pivotTable.rowDimensions")}
                     </h4>
-                    <p className="mb-3 text-xs text-muted-foreground">
+                    <p className="text-muted-foreground mb-3 text-xs">
                       {t("dashboard.widgets.pivotTable.rowDimensionsDesc", {
                         max: MAX_PIVOT_TABLE_DIMENSIONS,
                       })}
@@ -1781,7 +1782,7 @@ export function WidgetForm({
                     <h4 className="mb-2 text-sm font-semibold">
                       {t("dashboard.widgets.pivotTable.defaultSort")}
                     </h4>
-                    <p className="mb-3 text-xs text-muted-foreground">
+                    <p className="text-muted-foreground mb-3 text-xs">
                       {t("dashboard.widgets.pivotTable.defaultSortDesc")}
                     </p>
                   </div>
@@ -2061,52 +2062,60 @@ export function WidgetForm({
                 </Alert>
               </div>
             </CardContent>
-          ) : queryResult.data ? (
-            <div className="relative min-h-0 flex-1">
-              <Chart
-                chartType={selectedChartType as DashboardWidgetChartType}
-                data={transformedData}
-                rowLimit={rowLimit}
-                chartConfig={
-                  selectedChartType === "PIVOT_TABLE"
-                    ? {
-                        type: selectedChartType as DashboardWidgetChartType,
-                        dimensions: pivotDimensions,
-                        row_limit: rowLimit,
-                        metrics: selectedMetrics.map((metric) => metric.id), // Pass metric field names
-                        defaultSort:
-                          defaultSortColumn && defaultSortColumn !== "none"
-                            ? {
-                                column: defaultSortColumn,
-                                order: defaultSortOrder,
-                              }
-                            : undefined,
-                      }
-                    : selectedChartType === "HISTOGRAM"
+          ) : queryResult.data || chartLoadingState.isLoading ? (
+            <div className="flex min-h-0 flex-1 flex-col">
+              <div className="relative min-h-0 flex-1">
+                <Chart
+                  chartType={selectedChartType as DashboardWidgetChartType}
+                  data={transformedData}
+                  rowLimit={rowLimit}
+                  chartConfig={
+                    selectedChartType === "PIVOT_TABLE"
                       ? {
                           type: selectedChartType as DashboardWidgetChartType,
-                          bins: histogramBins,
-                        }
-                      : {
-                          type: selectedChartType as DashboardWidgetChartType,
+                          dimensions: pivotDimensions,
                           row_limit: rowLimit,
+                          metrics: selectedMetrics.map((metric) => metric.id), // Pass metric field names
+                          defaultSort:
+                            defaultSortColumn && defaultSortColumn !== "none"
+                              ? {
+                                  column: defaultSortColumn,
+                                  order: defaultSortOrder,
+                                }
+                              : undefined,
                         }
-                }
-                sortState={
-                  selectedChartType === "PIVOT_TABLE"
-                    ? previewSortState
-                    : undefined
-                }
-                onSortChange={undefined}
+                      : selectedChartType === "HISTOGRAM"
+                        ? {
+                            type: selectedChartType as DashboardWidgetChartType,
+                            bins: histogramBins,
+                          }
+                        : {
+                            type: selectedChartType as DashboardWidgetChartType,
+                            row_limit: rowLimit,
+                          }
+                  }
+                  sortState={
+                    selectedChartType === "PIVOT_TABLE"
+                      ? previewSortState
+                      : undefined
+                  }
+                  onSortChange={undefined}
+                  isLoading={queryResult.isPending}
+                />
+                <ChartLoadingState
+                  isLoading={
+                    chartLoadingState.isLoading && !queryResult.isPending
+                  }
+                  showSpinner={chartLoadingState.showSpinner}
+                  showHintImmediately={chartLoadingState.showHintImmediately}
+                  hintText={chartLoadingState.hintText}
+                  className="bg-background/80 absolute inset-0 z-20 backdrop-blur-xs"
+                  hintClassName="max-w-sm px-4"
+                />
+              </div>
+              <QueryStatusFooter
                 isLoading={queryResult.isPending}
-              />
-              <ChartLoadingState
-                isLoading={chartLoadingState.isLoading}
-                showSpinner={chartLoadingState.showSpinner}
-                showHintImmediately={chartLoadingState.showHintImmediately}
-                hintText={chartLoadingState.hintText}
-                className="absolute inset-0 z-20 bg-background/80 backdrop-blur-sm"
-                hintClassName="max-w-sm px-4"
+                progress={null}
               />
             </div>
           ) : (
@@ -2118,6 +2127,7 @@ export function WidgetForm({
                     showSpinner={chartLoadingState.showSpinner}
                     showHintImmediately={chartLoadingState.showHintImmediately}
                     hintText={chartLoadingState.hintText}
+                    progress={null}
                     hintClassName="max-w-sm px-4"
                   />
                 ) : (

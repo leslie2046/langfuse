@@ -93,7 +93,21 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
           <ManageDefaultEvalModel
             projectId={projectId}
             variant="color-coded"
-            setUpMessage={t("pages.evaluators.defaultModel.setUpMessage")}
+            setUpMessage={
+              <>
+                No default model set. LLM-as-a-judge evaluations require an LLM
+                connection for scoring. This default is used by all templates
+                that don&apos;t specify their own model.{" "}
+                <a
+                  href="https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge#how-llm-as-a-judge-works"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline"
+                >
+                  Learn more.
+                </a>
+              </>
+            }
             className="text-sm font-normal"
             showEditButton={false}
           />
@@ -133,7 +147,7 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
           <DialogContent className="px-3 py-10">
             <ModelParameters
               customHeader={
-                <p className="font-medium leading-none">
+                <p className="leading-none font-medium">
                   {t("pages.evaluators.defaultModel.configuration")}
                 </p>
               }
@@ -147,7 +161,7 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
               }}
               formDisabled={!hasWriteAccess}
             />
-            <div className="my-2 text-xs text-muted-foreground">
+            <div className="text-muted-foreground my-2 text-xs">
               {t("pages.evaluators.defaultModel.functionCalling")}
             </div>
             <div className="flex flex-col gap-2">
