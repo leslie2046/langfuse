@@ -133,7 +133,7 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
           <DialogContent className="px-3 py-10">
             <ModelParameters
               customHeader={
-                <p className="font-medium leading-none">
+                <p className="leading-none font-medium">
                   {t("pages.evaluators.defaultModel.configuration")}
                 </p>
               }
@@ -147,7 +147,7 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
               }}
               formDisabled={!hasWriteAccess}
             />
-            <div className="my-2 text-xs text-muted-foreground">
+            <div className="text-muted-foreground my-2 text-xs">
               {t("pages.evaluators.defaultModel.functionCalling")}
             </div>
             <div className="flex flex-col gap-2">
