@@ -2118,6 +2118,13 @@ export function WidgetForm({
                   className="bg-background/80 absolute inset-0 z-20 backdrop-blur-xs"
                 />
               </div>
+<<<<<<< HEAD
+=======
+              <QueryStatusFooter
+                isLoading={queryResult.isPending}
+                progress={null}
+              />
+>>>>>>> 3d019f4bba4e0c0958861da928d4217caa5f797a
             </div>
           ) : (
             <CardContent>
