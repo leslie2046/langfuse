@@ -31,6 +31,7 @@ export type ColumnDefinition =
       type: "number" | "string" | "datetime" | "boolean" | "null";
       internal: string;
       nullable?: boolean;
+      aliases?: string[];
       /** Step for number inputs (e.g. 1 for integers). Defaults to 0.01 in UI. */
       step?: number;
       /** Minimum value for number inputs. */
@@ -42,6 +43,7 @@ export type ColumnDefinition =
       type: "positionInTrace";
       internal: string;
       nullable?: boolean;
+      aliases?: string[];
     }
   | {
       name: string;
@@ -50,6 +52,7 @@ export type ColumnDefinition =
       options: Array<SingleValueOption>;
       internal: string;
       nullable?: boolean;
+      aliases?: string[]; // Used for backward compatibility with legacy column names, e.g. "traces.name" → "traces.traceName"
     }
   | {
       name: string;
@@ -58,6 +61,7 @@ export type ColumnDefinition =
       options: Array<SingleValueOption>;
       internal: string;
       nullable?: boolean;
+      aliases?: string[];
     }
   | {
       name: string;
@@ -66,6 +70,7 @@ export type ColumnDefinition =
       internal: string;
       keyOptions?: Array<string>;
       nullable?: boolean;
+      aliases?: string[];
     }
   | {
       name: string;
@@ -74,6 +79,7 @@ export type ColumnDefinition =
       options: Array<MultiValueOption>;
       internal: string;
       nullable?: boolean;
+      aliases?: string[];
     };
 
 export const tableNames = [

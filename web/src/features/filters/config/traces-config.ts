@@ -6,7 +6,7 @@ export const traceFilterConfig: FilterConfig = {
 
   columnDefinitions: tracesTableCols,
 
-  defaultExpanded: ["environment", "name"],
+  defaultExpanded: ["environment", "traceName"],
 
   facets: [
     {
@@ -16,8 +16,8 @@ export const traceFilterConfig: FilterConfig = {
     },
     {
       type: "categorical" as const,
-      column: "name",
-      label: "pages.traces.columns.traceName",
+      column: "traceName",
+      label: "pages.traces.columns.name",
     },
     {
       type: "string" as const,
@@ -70,7 +70,7 @@ export const traceFilterConfig: FilterConfig = {
     },
     {
       type: "categorical" as const,
-      column: "tags",
+      column: "traceTags",
       label: "pages.traces.columns.tags",
     },
     {
