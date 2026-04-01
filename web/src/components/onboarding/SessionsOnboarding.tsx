@@ -16,7 +16,7 @@ export function SessionsOnboarding() {
         <h3 className="mb-4 text-2xl font-semibold">
           {t("onboarding.sessions.startUsing")}
         </h3>
-        <p className="mb-4 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mb-4 text-sm">
           {t("onboarding.sessions.guide")}
         </p>
         <ActionButton

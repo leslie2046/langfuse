@@ -86,7 +86,7 @@ export function TestModelMatchDialog({
                   <div className="text-sm font-medium">
                     {t("models.testMatch.modelName")}
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-muted-foreground text-sm">
                     {t("models.testMatch.modelNameDesc")}
                   </div>
                   <Input
@@ -134,14 +134,14 @@ export function TestModelMatchDialog({
                 {hasSubmitted && (
                   <>
                     {isLoading && (
-                      <div className="flex min-h-[300px] items-center justify-center gap-2 rounded-lg border bg-muted/30 p-6 text-muted-foreground">
+                      <div className="bg-muted/30 text-muted-foreground flex min-h-[300px] items-center justify-center gap-2 rounded-lg border p-6">
                         <Loader2 className="h-5 w-5 animate-spin" />
                         <span>Testing match...</span>
                       </div>
                     )}
 
                     {error && (
-                      <div className="rounded-lg border border-destructive/50 bg-destructive/5 p-4 text-sm text-destructive">
+                      <div className="border-destructive/50 bg-destructive/5 text-destructive rounded-lg border p-4 text-sm">
                         Error: {error.message}
                       </div>
                     )}

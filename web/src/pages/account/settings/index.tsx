@@ -76,14 +76,14 @@ function UpdateDisplayName() {
       <Header title={t("account.displayName.title")} />
       <Card className="p-3">
         {form.getValues().name !== "" ? (
-          <p className="mb-4 text-sm text-primary">
+          <p className="text-primary mb-4 text-sm">
             {t("account.displayName.updating")} &quot;
             {session?.user?.name ?? ""}
             &quot; {t("account.displayName.to")} &quot;
             <b>{form.watch().name}</b>&quot;.
           </p>
         ) : (
-          <p className="mb-4 text-sm text-primary">
+          <p className="text-primary mb-4 text-sm">
             {t("account.displayName.current")} &quot;
             <b>{session?.user?.name ?? ""}</b>
             &quot;.
@@ -187,7 +187,7 @@ function DeleteAccountButton() {
                     <li key={org.id}>
                       <Link
                         href={`/organization/${org.id}/settings`}
-                        className="font-semibold text-primary underline hover:text-primary/80"
+                        className="text-primary hover:text-primary/80 font-semibold underline"
                       >
                         {org.name}
                       </Link>
@@ -275,7 +275,7 @@ const getAccountSettingsPages = (
         <div>
           <Header title={t("account.email.title")} />
           <Card className="p-3">
-            <p className="text-sm text-primary">
+            <p className="text-primary text-sm">
               {t("account.email.label")} <b>{userEmail}</b>
             </p>
           </Card>
@@ -284,7 +284,7 @@ const getAccountSettingsPages = (
         <div>
           <Header title={t("account.password.title")} />
           <Card className="p-3">
-            <p className="mb-4 text-sm text-primary">
+            <p className="text-primary mb-4 text-sm">
               {t("account.password.description")}
             </p>
             <Button asChild variant="secondary">

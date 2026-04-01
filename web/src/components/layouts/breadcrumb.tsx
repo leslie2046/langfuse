@@ -99,7 +99,7 @@ const BreadcrumbComponent = ({
       <BreadcrumbList>
         {organization && (
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-1 text-sm text-primary">
+            <DropdownMenuTrigger className="text-primary flex items-center gap-1 text-sm">
               {organization?.name ?? t("common.organization")}
               {isCloudPlan(organization?.plan) &&
                 organization.id !== env.NEXT_PUBLIC_DEMO_ORG_ID && (
@@ -150,7 +150,7 @@ const BreadcrumbComponent = ({
                               asChild
                               variant="ghost"
                               size="xs"
-                              className="-my-1 ml-4 hover:bg-background"
+                              className="hover:bg-background -my-1 ml-4"
                             >
                               <div
                                 onClick={(e) => {
@@ -203,7 +203,7 @@ const BreadcrumbComponent = ({
               <Slash />
             </BreadcrumbSeparator>
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 text-primary">
+              <DropdownMenuTrigger className="text-primary flex items-center gap-1">
                 {project?.name ?? t("common.project")}
                 <ChevronDownIcon className="h-4 w-4" />
               </DropdownMenuTrigger>
@@ -237,7 +237,7 @@ const BreadcrumbComponent = ({
                               asChild
                               variant="ghost"
                               size="xs"
-                              className="-my-1 ml-4 hover:bg-background"
+                              className="hover:bg-background -my-1 ml-4"
                             >
                               <div
                                 onClick={(e) => {

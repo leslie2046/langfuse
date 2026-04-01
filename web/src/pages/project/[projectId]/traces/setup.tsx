@@ -51,7 +51,7 @@ export const TracingSetup = ({
           />
         ) : (
           <div className="flex flex-col gap-4">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               {t("tracing.getApiKeysDescription")}
             </p>
             <div className="flex gap-2">
@@ -78,7 +78,7 @@ export const TracingSetup = ({
           title={t("tracing.addTracing")}
           status={hasTracingConfigured ? "active" : "pending"}
         />
-        <p className="mb-4 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mb-4 text-sm">
           {t("tracing.addTracingDescription")}
         </p>
         <ActionButton href="https://langfuse.com/docs/observability/get-started">

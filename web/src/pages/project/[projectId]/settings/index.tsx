@@ -283,8 +283,8 @@ const Integrations = (props: { projectId: string }) => {
       <div className="space-y-6">
         <Card className="p-3">
           {}
-          <PostHogLogo className="mb-4 w-40 text-foreground" />
-          <p className="mb-4 text-sm text-primary">
+          <PostHogLogo className="text-foreground mb-4 w-40" />
+          <p className="text-primary mb-4 text-sm">
             {t("settings.posthogDesc")}
           </p>
           <div className="flex items-center gap-2">
@@ -307,8 +307,8 @@ const Integrations = (props: { projectId: string }) => {
         </Card>
 
         <Card className="p-3">
-          <MixpanelLogo className="mb-4 w-20 text-foreground" />
-          <p className="mb-4 text-sm text-primary">
+          <MixpanelLogo className="text-foreground mb-4 w-20" />
+          <p className="text-primary mb-4 text-sm">
             {t("settings.mixpanelDesc")}
           </p>
           <div className="flex items-center gap-2">
@@ -332,7 +332,7 @@ const Integrations = (props: { projectId: string }) => {
 
         <Card className="p-3">
           <span className="font-semibold">{t("settings.blobStorage")}</span>
-          <p className="mb-4 text-sm text-primary">
+          <p className="text-primary mb-4 text-sm">
             {t("settings.blobStorageDesc")}
           </p>
           <div className="flex items-center gap-2">
@@ -357,10 +357,10 @@ const Integrations = (props: { projectId: string }) => {
 
         <Card className="p-3">
           <div className="mb-4 flex items-center gap-2">
-            <Slack className="h-5 w-5 text-foreground" />
+            <Slack className="text-foreground h-5 w-5" />
             <span className="font-semibold">{t("settings.slack")}</span>
           </div>
-          <p className="mb-4 text-sm text-primary">{t("settings.slackDesc")}</p>
+          <p className="text-primary mb-4 text-sm">{t("settings.slackDesc")}</p>
           <div className="flex items-center gap-2">
             <ActionButton
               variant="secondary"

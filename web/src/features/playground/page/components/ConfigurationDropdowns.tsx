@@ -60,7 +60,7 @@ export const ConfigurationDropdowns: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="flex-shrink-0 border-b bg-muted/25 px-3 py-2"
+      className="bg-muted/25 flex-shrink-0 border-b px-3 py-2"
     >
       <div className="flex items-center justify-start gap-2">
         {/* Tools Dropdown */}
@@ -81,7 +81,7 @@ export const ConfigurationDropdowns: React.FC = () => {
               <h4 className="mb-1 text-sm font-medium">
                 {t("playground.tools.title")}
               </h4>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 {t("playground.tools.configure")}
               </p>
             </div>
@@ -91,7 +91,7 @@ export const ConfigurationDropdowns: React.FC = () => {
               </div>
             ) : (
               <div className="mb-3">
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   {t("playground.tools.noToolsAttached")}
                 </p>
               </div>
@@ -120,7 +120,7 @@ export const ConfigurationDropdowns: React.FC = () => {
               <h4 className="mb-1 text-sm font-medium">
                 {t("playground.schema.titleFull")}
               </h4>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 {t("playground.schema.configure")}
               </p>
             </div>
@@ -130,7 +130,7 @@ export const ConfigurationDropdowns: React.FC = () => {
               </div>
             ) : (
               <div className="mb-3">
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   {t("playground.schema.noSchema")}
                 </p>
               </div>
@@ -163,7 +163,7 @@ export const ConfigurationDropdowns: React.FC = () => {
               <h4 className="mb-1 text-sm font-medium">
                 {t("playground.variables.titleFull")}
               </h4>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 {t("playground.variables.configure")}
               </p>
             </div>
@@ -189,7 +189,7 @@ export const ConfigurationDropdowns: React.FC = () => {
               </div>
             ) : (
               <div className="mb-3">
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   {t("playground.variables.noVariablesOrPlaceholders")}
                 </p>
               </div>

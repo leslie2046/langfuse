@@ -167,7 +167,7 @@ export function DataTableToolbar<TData, TValue>({
   const hasNewSidebar = !filterColumnDefinition && filterState !== undefined;
   return (
     <div className={cn("grid h-fit w-full gap-0 px-2", className)}>
-      <div className="my-2 flex flex-wrap items-center gap-2 @container">
+      <div className="@container my-2 flex flex-wrap items-center gap-2">
         {hasNewSidebar && (
           <Button
             variant="outline"
@@ -196,7 +196,7 @@ export function DataTableToolbar<TData, TValue>({
           <div className="flex max-w-[30rem] flex-shrink-0 items-stretch md:min-w-[24rem]">
             <div
               className={cn(
-                "flex h-8 flex-1 items-center border border-input bg-background pl-2",
+                "border-input bg-background flex h-8 flex-1 items-center border pl-2",
                 searchConfig.setSearchType
                   ? "rounded-l-md rounded-r-none border-r-0"
                   : "rounded-l-md rounded-r-md",
@@ -239,7 +239,7 @@ export function DataTableToolbar<TData, TValue>({
                     searchConfig.updateQuery(searchString);
                   }
                 }}
-                className="w-full border-none bg-transparent px-0 py-2 text-sm focus-visible:outline-none focus-visible:ring-0"
+                className="w-full border-none bg-transparent px-0 py-2 text-sm focus-visible:ring-0 focus-visible:outline-none"
               />
             </div>
             {searchConfig.setSearchType && (
@@ -248,7 +248,7 @@ export function DataTableToolbar<TData, TValue>({
                   <Button
                     variant="outline"
                     size="default"
-                    className="w-30 flex items-center justify-between gap-1 rounded-l-none border-l-0"
+                    className="flex w-30 items-center justify-between gap-1 rounded-l-none border-l-0"
                   >
                     <span className="flex items-center gap-1 truncate">
                       {searchConfig.tableAllowsFullTextSearch &&
@@ -263,7 +263,7 @@ export function DataTableToolbar<TData, TValue>({
                           (searchConfig.searchType ?? []).includes(
                             "content",
                           ) ? (
-                            <p className="text-xs font-normal text-primary">
+                            <p className="text-primary text-xs font-normal">
                               {t("common.toolbar.searchesInIO", {
                                 fields:
                                   searchConfig.metadataSearchFields?.join(
@@ -274,7 +274,7 @@ export function DataTableToolbar<TData, TValue>({
                                 t("common.toolbar.perfWarning")}
                             </p>
                           ) : (
-                            <p className="text-xs font-normal text-primary">
+                            <p className="text-primary text-xs font-normal">
                               {t("common.toolbar.searchesIn", {
                                 fields:
                                   searchConfig.metadataSearchFields?.join(

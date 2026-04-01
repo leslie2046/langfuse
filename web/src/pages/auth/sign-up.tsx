@@ -201,7 +201,7 @@ export default function SignIn({
       <div className="flex flex-1 flex-col py-6 sm:min-h-full sm:justify-center sm:px-6 sm:py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <LangfuseIcon className="mx-auto" />
-          <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-primary">
+          <h2 className="text-primary mt-4 text-center text-2xl leading-9 font-bold tracking-tight">
             {t("auth.signUpTitle")}
           </h2>
         </div>
@@ -213,7 +213,7 @@ export default function SignIn({
 
         <CloudRegionSwitch isSignUpPage />
 
-        <div className="mt-14 bg-background px-6 py-10 shadow sm:mx-auto sm:w-full sm:max-w-[480px] sm:rounded-lg sm:px-10">
+        <div className="bg-background mt-14 px-6 py-10 shadow sm:mx-auto sm:w-full sm:max-w-[480px] sm:rounded-lg sm:px-10">
           <Form {...form}>
             <form
               className="space-y-6"
@@ -292,7 +292,7 @@ export default function SignIn({
                 {showPasswordStep ? t("common.signUp") : t("common.continue")}
               </Button>
               {formError ? (
-                <div className="text-center text-sm font-medium text-destructive">
+                <div className="text-destructive text-center text-sm font-medium">
                   {formError}
                 </div>
               ) : null}
@@ -304,11 +304,11 @@ export default function SignIn({
             lastUsedMethod={lastUsedAuthMethod}
             onProviderSelect={setLastUsedAuthMethod}
           />
-          <p className="mt-10 text-center text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-10 text-center text-sm">
             {t("auth.alreadyHaveAccount")}{" "}
             <Link
               href={`/auth/sign-in${router.asPath.includes("?") ? router.asPath.substring(router.asPath.indexOf("?")) : ""}`}
-              className="font-semibold leading-6 text-primary-accent hover:text-hover-primary-accent"
+              className="text-primary-accent hover:text-hover-primary-accent leading-6 font-semibold"
             >
               {t("common.signIn")}
             </Link>

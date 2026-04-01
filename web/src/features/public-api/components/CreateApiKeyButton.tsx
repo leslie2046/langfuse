@@ -109,7 +109,7 @@ export function CreateApiKeyButton(props: {
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="secondary">
-          <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
+          <PlusIcon className="mr-1.5 -ml-0.5 h-5 w-5" aria-hidden="true" />
           {t("apiKeys.createBtn")}
         </Button>
       </DialogTrigger>
@@ -177,7 +177,7 @@ export const ApiKeyRender = ({
     <div className={cn("space-y-6", className)}>
       <div>
         <SubHeader title={t("apiKeys.secretKey")} />
-        <div className="text-sm text-muted-foreground">
+        <div className="text-muted-foreground text-sm">
           {t("apiKeys.secretKeyDescription", { scope })}
         </div>
         <CodeView

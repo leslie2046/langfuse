@@ -355,7 +355,7 @@ function CommandMenuComponent({
     >
       <CommandInput
         placeholder={t("command.placeholder")}
-        className="border-none focus:border-none focus:outline-none focus:ring-0 focus:ring-transparent"
+        className="border-none focus:border-none focus:ring-0 focus:ring-transparent focus:outline-none"
         onValueChange={debouncedSearchChange}
       />
       <CommandList>

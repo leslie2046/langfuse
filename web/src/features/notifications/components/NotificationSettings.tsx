@@ -51,7 +51,7 @@ export function NotificationSettings() {
         <Header title={t("notifications.title")} />
         <Card className="mt-4">
           <CardContent className="p-6">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               {t("notifications.loading")}
             </p>
           </CardContent>
@@ -73,7 +73,7 @@ export function NotificationSettings() {
             <h3 className="text-lg font-medium">
               {t("notifications.email.title")}
             </h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               {t("notifications.email.description")}
             </p>
           </div>
@@ -84,7 +84,7 @@ export function NotificationSettings() {
                 <Label htmlFor="comment-mention" className="text-base">
                   {t("notifications.email.commentMentions.title")}
                 </Label>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   {t("notifications.email.commentMentions.description")}
                 </p>
               </div>
@@ -100,8 +100,8 @@ export function NotificationSettings() {
       </Card>
 
       {updatePreference.isError && (
-        <div className="mt-4 rounded-lg border border-destructive bg-destructive/10 p-4">
-          <p className="text-sm text-destructive">
+        <div className="border-destructive bg-destructive/10 mt-4 rounded-lg border p-4">
+          <p className="text-destructive text-sm">
             {t("notifications.updateError")}
           </p>
         </div>

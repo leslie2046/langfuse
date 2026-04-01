@@ -64,7 +64,7 @@ export const NewPrompt = () => {
       }}
     >
       {initialPrompt ? (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           {t("pages.prompts.immutableNotice")}
         </p>
       ) : null}

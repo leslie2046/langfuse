@@ -152,7 +152,7 @@ export function UpsertScoreConfigDialog({
       >
         <DialogTrigger asChild>
           <Button variant="secondary" loading={createScoreConfig.isPending}>
-            <PlusIcon className="-ml-0.5 mr-1.5 h-4 w-4" aria-hidden="true" />
+            <PlusIcon className="mr-1.5 -ml-0.5 h-4 w-4" aria-hidden="true" />
             {id
               ? t("scoreConfigs.upsert.updateButton")
               : t("scoreConfigs.upsert.createButton")}

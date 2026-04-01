@@ -103,7 +103,7 @@ export function ScoreAnalytics(props: {
     >
       {Boolean(scoreKeysAndProps.data?.scoreColumns.length) &&
       Boolean(scoreAnalyticsValues.length) ? (
-        <div className="grid grid-flow-row gap-4 [&_text]:fill-muted-foreground [&_tspan]:fill-muted-foreground">
+        <div className="[&_text]:fill-muted-foreground [&_tspan]:fill-muted-foreground grid grid-flow-row gap-4">
           {scoreAnalyticsValues.map(({ key: scoreKey }, index) => {
             const scoreData = scoreKeyToData.get(scoreKey);
             if (!scoreData) return null;
@@ -115,7 +115,7 @@ export function ScoreAnalytics(props: {
                 <div className="mt-2 grid gap-2 lg:grid-cols-2 lg:gap-4">
                   {/* aggregate */}
                   <div>
-                    <div className="mb-2 text-sm text-muted-foreground">
+                    <div className="text-muted-foreground mb-2 text-sm">
                       {t("dashboard.scoresAnalytics.totalAggregateScores")}
                       {isNumericDataType(dataType) && (
                         // TODO: v2 histogram aggregates all rows server-side (no 10k cap).
@@ -153,7 +153,7 @@ export function ScoreAnalytics(props: {
                   </div>
                   {/* timeseries */}
                   <div>
-                    <div className="mb-2 text-sm text-muted-foreground">
+                    <div className="text-muted-foreground mb-2 text-sm">
                       {isNumericDataType(dataType)
                         ? t("dashboard.scoresAnalytics.movingAverage")
                         : t("dashboard.scoresAnalytics.scoresOverTime")}

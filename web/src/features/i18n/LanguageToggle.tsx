@@ -14,7 +14,7 @@ export function LanguageToggle() {
           locale === "en"
             ? "bg-accent text-accent-foreground"
             : "text-muted-foreground",
-          "cursor-pointer rounded-sm px-2 py-1 text-xs hover:bg-accent hover:text-accent-foreground",
+          "hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-sm px-2 py-1 text-xs",
         )}
         onClick={(e) => {
           e.preventDefault();
@@ -29,7 +29,7 @@ export function LanguageToggle() {
           locale === "zh"
             ? "bg-accent text-accent-foreground"
             : "text-muted-foreground",
-          "cursor-pointer rounded-sm px-2 py-1 text-xs hover:bg-accent hover:text-accent-foreground",
+          "hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-sm px-2 py-1 text-xs",
         )}
         onClick={(e) => {
           e.preventDefault();

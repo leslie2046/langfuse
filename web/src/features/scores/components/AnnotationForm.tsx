@@ -197,7 +197,7 @@ function AnnotateHeader({
               <Check className="h-3 w-3" />
             )}
           </div>
-          <span className="text-xs text-muted-foreground">
+          <span className="text-muted-foreground text-xs">
             {showSaving
               ? t("pages.scores.annotate.saving")
               : t("pages.scores.annotate.saved")}
@@ -536,7 +536,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
 
   return (
     <div className="mx-auto w-full space-y-2 overflow-y-auto md:max-h-full">
-      <div className="sticky top-0 z-10 rounded-sm bg-background">
+      <div className="bg-background sticky top-0 z-10 rounded-sm">
         <AnnotateHeader
           showSaving={showSaving}
           actionButtons={actionButtons}
@@ -610,7 +610,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
                               <HoverCardTrigger asChild>
                                 <span
                                   className={cn(
-                                    "line-clamp-2 break-words text-xs font-medium underline decoration-muted-gray decoration-dashed underline-offset-2",
+                                    "decoration-muted-gray line-clamp-2 text-xs font-medium break-words underline decoration-dashed underline-offset-2",
                                     config.isArchived
                                       ? "text-foreground/40"
                                       : "",
@@ -626,7 +626,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
                           ) : (
                             <span
                               className={cn(
-                                "line-clamp-2 break-words text-xs font-medium",
+                                "line-clamp-2 text-xs font-medium break-words",
                                 config.isArchived ? "text-foreground/40" : "",
                               )}
                               title={score.name}
@@ -641,7 +641,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
                                 type="button"
                                 size="xs"
                                 title="Add or view score comment"
-                                className="h-full px-0 pl-1 disabled:text-primary/50 disabled:opacity-100"
+                                className="disabled:text-primary/50 h-full px-0 pl-1 disabled:opacity-100"
                                 disabled={
                                   isScoreUnsaved(score.id) ||
                                   (config.isArchived && !score.comment)
@@ -767,7 +767,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
                                             value={category.label}
                                             disabled
                                             variant="outline"
-                                            className="grid grid-flow-col gap-1 text-nowrap px-1 text-xs font-normal opacity-50"
+                                            className="grid grid-flow-col gap-1 px-1 text-xs font-normal text-nowrap opacity-50"
                                           >
                                             <span
                                               className="truncate"
@@ -782,7 +782,7 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
                                             key={category.value}
                                             value={category.label}
                                             variant="outline"
-                                            className="grid grid-flow-col gap-1 text-nowrap px-1 text-xs font-normal"
+                                            className="grid grid-flow-col gap-1 px-1 text-xs font-normal text-nowrap"
                                           >
                                             <span
                                               className="truncate"

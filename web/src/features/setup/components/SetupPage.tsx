@@ -67,7 +67,7 @@ export function SetupPage() {
               className={cn(
                 stepInt !== 1
                   ? "text-muted-foreground"
-                  : "font-semibold text-foreground",
+                  : "text-foreground font-semibold",
               )}
             >
               {t("setup.step1")}
@@ -80,7 +80,7 @@ export function SetupPage() {
               className={cn(
                 stepInt !== 2
                   ? "text-muted-foreground"
-                  : "font-semibold text-foreground",
+                  : "text-foreground font-semibold",
               )}
             >
               {t("setup.step2")}
@@ -93,7 +93,7 @@ export function SetupPage() {
               className={cn(
                 stepInt !== 3
                   ? "text-muted-foreground"
-                  : "font-semibold text-foreground",
+                  : "text-foreground font-semibold",
               )}
             >
               {t("setup.step3")}
@@ -107,7 +107,7 @@ export function SetupPage() {
           stepInt === 1 && (
             <div>
               <Header title={t("setup.newOrganization.title")} />
-              <p className="mb-4 text-sm text-muted-foreground">
+              <p className="text-muted-foreground mb-4 text-sm">
                 {t("setup.newOrganization.description")}
               </p>
               <NewOrganizationForm
@@ -124,7 +124,7 @@ export function SetupPage() {
             <div className="flex flex-col gap-10">
               <div>
                 <Header title={t("setup.organizationMembers.title")} />
-                <p className="mb-4 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mb-4 text-sm">
                   {t("setup.organizationMembers.description")}
                 </p>
                 <MembersTable orgId={organization.id} />
@@ -140,7 +140,7 @@ export function SetupPage() {
           stepInt === 3 && organization && (
             <div>
               <Header title={t("setup.newProject.title")} />
-              <p className="mb-4 text-sm text-muted-foreground">
+              <p className="text-muted-foreground mb-4 text-sm">
                 {t("setup.newProject.description")}
               </p>
               <NewProjectForm

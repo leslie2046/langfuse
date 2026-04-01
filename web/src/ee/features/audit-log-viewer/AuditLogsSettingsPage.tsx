@@ -14,7 +14,7 @@ export function AuditLogsSettingsPage(props: { projectId: string }) {
   const { t } = useTranslation();
 
   const body = !hasEntitlement ? (
-    <p className="text-sm text-muted-foreground">{t("auditLogs.enterprise")}</p>
+    <p className="text-muted-foreground text-sm">{t("auditLogs.enterprise")}</p>
   ) : !hasAccess ? (
     <Alert>
       <AlertTitle>{t("auditLogs.accessDenied.title")}</AlertTitle>
@@ -29,7 +29,7 @@ export function AuditLogsSettingsPage(props: { projectId: string }) {
   return (
     <>
       <Header title={t("auditLogs.title")} />
-      <p className="mb-2 text-sm text-muted-foreground">
+      <p className="text-muted-foreground mb-2 text-sm">
         {t("auditLogs.description")}
       </p>
       {body}

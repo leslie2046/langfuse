@@ -65,14 +65,14 @@ export function UsageDetailsEditor({
         <div className="pb-2 text-sm font-medium">
           {t("models.testMatch.usageDetails")}
         </div>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-muted-foreground text-sm">
           {t("models.testMatch.description")}
         </div>
       </div>
 
       {/* Template Buttons */}
       <div className="space-y-2">
-        <div className="text-sm text-muted-foreground">
+        <div className="text-muted-foreground text-sm">
           {t("models.testMatch.prefill")}
         </div>
         <div className="flex gap-2">

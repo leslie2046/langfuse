@@ -103,7 +103,7 @@ export function ApiKeyList(props: { entityId: string; scope: ApiKeyScope }) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="hidden text-primary md:table-cell">
+              <TableHead className="text-primary hidden md:table-cell">
                 {t("apiKeys.created")}
               </TableHead>
               <TableHead className="text-primary">
@@ -338,7 +338,7 @@ function ApiKeyNote({
   return (
     <div
       onClick={() => setIsEditing(true)}
-      className="-mx-2 cursor-pointer rounded px-2 py-1 hover:bg-secondary/50"
+      className="hover:bg-secondary/50 -mx-2 cursor-pointer rounded px-2 py-1"
     >
       {note || t("apiKeys.clickToAddNote")}
     </div>

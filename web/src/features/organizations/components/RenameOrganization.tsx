@@ -68,7 +68,7 @@ export default function RenameOrganization() {
       <Header title={t("organization.rename.title")} />
       <Card className="mb-4 p-3">
         {form.getValues().name !== "" ? (
-          <p className="mb-4 text-sm text-primary">
+          <p className="text-primary mb-4 text-sm">
             {t("organization.rename.willBeRenamed")} &quot;
             {orgName}
             &quot; {t("organization.rename.to")} &quot;
@@ -101,7 +101,7 @@ export default function RenameOrganization() {
                       />
                       {!hasAccess && (
                         <span title={t("common.noAccess")}>
-                          <LockIcon className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted" />
+                          <LockIcon className="text-muted absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 transform" />
                         </span>
                       )}
                     </div>

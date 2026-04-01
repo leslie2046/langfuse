@@ -17,7 +17,7 @@ export function LanguageSwitcher() {
   return (
     <div className="flex flex-col gap-2">
       <Label htmlFor="language-select">{t("settings.language")}</Label>
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         {t("settings.languageDescription")}
       </p>
       <Select
