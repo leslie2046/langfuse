@@ -1,6 +1,8 @@
+const { pathToFileURL } = require("node:url");
+
 /** @type {import("prettier").Config} */
 const config = {
-  plugins: [require.resolve("prettier-plugin-tailwindcss")],
+  plugins: [pathToFileURL(require.resolve("prettier-plugin-tailwindcss")).href],
 };
 
 module.exports = config;
