@@ -409,6 +409,11 @@ export function PromptTable() {
               fullText: t("prompts.search.fullText"),
             },
             hidePerformanceWarning: true,
+            availableSearchTypes: {
+              content: true,
+              input: false,
+              output: false,
+            },
           }}
         />
 
