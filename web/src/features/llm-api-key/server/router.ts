@@ -399,7 +399,13 @@ export const llmApiKeyRouter = createTRPCRouter({
 
   test: protectedProjectProcedureWithoutTracing
     .input(CreateLlmApiKey)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      throwIfNoProjectAccess({
+        session: ctx.session,
+        projectId: input.projectId,
+        scope: "llmApiKeys:create",
+      });
+
       return testLLMConnection({
         adapter: input.adapter,
         provider: input.provider,
@@ -414,13 +420,13 @@ export const llmApiKeyRouter = createTRPCRouter({
   testUpdate: protectedProjectProcedureWithoutTracing
     .input(UpdateLlmApiKey)
     .mutation(async ({ input, ctx }) => {
-      try {
-        throwIfNoProjectAccess({
-          session: ctx.session,
-          projectId: input.projectId,
-          scope: "llmApiKeys:read",
-        });
+      throwIfNoProjectAccess({
+        session: ctx.session,
+        projectId: input.projectId,
+        scope: "llmApiKeys:update",
+      });
 
+      try {
         // Get the existing key from the database
         const existingKey = await ctx.prisma.llmApiKeys.findUnique({
           where: {
@@ -436,25 +442,37 @@ export const llmApiKeyRouter = createTRPCRouter({
           });
         }
 
-        const decryptedSecretKey =
-          input.secretKey !== undefined &&
-          input.secretKey !== "" &&
-          input.secretKey !== null
-            ? input.secretKey
-            : decrypt(existingKey.secretKey);
+        const hasNewSecretKey =
+          typeof input.secretKey === "string" && input.secretKey.length > 0;
+        const baseURL = input.baseURL ?? existingKey.baseURL;
+        const isBaseURLChanged = baseURL !== existingKey.baseURL;
+
+        if (isBaseURLChanged && !hasNewSecretKey) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Secret key is required when changing the base URL",
+          });
+        }
+
+        const secretKey = hasNewSecretKey
+          ? (input.secretKey as string)
+          : decrypt(existingKey.secretKey);
 
         // Merge existing key with provided input, giving priority to input
-        const secretKey = decryptedSecretKey;
         const adapter = input.adapter ?? (existingKey.adapter as LLMAdapter);
         const provider = input.provider ?? existingKey.provider;
-        const baseURL = input.baseURL ?? existingKey.baseURL;
         const customModels = input.customModels ?? existingKey.customModels;
         const config = input.config ?? existingKey.config;
+
+        // Never reuse stored headers across a destination change.
         const extraHeaders =
-          input.extraHeaders ??
-          (existingKey.extraHeaders
-            ? decryptAndParseExtraHeaders(existingKey.extraHeaders)
-            : undefined);
+          input.extraHeaders !== undefined
+            ? input.extraHeaders
+            : isBaseURLChanged
+              ? undefined
+              : existingKey.extraHeaders
+                ? decryptAndParseExtraHeaders(existingKey.extraHeaders)
+                : undefined;
 
         return testLLMConnection({
           adapter,
