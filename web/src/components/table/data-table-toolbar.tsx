@@ -160,7 +160,10 @@ function getSearchDescription(
       </p>
     );
   }
-  if (tableAllowsFullTextSearch && (searchType as string[])?.includes("input")) {
+  if (
+    tableAllowsFullTextSearch &&
+    (searchType as string[])?.includes("input")
+  ) {
     return (
       <p className="text-primary text-xs font-normal">
         Searches in Input and {fields}.
@@ -168,7 +171,10 @@ function getSearchDescription(
       </p>
     );
   }
-  if (tableAllowsFullTextSearch && (searchType as string[])?.includes("output")) {
+  if (
+    tableAllowsFullTextSearch &&
+    (searchType as string[])?.includes("output")
+  ) {
     return (
       <p className="text-primary text-xs font-normal">
         Searches in Output and {fields}.
@@ -306,23 +312,24 @@ export function DataTableToolbar<TData, TValue>({
                   >
                     <span className="flex items-center gap-1 truncate">
                       {searchConfig.tableAllowsFullTextSearch &&
-                      ((searchType) => {
-                        const hasFullText = (searchType as string[])?.some(
-                          (type) => ["content", "input", "output"].includes(type),
-                        );
-                        return hasFullText
-                          ? getSearchButtonLabel(
-                              searchType,
-                              searchConfig.customDropdownLabels?.metadata ??
-                                t("common.toolbar.idsNames"),
-                            ).replace(
-                              "Full Text: Content",
-                              searchConfig.customDropdownLabels?.fullText ??
-                                t("common.toolbar.fullText"),
-                            )
-                          : (searchConfig.customDropdownLabels?.metadata ??
-                            t("common.toolbar.idsNames"));
-                      })(searchConfig.searchType)}
+                        ((searchType) => {
+                          const hasFullText = (searchType as string[])?.some(
+                            (type) =>
+                              ["content", "input", "output"].includes(type),
+                          );
+                          return hasFullText
+                            ? getSearchButtonLabel(
+                                searchType,
+                                searchConfig.customDropdownLabels?.metadata ??
+                                  t("common.toolbar.idsNames"),
+                              ).replace(
+                                "Full Text: Content",
+                                searchConfig.customDropdownLabels?.fullText ??
+                                  t("common.toolbar.fullText"),
+                              )
+                            : (searchConfig.customDropdownLabels?.metadata ??
+                                t("common.toolbar.idsNames"));
+                        })(searchConfig.searchType)}
                       <DocPopup
                         description={getSearchDescription(
                           searchConfig.searchType,
