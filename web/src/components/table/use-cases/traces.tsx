@@ -138,6 +138,7 @@ export type TracesTableProps = {
   userId?: string;
   omittedFilter?: string[];
   hideControls?: boolean;
+  viewPersistenceKey?: string;
   externalFilterState?: FilterState;
   externalDateRange?: TableDateRange;
   limitRows?: number;
@@ -148,6 +149,7 @@ export default function TracesTable({
   userId,
   omittedFilter = [],
   hideControls = false,
+  viewPersistenceKey,
   externalFilterState,
   externalDateRange,
   limitRows,
@@ -1242,6 +1244,7 @@ export default function TracesTable({
   const { isLoading: isViewLoading, ...viewControllers } = useTableViewManager({
     tableName: TableViewPresetTableName.Traces,
     projectId,
+    viewPersistenceKey,
     stateUpdaters: {
       setOrderBy: setOrderByState,
       setFilters: setFiltersWrapper,

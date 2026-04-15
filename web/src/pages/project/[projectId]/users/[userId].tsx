@@ -190,7 +190,7 @@ function ScoresTab({ userId, projectId }: TabProps) {
     <ScoresTable
       projectId={projectId}
       userId={userId}
-      omittedFilter={["User ID"]}
+      hiddenColumns={["userId"]}
     />
   );
 }

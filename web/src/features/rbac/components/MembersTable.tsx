@@ -440,6 +440,7 @@ export function MembersTable({
             onColumnVisibilityChange={setColumnVisibility}
             columnOrder={columnOrder}
             onColumnOrderChange={setColumnOrder}
+            cellPadding="comfortable"
           />
         </SettingsTableCard>
       ) : (
@@ -472,6 +473,7 @@ export function MembersTable({
           onColumnVisibilityChange={setColumnVisibility}
           columnOrder={columnOrder}
           onColumnOrderChange={setColumnOrder}
+          cellPadding="comfortable"
         />
       )}
     </>

@@ -1,12 +1,12 @@
 import { useFieldArray, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  type BedrockApiKey,
+  type BedrockAccessKeys,
   type BedrockConfig,
-  type BedrockCredential,
   type VertexAIConfig,
   LLMAdapter,
-  type LlmApiKeys,
   BEDROCK_USE_DEFAULT_CREDENTIALS,
   VERTEXAI_USE_DEFAULT_CREDENTIALS,
 } from "@langfuse/shared";
@@ -31,81 +31,151 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Switch } from "@/src/components/ui/switch";
-import { api } from "@/src/utils/api";
+import { Tabs, TabsList, TabsTrigger } from "@/src/components/ui/tabs";
+import { api, type RouterOutputs } from "@/src/utils/api";
 import { cn } from "@/src/utils/tailwind";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import { type useUiCustomization } from "@/src/ee/features/ui-customization/useUiCustomization";
 import { DialogFooter } from "@/src/components/ui/dialog";
 import { DialogBody } from "@/src/components/ui/dialog";
 import { env } from "@/src/env.mjs";
+import { useTranslation } from "@/src/features/i18n";
+import {
+  AuthMethod,
+  BedrockAuthMethodSchema,
+  type BedrockAuthMethod,
+} from "@/src/features/llm-api-key/types";
 
 const isLangfuseCloud = Boolean(env.NEXT_PUBLIC_LANGFUSE_CLOUD_REGION);
 
 const isCustomModelsRequired = (adapter: LLMAdapter) =>
   adapter === LLMAdapter.Azure || adapter === LLMAdapter.Bedrock;
 
-import { useTranslation } from "@/src/features/i18n";
-import React, { useMemo } from "react";
+const hasText = (value?: string) => Boolean(value?.trim());
 
-const createFormSchema = (
-  mode: "create" | "update",
-  t: (key: string) => string,
-  isLangfuseCloud: boolean,
-) =>
+/**
+ * Whether the selected auth method matches the existing one (i.e. credentials
+ * can be preserved on update). DefaultCredentials is grouped with AccessKeys
+ * because both use SigV4-based authentication via the AWS SDK.
+ */
+const isMatchingBedrockAuthMethod = (
+  newAuthMethod: BedrockAuthMethod,
+  existingAuthMethod?: BedrockAuthMethod,
+): boolean =>
+  (newAuthMethod === AuthMethod.ApiKey &&
+    existingAuthMethod === AuthMethod.ApiKey) ||
+  (newAuthMethod === AuthMethod.AccessKeys &&
+    (existingAuthMethod === AuthMethod.AccessKeys ||
+      existingAuthMethod === AuthMethod.DefaultCredentials));
+
+type LlmApiKeyListItem = RouterOutputs["llmApiKey"]["all"]["data"][number];
+
+const getInitialBedrockAuthMethod = (params: {
+  mode: "create" | "update";
+  existingAuthMethod?: BedrockAuthMethod;
+}): BedrockAuthMethod => {
+  if (params.mode === "update") {
+    return params.existingAuthMethod === AuthMethod.ApiKey
+      ? AuthMethod.ApiKey
+      : AuthMethod.AccessKeys;
+  }
+
+  return AuthMethod.AccessKeys;
+};
+
+const createFormSchema = (params: {
+  mode: "create" | "update";
+  existingAuthMethod?: BedrockAuthMethod;
+  t: (key: string) => string;
+  isLangfuseCloud: boolean;
+}) =>
   z
     .object({
       secretKey: z.string().optional(),
       provider: z
         .string()
-        .min(1, t("llmApiKeys.form.errors.providerRequired"))
-        .regex(/^[^:]+$/, t("llmApiKeys.form.errors.providerFormat")),
+        .min(1, params.t("llmApiKeys.form.errors.providerRequired"))
+        .regex(/^[^:]+$/, params.t("llmApiKeys.form.errors.providerFormat")),
       adapter: z.nativeEnum(LLMAdapter),
       baseURL: z.union([z.literal(""), z.url()]),
       withDefaultModels: z.boolean(),
       customModels: z.array(z.object({ value: z.string().min(1) })),
       awsAccessKeyId: z.string().optional(),
       awsSecretAccessKey: z.string().optional(),
+      bedrockApiKey: z.string().optional(),
+      authMethod: BedrockAuthMethodSchema,
       awsRegion: z.string().optional(),
       vertexAILocation: z.string().optional(),
       extraHeaders: z.array(
         z.object({
           key: z.string().min(1),
-          value: mode === "create" ? z.string().min(1) : z.string().optional(),
+          value:
+            params.mode === "create"
+              ? z.string().min(1)
+              : z.string().optional(),
         }),
       ),
     })
-    // 1) Bedrock validation - credentials required in create mode
-    .refine(
-      (data) => {
-        if (data.adapter !== LLMAdapter.Bedrock) return true;
+    .superRefine((data, ctx) => {
+      if (data.adapter !== LLMAdapter.Bedrock) return;
 
-        // In update mode, credentials are optional (existing ones are preserved)
-        if (mode === "update") {
-          // Only validate region is present
-          return data.awsRegion;
+      const hasRegion = hasText(data.awsRegion);
+      const hasAccessKeyId = hasText(data.awsAccessKeyId);
+      const hasSecretAccessKey = hasText(data.awsSecretAccessKey);
+      const hasBedrockApiKey = hasText(data.bedrockApiKey);
+      const hasAnyAccessKeys = hasAccessKeyId || hasSecretAccessKey;
+      const { authMethod } = data;
+      const isUpdatingCurrentAuthMethod =
+        params.mode === "update" &&
+        isMatchingBedrockAuthMethod(authMethod, params.existingAuthMethod);
+
+      if (!hasRegion) {
+        ctx.addIssue({
+          code: "custom",
+          message: params.t("llmApiKeys.form.errors.awsRegionRequired"),
+          path: ["awsRegion"],
+        });
+      }
+
+      if (authMethod === AuthMethod.AccessKeys) {
+        if (isUpdatingCurrentAuthMethod && !hasAnyAccessKeys) {
+          return;
         }
 
-        // In create mode, validate credentials
-        // For cloud deployments, AWS credentials are required
-        if (isLangfuseCloud) {
-          return (
-            data.awsAccessKeyId && data.awsSecretAccessKey && data.awsRegion
-          );
+        if (!params.isLangfuseCloud && !hasAnyAccessKeys) {
+          return;
         }
 
-        // For self-hosted deployments, only region is required
-        return data.awsRegion;
-      },
-      {
-        message:
-          mode === "update"
-            ? t("llmApiKeys.form.errors.awsRegionRequired")
-            : isLangfuseCloud
-              ? t("llmApiKeys.form.errors.bedrockCredentialsRequired")
-              : t("llmApiKeys.form.errors.awsRegionRequired"),
-        path: ["adapter"],
-      },
-    )
+        if (!hasAccessKeyId) {
+          ctx.addIssue({
+            code: "custom",
+            message: "AWS Access Key ID is required.",
+            path: ["awsAccessKeyId"],
+          });
+        }
+
+        if (!hasSecretAccessKey) {
+          ctx.addIssue({
+            code: "custom",
+            message: "AWS Secret Access Key is required.",
+            path: ["awsSecretAccessKey"],
+          });
+        }
+        return;
+      }
+
+      if (isUpdatingCurrentAuthMethod && !hasBedrockApiKey) {
+        return;
+      }
+
+      if (!hasBedrockApiKey) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Bedrock API key is required.",
+          path: ["bedrockApiKey"],
+        });
+      }
+    })
     .refine(
       (data) => {
         if (isCustomModelsRequired(data.adapter)) {
@@ -114,7 +184,7 @@ const createFormSchema = (
         return true;
       },
       {
-        message: t("llmApiKeys.form.errors.customModelRequired"),
+        message: params.t("llmApiKeys.form.errors.customModelRequired"),
         path: ["customModels"],
       },
     )
@@ -127,7 +197,7 @@ const createFormSchema = (
         return data.withDefaultModels || data.customModels.length > 0;
       },
       {
-        message: t(
+        message: params.t(
           "llmApiKeys.form.errors.customModelRequiredWhenDefaultDisabled",
         ),
         path: ["withDefaultModels"],
@@ -139,15 +209,15 @@ const createFormSchema = (
         if (data.adapter !== LLMAdapter.VertexAI) return true;
 
         // In update mode, credentials are optional (existing ones are preserved)
-        if (mode === "update") return true;
+        if (params.mode === "update") return true;
 
         // secretKey is required (either JSON key or VERTEXAI_USE_DEFAULT_CREDENTIALS sentinel)
         return !!data.secretKey;
       },
       {
-        message: isLangfuseCloud
-          ? t("llmApiKeys.form.errors.gcpKeyRequired")
-          : t("llmApiKeys.form.errors.gcpKeyOrAdcRequired"),
+        message: params.isLangfuseCloud
+          ? params.t("llmApiKeys.form.errors.gcpKeyRequired")
+          : params.t("llmApiKeys.form.errors.gcpKeyOrAdcRequired"),
         path: ["secretKey"],
       },
     )
@@ -155,10 +225,10 @@ const createFormSchema = (
       (data) =>
         data.adapter === LLMAdapter.Bedrock ||
         data.adapter === LLMAdapter.VertexAI ||
-        mode === "update" ||
+        params.mode === "update" ||
         data.secretKey,
       {
-        message: t("llmApiKeys.form.errors.secretKeyRequired"),
+        message: params.t("llmApiKeys.form.errors.secretKeyRequired"),
         path: ["secretKey"],
       },
     )
@@ -168,7 +238,7 @@ const createFormSchema = (
         return data.baseURL && data.baseURL.trim() !== "";
       },
       {
-        message: t("llmApiKeys.form.errors.azureBaseUrlRequired"),
+        message: params.t("llmApiKeys.form.errors.azureBaseUrlRequired"),
         path: ["baseURL"],
       },
     );
@@ -178,7 +248,7 @@ interface CreateLLMApiKeyFormProps {
   onSuccess: () => void;
   customization: ReturnType<typeof useUiCustomization>;
   mode?: "create" | "update";
-  existingKey?: LlmApiKeys;
+  existingKey?: LlmApiKeyListItem;
 }
 
 export function CreateLLMApiKeyForm({
@@ -229,8 +299,14 @@ export function CreateLLMApiKeyForm({
   };
 
   const formSchema = useMemo(
-    () => createFormSchema(mode, t, isLangfuseCloud),
-    [mode, t],
+    () =>
+      createFormSchema({
+        mode,
+        existingAuthMethod: existingKey?.authMethod,
+        t,
+        isLangfuseCloud,
+      }),
+    [existingKey?.authMethod, mode, t],
   );
 
   const form = useForm({
@@ -263,6 +339,11 @@ export function CreateLLMApiKeyForm({
                 : "",
             awsAccessKeyId: "",
             awsSecretAccessKey: "",
+            bedrockApiKey: "",
+            authMethod: getInitialBedrockAuthMethod({
+              mode,
+              existingAuthMethod: existingKey.authMethod,
+            }),
           }
         : {
             adapter: defaultAdapter,
@@ -276,10 +357,22 @@ export function CreateLLMApiKeyForm({
             awsRegion: "",
             awsAccessKeyId: "",
             awsSecretAccessKey: "",
+            bedrockApiKey: "",
+            authMethod: getInitialBedrockAuthMethod({
+              mode,
+            }),
           },
   });
 
   const currentAdapter = form.watch("adapter");
+  const currentAuthMethod = form.watch("authMethod");
+  const isKeepingCurrentBedrockAuthMethod =
+    mode === "update" &&
+    currentAdapter === LLMAdapter.Bedrock &&
+    isMatchingBedrockAuthMethod(currentAuthMethod, existingKey?.authMethod);
+  const isUsingDefaultAwsCredentialsForCurrentAuthMethod =
+    currentAuthMethod === AuthMethod.AccessKeys &&
+    existingKey?.authMethod === AuthMethod.DefaultCredentials;
 
   const hasAdvancedSettings = (adapter: LLMAdapter) =>
     adapter === LLMAdapter.OpenAI ||
@@ -441,33 +534,31 @@ export function CreateLLMApiKeyForm({
     let config: BedrockConfig | VertexAIConfig | undefined;
 
     if (currentAdapter === LLMAdapter.Bedrock) {
-      // In update mode, only update credentials if provided
-      if (mode === "update") {
-        // Only update secretKey if both credentials are provided
-        if (values.awsAccessKeyId && values.awsSecretAccessKey) {
-          const credentials: BedrockCredential = {
-            accessKeyId: values.awsAccessKeyId,
-            secretAccessKey: values.awsSecretAccessKey,
-          };
-          secretKey = JSON.stringify(credentials);
-        } else {
-          // Keep existing credentials by not setting secretKey
-          secretKey = undefined;
-        }
-      } else {
-        // In create mode, handle as before
-        if (
-          !isLangfuseCloud &&
-          (!values.awsAccessKeyId || !values.awsSecretAccessKey)
-        ) {
-          secretKey = BEDROCK_USE_DEFAULT_CREDENTIALS;
-        } else {
-          const credentials: BedrockCredential = {
-            accessKeyId: values.awsAccessKeyId ?? "",
-            secretAccessKey: values.awsSecretAccessKey ?? "",
-          };
-          secretKey = JSON.stringify(credentials);
-        }
+      const shouldPreserveExistingBedrockCredentials =
+        mode === "update" &&
+        isMatchingBedrockAuthMethod(values.authMethod, existingKey?.authMethod);
+
+      switch (values.authMethod) {
+        case AuthMethod.ApiKey:
+          secretKey =
+            shouldPreserveExistingBedrockCredentials && !values.bedrockApiKey
+              ? undefined
+              : JSON.stringify({
+                  apiKey: values.bedrockApiKey!,
+                } satisfies BedrockApiKey);
+          break;
+        case AuthMethod.AccessKeys:
+          if (!values.awsAccessKeyId && !values.awsSecretAccessKey) {
+            secretKey = shouldPreserveExistingBedrockCredentials
+              ? undefined
+              : BEDROCK_USE_DEFAULT_CREDENTIALS;
+          } else {
+            secretKey = JSON.stringify({
+              accessKeyId: values.awsAccessKeyId!,
+              secretAccessKey: values.awsSecretAccessKey!,
+            } satisfies BedrockAccessKeys);
+          }
+          break;
       }
 
       config = {
@@ -633,6 +724,48 @@ export function CreateLLMApiKeyForm({
             <>
               <FormField
                 control={form.control}
+                name="authMethod"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Authentication Method</FormLabel>
+                    <FormDescription>
+                      Select how Langfuse should authenticate to Bedrock.
+                    </FormDescription>
+                    <FormControl>
+                      <Tabs
+                        value={field.value}
+                        onValueChange={(value) =>
+                          field.onChange(value as BedrockAuthMethod)
+                        }
+                        className="w-full"
+                      >
+                        <TabsList
+                          className={cn(
+                            "grid h-auto w-full gap-1",
+                            "grid-cols-2",
+                          )}
+                        >
+                          <TabsTrigger
+                            value={AuthMethod.AccessKeys}
+                            className="text-xs"
+                          >
+                            AWS access keys
+                          </TabsTrigger>
+                          <TabsTrigger
+                            value={AuthMethod.ApiKey}
+                            className="text-xs"
+                          >
+                            API key
+                          </TabsTrigger>
+                        </TabsList>
+                      </Tabs>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="awsRegion"
                 render={({ field }) => (
                   <FormItem>
@@ -665,106 +798,192 @@ export function CreateLLMApiKeyForm({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="awsAccessKeyId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {t("llmApiKeys.form.awsAccessKeyId")}
-                      {!isLangfuseCloud && (
-                        <span className="text-muted-foreground font-normal">
-                          {" "}
-                          {t("llmApiKeys.form.optional")}
-                        </span>
-                      )}
-                    </FormLabel>
-                    <FormDescription>
-                      {mode === "update"
-                        ? t("llmApiKeys.form.bedrockUpdateDescription")
-                        : isLangfuseCloud
-                          ? t("llmApiKeys.form.bedrockCloudDescription")
-                          : t("llmApiKeys.form.bedrockSelfHostedDescription")}
-                    </FormDescription>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder={
-                          mode === "update"
-                            ? existingKey?.displaySecretKey ===
-                              "Default AWS credentials"
-                              ? t("llmApiKeys.form.usingDefaultAwsCredentials")
-                              : `•••••••• ${t("llmApiKeys.form.preservedIfEmpty")}`
-                            : undefined
-                        }
-                        autoComplete="off"
-                        data-1p-ignore
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="awsSecretAccessKey"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {t("llmApiKeys.form.awsSecretAccessKey")}
-                      {!isLangfuseCloud && (
-                        <span className="text-muted-foreground font-normal">
-                          {" "}
-                          {t("llmApiKeys.form.optional")}
-                        </span>
-                      )}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="password"
-                        placeholder={
-                          mode === "update"
-                            ? existingKey?.displaySecretKey ===
-                              "Default AWS credentials"
-                              ? t("llmApiKeys.form.usingDefaultAwsCredentials")
-                              : existingKey?.displaySecretKey
-                                ? `${existingKey.displaySecretKey} ${t("llmApiKeys.form.preservedIfEmpty")}`
-                                : `•••••••• ${t("llmApiKeys.form.preservedIfEmpty")}`
-                            : undefined
-                        }
-                        autoComplete="new-password"
-                        data-1p-ignore
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {!isLangfuseCloud && (
-                <div className="text-muted-foreground space-y-2 border-l-2 border-blue-200 pl-4 text-sm">
-                  <p>
-                    <strong>{t("llmApiKeys.form.awsDefaultChainTitle")}</strong>{" "}
-                    {t("llmApiKeys.form.awsDefaultChainDescription")}
-                  </p>
-                  <ul className="ml-2 list-inside list-disc space-y-1">
-                    <li>{t("llmApiKeys.form.awsEnvVars")}</li>
-                    <li>{t("llmApiKeys.form.awsCredsFile")}</li>
-                    <li>{t("llmApiKeys.form.awsIamEc2")}</li>
-                    <li>{t("llmApiKeys.form.awsIamEcs")}</li>
-                  </ul>
-                  <p>
-                    <a
-                      href="https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/setting-credentials-node.html"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 underline hover:text-blue-800"
-                    >
-                      {t("llmApiKeys.form.awsLearnMore")}
-                    </a>
-                  </p>
-                </div>
+              {currentAuthMethod === AuthMethod.ApiKey && (
+                <FormField
+                  control={form.control}
+                  name="bedrockApiKey"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Bedrock API Key</FormLabel>
+                      <FormDescription>
+                        {mode === "update" ? (
+                          <>
+                            Use{" "}
+                            <a
+                              href="https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 underline hover:text-blue-800"
+                            >
+                              Amazon Bedrock API keys
+                            </a>{" "}
+                            to replace the current authentication.
+                          </>
+                        ) : (
+                          <>
+                            Use{" "}
+                            <a
+                              href="https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 underline hover:text-blue-800"
+                            >
+                              Amazon Bedrock API keys
+                            </a>
+                            .
+                          </>
+                        )}
+                      </FormDescription>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="password"
+                          placeholder={
+                            mode === "update"
+                              ? isKeepingCurrentBedrockAuthMethod &&
+                                existingKey?.displaySecretKey
+                                ? `${existingKey.displaySecretKey} (preserved unless replaced)`
+                                : "Enter Bedrock API key"
+                              : undefined
+                          }
+                          autoComplete="new-password"
+                          data-1p-ignore
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               )}
+              {currentAuthMethod === AuthMethod.AccessKeys && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="awsAccessKeyId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("llmApiKeys.form.awsAccessKeyId")}
+                          {!isLangfuseCloud && (
+                            <span className="text-muted-foreground font-normal">
+                              {" "}
+                              {t("llmApiKeys.form.optional")}
+                            </span>
+                          )}
+                        </FormLabel>
+                        <FormDescription>
+                          {mode === "update"
+                            ? isKeepingCurrentBedrockAuthMethod
+                              ? t("llmApiKeys.form.bedrockUpdateDescription")
+                              : "Provide both Access Key ID and Secret Access Key."
+                            : isLangfuseCloud
+                              ? t("llmApiKeys.form.bedrockCloudDescription")
+                              : t(
+                                  "llmApiKeys.form.bedrockSelfHostedDescription",
+                                )}
+                        </FormDescription>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder={
+                              mode === "update"
+                                ? isUsingDefaultAwsCredentialsForCurrentAuthMethod
+                                  ? t(
+                                      "llmApiKeys.form.usingDefaultAwsCredentials",
+                                    )
+                                  : isKeepingCurrentBedrockAuthMethod
+                                    ? `•••••••• ${t("llmApiKeys.form.preservedIfEmpty")}`
+                                    : "Enter AWS access key ID"
+                                : undefined
+                            }
+                            autoComplete="off"
+                            data-1p-ignore
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="awsSecretAccessKey"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("llmApiKeys.form.awsSecretAccessKey")}
+                          {!isLangfuseCloud && (
+                            <span className="text-muted-foreground font-normal">
+                              {" "}
+                              {t("llmApiKeys.form.optional")}
+                            </span>
+                          )}
+                        </FormLabel>
+                        <FormDescription>
+                          {mode === "update"
+                            ? isKeepingCurrentBedrockAuthMethod
+                              ? t("llmApiKeys.form.bedrockUpdateDescription")
+                              : "Provide both Access Key ID and Secret Access Key."
+                            : isLangfuseCloud
+                              ? t("llmApiKeys.form.bedrockCloudDescription")
+                              : t(
+                                  "llmApiKeys.form.bedrockSelfHostedDescription",
+                                )}
+                        </FormDescription>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="password"
+                            placeholder={
+                              mode === "update"
+                                ? isUsingDefaultAwsCredentialsForCurrentAuthMethod
+                                  ? t(
+                                      "llmApiKeys.form.usingDefaultAwsCredentials",
+                                    )
+                                  : isKeepingCurrentBedrockAuthMethod &&
+                                      existingKey?.displaySecretKey
+                                    ? `${existingKey.displaySecretKey} ${t("llmApiKeys.form.preservedIfEmpty")}`
+                                    : isKeepingCurrentBedrockAuthMethod
+                                      ? `•••••••• ${t("llmApiKeys.form.preservedIfEmpty")}`
+                                      : "Enter AWS secret access key"
+                                : undefined
+                            }
+                            autoComplete="new-password"
+                            data-1p-ignore
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
+              {!isLangfuseCloud &&
+                currentAuthMethod === AuthMethod.AccessKeys && (
+                  <div className="text-muted-foreground space-y-2 border-l-2 border-blue-200 pl-4 text-sm">
+                    <p>
+                      <strong>
+                        {t("llmApiKeys.form.awsDefaultChainTitle")}
+                      </strong>{" "}
+                      {t("llmApiKeys.form.awsDefaultChainDescription")}
+                    </p>
+                    <ul className="ml-2 list-inside list-disc space-y-1">
+                      <li>{t("llmApiKeys.form.awsEnvVars")}</li>
+                      <li>{t("llmApiKeys.form.awsCredsFile")}</li>
+                      <li>{t("llmApiKeys.form.awsIamEc2")}</li>
+                      <li>{t("llmApiKeys.form.awsIamEcs")}</li>
+                    </ul>
+                    <p>
+                      <a
+                        href="https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/setting-credentials-node.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline hover:text-blue-800"
+                      >
+                        {t("llmApiKeys.form.awsLearnMore")}
+                      </a>
+                    </p>
+                  </div>
+                )}
             </>
           ) : currentAdapter === LLMAdapter.VertexAI ? (
             <>

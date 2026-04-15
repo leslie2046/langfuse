@@ -167,6 +167,7 @@ export type EventsTableProps = {
   projectId: string;
   userId?: string;
   hideControls?: boolean;
+  viewPersistenceKey?: string;
   // External control props for embedded preview tables
   externalFilterState?: FilterState;
   externalDateRange?: TableDateRange;
@@ -178,6 +179,7 @@ export default function ObservationsEventsTable({
   projectId,
   userId,
   hideControls = false,
+  viewPersistenceKey,
   externalFilterState,
   externalDateRange,
   limitRows,
@@ -583,6 +585,7 @@ export default function ObservationsEventsTable({
         if (ioLoading) {
           return (
             <JsonSkeleton
+              numRows={rowHeight === "s" ? 1 : undefined}
               borderless
               className="h-full w-full overflow-hidden px-2 py-1"
             />
@@ -608,6 +611,7 @@ export default function ObservationsEventsTable({
         if (ioLoading) {
           return (
             <JsonSkeleton
+              numRows={rowHeight === "s" ? 1 : undefined}
               borderless
               className="h-full w-full overflow-hidden px-2 py-1"
             />
@@ -637,6 +641,7 @@ export default function ObservationsEventsTable({
         if (ioLoading) {
           return (
             <JsonSkeleton
+              numRows={rowHeight === "s" ? 1 : undefined}
               borderless
               className="h-full w-full overflow-hidden px-2 py-1"
             />
@@ -1150,6 +1155,7 @@ export default function ObservationsEventsTable({
   const { isLoading: isViewLoading, ...viewControllers } = useTableViewManager({
     tableName: TableViewPresetTableName.Observations,
     projectId,
+    viewPersistenceKey,
     stateUpdaters: {
       setOrderBy: setOrderByState,
       setFilters: setFiltersWrapper,

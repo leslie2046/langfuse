@@ -10,7 +10,7 @@ import {
   useTopBannerRegistration,
 } from "@/src/features/top-banner";
 import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
-import { V4BetaIntroDialog } from "@/src/features/events/components/V4BetaIntroDialog";
+import { V4IntroDialog } from "@/src/features/events/components/V4IntroDialog";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import { useLangfuseCloudRegion } from "@/src/features/organizations/hooks";
 
@@ -29,11 +29,12 @@ const PAGE_MESSAGES: Record<string, string> = {
   "/project/[projectId]/traces/[traceId]": "Faster trace UI available.",
 };
 
-export function V4BetaPromoBanner() {
+export function V4PromoBanner() {
   const router = useRouter();
   const session = useSession();
   const {
     isBetaEnabled,
+    canToggleV4,
     enableWithIntro,
     showIntroDialog,
     confirmIntroDialog,
@@ -50,12 +51,9 @@ export function V4BetaPromoBanner() {
   const bannerRef = useRef<HTMLDivElement>(null);
 
   const isAuthenticated = session.status === "authenticated";
-  const enableExperimentalFeatures =
-    session.data?.environment?.enableExperimentalFeatures ?? false;
 
-  // Match the v4BetaToggleVisible logic from navigationFilters.ts
-  // cloudAdmin = isLangfuseCloud && isAdmin (already covered by isLangfuseCloud)
-  const isToggleVisible = isLangfuseCloud || enableExperimentalFeatures;
+  // Match the v4BetaToggleVisible logic from navigationFilters.ts.
+  const isToggleVisible = canToggleV4 && isLangfuseCloud;
   const pageMessage = PAGE_MESSAGES[router.pathname];
 
   const isVisible =
@@ -76,7 +74,7 @@ export function V4BetaPromoBanner() {
 
   if (!isVisible) {
     return (
-      <V4BetaIntroDialog
+      <V4IntroDialog
         open={showIntroDialog}
         onConfirm={confirmIntroDialog}
         onDismiss={dismissIntroDialog}
@@ -139,7 +137,7 @@ export function V4BetaPromoBanner() {
           <X className="h-4 w-4 shrink-0" />
         </Button>
       </div>
-      <V4BetaIntroDialog
+      <V4IntroDialog
         open={showIntroDialog}
         onConfirm={confirmIntroDialog}
         onDismiss={dismissIntroDialog}
