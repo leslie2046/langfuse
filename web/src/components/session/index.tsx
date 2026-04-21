@@ -767,6 +767,7 @@ export const SessionEventsPage: React.FC<{
     filterOptions,
     {
       loading: isFilterOptionsPending,
+      stateLocation: "urlAndSessionStorage",
       sessionFilterContextId: projectId,
     },
   );

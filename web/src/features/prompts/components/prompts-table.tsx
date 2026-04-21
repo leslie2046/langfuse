@@ -235,6 +235,7 @@ export function PromptTable() {
     newFilterOptions,
     {
       loading: promptFilterOptions.isPending,
+      stateLocation: "urlAndSessionStorage",
       sessionFilterContextId: projectId ?? null,
     },
   );
