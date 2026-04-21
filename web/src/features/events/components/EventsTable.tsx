@@ -13,6 +13,7 @@ import {
   useSidebarFilterState,
 } from "@/src/features/filters/hooks/useSidebarFilterState";
 import {
+  getEventsColumnName,
   getObservationEventsFilterConfig,
   type ObservationEventsOmittableFilterColumn,
 } from "../config/filter-config";
