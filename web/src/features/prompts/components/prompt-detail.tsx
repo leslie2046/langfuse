@@ -375,10 +375,7 @@ export const PromptDetail = ({
                 setCurrentPromptVersion(version);
                 setCurrentPromptLabel(null);
               }}
-              totalCount={promptHistory.data.totalCount}
-              commentCounts={
-                commentCounts.data as Map<string, number> | undefined
-              }
+              commentCounts={commentCounts.data}
             />
           </div>
         </Command>

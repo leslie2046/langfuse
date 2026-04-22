@@ -339,7 +339,6 @@ export function DataTableControls({
 interface BaseFacetProps {
   label: string;
   tooltip?: string;
-  children?: React.ReactNode;
   filterKey: string;
   filterKeyShort?: string | null;
   expanded?: boolean;

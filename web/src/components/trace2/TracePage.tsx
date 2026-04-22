@@ -1,4 +1,3 @@
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
 import { PublishTraceSwitch } from "@/src/components/publish-object-switch";
 import { DetailPageNav } from "@/src/features/navigate-detail-pages/DetailPageNav";
 import { useRouter } from "next/router";
@@ -73,11 +72,6 @@ export function TracePage({
   const projectIdForAccessCheck = trace.data?.projectId ?? routeProjectId;
   const hasProjectAccess = useIsAuthenticatedAndProjectMember(
     projectIdForAccessCheck,
-  );
-
-  const [selectedTab, setSelectedTab] = useQueryParam(
-    "display",
-    withDefault(StringParam, "details"),
   );
 
   useEffect(() => {
@@ -237,8 +231,6 @@ export function TracePage({
           corrections={trace.data.corrections}
           projectId={trace.data.projectId}
           observations={trace.data.observations}
-          selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
           context={router.query.peek !== undefined ? "peek" : "fullscreen"}
         />
       </div>

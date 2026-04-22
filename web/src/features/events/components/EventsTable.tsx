@@ -19,6 +19,11 @@ import {
 } from "../config/filter-config";
 import { DEFAULT_SIDEBAR_IMPLICIT_ENVIRONMENT_CONFIG } from "@/src/features/filters/constants/internal-environments";
 import { formatIntervalSeconds } from "@/src/utils/dates";
+import {
+  TableBadgeLoadingCell,
+  TableIconBadgeLoadingCell,
+  TableTextLoadingCell,
+} from "@/src/components/table/loading-cells";
 import { type LangfuseColumnDef } from "@/src/components/table/types";
 import {
   type ObservationLevelType,
@@ -50,10 +55,9 @@ import { InfoIcon, LightbulbIcon, PlusCircle } from "lucide-react";
 import { UpsertModelFormDialog } from "@/src/features/models/components/UpsertModelFormDialog";
 import { LocalIsoDate } from "@/src/components/LocalIsoDate";
 import { Badge } from "@/src/components/ui/badge";
-import { type Row, type RowSelectionState } from "@tanstack/react-table";
+import { type RowSelectionState } from "@tanstack/react-table";
 import TableIdOrName from "@/src/components/table/table-id";
 import { ItemBadge } from "@/src/components/ItemBadge";
-import { Skeleton } from "@/src/components/ui/skeleton";
 import { PeekViewObservationDetail } from "@/src/components/table/peek/peek-observation-detail";
 import { usePeekNavigation } from "@/src/components/table/peek/hooks/usePeekNavigation";
 import { useDetailPageLists } from "@/src/features/navigate-detail-pages/context";
@@ -576,6 +580,7 @@ export default function ObservationsEventsTable({
       id: "type",
       header: getEventsColumnName("type"),
       size: 50,
+      loadingCell: <TableIconBadgeLoadingCell />,
       enableSorting,
       cell: ({ row }) => {
         const value: ObservationType = row.getValue("type");
@@ -613,6 +618,13 @@ export default function ObservationsEventsTable({
       header: getEventsColumnName("input"),
       id: "input",
       size: 300,
+      loadingCell: () => (
+        <JsonSkeleton
+          numRows={rowHeight === "s" ? 1 : undefined}
+          borderless
+          className="h-full w-full overflow-hidden px-2 py-1"
+        />
+      ),
       cell: ({ row }) => {
         const value: string | undefined = row.getValue("input");
         if (ioLoading) {
@@ -639,6 +651,13 @@ export default function ObservationsEventsTable({
       id: "output",
       header: getEventsColumnName("output"),
       size: 300,
+      loadingCell: () => (
+        <JsonSkeleton
+          numRows={rowHeight === "s" ? 1 : undefined}
+          borderless
+          className="h-full w-full overflow-hidden px-2 py-1"
+        />
+      ),
       cell: ({ row }) => {
         const value: string | undefined = row.getValue("output");
         if (ioLoading) {
@@ -665,6 +684,13 @@ export default function ObservationsEventsTable({
       accessorKey: "metadata",
       header: getEventsColumnName("metadata"),
       size: 300,
+      loadingCell: () => (
+        <JsonSkeleton
+          numRows={rowHeight === "s" ? 1 : undefined}
+          borderless
+          className="h-full w-full overflow-hidden px-2 py-1"
+        />
+      ),
       headerTooltip: {
         description: "Add metadata to traces to track additional information.",
         href: "https://langfuse.com/docs/observability/features/metadata",
@@ -786,7 +812,7 @@ export default function ObservationsEventsTable({
       defaultHidden: true,
       cell: () => {
         return observations.status === "loading" ? (
-          <Skeleton className="h-3 w-1/2" />
+          <TableTextLoadingCell />
         ) : null;
       },
       columns: [
@@ -795,7 +821,8 @@ export default function ObservationsEventsTable({
           id: "inputCost",
           header: getEventsColumnName("inputCost"),
           size: 120,
-          cell: ({ row }: { row: Row<EventsTableRow> }) => {
+          loadingCell: <TableTextLoadingCell />,
+          cell: ({ row }) => {
             const value = row.getValue("cost") as {
               inputCost: number | undefined;
               outputCost: number | undefined;
@@ -814,7 +841,8 @@ export default function ObservationsEventsTable({
           id: "outputCost",
           header: getEventsColumnName("outputCost"),
           size: 120,
-          cell: ({ row }: { row: Row<EventsTableRow> }) => {
+          loadingCell: <TableTextLoadingCell />,
+          cell: ({ row }) => {
             const value = row.getValue("cost") as {
               inputCost: number | undefined;
               outputCost: number | undefined;
@@ -828,7 +856,7 @@ export default function ObservationsEventsTable({
           defaultHidden: true,
           enableSorting,
         },
-      ],
+      ] satisfies LangfuseColumnDef<EventsTableRow>[],
     },
     {
       accessorKey: "toolDefinitions",
@@ -887,7 +915,7 @@ export default function ObservationsEventsTable({
       defaultHidden: true,
       cell: () => {
         return observations.status === "loading" ? (
-          <Skeleton className="h-3 w-1/2" />
+          <TableTextLoadingCell />
         ) : null;
       },
       columns: [
@@ -896,7 +924,7 @@ export default function ObservationsEventsTable({
           id: "tokensPerSecond",
           header: "Tokens per second",
           size: 200,
-          cell: ({ row }: { row: Row<EventsTableRow> }) => {
+          cell: ({ row }) => {
             const latency: number | undefined = row.getValue("latency");
             const usage = row.getValue("usage") as {
               inputUsage: number;
@@ -921,10 +949,11 @@ export default function ObservationsEventsTable({
           id: "inputTokens",
           header: getEventsColumnName("inputTokens"),
           size: 100,
+          loadingCell: <TableTextLoadingCell />,
           enableHiding: true,
           defaultHidden: true,
           enableSorting,
-          cell: ({ row }: { row: Row<EventsTableRow> }) => {
+          cell: ({ row }) => {
             const value = row.getValue("usage") as {
               inputUsage: number;
               outputUsage: number;
@@ -938,10 +967,11 @@ export default function ObservationsEventsTable({
           id: "outputTokens",
           header: getEventsColumnName("outputTokens"),
           size: 100,
+          loadingCell: <TableTextLoadingCell />,
           enableHiding: true,
           defaultHidden: true,
           enableSorting,
-          cell: ({ row }: { row: Row<EventsTableRow> }) => {
+          cell: ({ row }) => {
             const value = row.getValue("usage") as {
               inputUsage: number;
               outputUsage: number;
@@ -955,10 +985,11 @@ export default function ObservationsEventsTable({
           id: "totalTokens",
           header: getEventsColumnName("totalTokens"),
           size: 100,
+          loadingCell: <TableTextLoadingCell />,
           enableHiding: true,
           defaultHidden: true,
           enableSorting,
-          cell: ({ row }: { row: Row<EventsTableRow> }) => {
+          cell: ({ row }) => {
             const value = row.getValue("usage") as {
               inputUsage: number;
               outputUsage: number;
@@ -967,7 +998,7 @@ export default function ObservationsEventsTable({
             return <span>{numberFormatter(value.totalUsage, 0)}</span>;
           },
         },
-      ],
+      ] satisfies LangfuseColumnDef<EventsTableRow>[],
     },
     {
       accessorKey: "providedModelName",
@@ -1037,6 +1068,7 @@ export default function ObservationsEventsTable({
       id: "environment",
       size: 150,
       enableHiding: true,
+      loadingCell: <TableBadgeLoadingCell />,
       cell: ({ row }) => {
         const value: EventsTableRow["environment"] =
           row.getValue("environment");
@@ -1056,6 +1088,7 @@ export default function ObservationsEventsTable({
       header: getEventsColumnName("traceTags"),
       size: 250,
       enableHiding: true,
+      loadingCell: <TableTextLoadingCell />,
       cell: ({ row }) => {
         const traceTags: string[] | undefined = row.getValue("traceTags");
         return (
@@ -1080,7 +1113,7 @@ export default function ObservationsEventsTable({
       enableHiding: true,
       defaultHidden: true,
       cell: () => {
-        return isColumnLoading ? <Skeleton className="h-3 w-1/2" /> : null;
+        return isColumnLoading ? <TableTextLoadingCell /> : null;
       },
       columns: scoreColumns,
     },
@@ -1091,7 +1124,7 @@ export default function ObservationsEventsTable({
       enableHiding: true,
       defaultHidden: true,
       cell: () => {
-        return isTraceColumnLoading ? <Skeleton className="h-3 w-1/2" /> : null;
+        return isTraceColumnLoading ? <TableTextLoadingCell /> : null;
       },
       columns: traceScoreColumns,
     },
