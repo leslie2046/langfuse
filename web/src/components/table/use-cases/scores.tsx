@@ -430,6 +430,7 @@ export default function ScoresTable({
     projectId,
     tableName: "scores",
     setSelectedRows,
+    setSelectAll,
   });
 
   const rawColumns: LangfuseColumnDef<ScoresTableRow>[] = [
@@ -888,6 +889,18 @@ export default function ScoresTable({
     currentFilterState: queryFilter.explicitFilterState,
   });
 
+  const visibleSelectedScoreIds = useMemo(
+    () =>
+      Object.keys(selectedRows).filter((scoreId) =>
+        scores.data?.scores.map((s) => s.id).includes(scoreId),
+      ),
+    [selectedRows, scores.data?.scores],
+  );
+
+  const selectedScoreCount = selectAll
+    ? totalCount
+    : visibleSelectedScoreIds.length;
+
   return (
     <DataTableControlsProvider
       tableName={scoresFilterConfig.tableName}
@@ -908,14 +921,17 @@ export default function ScoresTable({
             controllers: viewControllers,
           }}
           actionButtons={[
-            Object.keys(selectedRows).filter((scoreId) =>
-              scores.data?.scores.map((s) => s.id).includes(scoreId),
-            ).length > 0 ? (
+            visibleSelectedScoreIds.length > 0 || selectAll ? (
               <TableActionMenu
                 key="scores-multi-select-actions"
                 projectId={projectId}
                 actions={tableActions}
                 tableName={BatchExportTableName.Scores}
+                selectedCount={selectedScoreCount}
+                onClearSelection={() => {
+                  setSelectedRows({});
+                  setSelectAll(false);
+                }}
               />
             ) : null,
             <BatchExportTableButton
@@ -931,9 +947,7 @@ export default function ScoresTable({
           multiSelect={{
             selectAll,
             setSelectAll,
-            selectedRowIds: Object.keys(selectedRows).filter((scoreId) =>
-              scores.data?.scores.map((s) => s.id).includes(scoreId),
-            ),
+            selectedRowIds: visibleSelectedScoreIds,
             setRowSelection: setSelectedRows,
             totalCount,
             ...paginationState,
@@ -984,6 +998,7 @@ export default function ScoresTable({
               setOrderBy={setOrderByState}
               orderBy={orderByState}
               rowSelection={selectedRows}
+              highlightAllRows={selectAll}
               setRowSelection={setSelectedRows}
               columnVisibility={columnVisibility}
               onColumnVisibilityChange={setColumnVisibility}
