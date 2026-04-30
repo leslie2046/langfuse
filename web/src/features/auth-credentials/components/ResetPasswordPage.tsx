@@ -30,7 +30,7 @@ import { useTranslation } from "@/src/features/i18n";
 
 const resetPasswordSchema = z
   .object({
-    email: z.string().email(),
+    email: z.email(),
     password: passwordSchema,
     confirmPassword: passwordSchema,
   })

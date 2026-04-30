@@ -49,7 +49,7 @@ export function TestModelMatchDialog({
   );
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (modelName.trim()) {
       setHasSubmitted(true);

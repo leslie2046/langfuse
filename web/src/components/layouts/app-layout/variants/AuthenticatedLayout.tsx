@@ -14,7 +14,10 @@ import { ResizableContent } from "../components/ResizableContent";
 import { ThemeToggle } from "@/src/features/theming/ThemeToggle";
 import { LanguageToggle } from "@/src/features/i18n";
 import { useTranslation } from "@/src/features/i18n";
-import { getAvailableCloudRegionOptions } from "@/src/features/organizations/cloudRegions";
+import {
+  getAvailableCloudRegionOptions,
+  getCloudRegionAuthUrl,
+} from "@/src/features/organizations/cloudRegions";
 import { useLangfuseCloudRegion } from "@/src/features/organizations/hooks";
 import type { Session } from "next-auth";
 import type { NavigationItem } from "@/src/components/layouts/utilities/routes";
@@ -117,7 +120,11 @@ export function AuthenticatedLayout({
       content: `${region.flag} ${region.name}`,
       onClick: () => {
         if (!region.rootUrl) return;
-        window.open(region.rootUrl, "_blank", "noopener,noreferrer");
+        window.open(
+          getCloudRegionAuthUrl(region.rootUrl, user.email),
+          "_blank",
+          "noopener,noreferrer",
+        );
       },
     }),
   );

@@ -43,7 +43,7 @@ import { ActionButton } from "@/src/components/ActionButton";
 import { useTranslation } from "@/src/features/i18n";
 
 const formSchema = z.object({
-  email: z.string().trim().email(),
+  email: z.string().trim().pipe(z.email()),
   orgRole: z.enum(Role),
   projectRole: z.enum(Role),
 });

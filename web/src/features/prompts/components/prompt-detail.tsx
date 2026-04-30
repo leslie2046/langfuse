@@ -545,9 +545,10 @@ export const PromptDetail = ({
                     </Tabs>
                   </div>
                 )}
-                {prompt.type === PromptType.Chat && chatMessages ? (
-                  <div className="w-full">
-                    <PromptReferenceProvider projectId={projectId}>
+                <PromptReferenceProvider projectId={projectId}>
+                  {prompt.type === PromptType.Chat && chatMessages ? (
+                    <div className="w-full">
+                      {/* eslint-disable-next-line @typescript-eslint/no-deprecated -- Internal backwards-compatible component alias. */}
                       <OpenAiMessageView
                         messages={chatMessages}
                         shouldRenderMarkdown={true}
@@ -555,26 +556,26 @@ export const PromptDetail = ({
                         messageToToolCallNumbers={new Map()}
                         collapseLongHistory={false}
                       />
-                    </PromptReferenceProvider>
-                  </div>
-                ) : typeof prompt.prompt === "string" ? (
-                  resolutionMode === "resolved" &&
-                  promptGraph.data?.resolvedPrompt ? (
-                    <CodeView
-                      content={String(promptGraph.data.resolvedPrompt)}
-                      title="Text Prompt (resolved)"
-                    />
+                    </div>
+                  ) : typeof prompt.prompt === "string" ? (
+                    resolutionMode === "resolved" &&
+                    promptGraph.data?.resolvedPrompt ? (
+                      <CodeView
+                        content={String(promptGraph.data.resolvedPrompt)}
+                        title="Text Prompt (resolved)"
+                      />
+                    ) : (
+                      <CodeView
+                        content={renderRichPromptContent(prompt.prompt)}
+                        originalContent={prompt.prompt}
+                        title="Text Prompt"
+                      />
+                    )
                   ) : (
-                    <CodeView
-                      content={renderRichPromptContent(prompt.prompt)}
-                      originalContent={prompt.prompt}
-                      title="Text Prompt"
-                    />
-                  )
-                ) : (
-                  <JSONView json={prompt.prompt} title="Prompt" />
-                )}
-                <PromptVariableListPreview variables={extractedVariables} />
+                    <JSONView json={prompt.prompt} title="Prompt" />
+                  )}
+                  <PromptVariableListPreview variables={extractedVariables} />
+                </PromptReferenceProvider>
               </div>
             </TabsBarContent>
             <TabsBarContent

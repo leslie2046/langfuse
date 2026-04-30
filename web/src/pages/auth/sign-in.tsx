@@ -47,7 +47,7 @@ import { getSafeRedirectPath } from "@/src/utils/redirect";
 import { useTranslation } from "@/src/features/i18n";
 
 const credentialAuthForm = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(8, {
     message: "Password must be at least 8 characters long",
   }),
@@ -659,7 +659,7 @@ export default function SignIn({
     credentialsForm.clearErrors();
 
     // Ensure email is valid before hitting the API
-    const emailSchema = z.string().email();
+    const emailSchema = z.email();
     const email = emailSchema.safeParse(credentialsForm.getValues("email"));
     if (!email.success) {
       credentialsForm.setError("email", {
