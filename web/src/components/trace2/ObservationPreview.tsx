@@ -600,12 +600,12 @@ export const ObservationPreview = ({
                 <ScoresTable
                   projectId={projectId}
                   traceId={traceId}
-                  omittedFilter={["Observation ID"]}
                   observationId={preloadedObservation.id}
                   hiddenColumns={[
                     "traceId",
                     "observationId",
                     "traceName",
+                    "traceTags",
                     "jobConfigurationId",
                     "userId",
                   ]}
