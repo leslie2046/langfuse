@@ -18,12 +18,12 @@ Complete guide to testing Langfuse backend services across web, worker, and shar
 
 Langfuse uses multiple testing strategies for different layers:
 
-| Test Type   | Framework | Location                                | Purpose                             |
-| ----------- | --------- | --------------------------------------- | ----------------------------------- |
-| Integration | Jest      | `web/src/__tests__/async/`              | Full API endpoint testing           |
-| tRPC        | Jest      | `web/src/__tests__/async/`              | tRPC procedure testing with auth    |
-| Service     | Jest      | `web/src/__tests__/async/repositories/` | Repository/service function testing |
-| Worker      | Vitest    | `worker/src/__tests__/`                 | Queue processors and streams        |
+| Test Type | Framework | Location | Purpose |
+|-----------|-----------|----------|---------|
+| Integration | Vitest | `web/src/__tests__/server/` | Full API endpoint testing |
+| tRPC | Vitest | `web/src/__tests__/server/` | tRPC procedure testing with auth |
+| Service | Vitest | `web/src/__tests__/server/repositories/` | Repository/service function testing |
+| Worker | Vitest | `worker/src/__tests__/` | Queue processors and streams |
 
 ---
 
@@ -31,7 +31,7 @@ Langfuse uses multiple testing strategies for different layers:
 
 Test full REST API endpoints end-to-end using HTTP requests.
 
-**File location:** `web/src/__tests__/async/datasets-api.servertest.ts`
+**File location:** `web/src/__tests__/server/datasets-api.servertest.ts`
 
 ```typescript
 import { makeZodVerifiedAPICall } from "../helpers";
@@ -63,7 +63,6 @@ describe("Dataset API", () => {
 ```
 
 **Key Points:**
-
 - Uses `makeZodVerifiedAPICall` for type-safe API testing
 - Tests HTTP status codes and response validation
 - Tests both success and error cases
@@ -74,7 +73,7 @@ describe("Dataset API", () => {
 
 Test individual repository/service functions with isolated data.
 
-**File location:** `web/src/__tests__/async/repositories/event-repository.servertest.ts`
+**File location:** `web/src/__tests__/server/repositories/event-repository.servertest.ts`
 
 ```typescript
 import {
@@ -124,9 +123,7 @@ describe("Event Repository Tests", () => {
     // Test the service function
     const result = await getObservationsWithModelDataFromEventsTable({
       projectId,
-      filter: [
-        { type: "string", column: "id", operator: "=", value: generationId },
-      ],
+      filter: [{ type: "string", column: "id", operator: "=", value: generationId }],
       limit: 1000,
       offset: 0,
     });
@@ -166,24 +163,18 @@ describe("Event Repository Tests", () => {
     const result = await getObservationsWithModelDataFromEventsTable({
       projectId,
       filter: [
-        {
-          type: "stringOptions",
-          column: "type",
-          operator: "any of",
-          value: ["GENERATION"],
-        },
+        { type: "stringOptions", column: "type", operator: "any of", value: ["GENERATION"] }
       ],
       limit: 1000,
       offset: 0,
     });
 
-    expect(result.every((o) => o.type === "GENERATION")).toBe(true);
+    expect(result.every(o => o.type === "GENERATION")).toBe(true);
   });
 });
 ```
 
 **Key Points:**
-
 - Tests service/repository functions directly
 - Uses ClickHouse and Prisma test data
 - Always cleanup test data after tests
@@ -195,7 +186,7 @@ describe("Event Repository Tests", () => {
 
 Test tRPC procedures with caller pattern and auth context.
 
-**File location:** `web/src/__tests__/async/automations-trpc.servertest.ts`
+**File location:** `web/src/__tests__/server/automations-trpc.servertest.ts`
 
 ```typescript
 import { appRouter } from "@/src/server/api/root";
@@ -214,20 +205,16 @@ async function prepare() {
     user: {
       id: "user-1",
       name: "Demo User",
-      organizations: [
-        {
-          id: org.id,
-          name: org.name,
-          role: "OWNER",
-          projects: [
-            {
-              id: project.id,
-              role: "ADMIN",
-              name: project.name,
-            },
-          ],
-        },
-      ],
+      organizations: [{
+        id: org.id,
+        name: org.name,
+        role: "OWNER",
+        projects: [{
+          id: project.id,
+          role: "ADMIN",
+          name: project.name,
+        }],
+      }],
     },
   };
 
@@ -300,17 +287,13 @@ describe("automations trpc", () => {
       ...session,
       user: {
         ...session.user!,
-        organizations: [
-          {
-            ...session.user!.organizations[0],
-            projects: [
-              {
-                ...session.user!.organizations[0].projects[0],
-                role: "VIEWER", // VIEWER can't create automations
-              },
-            ],
-          },
-        ],
+        organizations: [{
+          ...session.user!.organizations[0],
+          projects: [{
+            ...session.user!.organizations[0].projects[0],
+            role: "VIEWER", // VIEWER can't create automations
+          }],
+        }],
       },
     };
 
@@ -342,7 +325,6 @@ describe("automations trpc", () => {
 ```
 
 **Key Points:**
-
 - Uses `prepare()` helper to set up test context
 - Creates authenticated caller with `appRouter.createCaller`
 - Tests both success and permission error cases
@@ -475,7 +457,6 @@ describe("batch export test suite", () => {
 ```
 
 **Key Points:**
-
 - Uses vitest (not Jest) for worker tests
 - Tests stream functions with async iteration
 - Creates isolated test data per test
@@ -494,12 +475,12 @@ describe("batch export test suite", () => {
 
 ### By Test Type
 
-| Test Type       | Key Principles                                                                   |
-| --------------- | -------------------------------------------------------------------------------- |
-| **Integration** | Test HTTP endpoints, validate status codes and response shapes                   |
-| **tRPC**        | Use `createInnerTRPCContext` and `appRouter.createCaller`, test auth/permissions |
-| **Service**     | Test individual functions with isolated data, always cleanup                     |
-| **Worker**      | Use vitest, test streams with async iteration, test filtering logic              |
+| Test Type | Key Principles |
+|-----------|----------------|
+| **Integration** | Test HTTP endpoints, validate status codes and response shapes |
+| **tRPC** | Use `createInnerTRPCContext` and `appRouter.createCaller`, test auth/permissions |
+| **Service** | Test individual functions with isolated data, always cleanup |
+| **Worker** | Use vitest, test streams with async iteration, test filtering logic |
 
 ### Test Data Management
 
@@ -524,23 +505,20 @@ const projectId = "7a88fb47-b4e2-43b8-a06c-a5ce950dc53a";
 
 ## Running Tests
 
-### Web Tests (Jest)
+### Web Tests (Vitest)
 
 ```bash
-# Run all tests
-pnpm test
+# Run all server tests
+pnpm --filter web run test
 
-# Run sync tests
-pnpm test-sync
-
-# Run async tests
-pnpm test -- --testPathPattern="async"
+# Run all client tests
+pnpm --filter web run test-client
 
 # Run specific test file
-pnpm test -- --testPathPattern="datasets-api"
+pnpm --filter web run test -- datasets-api
 
-# Run specific test
-pnpm test -- --testPathPattern="datasets-api" --testNamePattern="should create dataset"
+# Run watch mode
+pnpm --filter web run test:watch
 ```
 
 ### Worker Tests (Vitest)
@@ -556,20 +534,9 @@ pnpm run test --filter=worker -- batchExport
 pnpm run test --filter=worker -- batchExport -t "should export observations"
 ```
 
-### Coverage
-
-```bash
-# Web coverage
-pnpm test -- --coverage
-
-# Worker coverage
-pnpm run test --filter=worker -- --coverage
-```
-
 ---
 
 **Related Files:**
-
 - [../AGENTS.md](../AGENTS.md) - Main backend guidelines
 - [architecture-overview.md](architecture-overview.md) - Architecture patterns
 - [services-and-repositories.md](services-and-repositories.md) - Service and repository examples

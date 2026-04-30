@@ -1,200 +1,420 @@
 import { z } from "zod";
-import { dashboardColumnDefinitions, singleFilter } from "@langfuse/shared";
+import { singleFilter } from "@langfuse/shared";
 import { type views } from "@/src/features/query/types";
 
 // Exported to silence @typescript-eslint/no-unused-vars v8 warning
 // (used for type extraction via typeof, which is a legitimate pattern)
 export const FilterArray = z.array(singleFilter);
 
-type LegacyViewMapping = {
-  legacyColumn: string;
+/**
+ * Central compatibility layer for dashboard/widget filter columns.
+ *
+ * Legacy dashboard filters can arrive in three shapes:
+ * - uiTableName display labels from the old dashboard filter bar, e.g. "Model"
+ * - uiTableId values from ad hoc callers, e.g. "model"
+ * - explicit legacy aliases, e.g. "Tool Names"
+ *
+ * The query engine expects canonical view field names instead, e.g.
+ * "providedModelName" or "toolNames". Widgets also need the inverse mapping
+ * when reopening saved filters in the editor so persisted query fields render
+ * with the current user-facing labels again.
+ *
+ * Keep all dashboard/widget filter migration and fallback logic in this module.
+ * If a new legacy dashboard column shape needs to remain supported, add it to
+ * this mapping rather than patching individual router or widget code paths.
+ */
+type DashboardViewFilterMapping = {
+  uiTableName: string;
+  uiTableId?: string;
+  aliases?: readonly string[];
   viewName: string;
 };
 
-const viewMappings: Record<z.infer<typeof views>, LegacyViewMapping[]> = {
+type ViewName = z.infer<typeof views>;
+
+type DashboardFilterSourceSpec = Omit<DashboardViewFilterMapping, "viewName">;
+
+type DashboardViewFieldDefinition = {
+  viewName: string;
+  current: DashboardFilterSourceSpec;
+  legacy?: DashboardFilterSourceSpec;
+};
+
+const sourceSpec = (
+  uiTableName: string,
+  options: Omit<DashboardFilterSourceSpec, "uiTableName"> = {},
+): DashboardFilterSourceSpec => ({
+  uiTableName,
+  ...options,
+});
+
+const defineField = (
+  viewName: string,
+  current: DashboardFilterSourceSpec,
+  legacy?: DashboardFilterSourceSpec,
+): DashboardViewFieldDefinition => ({
+  viewName,
+  current,
+  legacy,
+});
+
+const viewFilterDefinitions: Record<
+  ViewName,
+  readonly DashboardViewFieldDefinition[]
+> = {
   traces: [
-    { legacyColumn: "Trace Name", viewName: "name" },
-    { legacyColumn: "traceName", viewName: "name" },
-    { legacyColumn: "Observation Name", viewName: "observationName" },
-    { legacyColumn: "observationName", viewName: "observationName" },
-    { legacyColumn: "Score Name", viewName: "scoreName" },
-    { legacyColumn: "scoreName", viewName: "scoreName" },
-    { legacyColumn: "Tags", viewName: "tags" },
-    { legacyColumn: "tags", viewName: "tags" },
-    { legacyColumn: "traceTags", viewName: "tags" },
-    { legacyColumn: "User", viewName: "userId" },
-    { legacyColumn: "user", viewName: "userId" },
-    { legacyColumn: "Session", viewName: "sessionId" },
-    { legacyColumn: "session", viewName: "sessionId" },
-    { legacyColumn: "Metadata", viewName: "metadata" },
-    { legacyColumn: "metadata", viewName: "metadata" },
-    { legacyColumn: "Release", viewName: "release" },
-    { legacyColumn: "release", viewName: "release" },
-    { legacyColumn: "Version", viewName: "version" },
-    { legacyColumn: "version", viewName: "version" },
-    { legacyColumn: "Environment", viewName: "environment" },
-    { legacyColumn: "environment", viewName: "environment" },
+    defineField("name", sourceSpec("Trace Name", { uiTableId: "traceName" })),
+    defineField(
+      "observationName",
+      sourceSpec("Observation Name", { uiTableId: "observationName" }),
+    ),
+    defineField(
+      "scoreName",
+      sourceSpec("Score Name", { uiTableId: "scoreName" }),
+    ),
+    defineField("tags", sourceSpec("Tags", { uiTableId: "traceTags" })),
+    defineField(
+      "userId",
+      sourceSpec("User", { uiTableId: "user" }),
+      sourceSpec("User", { uiTableId: "userId" }),
+    ),
+    defineField(
+      "sessionId",
+      sourceSpec("Session", { uiTableId: "session" }),
+      sourceSpec("Session", { uiTableId: "sessionId" }),
+    ),
+    defineField("metadata", sourceSpec("Metadata", { uiTableId: "metadata" })),
+    defineField("release", sourceSpec("Release", { uiTableId: "release" })),
+    defineField("version", sourceSpec("Version", { uiTableId: "version" })),
+    defineField(
+      "environment",
+      sourceSpec("Environment", { uiTableId: "environment" }),
+    ),
   ],
   observations: [
-    { legacyColumn: "Trace Name", viewName: "traceName" },
-    { legacyColumn: "traceName", viewName: "traceName" },
-    { legacyColumn: "Observation Name", viewName: "name" },
-    { legacyColumn: "observationName", viewName: "name" },
-    { legacyColumn: "Score Name", viewName: "scoreName" },
-    { legacyColumn: "scoreName", viewName: "scoreName" },
-    { legacyColumn: "User", viewName: "userId" },
-    { legacyColumn: "user", viewName: "userId" },
-    { legacyColumn: "Session", viewName: "sessionId" },
-    { legacyColumn: "session", viewName: "sessionId" },
-    { legacyColumn: "Metadata", viewName: "metadata" },
-    { legacyColumn: "metadata", viewName: "metadata" },
-    { legacyColumn: "Type", viewName: "type" },
-    { legacyColumn: "type", viewName: "type" },
-    { legacyColumn: "Tags", viewName: "tags" },
-    { legacyColumn: "tags", viewName: "tags" },
-    { legacyColumn: "Model", viewName: "providedModelName" },
-    { legacyColumn: "model", viewName: "providedModelName" },
-    { legacyColumn: "Level", viewName: "level" },
-    { legacyColumn: "level", viewName: "level" },
-    { legacyColumn: "Tool Names", viewName: "toolNames" },
-    { legacyColumn: "toolNames", viewName: "toolNames" },
-    { legacyColumn: "Environment", viewName: "environment" },
-    { legacyColumn: "environment", viewName: "environment" },
-    { legacyColumn: "Release", viewName: "traceRelease" },
-    { legacyColumn: "release", viewName: "traceRelease" },
-    { legacyColumn: "Version", viewName: "traceVersion" },
-    { legacyColumn: "version", viewName: "traceVersion" },
+    defineField(
+      "traceName",
+      sourceSpec("Trace Name", { uiTableId: "traceName" }),
+    ),
+    defineField(
+      "name",
+      sourceSpec("Observation Name", { uiTableId: "observationName" }),
+    ),
+    defineField(
+      "scoreName",
+      sourceSpec("Score Name", { uiTableId: "scoreName" }),
+    ),
+    defineField(
+      "userId",
+      sourceSpec("User", { uiTableId: "user" }),
+      sourceSpec("User", { uiTableId: "userId" }),
+    ),
+    defineField(
+      "sessionId",
+      sourceSpec("Session", { uiTableId: "session" }),
+      sourceSpec("Session", { uiTableId: "sessionId" }),
+    ),
+    defineField("metadata", sourceSpec("Metadata", { uiTableId: "metadata" })),
+    defineField("type", sourceSpec("Type", { uiTableId: "type" })),
+    defineField("tags", sourceSpec("Tags", { uiTableId: "traceTags" })),
+    defineField(
+      "providedModelName",
+      sourceSpec("Model", { uiTableId: "model" }),
+    ),
+    defineField("level", sourceSpec("Level", { uiTableId: "level" })),
+    defineField(
+      "toolNames",
+      sourceSpec("Tool Names (Available)", { uiTableId: "toolNames" }),
+      sourceSpec("Tool Names (Available)", {
+        uiTableId: "toolNames",
+        aliases: ["Tool Names"],
+      }),
+    ),
+    defineField(
+      "calledToolNames",
+      sourceSpec("Tool Names (Called)", { uiTableId: "calledToolNames" }),
+    ),
+    defineField(
+      "traceRelease",
+      sourceSpec("Trace Release", { uiTableId: "traceRelease" }),
+      sourceSpec("Release"),
+    ),
+    defineField(
+      "traceVersion",
+      sourceSpec("Trace Version", { uiTableId: "traceVersion" }),
+      sourceSpec("Version"),
+    ),
+    defineField(
+      "environment",
+      sourceSpec("Environment", { uiTableId: "environment" }),
+    ),
+    defineField(
+      "release",
+      sourceSpec("Observation Release", { uiTableId: "release" }),
+    ),
+    defineField("version", sourceSpec("Version", { uiTableId: "version" })),
   ],
   "scores-numeric": [
-    { legacyColumn: "Score Name", viewName: "name" },
-    { legacyColumn: "scoreName", viewName: "name" },
-    { legacyColumn: "Score Source", viewName: "source" },
-    { legacyColumn: "scoreSource", viewName: "source" },
-    { legacyColumn: "Score Value", viewName: "value" },
-    { legacyColumn: "value", viewName: "value" },
-    { legacyColumn: "Scores Data Type", viewName: "dataType" },
-    { legacyColumn: "scoreDataType", viewName: "dataType" },
-    { legacyColumn: "Tags", viewName: "tags" },
-    { legacyColumn: "tags", viewName: "tags" },
-    { legacyColumn: "Environment", viewName: "environment" },
-    { legacyColumn: "environment", viewName: "environment" },
-    { legacyColumn: "User", viewName: "userId" },
-    { legacyColumn: "user", viewName: "userId" },
-    { legacyColumn: "Session", viewName: "sessionId" },
-    { legacyColumn: "session", viewName: "sessionId" },
-    { legacyColumn: "Metadata", viewName: "metadata" },
-    { legacyColumn: "metadata", viewName: "metadata" },
-    { legacyColumn: "Trace Name", viewName: "traceName" },
-    { legacyColumn: "traceName", viewName: "traceName" },
-    { legacyColumn: "Observation Name", viewName: "observationName" },
-    { legacyColumn: "observationName", viewName: "observationName" },
-    { legacyColumn: "Release", viewName: "traceRelease" },
-    { legacyColumn: "release", viewName: "traceRelease" },
-    { legacyColumn: "Version", viewName: "traceVersion" },
-    { legacyColumn: "version", viewName: "traceVersion" },
+    defineField("name", sourceSpec("Score Name", { uiTableId: "scoreName" })),
+    defineField(
+      "source",
+      sourceSpec("Score Source", { uiTableId: "scoreSource" }),
+    ),
+    defineField(
+      "value",
+      sourceSpec("Score Value", {
+        uiTableId: "value",
+        aliases: ["value"],
+      }),
+    ),
+    defineField(
+      "dataType",
+      sourceSpec("Scores Data Type", { uiTableId: "scoreDataType" }),
+    ),
+    defineField("tags", sourceSpec("Tags", { uiTableId: "traceTags" })),
+    defineField(
+      "environment",
+      sourceSpec("Environment", { uiTableId: "environment" }),
+    ),
+    defineField(
+      "userId",
+      sourceSpec("User", { uiTableId: "user" }),
+      sourceSpec("User", { uiTableId: "userId" }),
+    ),
+    defineField(
+      "sessionId",
+      sourceSpec("Session", { uiTableId: "session" }),
+      sourceSpec("Session", { uiTableId: "sessionId" }),
+    ),
+    defineField("metadata", sourceSpec("Metadata", { uiTableId: "metadata" })),
+    defineField(
+      "traceName",
+      sourceSpec("Trace Name", { uiTableId: "traceName" }),
+    ),
+    defineField(
+      "observationName",
+      sourceSpec("Observation Name", { uiTableId: "observationName" }),
+    ),
+    defineField(
+      "traceRelease",
+      sourceSpec("Release", { uiTableId: "release" }),
+    ),
+    defineField(
+      "traceVersion",
+      sourceSpec("Version", { uiTableId: "version" }),
+    ),
   ],
   "scores-categorical": [
-    { legacyColumn: "Score Name", viewName: "name" },
-    { legacyColumn: "scoreName", viewName: "name" },
-    { legacyColumn: "Score Source", viewName: "source" },
-    { legacyColumn: "scoreSource", viewName: "source" },
-    { legacyColumn: "Score String Value", viewName: "stringValue" },
-    { legacyColumn: "stringValue", viewName: "stringValue" },
-    { legacyColumn: "Scores Data Type", viewName: "dataType" },
-    { legacyColumn: "scoreDataType", viewName: "dataType" },
-    { legacyColumn: "Tags", viewName: "tags" },
-    { legacyColumn: "tags", viewName: "tags" },
-    { legacyColumn: "Environment", viewName: "environment" },
-    { legacyColumn: "environment", viewName: "environment" },
-    { legacyColumn: "User", viewName: "userId" },
-    { legacyColumn: "user", viewName: "userId" },
-    { legacyColumn: "Session", viewName: "sessionId" },
-    { legacyColumn: "session", viewName: "sessionId" },
-    { legacyColumn: "Metadata", viewName: "metadata" },
-    { legacyColumn: "metadata", viewName: "metadata" },
-    { legacyColumn: "Trace Name", viewName: "traceName" },
-    { legacyColumn: "traceName", viewName: "traceName" },
-    { legacyColumn: "Observation Name", viewName: "observationName" },
-    { legacyColumn: "observationName", viewName: "observationName" },
-    { legacyColumn: "Release", viewName: "traceRelease" },
-    { legacyColumn: "release", viewName: "traceRelease" },
-    { legacyColumn: "Version", viewName: "traceVersion" },
-    { legacyColumn: "version", viewName: "traceVersion" },
+    defineField("name", sourceSpec("Score Name", { uiTableId: "scoreName" })),
+    defineField(
+      "source",
+      sourceSpec("Score Source", { uiTableId: "scoreSource" }),
+    ),
+    defineField(
+      "stringValue",
+      sourceSpec("Score String Value", { uiTableId: "stringValue" }),
+    ),
+    defineField(
+      "dataType",
+      sourceSpec("Scores Data Type", { uiTableId: "scoreDataType" }),
+    ),
+    defineField("tags", sourceSpec("Tags", { uiTableId: "traceTags" })),
+    defineField(
+      "environment",
+      sourceSpec("Environment", { uiTableId: "environment" }),
+    ),
+    defineField(
+      "userId",
+      sourceSpec("User", { uiTableId: "user" }),
+      sourceSpec("User", { uiTableId: "userId" }),
+    ),
+    defineField(
+      "sessionId",
+      sourceSpec("Session", { uiTableId: "session" }),
+      sourceSpec("Session", { uiTableId: "sessionId" }),
+    ),
+    defineField("metadata", sourceSpec("Metadata", { uiTableId: "metadata" })),
+    defineField(
+      "traceName",
+      sourceSpec("Trace Name", { uiTableId: "traceName" }),
+    ),
+    defineField(
+      "observationName",
+      sourceSpec("Observation Name", { uiTableId: "observationName" }),
+    ),
+    defineField(
+      "traceRelease",
+      sourceSpec("Release", { uiTableId: "release" }),
+    ),
+    defineField(
+      "traceVersion",
+      sourceSpec("Version", { uiTableId: "version" }),
+    ),
   ],
 };
 
-const extraLegacyDashboardMappings = [
-  {
-    uiTableName: "Session",
-    uiTableId: "sessionId",
-    clickhouseTableName: "traces",
-    clickhouseSelect: 't."sessionId"',
-  },
-  {
-    uiTableName: "Observation Name",
-    uiTableId: "observationName",
-    clickhouseTableName: "observations",
-    clickhouseSelect: 'o."name"',
-  },
-  {
-    uiTableName: "Metadata",
-    uiTableId: "metadata",
-    clickhouseTableName: "traces",
-    clickhouseSelect: 't."metadata"',
-  },
-  {
-    uiTableName: "Score Value",
-    uiTableId: "value",
-    clickhouseTableName: "scores",
-    clickhouseSelect: 's."value"',
-  },
-  {
-    uiTableName: "Score String Value",
-    uiTableId: "stringValue",
-    clickhouseTableName: "scores",
-    clickhouseSelect: 's."string_value"',
-  },
-] as const;
+const buildFilterMappings = (
+  source: "current" | "legacy",
+): Record<ViewName, readonly DashboardViewFilterMapping[]> =>
+  (Object.keys(viewFilterDefinitions) as ViewName[]).reduce<
+    Record<ViewName, readonly DashboardViewFilterMapping[]>
+  >(
+    (acc, view) => {
+      acc[view] = viewFilterDefinitions[view].map((field) => ({
+        ...(source === "legacy"
+          ? (field.legacy ?? field.current)
+          : field.current),
+        viewName: field.viewName,
+      }));
 
-const legacyDashboardColumns = dashboardColumnDefinitions.concat(
-  extraLegacyDashboardMappings,
-);
+      return acc;
+    },
+    {} as Record<ViewName, readonly DashboardViewFilterMapping[]>,
+  );
 
-const legacyDashboardColumnSet = new Set(
-  legacyDashboardColumns.flatMap((columnDef) => [
-    columnDef.uiTableId,
-    columnDef.uiTableName,
-  ]),
-);
+const currentWidgetFilterMappings = buildFilterMappings("current");
+const legacyDashboardFilterMappings = buildFilterMappings("legacy");
 
-const legacyAliases = new Set(["user", "session"]);
+const allWidgetFilterMappings = [
+  ...Object.values(currentWidgetFilterMappings).flat(),
+  ...Object.values(legacyDashboardFilterMappings).flat(),
+];
 
-const isLegacyUiTableFilter = (
-  filter: z.infer<typeof singleFilter>,
+const matchesFilterMapping = (
+  mapping: DashboardViewFilterMapping,
+  column: string | undefined,
 ): boolean => {
+  if (column === undefined) {
+    return false;
+  }
+
   return (
-    legacyDashboardColumnSet.has(filter.column) ||
-    legacyAliases.has(filter.column)
+    mapping.uiTableName === column ||
+    mapping.uiTableId === column ||
+    mapping.aliases?.includes(column) === true
   );
 };
+
+const findViewFilterMapping = (
+  mappings: readonly DashboardViewFilterMapping[],
+  column: string | undefined,
+): DashboardViewFilterMapping | undefined =>
+  mappings.find((mapping) => matchesFilterMapping(mapping, column));
+
+const isCanonicalViewFilterColumn = (
+  view: z.infer<typeof views>,
+  column: string | undefined,
+): boolean =>
+  column !== undefined &&
+  currentWidgetFilterMappings[view].some(
+    (mapping) => mapping.viewName === column,
+  );
+
+const isKnownWidgetFilterColumn = (column: string | undefined): boolean =>
+  allWidgetFilterMappings.some((mapping) =>
+    matchesFilterMapping(mapping, column),
+  );
+
+type PartitionedWidgetFilters = {
+  mappedFilters: z.infer<typeof FilterArray>;
+  unsupportedFilters: z.infer<typeof FilterArray>;
+};
+
+const partitionUiTableFiltersToView = (
+  view: z.infer<typeof views>,
+  filters: z.infer<typeof FilterArray>,
+  source: "stored" | "editor",
+): PartitionedWidgetFilters => {
+  return filters.reduce<PartitionedWidgetFilters>(
+    (acc, filter) => {
+      if (isCanonicalViewFilterColumn(view, filter.column)) {
+        acc.mappedFilters.push(filter);
+        return acc;
+      }
+
+      const primaryMappings =
+        source === "stored"
+          ? legacyDashboardFilterMappings[view]
+          : currentWidgetFilterMappings[view];
+      const fallbackMappings =
+        source === "stored"
+          ? currentWidgetFilterMappings[view]
+          : legacyDashboardFilterMappings[view];
+
+      const definition =
+        findViewFilterMapping(primaryMappings, filter.column) ??
+        findViewFilterMapping(fallbackMappings, filter.column);
+
+      if (definition) {
+        acc.mappedFilters.push({ ...filter, column: definition.viewName });
+        return acc;
+      }
+
+      if (isKnownWidgetFilterColumn(filter.column)) {
+        acc.unsupportedFilters.push(filter);
+        return acc;
+      }
+
+      acc.mappedFilters.push(filter);
+      return acc;
+    },
+    { mappedFilters: [], unsupportedFilters: [] },
+  );
+};
+
+export const partitionStoredUiTableFiltersToView = (
+  view: z.infer<typeof views>,
+  filters: z.infer<typeof FilterArray>,
+): PartitionedWidgetFilters =>
+  partitionUiTableFiltersToView(view, filters, "stored");
+
+export const partitionWidgetUiTableFiltersToView = (
+  view: z.infer<typeof views>,
+  filters: z.infer<typeof FilterArray>,
+): PartitionedWidgetFilters =>
+  partitionUiTableFiltersToView(view, filters, "editor");
 
 export const mapLegacyUiTableFilterToView = (
   view: z.infer<typeof views>,
   filters: z.infer<typeof FilterArray>,
 ): z.infer<typeof FilterArray> => {
-  return filters.flatMap((filter) => {
-    if (!isLegacyUiTableFilter(filter)) {
-      return [filter];
-    }
+  return partitionStoredUiTableFiltersToView(view, filters).mappedFilters;
+};
 
-    const definition = viewMappings[view].find(
-      (def) => def.legacyColumn === filter.column,
+export const mapWidgetUiTableFilterToView = (
+  view: z.infer<typeof views>,
+  filters: z.infer<typeof FilterArray>,
+): z.infer<typeof FilterArray> => {
+  return partitionWidgetUiTableFiltersToView(view, filters).mappedFilters;
+};
+
+export const normalizeStoredWidgetFiltersForEditor = (
+  view: z.infer<typeof views>,
+  filters: z.infer<typeof FilterArray>,
+): {
+  editorFilters: z.infer<typeof FilterArray>;
+  unsupportedFilters: z.infer<typeof FilterArray>;
+} => {
+  const partitionedFilters = partitionStoredUiTableFiltersToView(view, filters);
+
+  return {
+    editorFilters: [
+      ...mapViewFilterToUiTableFilter(view, partitionedFilters.mappedFilters),
+      ...partitionedFilters.unsupportedFilters,
+    ],
+    unsupportedFilters: partitionedFilters.unsupportedFilters,
+  };
+};
+
+export const mapViewFilterToUiTableFilter = (
+  view: z.infer<typeof views>,
+  filters: z.infer<typeof FilterArray>,
+): z.infer<typeof FilterArray> => {
+  return filters.map((filter) => {
+    const definition = currentWidgetFilterMappings[view].find(
+      (mapping) => mapping.viewName === filter.column,
     );
 
-    if (!definition) {
-      return [filter];
-    }
-
-    return [{ ...filter, column: definition.viewName }];
+    return definition ? { ...filter, column: definition.uiTableName } : filter;
   });
 };
