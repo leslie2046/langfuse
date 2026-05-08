@@ -147,8 +147,19 @@ export const getOrganizationSettingsPages = ({
   {
     title: t("organization.settings.sso"),
     slug: "sso",
-    cmdKKeywords: ["sso", "login", "auth", "okta", "saml", "azure"],
-    content: <SSOSettings />,
+    cmdKKeywords: [
+      "sso",
+      "login",
+      "auth",
+      "okta",
+      "saml",
+      "azure",
+      "domain",
+      "dns",
+      "txt",
+      "verify",
+    ],
+    content: <SSOSettings orgId={organization.id} />,
     show: isLangfuseCloud,
   },
   {

@@ -5,7 +5,6 @@ import {
   MessageCircle,
   X,
   Archive,
-  Loader2,
   Check,
   Trash,
 } from "lucide-react";
@@ -72,6 +71,7 @@ import { useRouter } from "next/router";
 import { useAnnotationScoreConfigs } from "@/src/features/scores/hooks/useScoreConfigs";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { useTranslation } from "@/src/features/i18n";
+import Spinner from "@/src/components/design-system/Spinner/Spinner";
 
 const CHAR_CUTOFF = 6;
 
@@ -194,7 +194,7 @@ function AnnotateHeader({
         <div className="flex items-center justify-end" key="saving-spinner">
           <div className="mr-1 items-center justify-center">
             {showSaving ? (
-              <Loader2 className="h-3 w-3 animate-spin" />
+              <Spinner size="xxs" />
             ) : (
               <Check className="h-3 w-3" />
             )}
