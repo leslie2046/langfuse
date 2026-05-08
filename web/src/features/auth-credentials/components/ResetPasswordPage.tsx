@@ -54,6 +54,9 @@ export function ResetPasswordPage({
   const capture = usePostHogClientCapture();
   const { t } = useTranslation();
 
+  // Detect set mode: user exists but has no password (signup email verification flow)
+  const isSetMode = session.data?.user?.hasPassword === false;
+
   const mutResetPassword = api.credentials.resetPassword.useMutation();
   const emailVerified = isEmailVerifiedWithinCutoff(
     session.data?.user?.emailVerified,
@@ -72,7 +75,11 @@ export function ResetPasswordPage({
     setFormError(null);
     setShowResetPasswordEmailButton(false);
     setIsSuccess(false);
-    capture("auth:update_password_form_submit");
+    capture(
+      isSetMode
+        ? "auth:set_password_form_submit"
+        : "auth:update_password_form_submit",
+    );
     await mutResetPassword
       .mutateAsync({ password: values.password })
       .then(() => {
@@ -108,10 +115,17 @@ export function ResetPasswordPage({
       />
     );
 
+  const title = isSetMode ? "Set your password" : "Reset your password";
+  const pageTitle = isSetMode ? "Set Password" : "Reset Password";
+  const submitLabel = isSetMode ? "Set password" : "Update Password";
+  const successMessage = isSetMode
+    ? "Password set successfully. Redirecting ..."
+    : "Password successfully updated. Redirecting ...";
+
   return (
     <>
       <Head>
-        <title>{t("auth.resetPasswordTitle")} | Langfuse</title>
+        <title>{pageTitle} | Langfuse</title>
       </Head>
       <div className="flex flex-1 flex-col py-6 sm:min-h-full sm:justify-center sm:px-6 sm:py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -119,9 +133,9 @@ export function ResetPasswordPage({
             <LangfuseIcon className="mx-auto" />
           </Link>
           <h2 className="text-primary mt-4 text-center text-2xl leading-9 font-bold tracking-tight">
-            {t("auth.resetPasswordTitle")}
+            {title}
           </h2>
-          {session.status !== "authenticated" && (
+          {!isSetMode && session.status !== "authenticated" && (
             <div className="mt-2 flex justify-center">
               <Button asChild variant="ghost">
                 <Link href="/auth/sign-in">
@@ -173,7 +187,9 @@ export function ResetPasswordPage({
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{t("auth.newPassword")}</FormLabel>
+                          <FormLabel>
+                            {isSetMode ? t("common.password") : t("auth.newPassword")}
+                          </FormLabel>
                           <FormControl>
                             <PasswordInput
                               autoComplete="new-password"
@@ -189,7 +205,11 @@ export function ResetPasswordPage({
                       name="confirmPassword"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{t("auth.confirmNewPassword")}</FormLabel>
+                          <FormLabel>
+                            {isSetMode
+                              ? "Confirm Password"
+                              : t("auth.confirmNewPassword")}
+                          </FormLabel>
                           <FormControl>
                             <PasswordInput
                               autoComplete="new-password"
@@ -213,12 +233,15 @@ export function ResetPasswordPage({
                         showResetPasswordEmailButton ? "secondary" : "default"
                       }
                     >
-                      {t("auth.updatePassword")}
+                      {submitLabel}
                     </Button>
                   ) : (
                     <RequestResetPasswordEmailButton
                       email={form.watch("email")}
                       className="w-full"
+                      callbackUrl={
+                        isSetMode ? "/auth/setup-password" : undefined
+                      }
                     />
                   )}
                 </div>
@@ -231,18 +254,19 @@ export function ResetPasswordPage({
             ) : null}
             {isSuccess && (
               <div className="text-center text-sm font-medium">
-                {t("auth.passwordUpdatedRedirecting")}
+                {successMessage}
               </div>
             )}
             {showResetPasswordEmailButton && (
               <RequestResetPasswordEmailButton
                 email={form.getValues("email")}
                 className="w-full"
+                callbackUrl={isSetMode ? "/auth/setup-password" : undefined}
               />
             )}
           </div>
         </div>
-        {session.status !== "authenticated" && (
+        {!isSetMode && session.status !== "authenticated" && (
           <div className="text-muted-foreground mx-auto mt-10 max-w-lg text-center text-xs">
             {t("auth.resetPasswordEmailNote")}{" "}
             <Link href="/auth/sign-in" className="underline">

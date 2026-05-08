@@ -162,6 +162,7 @@ export const TracesAndObservationsTimeSeriesChart = ({
           data: transformedObservations,
           totalMetric: totalObservations,
           metricDescription: t("dashboard.charts.observationsTracked"),
+          chartMetricLabel: "Observations",
         },
       ]
     : [
@@ -170,12 +171,14 @@ export const TracesAndObservationsTimeSeriesChart = ({
           data: transformedTraces,
           totalMetric: total,
           metricDescription: t("dashboard.charts.tracesTracked"),
+          chartMetricLabel: "Traces",
         },
         {
           tabTitle: t("dashboard.charts.observationsByLevel"),
           data: transformedObservations,
           totalMetric: totalObservations,
           metricDescription: t("dashboard.charts.observationsTracked"),
+          chartMetricLabel: "Observations",
         },
       ];
 
@@ -211,6 +214,11 @@ export const TracesAndObservationsTimeSeriesChart = ({
                     <Chart
                       chartType="LINE_TIME_SERIES"
                       data={timeSeriesToDataPoints(item.data, agg)}
+                      config={{
+                        metric: {
+                          label: item.chartMetricLabel,
+                        },
+                      }}
                       rowLimit={100}
                       chartConfig={{
                         type: "LINE_TIME_SERIES",

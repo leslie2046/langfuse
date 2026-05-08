@@ -7,7 +7,7 @@ import {
 } from "@/src/features/dashboard/components/hooks";
 import { TabComponent } from "@/src/features/dashboard/components/TabsComponent";
 import { TotalMetric } from "@/src/features/dashboard/components/TotalMetric";
-import { totalCostDashboardFormatted } from "@/src/features/dashboard/lib/dashboard-utils";
+import { costFormatter } from "@/src/utils/numbers";
 import { api } from "@/src/utils/api";
 import {
   type DashboardDateRangeAggregationOption,
@@ -304,16 +304,18 @@ export const ModelUsageChart = ({
     {
       tabTitle: t("dashboard.costByModel"),
       data: costByModel,
-      totalMetric: totalCostDashboardFormatted(totalCost),
+      totalMetric: costFormatter(totalCost),
       metricDescription: t("dashboard.cost"),
-      formatter: totalCostDashboardFormatted,
+      chartMetricLabel: "USD",
+      chartUnit: "USD",
     },
     {
       tabTitle: t("dashboard.costByType"),
       data: costByType,
-      totalMetric: totalCostDashboardFormatted(totalCost),
+      totalMetric: costFormatter(totalCost),
       metricDescription: t("dashboard.cost"),
-      formatter: totalCostDashboardFormatted,
+      chartMetricLabel: "USD",
+      chartUnit: "USD",
     },
     {
       tabTitle: t("dashboard.usageByModel"),
@@ -322,6 +324,8 @@ export const ModelUsageChart = ({
         ? compactNumberFormatter(totalTokens)
         : compactNumberFormatter(0),
       metricDescription: t("dashboard.units"),
+      chartMetricLabel: "Tokens",
+      chartUnit: "tokens",
     },
     {
       tabTitle: t("dashboard.usageByType"),
@@ -330,6 +334,8 @@ export const ModelUsageChart = ({
         ? compactNumberFormatter(totalTokens)
         : compactNumberFormatter(0),
       metricDescription: t("dashboard.units"),
+      chartMetricLabel: "Tokens",
+      chartUnit: "tokens",
     },
   ];
 
@@ -375,12 +381,17 @@ export const ModelUsageChart = ({
                     <Chart
                       chartType="LINE_TIME_SERIES"
                       data={timeSeriesToDataPoints(item.data, agg)}
+                      config={{
+                        metric: {
+                          label: item.chartMetricLabel,
+                        },
+                      }}
                       rowLimit={100}
                       chartConfig={{
                         type: "LINE_TIME_SERIES",
+                        unit: item.chartUnit,
                         show_data_point_dots: false,
                       }}
-                      valueFormatter={item.formatter}
                       legendPosition="above"
                     />
                   </div>
