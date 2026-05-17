@@ -251,6 +251,7 @@ export function DashboardWidgetTable() {
       }
       orderBy={orderByState}
       setOrderBy={setOrderByState}
+      cellPadding="comfortable"
       pagination={{
         totalCount: widgets.data?.totalCount ?? null,
         onChange: setPaginationState,

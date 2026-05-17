@@ -232,7 +232,7 @@ export const PlaygroundTools = () => {
   };
 
   return (
-    <ScrollArea className="h-full">
+    <ScrollArea className="h-full [&>[data-radix-scroll-area-viewport]]:max-h-[min(45vh,18rem)]">
       {tools.length === 0 ? (
         <div className="flex h-16 flex-col items-center justify-center p-4 text-center">
           <p className="text-muted-foreground text-xs">

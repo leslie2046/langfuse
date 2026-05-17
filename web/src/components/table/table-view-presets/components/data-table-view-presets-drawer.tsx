@@ -84,6 +84,7 @@ import isEqual from "lodash/isEqual";
 import { useTranslation } from "@/src/features/i18n";
 import { useDefaultViewMutations } from "../hooks/useDefaultViewMutations";
 import { DropdownMenuSeparator } from "@/src/components/ui/dropdown-menu";
+import { summarizeTableViewPreset } from "@/src/components/table/table-view-presets/lib/viewPreview";
 
 /**
  * Prefix for system preset IDs. These are page-specific presets defined in code
@@ -519,6 +520,7 @@ export function TableViewPresetsDrawer({
                     const isProjectDefault =
                       currentDefault?.viewId === view.id &&
                       currentDefault?.scope === "project";
+                    const previewText = summarizeTableViewPreset(view);
 
                     return (
                       <CommandItem
@@ -529,9 +531,14 @@ export function TableViewPresetsDrawer({
                           selectedViewId === view.id && "bg-muted",
                         )}
                       >
-                        <div className="flex flex-col">
+                        <div className="flex min-w-0 flex-1 flex-col">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm">{view.name}</span>
+                            <span
+                              className={cn("truncate text-sm")}
+                              title={view.name}
+                            >
+                              {view.name}
+                            </span>
                             {isUserDefault && (
                               <Badge variant="secondary" className="text-xs">
                                 Your default
@@ -543,6 +550,14 @@ export function TableViewPresetsDrawer({
                               </Badge>
                             )}
                           </div>
+                          {previewText ? (
+                            <span
+                              className="text-muted-foreground truncate text-xs"
+                              title={previewText}
+                            >
+                              {previewText}
+                            </span>
+                          ) : null}
                           {view.id === selectedViewId && (
                             <Button
                               variant="ghost"
@@ -595,7 +610,7 @@ export function TableViewPresetsDrawer({
                                 <MoreVertical className="h-4 w-4" />
                               </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className="flex flex-col [&>*]:w-full [&>*]:justify-start">
+                            <DropdownMenuContent className="flex flex-col *:w-full *:justify-start">
                               <DropdownMenuItem asChild>
                                 <Popover
                                   key={view.id + "-edit"}
@@ -678,7 +693,6 @@ export function TableViewPresetsDrawer({
                                 </Popover>
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
-                              {/* Set as my default */}
                               <DropdownMenuItem
                                 onClick={(e) => {
                                   e.stopPropagation();

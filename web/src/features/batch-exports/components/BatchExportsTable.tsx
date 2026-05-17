@@ -256,6 +256,7 @@ export function BatchExportsTable(props: { projectId: string }) {
           onChange: setPaginationState,
           state: paginationState,
         }}
+        cellPadding="comfortable"
       />
     </>
   );

@@ -208,6 +208,7 @@ export function BatchActionsTable(props: { projectId: string }) {
         onChange: setPaginationState,
         state: paginationState,
       }}
+      cellPadding="comfortable"
     />
   );
 }

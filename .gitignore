@@ -95,3 +95,6 @@ web/test-results/*
 **/.refactor/
 build.sh
 **/.pi-lens/
+
+# Serena MCP server config (local only)
+.serena/

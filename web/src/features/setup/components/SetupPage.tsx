@@ -14,34 +14,24 @@ import { NewProjectForm } from "@/src/features/projects/components/NewProjectFor
 import { useQueryProjectOrOrganization } from "@/src/features/projects/hooks";
 import { MembershipInvitesPage } from "@/src/features/rbac/components/MembershipInvitesPage";
 import { MembersTable } from "@/src/features/rbac/components/MembersTable";
-import {
-  createProjectRoute,
-  inviteMembersRoute,
-} from "@/src/features/setup/setupRoutes";
+import { createProjectRoute } from "@/src/features/setup/setupRoutes";
 import { cn } from "@/src/utils/tailwind";
 import { Check } from "lucide-react";
 import { useRouter } from "next/router";
 import { StringParam, useQueryParam } from "use-query-params";
 import { useTranslation } from "@/src/features/i18n";
 
-// Multi-step setup process
+// Manual setup process
 // 1. Create Organization: /setup
-// 2. Invite Members: /organization/:orgId/setup
-// 3. Create Project: /organization/:orgId/setup?step=create-project
+// 2. Create Project: /organization/:orgId/setup?orgstep=create-project
 export function SetupPage() {
   const { t } = useTranslation();
-  const { project, organization } = useQueryProjectOrOrganization();
+  const { organization } = useQueryProjectOrOrganization();
   const router = useRouter();
-  const [orgStep] = useQueryParam("orgstep", StringParam); // "invite-members" | "create-project"
+  const [orgStep] = useQueryParam("orgstep", StringParam);
 
   // starts at 1 to align with breadcrumb
-  const stepInt = !organization
-    ? 1
-    : project
-      ? 3
-      : orgStep === "create-project"
-        ? 3
-        : 2;
+  const stepInt = !organization ? 1 : orgStep === "create-project" ? 3 : 2;
 
   return (
     <ContainerPage
@@ -112,7 +102,7 @@ export function SetupPage() {
               </p>
               <NewOrganizationForm
                 onSuccess={(orgId) => {
-                  router.push(inviteMembersRoute(orgId));
+                  router.push(createProjectRoute(orgId));
                 }}
               />
             </div>
