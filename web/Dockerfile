@@ -58,7 +58,7 @@ COPY --from=pruner /app/patches ./patches
 # turbo prune may cause patchedDependencies mismatch between
 # the pruned lockfile and package.json, so we cannot use --frozen-lockfile.
 # Dependencies are still resolved from the lockfile.
-RUN pnpm install
+RUN NODE_OPTIONS="--max-old-space-size=4096" pnpm install
 
 ENV DOCKER_BUILD 1
 

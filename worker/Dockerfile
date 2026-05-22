@@ -36,7 +36,7 @@ COPY --from=pruner /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/patches/ ./patches/
 
-RUN pnpm install --frozen-lockfile
+RUN NODE_OPTIONS="--max-old-space-size=4096" pnpm install --frozen-lockfile
 
 # pass public variables in build step
 ARG NEXT_PUBLIC_LANGFUSE_CLOUD_REGION
