@@ -55,10 +55,10 @@ COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/package.json ./package.json
 COPY --from=pruner /app/patches ./patches
 
-# turbo prune may cause patchedDependencies mismatch between
-# the pruned lockfile and package.json, so we cannot use --frozen-lockfile.
-# Dependencies are still resolved from the lockfile.
-RUN NODE_OPTIONS="--max-old-space-size=4096" pnpm install
+# Keep installs deterministic and avoid lockfile mutation during Docker builds.
+# We restore the original root package.json and patches above so frozen-lockfile
+# can still validate against the pruned workspace.
+RUN NODE_OPTIONS="--max-old-space-size=4096" pnpm install --frozen-lockfile
 
 ENV DOCKER_BUILD 1
 
