@@ -61,17 +61,27 @@ export function sanitizePivotTableDefaultSort(
  */
 export function formatMetricName(
   metricName: string,
-  t: (key: string) => string,
+  t?: (key: string) => string,
 ): string {
+  const humanize = (value: string) =>
+    value
+      .replace(/_/g, " ")
+      .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+      .toLowerCase()
+      .replace(/(^|\s)\S/g, (match) => match.toUpperCase());
+
+  const formatLabel = (key: string) =>
+    t?.(key) ?? humanize(key.slice(key.lastIndexOf(".") + 1));
+
   // Handle the count_count -> Count conversion
   const cleanedName = metricName === "count_count" ? "count" : metricName;
   if (cleanedName.includes("_")) {
     const [agg, meas] = cleanedName.split("_");
-    return `${t(`dashboard.widgets.aggregations.${agg}`)} ${t(
+    return `${formatLabel(`dashboard.widgets.aggregations.${agg}`)} ${formatLabel(
       `dashboard.widgets.measures.${meas}`,
     )}`;
   }
-  return t(`dashboard.widgets.measures.${cleanedName}`);
+  return formatLabel(`dashboard.widgets.measures.${cleanedName}`);
 }
 
 /**
