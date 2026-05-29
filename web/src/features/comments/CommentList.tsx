@@ -90,6 +90,7 @@ export function CommentList({
   isDrawerOpen = false,
   pendingSelection,
   onSelectionUsed,
+  onCommentChange,
 }: {
   projectId: string;
   objectId: string;
@@ -101,6 +102,7 @@ export function CommentList({
   isDrawerOpen?: boolean;
   pendingSelection?: SelectionData | null;
   onSelectionUsed?: () => void;
+  onCommentChange?: () => void | Promise<void>;
 }) {
   const session = useSession();
   const router = useRouter();
@@ -296,10 +298,16 @@ export function CommentList({
   }, [isDrawerOpen]);
 
   const utils = api.useUtils();
+  const invalidateCommentQueries = async () => {
+    void (async () => {
+      await onCommentChange?.();
+    })().catch(() => undefined);
+
+    await utils.comments.invalidate();
+  };
 
   const createCommentMutation = api.comments.create.useMutation({
     onSuccess: async () => {
-      await Promise.all([utils.comments.invalidate()]);
       form.reset();
 
       // Clear pending selection after successful comment creation
@@ -309,6 +317,8 @@ export function CommentList({
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
       }
+
+      await invalidateCommentQueries();
 
       // Scroll to bottom of comments list (newest comment in chronological order)
       if (commentsContainerRef.current) {
@@ -359,7 +369,7 @@ export function CommentList({
 
   const deleteCommentMutation = api.comments.delete.useMutation({
     onSuccess: async () => {
-      await Promise.all([utils.comments.invalidate()]);
+      await invalidateCommentQueries();
     },
   });
 
@@ -492,7 +502,7 @@ export function CommentList({
     <div
       className={cn(
         cardView && "rounded-md border",
-        "flex h-full min-h-0 flex-col",
+        "flex h-full min-h-0 flex-col overflow-hidden",
         className,
       )}
     >
@@ -501,7 +511,7 @@ export function CommentList({
           {t("comments.title")} ({comments.data?.length ?? 0})
         </div>
       )}
-      <div className="flex min-h-0 flex-1 flex-col">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         {!cardView && (
           <div className="flex-shrink-0 border-b">
             <div className="flex items-center justify-between gap-2 px-2 py-1.5">
@@ -700,13 +710,13 @@ export function CommentList({
         </div>
 
         {hasWriteAccess && (
-          <>
-            <div className="text-muted-foreground relative mt-2 mr-4 ml-2.5 flex flex-row items-center justify-between text-xs">
+          <div className="bg-background shrink-0 px-2 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))]">
+            <div className="text-muted-foreground relative flex flex-row items-center justify-between text-xs">
               <span className="sr-only">New comment</span>
               <span></span>
               <span>{t("comments.markdownSupport")}</span>
             </div>
-            <div className="border-border/60 relative mt-0.5 mr-3 mb-2 ml-2 min-h-[70px] flex-shrink-0 rounded-lg border pt-1">
+            <div className="border-border/60 relative mt-0.5 min-h-[70px] rounded-lg border pt-1">
               {/* Visually hidden header for accessibility */}
 
               <Form {...form}>
@@ -806,7 +816,7 @@ export function CommentList({
                 </form>
               </Form>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

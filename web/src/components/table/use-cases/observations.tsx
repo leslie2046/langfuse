@@ -69,7 +69,10 @@ import TableIdOrName from "@/src/components/table/table-id";
 import { ItemBadge } from "@/src/components/ItemBadge";
 import { TablePeekViewObservationDetail } from "@/src/components/table/peek/peek-observation-detail";
 import { usePeekNavigation } from "@/src/components/table/peek/hooks/usePeekNavigation";
-import { useDetailPageLists } from "@/src/features/navigate-detail-pages/context";
+import {
+  detailPageListKeys,
+  useDetailPageLists,
+} from "@/src/features/navigate-detail-pages/context";
 import { useTableViewManager } from "@/src/components/table/table-view-presets/hooks/useTableViewManager";
 import { useRouter } from "next/router";
 import { useFullTextSearch } from "@/src/components/table/use-cases/useFullTextSearch";
@@ -516,8 +519,6 @@ export default function ObservationsTable({
     filter: backendFilterState,
     searchQuery,
     searchType,
-    page: 0,
-    limit: 0,
     orderBy: null,
   };
 
@@ -553,7 +554,7 @@ export default function ObservationsTable({
   useEffect(() => {
     if (generations.isSuccess) {
       setDetailPageList(
-        "observations",
+        detailPageListKeys.observations,
         generations.data.generations.map((g) => ({
           id: g.id,
           params: {
@@ -561,6 +562,7 @@ export default function ObservationsTable({
             ...(g.traceTimestamp
               ? { timestamp: g.traceTimestamp.toISOString() }
               : {}),
+            startTime: g.startTime.toISOString(),
           },
         })),
       );
@@ -1269,11 +1271,18 @@ export default function ObservationsTable({
   );
 
   const peekNavigationProps = usePeekNavigation({
-    queryParams: ["observation", "display", "timestamp", "traceId"],
+    queryParams: [
+      "observation",
+      "display",
+      "timestamp",
+      "traceId",
+      "startTime",
+    ],
     paramsToMirrorPeekValue: ["observation"],
     extractParamsValuesFromRow: (row: ObservationsTableRow) => ({
       traceId: row.traceId || "",
       timestamp: row.timestamp?.toISOString() || "",
+      startTime: row.startTime.toISOString(),
     }),
     expandConfig: {
       basePath: `/project/${projectId}/traces`,
@@ -1308,7 +1317,7 @@ export default function ObservationsTable({
     if (hideControls) return undefined;
     return {
       itemType: "TRACE",
-      detailNavigationKey: "observations",
+      detailNavigationKey: detailPageListKeys.observations,
       ...peekNavigationProps,
     };
   }, [peekNavigationProps, hideControls]);

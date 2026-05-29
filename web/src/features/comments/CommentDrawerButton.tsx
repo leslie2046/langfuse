@@ -26,6 +26,7 @@ export function CommentDrawerButton({
   size = "default",
   pendingSelection,
   onSelectionUsed,
+  onCommentChange,
   isOpen: controlledIsOpen,
   onOpenChange: controlledOnOpenChange,
 }: {
@@ -38,6 +39,7 @@ export function CommentDrawerButton({
   size?: "default" | "sm" | "xs" | "lg" | "icon" | "icon-xs" | "icon-sm";
   pendingSelection?: SelectionData | null;
   onSelectionUsed?: () => void;
+  onCommentChange?: () => void | Promise<void>;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 }) {
@@ -182,7 +184,10 @@ export function CommentDrawerButton({
           )}
         </Button>
       </DrawerTrigger>
-      <DrawerContent overlayClassName="bg-primary/10">
+      <DrawerContent
+        overlayClassName="bg-primary/10"
+        className="h-screen-with-banner max-h-screen-with-banner overflow-hidden"
+      >
         <div
           className="mx-auto flex h-full w-full flex-col overflow-hidden focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:outline-none md:max-h-full"
           tabIndex={-1}
@@ -199,7 +204,10 @@ export function CommentDrawerButton({
               <Header title={t("comments.title")}></Header>
             </DrawerTitle>
           </DrawerHeader>
-          <div data-vaul-no-drag className="min-h-0 flex-1 px-2 pt-2">
+          <div
+            data-vaul-no-drag
+            className="min-h-0 flex-1 overflow-hidden px-2 py-2"
+          >
             <CommentList
               projectId={projectId}
               objectId={objectId}
@@ -208,6 +216,7 @@ export function CommentDrawerButton({
               isDrawerOpen={isDrawerOpen}
               pendingSelection={pendingSelection}
               onSelectionUsed={onSelectionUsed}
+              onCommentChange={onCommentChange}
             />
           </div>
         </div>

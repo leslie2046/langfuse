@@ -3,8 +3,9 @@ import {
   SplashScreen,
   type ValueProposition,
 } from "@/src/components/ui/splash-screen";
-import { Bot, Gauge, Zap, BarChart4 } from "lucide-react";
+import { Bot, Gauge, Zap, BarChart4, Code2 } from "lucide-react";
 import { useTranslation } from "@/src/features/i18n";
+import { useIsCodeEvalEnabled } from "@/src/features/evals/hooks/useIsCodeEvalEnabled";
 
 interface EvaluatorsOnboardingProps {
   projectId: string;
@@ -12,8 +13,9 @@ interface EvaluatorsOnboardingProps {
 
 export function EvaluatorsOnboarding({ projectId }: EvaluatorsOnboardingProps) {
   const { t } = useTranslation();
+  const { enabled } = useIsCodeEvalEnabled();
 
-  const valuePropositions: ValueProposition[] = [
+  const llmAsJudgeValuePropositions: ValueProposition[] = [
     {
       title: t("onboarding.evaluators.propositions.automate.title"),
       description: t("onboarding.evaluators.propositions.automate.description"),
@@ -36,11 +38,44 @@ export function EvaluatorsOnboarding({ projectId }: EvaluatorsOnboardingProps) {
     },
   ];
 
+  if (enabled) {
+    const evaluatorTypes: ValueProposition[] = [
+      {
+        title: "LLM-as-a-judge evaluators",
+        description:
+          "Use an LLM to score outputs against natural-language criteria.",
+        icon: <Bot className="h-4 w-4" />,
+      },
+      {
+        title: "Code evaluators",
+        description:
+          "Write TypeScript or Python logic for deterministic, custom scoring.",
+        icon: <Code2 className="h-4 w-4" />,
+      },
+    ];
+
+    return (
+      <SplashScreen
+        title="Get started with evaluations"
+        description="Use evaluators to score traces and observations automatically. Langfuse supports two evaluator types:"
+        valuePropositions={evaluatorTypes}
+        primaryAction={{
+          label: "Create Evaluator",
+          href: `/project/${projectId}/evals/new`,
+        }}
+        secondaryAction={{
+          label: "Learn More",
+          href: "https://langfuse.com/docs/evaluation",
+        }}
+      />
+    );
+  }
+
   return (
     <SplashScreen
       title={t("onboarding.evaluators.title")}
       description={t("onboarding.evaluators.description")}
-      valuePropositions={valuePropositions}
+      valuePropositions={llmAsJudgeValuePropositions}
       primaryAction={{
         label: t("onboarding.evaluators.createEvaluator"),
         href: `/project/${projectId}/evals/new`,
