@@ -61,6 +61,7 @@ import {
 import {
   getSearchButtonLabel,
   getSearchMode,
+  hasFullTextSearchType,
   searchModeToType,
 } from "@/src/components/table/utils/searchUtils";
 
@@ -226,6 +227,19 @@ export function DataTableToolbar<TData, TValue>({
   const { t } = useTranslation();
   const { open: controlsPanelOpen, setOpen: setControlsPanelOpen } =
     useDataTableControls();
+  const showSearchTypeSelector = Boolean(
+    searchConfig?.setSearchType && searchConfig.tableAllowsFullTextSearch,
+  );
+  const submitSearch = (query: string) => {
+    if (
+      searchConfig?.setSearchType &&
+      !searchConfig.tableAllowsFullTextSearch &&
+      hasFullTextSearchType(searchConfig.searchType)
+    ) {
+      searchConfig.setSearchType(["id"]);
+    }
+    searchConfig?.updateQuery(query);
+  };
 
   // Only show the toggle button when we're using the new sidebar
   const hasNewSidebar = !filterColumnDefinition && filterState !== undefined;
@@ -261,7 +275,7 @@ export function DataTableToolbar<TData, TValue>({
             <div
               className={cn(
                 "border-input bg-background flex h-8 flex-1 items-center border pl-2",
-                searchConfig.setSearchType
+                showSearchTypeSelector
                   ? "rounded-l-md rounded-r-none border-r-0"
                   : "rounded-l-md rounded-r-md",
               )}
@@ -272,7 +286,7 @@ export function DataTableToolbar<TData, TValue>({
                 className="mr-1"
                 onClick={() => {
                   capture("table:search_submit");
-                  searchConfig.updateQuery(searchString);
+                  submitSearch(searchString);
                 }}
               >
                 <Search className="h-4 w-4" />
@@ -294,19 +308,19 @@ export function DataTableToolbar<TData, TValue>({
                   setSearchString(newValue);
                   // If user cleared the search, update URL immediately
                   if (newValue === "") {
-                    searchConfig.updateQuery("");
+                    submitSearch("");
                   }
                 }}
                 onKeyDown={(event) => {
                   if (event.key === "Enter") {
                     capture("table:search_submit");
-                    searchConfig.updateQuery(searchString);
+                    submitSearch(searchString);
                   }
                 }}
                 className="w-full border-none bg-transparent px-0 py-2 text-sm focus-visible:ring-0 focus-visible:outline-none"
               />
             </div>
-            {searchConfig.setSearchType && (
+            {showSearchTypeSelector && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
