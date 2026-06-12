@@ -2,12 +2,13 @@ import { Button } from "@/src/components/ui/button";
 import React, { type Dispatch, type SetStateAction, useState } from "react";
 import { Input } from "@/src/components/ui/input";
 import { DataTableColumnVisibilityFilter } from "@/src/components/table/data-table-column-visibility-filter";
+import { FilterToggleButton } from "@/src/components/table/FilterToggleButton";
 import { PopoverFilterBuilder } from "@/src/features/filters/components/filter-builder";
 import {
   type FilterState,
   type ColumnDefinition,
   type OrderByState,
-  type TableViewPresetDomain,
+  type TableViewPresetState,
   type TableViewPresetTableName,
   type TracingSearchType,
 } from "@langfuse/shared";
@@ -21,13 +22,7 @@ import {
   DataTableRowHeightSwitch,
   type RowHeight,
 } from "@/src/components/table/data-table-row-height-switch";
-import {
-  Search,
-  ChevronDown,
-  PanelLeftClose,
-  PanelLeftOpen,
-} from "lucide-react";
-import { Badge } from "@/src/components/ui/badge";
+import { Search, ChevronDown } from "lucide-react";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import { TimeRangePicker } from "@/src/components/date-picker";
 import {
@@ -41,7 +36,6 @@ import {
   TableViewPresetsDrawer,
   type SystemFilterPreset,
 } from "@/src/components/table/table-view-presets/components/data-table-view-presets-drawer";
-import { useTranslation } from "@/src/features/i18n";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -52,7 +46,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
 } from "@/src/components/ui/dropdown-menu";
-import { useDataTableControls } from "@/src/components/table/data-table-controls";
 import { MultiSelect as MultiSelectFilter } from "@/src/features/filters/components/multi-select";
 import {
   DataTableRefreshButton,
@@ -62,8 +55,10 @@ import {
   getSearchButtonLabel,
   getSearchMode,
   hasFullTextSearchType,
+  includesSearchType,
   searchModeToType,
 } from "@/src/components/table/utils/searchUtils";
+import { useTranslation } from "@/src/features/i18n";
 
 export interface MultiSelect {
   selectAll: boolean;
@@ -77,7 +72,6 @@ export interface MultiSelect {
 
 interface SearchConfig {
   metadataSearchFields?: string[];
-  placeholder?: string;
   updateQuery: (event: string) => void;
   currentQuery?: string;
   tableAllowsFullTextSearch?: boolean;
@@ -96,7 +90,7 @@ interface SearchConfig {
 }
 
 interface TableViewControllers {
-  applyViewState: (viewData: TableViewPresetDomain) => void;
+  applyViewState: (viewData: TableViewPresetState) => void;
   selectedViewId: string | null;
   handleSetViewId: (viewId: string | null) => void;
 }
@@ -157,7 +151,7 @@ function getSearchDescription(
 ): React.ReactNode {
   const fields = metadataFields?.join(", ") ?? "";
 
-  if (tableAllowsFullTextSearch && searchType?.includes("content")) {
+  if (tableAllowsFullTextSearch && includesSearchType(searchType, "content")) {
     return (
       <p className="text-primary text-xs font-normal">
         {t("common.toolbar.searchesInIO", { fields })}
@@ -165,10 +159,7 @@ function getSearchDescription(
       </p>
     );
   }
-  if (
-    tableAllowsFullTextSearch &&
-    (searchType as string[])?.includes("input")
-  ) {
+  if (tableAllowsFullTextSearch && includesSearchType(searchType, "input")) {
     return (
       <p className="text-primary text-xs font-normal">
         Searches in Input and {fields}.
@@ -176,10 +167,7 @@ function getSearchDescription(
       </p>
     );
   }
-  if (
-    tableAllowsFullTextSearch &&
-    (searchType as string[])?.includes("output")
-  ) {
+  if (tableAllowsFullTextSearch && includesSearchType(searchType, "output")) {
     return (
       <p className="text-primary text-xs font-normal">
         Searches in Output and {fields}.
@@ -225,8 +213,6 @@ export function DataTableToolbar<TData, TValue>({
 
   const capture = usePostHogClientCapture();
   const { t } = useTranslation();
-  const { open: controlsPanelOpen, setOpen: setControlsPanelOpen } =
-    useDataTableControls();
   const showSearchTypeSelector = Boolean(
     searchConfig?.setSearchType && searchConfig.tableAllowsFullTextSearch,
   );
@@ -246,32 +232,22 @@ export function DataTableToolbar<TData, TValue>({
   return (
     <div className={cn("grid h-fit w-full gap-0 px-2", className)}>
       <div className="@container my-2 flex flex-wrap items-center gap-2">
-        {hasNewSidebar && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setControlsPanelOpen(!controlsPanelOpen)}
-            className="flex h-8 items-center gap-2 text-sm"
-          >
-            {controlsPanelOpen ? (
-              <PanelLeftClose className="h-4 w-4" />
-            ) : (
-              <PanelLeftOpen className="h-4 w-4" />
-            )}
-            <span>
-              {controlsPanelOpen
-                ? t("common.toolbar.hideFilters")
-                : t("common.toolbar.showFilters")}{" "}
-            </span>
-            {filterState && filterState.length > 0 && (
-              <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-xs">
-                {filterState.length}
-              </Badge>
-            )}
-          </Button>
+        {hasNewSidebar && <FilterToggleButton filterState={filterState} />}
+        {!!columnVisibility && !!columnOrder && !!viewConfig && (
+          <TableViewPresetsDrawer
+            viewConfig={viewConfig}
+            currentState={{
+              orderBy: orderByState ?? null,
+              filters: filterState ?? [],
+              columnOrder,
+              columnVisibility,
+              searchQuery: searchString,
+            }}
+            systemFilterPresets={viewConfig.systemFilterPresets}
+          />
         )}
         {searchConfig && (
-          <div className="flex max-w-[30rem] flex-shrink-0 items-stretch md:min-w-[24rem]">
+          <div className="flex max-w-120 shrink-0 items-stretch md:min-w-96">
             <div
               className={cn(
                 "border-input bg-background flex h-8 flex-1 items-center border pl-2",
@@ -294,13 +270,12 @@ export function DataTableToolbar<TData, TValue>({
               <Input
                 autoFocus
                 placeholder={
-                  searchConfig.placeholder ??
-                  (searchConfig.tableAllowsFullTextSearch
+                  searchConfig.tableAllowsFullTextSearch
                     ? t("common.toolbar.search")
                     : t("common.toolbar.searchIn", {
                         fields:
                           searchConfig.metadataSearchFields?.join(", ") ?? "",
-                      }))
+                      })
                 }
                 value={searchString}
                 onChange={(event) => {
@@ -317,7 +292,7 @@ export function DataTableToolbar<TData, TValue>({
                     submitSearch(searchString);
                   }
                 }}
-                className="w-full border-none bg-transparent px-0 py-2 text-sm focus-visible:ring-0 focus-visible:outline-none"
+                className="w-full border-none bg-transparent px-0 py-2 text-sm focus-visible:ring-0 focus-visible:outline-hidden"
               />
             </div>
             {showSearchTypeSelector && (
@@ -330,24 +305,15 @@ export function DataTableToolbar<TData, TValue>({
                   >
                     <span className="flex items-center gap-1 truncate">
                       {searchConfig.tableAllowsFullTextSearch &&
-                        ((searchType) => {
-                          const hasFullText = (searchType as string[])?.some(
-                            (type) =>
-                              ["content", "input", "output"].includes(type),
-                          );
-                          return hasFullText
-                            ? getSearchButtonLabel(
-                                searchType,
-                                searchConfig.customDropdownLabels?.metadata ??
-                                  t("common.toolbar.idsNames"),
-                              ).replace(
-                                "Full Text: Content",
-                                searchConfig.customDropdownLabels?.fullText ??
-                                  t("common.toolbar.fullText"),
-                              )
-                            : (searchConfig.customDropdownLabels?.metadata ??
-                                t("common.toolbar.idsNames"));
-                        })(searchConfig.searchType)}
+                        getSearchButtonLabel(
+                          searchConfig.searchType,
+                          searchConfig.customDropdownLabels?.metadata ??
+                            t("common.toolbar.idsNames"),
+                        ).replace(
+                          "Full Text",
+                          searchConfig.customDropdownLabels?.fullText ??
+                            t("common.toolbar.fullText"),
+                        )}
                       <DocPopup
                         description={getSearchDescription(
                           searchConfig.searchType,
@@ -473,19 +439,6 @@ export function DataTableToolbar<TData, TValue>({
         )}
 
         <div className="flex flex-row flex-wrap gap-2 pr-0.5 @6xl:ml-auto">
-          {!!columnVisibility && !!columnOrder && !!viewConfig && (
-          <TableViewPresetsDrawer
-            viewConfig={viewConfig}
-            currentState={{
-              orderBy: orderByState ?? null,
-              filters: filterState ?? [],
-              columnOrder,
-              columnVisibility,
-              searchQuery: searchString,
-            }}
-            systemFilterPresets={viewConfig.systemFilterPresets}
-          />
-        )}
           {!!columnVisibility && !!setColumnVisibility && (
             <DataTableColumnVisibilityFilter
               columns={columns}

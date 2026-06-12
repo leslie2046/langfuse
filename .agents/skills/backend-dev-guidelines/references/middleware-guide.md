@@ -789,6 +789,5 @@ ctx.trace; // TraceRecord (pre-fetched)
 
 **Related Files:**
 
-- [../AGENTS.md](../AGENTS.md) - Main backend development guidelines
+- [../SKILL.md](../SKILL.md) - Main backend development guidelines
 - [architecture-overview.md](architecture-overview.md) - System architecture
-- [../AGENTS.md](../AGENTS.md) - Error handling patterns and traceException guidance

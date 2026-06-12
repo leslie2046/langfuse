@@ -285,7 +285,7 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
           .then((result) => {
             if (result.success) {
               // Success - navigate to dataset items
-              void utils.datasets.invalidate();
+              utils.datasets.invalidate();
               props.onCreateDatasetSuccess?.(result.dataset);
               props.onFormSuccess?.();
               form.reset();
@@ -317,7 +317,7 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
           .then((result) => {
             if (result.success) {
               // Success - close dialog
-              void utils.datasets.invalidate();
+              utils.datasets.invalidate();
               props.onFormSuccess?.();
               form.reset();
             } else {
@@ -353,7 +353,7 @@ export const DatasetForm = forwardRef<DatasetFormRef, DatasetFormProps>(
           datasetId: props.datasetId,
         })
         .then(() => {
-          void utils.datasets.invalidate();
+          utils.datasets.invalidate();
           form.reset();
         })
         .catch((error: Error) => {

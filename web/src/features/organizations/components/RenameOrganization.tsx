@@ -42,7 +42,7 @@ export default function RenameOrganization() {
   });
   const renameOrganization = api.organizations.update.useMutation({
     onSuccess: () => {
-      void updateSession();
+      updateSession();
     },
     onError: (error) => form.setError("name", { message: error.message }),
   });

@@ -39,7 +39,7 @@ export default function RenameProject() {
   });
   const renameProject = api.projects.update.useMutation({
     onSuccess: (_) => {
-      void updateSession();
+      updateSession();
     },
     onError: (error) => form.setError("name", { message: error.message }),
   });

@@ -18,7 +18,6 @@ import { useIsCodeEvalEnabled } from "@/src/features/evals/hooks/useIsCodeEvalEn
 import { shouldShowEvalTemplate } from "@/src/features/evals/utils/code-eval-template-utils";
 import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
 import { Button } from "@/src/components/ui/button";
-
 import { useTranslation } from "@/src/features/i18n";
 
 // Multi-step setup process
@@ -30,7 +29,8 @@ export default function NewEvaluatorPage() {
   const projectId = router.query.projectId as string;
   const evaluatorId = router.query.evaluator as string | undefined;
   const { t } = useTranslation();
-  const { enabled: isCodeEvalEnabled } = useIsCodeEvalEnabled();
+  const codeEvalCapabilities = useIsCodeEvalEnabled();
+  const { enabled: isCodeEvalEnabled } = codeEvalCapabilities;
 
   const hasDefaultModelReadAccess = useHasProjectAccess({
     projectId,
@@ -61,7 +61,9 @@ export default function NewEvaluatorPage() {
   );
 
   const currentTemplate = evalTemplates.data?.templates
-    .filter((template) => shouldShowEvalTemplate(template, isCodeEvalEnabled))
+    .filter((template) =>
+      shouldShowEvalTemplate(template, codeEvalCapabilities),
+    )
     .find((t) => t.id === evaluatorId);
 
   const templatesForCurrentName = api.evals.allTemplatesForName.useQuery(
@@ -86,7 +88,7 @@ export default function NewEvaluatorPage() {
   const handleUseUpdatedEvaluator = () => {
     if (!latestTemplate) return;
 
-    void router.replace(
+    router.replace(
       {
         pathname: router.pathname,
         query: {

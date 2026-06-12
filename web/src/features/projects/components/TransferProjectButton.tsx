@@ -77,7 +77,7 @@ export function TransferProjectButton() {
         description: t("project.transfer.successDescription"),
       });
       await new Promise((resolve) => setTimeout(resolve, 5000));
-      void session.update();
+      session.update();
       window.location.href = "/";
     },
   });

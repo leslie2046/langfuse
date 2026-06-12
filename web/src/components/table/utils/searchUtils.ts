@@ -1,14 +1,24 @@
 import type { TracingSearchType } from "@langfuse/shared";
 
+export type FullTextSearchType = "content" | "input" | "output";
+
+export function includesSearchType(
+  searchType: TracingSearchType[] | undefined,
+  type: FullTextSearchType,
+): boolean {
+  return (searchType as string[] | undefined)?.includes(type) ?? false;
+}
+
 // Helper function to get the current search mode value for the radio group
 export function getSearchMode(
   searchType: TracingSearchType[] | undefined,
   tableAllowsFullTextSearch = false,
 ): string {
   if (!searchType || !tableAllowsFullTextSearch) return "metadata";
-  if (searchType.includes("content")) return "metadata_fulltext";
-  if (searchType.includes("input")) return "metadata_fulltext_input";
-  if (searchType.includes("output")) return "metadata_fulltext_output";
+  if (includesSearchType(searchType, "content")) return "metadata_fulltext";
+  if (includesSearchType(searchType, "input")) return "metadata_fulltext_input";
+  if (includesSearchType(searchType, "output"))
+    return "metadata_fulltext_output";
   return "metadata";
 }
 
@@ -18,9 +28,9 @@ export function getSearchButtonLabel(
   metadataLabel?: string,
 ): string {
   if (!searchType) return metadataLabel ?? "IDs / Names";
-  if (searchType.includes("content")) return "Full Text: Content";
-  if (searchType.includes("input")) return "Full Text: Input";
-  if (searchType.includes("output")) return "Full Text: Output";
+  if (includesSearchType(searchType, "content")) return "Full Text: Content";
+  if (includesSearchType(searchType, "input")) return "Full Text: Input";
+  if (includesSearchType(searchType, "output")) return "Full Text: Output";
   return metadataLabel ?? "IDs / Names";
 }
 
@@ -28,7 +38,7 @@ export function hasFullTextSearchType(
   searchType: TracingSearchType[] | undefined,
 ): boolean {
   return Boolean(
-    searchType?.some(
+    (searchType as string[] | undefined)?.some(
       (type) => type === "content" || type === "input" || type === "output",
     ),
   );
@@ -40,9 +50,9 @@ export function searchModeToType(mode: string): TracingSearchType[] {
     case "metadata_fulltext":
       return ["id", "content"];
     case "metadata_fulltext_input":
-      return ["id", "input"];
+      return ["id", "input"] as TracingSearchType[];
     case "metadata_fulltext_output":
-      return ["id", "output"];
+      return ["id", "output"] as TracingSearchType[];
     default:
       return ["id"];
   }

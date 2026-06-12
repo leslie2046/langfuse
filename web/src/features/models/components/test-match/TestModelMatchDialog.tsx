@@ -54,7 +54,7 @@ export function TestModelMatchDialog({
     e.preventDefault();
     if (modelName.trim()) {
       setHasSubmitted(true);
-      void refetch();
+      refetch();
     }
   };
 

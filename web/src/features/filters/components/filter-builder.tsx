@@ -26,7 +26,6 @@ import {
   Info,
   Plus,
   WandSparkles,
-  Sparkles,
   X,
 } from "lucide-react";
 import {
@@ -66,6 +65,7 @@ import {
 } from "@/src/components/ui/input-command";
 import { useQueryProject } from "@/src/features/projects/hooks";
 import { useLangfuseCloudRegion } from "@/src/features/organizations/hooks";
+import { openAIFeaturesSettings } from "@/src/features/organizations/components/AIFeaturesDisabledNotice";
 import { useTranslation } from "@/src/features/i18n";
 
 /**
@@ -186,7 +186,7 @@ export function PopoverFilterBuilder({
               {filterState.length > 0 ? (
                 <span
                   className={cn(
-                    "bg-input ml-1.5 rounded-sm px-1 text-xs shadow-sm @6xl:hidden",
+                    "bg-input ml-1.5 rounded-sm px-1 text-xs shadow-xs @6xl:hidden",
                     filterState.length > 2 && "@6xl:inline",
                   )}
                 >
@@ -207,7 +207,7 @@ export function PopoverFilterBuilder({
               {filterState.length > 0 && (
                 <span
                   className={cn(
-                    "bg-input absolute top-0 -right-1 flex h-4 min-w-4 items-center justify-center rounded-sm px-1 text-xs shadow-sm",
+                    "bg-input absolute top-0 -right-1 flex h-4 min-w-4 items-center justify-center rounded-sm px-1 text-xs shadow-xs",
                   )}
                 >
                   {filterState.length}
@@ -481,15 +481,21 @@ function FilterBuilderForm({
             return;
           }
 
-          onChange((prev) => [...prev, ...result.filters]);
-          setShowAiFilter(false);
+          // Set the filters from the API response
+          onChange(result.filters as WipFilterState);
           setAiPrompt("");
+          setShowAiFilter(false);
         } else {
+          console.error(result);
           setAiError(t("common.filters.invalidResponse"));
         }
       } catch (error) {
-        console.error(error);
-        setAiError(t("common.filters.failedToGenerate"));
+        console.error("Error calling tRPC API:", error);
+        setAiError(
+          error instanceof Error
+            ? error.message
+            : t("common.filters.failedToGenerate"),
+        );
       }
     }
   };
@@ -502,10 +508,7 @@ function FilterBuilderForm({
           <Button
             onClick={() => {
               if (!organization?.aiFeaturesEnabled && organization?.id) {
-                window.open(
-                  `/organization/${organization.id}/settings`,
-                  "_blank",
-                );
+                openAIFeaturesSettings(organization.id);
               } else {
                 setShowAiFilter(!showAiFilter);
               }
@@ -513,7 +516,6 @@ function FilterBuilderForm({
             type="button"
             variant="outline"
             size="default"
-            disabled={false}
             title={
               !organization?.aiFeaturesEnabled
                 ? t("common.filters.aiDisabled")
@@ -542,7 +544,7 @@ function FilterBuilderForm({
                   if (aiError) setAiError(null); // Clear error when user starts typing
                 }}
                 placeholder={t("common.filters.describeFilters")}
-                className="min-h-[80px] min-w-[28rem] resize-none"
+                className="min-h-[80px] min-w-112 resize-none"
                 disabled={createFilterMutation.isPending}
                 onKeyDown={(e) => {
                   if (
@@ -556,24 +558,12 @@ function FilterBuilderForm({
               />
               <div className="flex items-center gap-2">
                 <Button
-                  variant="ghost"
+                  onClick={handleAiFilterSubmit}
+                  type="button"
+                  variant="default"
                   size="sm"
-                  onClick={() => setShowAiFilter(false)}
-                  disabled={createFilterMutation.isPending}
+                  disabled={createFilterMutation.isPending || !aiPrompt.trim()}
                 >
-                  {t("common.filters.cancelAI")}
-                </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => void handleAiFilterSubmit()}
-                  disabled={
-                    !aiPrompt.trim() ||
-                    createFilterMutation.isPending ||
-                    !isLangfuseCloud
-                  }
-                >
-                  <Sparkles className="mr-2 h-3 w-3" />
                   {createFilterMutation.isPending
                     ? t("common.filters.loading")
                     : t("common.filters.generateFilters")}
@@ -640,7 +630,7 @@ function FilterBuilderForm({
                                 ? t(column.name)
                                 : t("common.filters.column")}
                             </span>
-                            <ChevronDown className="h-4 w-4 flex-shrink-0 opacity-50" />
+                            <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent
@@ -789,17 +779,14 @@ function FilterBuilderForm({
                             <SelectValue placeholder="" />
                           </SelectTrigger>
                           <SelectContent>
-                            {column?.options.map((option) => {
-                              const optionValue = option.value ?? option.label;
-                              return (
-                                <SelectItem
-                                  key={optionValue}
-                                  value={optionValue}
-                                >
-                                  {optionValue}
-                                </SelectItem>
-                              );
-                            })}
+                            {column?.options.map((option) => (
+                              <SelectItem
+                                key={option.label}
+                                value={option.label}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       ) : filter.type === "positionInTrace" ? (
@@ -960,7 +947,7 @@ function FilterBuilderForm({
                           className="min-w-[100px]"
                           options={
                             column?.options
-                              .find((o) => (o.value ?? o.label) === filter.key)
+                              .find((o) => o.label === filter.key)
                               ?.values?.map((v) => ({ value: v })) ?? []
                           }
                           onValueChange={(value) =>

@@ -4,6 +4,7 @@ import {
   AvatarImage,
 } from "@/src/components/ui/avatar";
 import { Button } from "@/src/components/ui/button";
+import { KeyboardShortcut } from "@/src/components/ui/keyboard-shortcut";
 import {
   Form,
   FormControl,
@@ -299,7 +300,7 @@ export function CommentList({
 
   const utils = api.useUtils();
   const invalidateCommentQueries = async () => {
-    void (async () => {
+    (async () => {
       await onCommentChange?.();
     })().catch(() => undefined);
 
@@ -485,7 +486,7 @@ export function CommentList({
     return (
       <div
         className={cn(
-          "flex min-h-[5rem] items-center justify-center rounded border border-dashed p-1",
+          "flex min-h-20 items-center justify-center rounded border border-dashed p-1",
           className,
         )}
       >
@@ -507,13 +508,13 @@ export function CommentList({
       )}
     >
       {cardView && (
-        <div className="flex-shrink-0 border-b px-2 py-1 text-sm font-medium">
+        <div className="shrink-0 border-b px-2 py-1 text-sm font-medium">
           {t("comments.title")} ({comments.data?.length ?? 0})
         </div>
       )}
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         {!cardView && (
-          <div className="flex-shrink-0 border-b">
+          <div className="shrink-0 border-b">
             <div className="flex items-center justify-between gap-2 px-2 py-1.5">
               <div className="text-sm font-medium">{t("comments.title")}</div>
               <div className="relative max-w-xs flex-1">
@@ -538,16 +539,15 @@ export function CommentList({
                   </Button>
                 )}
                 {!searchQuery && (
-                  <kbd className="bg-muted text-muted-foreground pointer-events-none absolute top-1/2 right-1 h-5 -translate-y-1/2 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-50 select-none sm:inline-flex">
-                    {typeof navigator !== "undefined" &&
-                    navigator.userAgent.includes("Macintosh") ? (
-                      <>
-                        <span className="text-xs">⌘</span>F
-                      </>
-                    ) : (
-                      <>Ctrl+F</>
-                    )}
-                  </kbd>
+                  <KeyboardShortcut
+                    className="absolute top-1/2 right-1 hidden -translate-y-1/2 opacity-50 sm:inline-flex"
+                    keys={
+                      typeof navigator !== "undefined" &&
+                      navigator.userAgent.includes("Macintosh")
+                        ? ["⌘", "F"]
+                        : ["Ctrl", "F"]
+                    }
+                  />
                 )}
               </div>
             </div>
@@ -575,7 +575,7 @@ export function CommentList({
                 key={comment.id}
                 id={`comment-${comment.id}`}
                 className={cn(
-                  "group relative grid grid-cols-[auto,1fr] gap-2.5 rounded-lg border p-3 transition-colors",
+                  "group relative grid grid-cols-[auto_1fr] gap-2.5 rounded-lg border p-3 transition-colors",
                   highlightedCommentId === comment.id
                     ? "border-primary-accent"
                     : "border-border/40 hover:bg-muted/20",
@@ -741,7 +741,7 @@ export function CommentList({
                                 }
                               }}
                               onKeyDown={handleKeyDown}
-                              className="max-h-[100px] min-h-[2.25rem] w-full resize-none overflow-hidden border-none py-2 pr-7 text-xs leading-tight focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 active:ring-0"
+                              className="max-h-[100px] min-h-9 w-full resize-none overflow-hidden border-none py-2 pr-7 text-xs leading-tight focus:ring-0 focus:outline-hidden focus-visible:ring-0 focus-visible:ring-offset-0 active:ring-0"
                               style={{
                                 whiteSpace: "pre-wrap",
                                 wordWrap: "break-word",
@@ -806,9 +806,7 @@ export function CommentList({
                       >
                         <div className="flex items-center gap-2 text-sm">
                           <span>{t("comments.send")}</span>
-                          <kbd className="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 select-none">
-                            <span className="text-xs">⌘</span>Enter
-                          </kbd>
+                          <KeyboardShortcut keys={["⌘", "Enter"]} />
                         </div>
                       </HoverCardContent>
                     </HoverCard>

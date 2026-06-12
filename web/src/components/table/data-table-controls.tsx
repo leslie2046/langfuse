@@ -68,6 +68,13 @@ export function DataTableControlsProvider({
   const defaultOpen = isDesktop ? !defaultSidebarCollapsed : false;
   const [open, setOpen] = useSessionStorage(storageKey, defaultOpen);
 
+  // sessionStorage may carry a previously-open state from a wider viewport.
+  // On mobile, force the sidebar closed on each (re)mount so the filter
+  // panel doesn't cover the table by default.
+  useEffect(() => {
+    if (!isDesktop) setOpen(false);
+  }, [isDesktop, setOpen]);
+
   return (
     <ControlsContext.Provider value={{ open, setOpen, tableName }}>
       <div
@@ -606,6 +613,8 @@ export function CategoricalFacet({
     [textFilters, onTextFilterRemove, onChange],
   );
 
+  const { tableName = "data" } = useContext(ControlsContext) ?? {};
+
   const MAX_VISIBLE_OPTIONS = 12;
   const visibleOptionValues = Array.from(
     new Set([...options, ...value.filter((option) => option.length > 0)]),
@@ -667,6 +676,7 @@ export function CategoricalFacet({
                 - Traces: tags
                 - Sessions: userIds, tags
                 - Prompts: labels, tags
+                - Monitors: tags
             */}
             {onOperatorChange && (
               <div className="mb-1.5 flex items-center gap-1.5 px-2">
@@ -732,7 +742,8 @@ export function CategoricalFacet({
               <div className="text-muted-foreground py-1 text-xs">
                 {filterKey === "sessionId" ? (
                   <span>
-                    {t("common.filters.sessionsDescription")}{" "}
+                    Sessions group {tableName} together, which is useful for
+                    tracing multi-step workflows.{" "}
                     <a
                       href="https://langfuse.com/docs/observability/features/sessions"
                       target="_blank"
@@ -741,13 +752,16 @@ export function CategoricalFacet({
                     >
                       {t("common.filters.seeDocs")}
                     </a>{" "}
-                    {t("common.filters.sessionsDescriptionSuffix")}
+                    to learn how to add sessions to your {tableName}.
                   </span>
                 ) : filterKey === "name" ? (
-                  <span>{t("common.filters.noTraceNamesFound")}</span>
+                  <span>
+                    No {tableName} names found in the given time range.
+                  </span>
                 ) : filterKey === "tags" ? (
                   <span>
-                    {t("common.filters.tagsDescription")}{" "}
+                    Tags let you filter {tableName} according to custom
+                    categories (e.g. feature flags).{" "}
                     <a
                       href="https://langfuse.com/docs/observability/features/tags"
                       target="_blank"
@@ -756,10 +770,10 @@ export function CategoricalFacet({
                     >
                       {t("common.filters.seeDocs")}
                     </a>{" "}
-                    {t("common.filters.tagsDescriptionSuffix")}
+                    to learn how to add tags to your {tableName}.
                   </span>
                 ) : (
-                  t("common.filters.noOptions")
+                  <>{t("common.filters.noOptions")}</>
                 )}
               </div>
             ) : (
@@ -830,7 +844,6 @@ export function CategoricalFacet({
                 visibleOptionValues.length === 1 &&
                 visibleOptionValues[0]?.toLowerCase() === "default" ? (
                   <div className="text-muted-foreground mt-2 px-2 text-xs">
-                    {t("common.filters.environmentsDescription")}{" "}
                     <a
                       href="https://langfuse.com/docs/observability/features/environments"
                       target="_blank"
@@ -839,7 +852,7 @@ export function CategoricalFacet({
                     >
                       {t("common.filters.seeDocs")}
                     </a>{" "}
-                    {t("common.filters.environmentsDescriptionSuffix")}
+                    on how to add environments to your {tableName}.
                   </div>
                 ) : null}
               </>
@@ -1091,7 +1104,9 @@ export function StringFacet({
     >
       <div className="px-4">
         {loading ? (
-          <div className="text-muted-foreground text-sm">Loading...</div>
+          <div className="text-muted-foreground text-sm">
+            {t("common.table.loading")}
+          </div>
         ) : (
           <Input
             type="text"

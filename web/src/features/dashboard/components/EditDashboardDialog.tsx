@@ -41,7 +41,7 @@ export function EditDashboardDialog({
 
   const updateDashboard = api.dashboard.updateDashboardMetadata.useMutation({
     onSuccess: () => {
-      void utils.dashboard.invalidate();
+      utils.dashboard.invalidate();
       showSuccessToast({
         title: t("pages.dashboards.edit.successTitle"),
         description: t("pages.dashboards.edit.successDescription"),

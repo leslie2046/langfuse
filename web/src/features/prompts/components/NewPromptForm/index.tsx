@@ -176,7 +176,7 @@ export const NewPromptForm: React.FC<NewPromptFormProps> = (props) => {
         onFormSuccess?.();
         form.reset();
         if ("name" in newPrompt) {
-          void router.push(
+          router.push(
             `/project/${projectId}/prompts/${encodeURIComponent(newPrompt.name)}`,
           );
         }

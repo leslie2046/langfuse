@@ -13,7 +13,13 @@ interface EvaluatorsOnboardingProps {
 
 export function EvaluatorsOnboarding({ projectId }: EvaluatorsOnboardingProps) {
   const { t } = useTranslation();
-  const { enabled } = useIsCodeEvalEnabled();
+  const { enabled, supportedSourceCodeLanguages } = useIsCodeEvalEnabled();
+  const supportsPythonCodeEvaluators = supportedSourceCodeLanguages.some(
+    (language) => String(language) === "PYTHON",
+  );
+  const codeEvaluatorLanguageDescription = supportsPythonCodeEvaluators
+    ? "TypeScript or Python"
+    : "TypeScript";
 
   const llmAsJudgeValuePropositions: ValueProposition[] = [
     {
@@ -48,8 +54,7 @@ export function EvaluatorsOnboarding({ projectId }: EvaluatorsOnboardingProps) {
       },
       {
         title: "Code evaluators",
-        description:
-          "Write TypeScript or Python logic for deterministic, custom scoring.",
+        description: `Write ${codeEvaluatorLanguageDescription} logic for deterministic, custom scoring.`,
         icon: <Code2 className="h-4 w-4" />,
       },
     ];

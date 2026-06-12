@@ -27,6 +27,9 @@ export type DeleteButtonProps = {
   deleteConfirmation?: string;
   icon?: boolean;
   enabled?: boolean;
+  variant?: ButtonProps["variant"];
+  title?: string;
+  className?: string;
 };
 
 type BaseDeleteButtonProps = Omit<DeleteButtonProps, "itemId"> & {
@@ -59,6 +62,8 @@ export function DeleteButton({
   deleteConfirmation,
   icon = false,
   enabled = true,
+  title,
+  className,
   captureDeleteOpen,
   captureDeleteSuccess,
   entityToDeleteName,
@@ -79,7 +84,7 @@ export function DeleteButton({
       setIsDeleted(true);
       captureDeleteSuccess(capture, isTableAction);
       !isTableAction && redirectUrl
-        ? void router.push(redirectUrl)
+        ? router.push(redirectUrl)
         : invalidateFunc();
     };
   }, [
@@ -97,6 +102,8 @@ export function DeleteButton({
         <Button
           variant={variant ?? (icon ? "outline-solid" : "ghost")}
           size={icon ? "icon" : "default"}
+          title={title}
+          className={className}
           disabled={!hasAccess || !enabled}
           onClick={(e) => {
             e.stopPropagation();
@@ -153,7 +160,7 @@ export function DeleteButton({
                 alert(t("common.deleteAction.incorrectConfirmation"));
                 return;
               }
-              void executeDeleteMutation(onDeleteSuccess);
+              executeDeleteMutation(onDeleteSuccess);
             }}
           >
             {t("common.delete")} {entityToDeleteName}
@@ -170,7 +177,7 @@ export function DeleteTraceButton(props: DeleteButtonProps) {
     itemId,
     projectId,
     scope = "traces:delete",
-    invalidateFunc = () => void utils.traces.all.invalidate(),
+    invalidateFunc = () => utils.traces.all.invalidate(),
   } = props;
   const traceMutation = api.traces.deleteMany.useMutation();
   const executeDeleteMutation = async (onSuccess: () => void) => {
@@ -219,7 +226,7 @@ export function DeleteDatasetButton(props: DeleteButtonProps) {
     itemId,
     projectId,
     scope = "datasets:CUD",
-    invalidateFunc = () => void utils.datasets.invalidate(),
+    invalidateFunc = () => utils.datasets.invalidate(),
   } = props;
   const datasetMutation = api.datasets.deleteDataset.useMutation();
   const executeDeleteMutation = async (onSuccess: () => void) => {
@@ -261,7 +268,7 @@ export function DeleteDashboardButton(props: DeleteButtonProps) {
     itemId,
     projectId,
     scope = "dashboards:CUD",
-    invalidateFunc = () => void utils.dashboard.invalidate(),
+    invalidateFunc = () => utils.dashboard.invalidate(),
   } = props;
   const dashboardMutation = api.dashboard.delete.useMutation();
   const executeDeleteMutation = async (onSuccess: () => void) => {
@@ -298,13 +305,64 @@ export function DeleteDashboardButton(props: DeleteButtonProps) {
   );
 }
 
+/** DeleteMonitorButton deletes a monitor through the shared confirm-then-delete pattern. */
+export function DeleteMonitorButton(props: DeleteButtonProps) {
+  const utils = api.useUtils();
+  const {
+    itemId,
+    projectId,
+    scope = "monitors:CUD",
+    invalidateFunc = () => utils.monitors.invalidate(),
+  } = props;
+  const monitorMutation = api.monitors.delete.useMutation({
+    onSuccess: () => {
+      showSuccessToast({
+        title: "Monitor deleted",
+        description: "The monitor has been deleted successfully",
+      });
+      utils.monitors.invalidate();
+    },
+  });
+
+  const executeDeleteMutation = async (onSuccess: () => void) => {
+    try {
+      await monitorMutation.mutateAsync({ id: itemId, projectId });
+    } catch (error) {
+      return Promise.reject(error);
+    }
+    onSuccess();
+  };
+
+  return (
+    <DeleteButton
+      {...props}
+      scope={scope}
+      invalidateFunc={invalidateFunc}
+      captureDeleteOpen={(capture, isTableAction) =>
+        capture("monitors:delete_form_open", {
+          source: isTableAction ? "table-single-row" : "monitor",
+        })
+      }
+      captureDeleteSuccess={(capture, isTableAction) =>
+        capture("monitors:delete_monitor_button_click", {
+          source: isTableAction ? "table-single-row" : "monitor",
+        })
+      }
+      entityToDeleteName="monitor"
+      customDeletePrompt="This action cannot be undone. It stops all evaluations and removes the monitor's alert history."
+      executeDeleteMutation={executeDeleteMutation}
+      isDeleteMutationLoading={monitorMutation.isPending}
+    />
+  );
+}
+
 export function DeleteEvalConfigButton(props: DeleteButtonProps) {
   const utils = api.useUtils();
   const {
     itemId,
     projectId,
     scope = "evalJob:CUD",
-    invalidateFunc = () => void utils.evals.invalidate(),
+    invalidateFunc = () => utils.evals.invalidate(),
   } = props;
 
   const evaluatorMutation = api.evals.deleteEvalJob.useMutation({
@@ -313,7 +371,7 @@ export function DeleteEvalConfigButton(props: DeleteButtonProps) {
         title: "Running evaluator deleted",
         description: "The running evaluator has been deleted successfully",
       });
-      void utils.evals.invalidate();
+      utils.evals.invalidate();
     },
   });
 
@@ -359,7 +417,7 @@ export function DeleteEvaluationModelButton(
   const {
     projectId,
     scope = "evalDefaultModel:CUD",
-    invalidateFunc = () => void utils.defaultLlmModel.invalidate(),
+    invalidateFunc = () => utils.defaultLlmModel.invalidate(),
   } = props;
 
   const { mutateAsync: deleteDefaultModel, isPending } =

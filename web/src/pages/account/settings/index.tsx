@@ -152,8 +152,8 @@ function DeleteAccountButton() {
     try {
       await deleteAccount.mutateAsync();
       showSuccessToast({
-        title: t("account.delete.successTitle"),
-        description: t("account.delete.successDescription"),
+        title: "Account Deleted",
+        description: "Your account has been successfully deleted.",
       });
       await new Promise((resolve) => setTimeout(resolve, 2000));
       await signOut();

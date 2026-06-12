@@ -377,7 +377,7 @@ export function SSOButtons({
               onClick={() => {
                 capture("sign_in:button_click", { provider: "keycloak" });
                 onProviderSelect?.("keycloak");
-                void signIn("keycloak");
+                signIn("keycloak");
               }}
               loading={providerSigningIn === "keycloak"}
               showLastUsedBadge={
@@ -393,7 +393,7 @@ export function SSOButtons({
                 onClick={() => {
                   capture("sign_in:button_click", { provider: "workos" });
                   onProviderSelect?.("workos");
-                  void signIn("workos", undefined, {
+                  signIn("workos", undefined, {
                     connection: (
                       authProviders.workos as { connectionId: string }
                     ).connectionId,
@@ -413,7 +413,7 @@ export function SSOButtons({
                 onClick={() => {
                   capture("sign_in:button_click", { provider: "workos" });
                   onProviderSelect?.("workos");
-                  void signIn("workos", undefined, {
+                  signIn("workos", undefined, {
                     organization: (
                       authProviders.workos as { organizationId: string }
                     ).organizationId,
@@ -437,7 +437,7 @@ export function SSOButtons({
                   if (organization) {
                     capture("sign_in:button_click", { provider: "workos" });
                     onProviderSelect?.("workos");
-                    void signIn("workos", undefined, {
+                    signIn("workos", undefined, {
                       organization,
                     });
                   }
@@ -457,7 +457,7 @@ export function SSOButtons({
                   if (connection) {
                     capture("sign_in:button_click", { provider: "workos" });
                     onProviderSelect?.("workos");
-                    void signIn("workos", undefined, {
+                    signIn("workos", undefined, {
                       connection,
                     });
                   }
@@ -519,7 +519,7 @@ export function useHuggingFaceRedirect(runningOnHuggingFaceSpaces: boolean) {
       typeof window !== "undefined" &&
       isInIframe()
     ) {
-      void router.push("/auth/hf-spaces");
+      router.push("/auth/hf-spaces");
     }
   }, [router, runningOnHuggingFaceSpaces]);
 }
@@ -693,7 +693,7 @@ export default function SignIn({
         // Store the SSO provider as the last used auth method
         setLastUsedAuthMethod(providerId as NextAuthProvider);
 
-        void signIn(providerId);
+        signIn(providerId);
         return; // stop further execution – page redirect expected
       }
 
@@ -761,7 +761,7 @@ export default function SignIn({
                         ? credentialsForm.handleSubmit(onCredentialsSubmit)
                         : (e) => {
                             e.preventDefault();
-                            void handleContinue();
+                            handleContinue();
                           }
                     }
                   >

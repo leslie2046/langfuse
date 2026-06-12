@@ -15,9 +15,9 @@ import { stripBasePath } from "@/src/utils/redirect";
 import { Badge } from "@/src/components/ui/badge";
 import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
 import { useEventsTraceData } from "@/src/features/events/hooks/useEventsTraceData";
-import { useTranslation } from "@/src/features/i18n";
 import { showErrorToast } from "@/src/features/notifications/showErrorToast";
 import { useEffect } from "react";
+import { useTranslation } from "@/src/features/i18n";
 
 export function TracePage({
   traceId,
@@ -95,7 +95,7 @@ export function TracePage({
         message={t("errors.traceNotFoundMessage")}
         additionalButton={{
           label: t("errors.retry"),
-          onClick: () => void window.location.reload(),
+          onClick: () => window.location.reload(),
         }}
       />
     );
@@ -108,7 +108,7 @@ export function TracePage({
         message={t("errors.noObservationsFound")}
         additionalButton={{
           label: t("errors.retry"),
-          onClick: () => void window.location.reload(),
+          onClick: () => window.location.reload(),
         }}
       />
     );
@@ -180,6 +180,7 @@ export function TracePage({
               <PublishTraceSwitch
                 traceId={trace.data.id}
                 projectId={trace.data.projectId}
+                timestamp={timestamp}
                 isPublic={trace.data.public}
                 size="icon-xs"
               />

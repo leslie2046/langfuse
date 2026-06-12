@@ -133,7 +133,7 @@ export function MembersTable({
 
   const mutDeleteMember = api.members.deleteMembership.useMutation({
     onSuccess: (data) => {
-      if (data.userId === session.data?.user?.id) void session.update();
+      if (data.userId === session.data?.user?.id) session.update();
       utils.members.invalidate();
     },
   });
@@ -494,7 +494,7 @@ const OrgRoleDropdown = ({
   const mut = api.members.updateOrgMembership.useMutation({
     onSuccess: (data) => {
       utils.members.invalidate();
-      if (data.userId === session.data?.user?.id) void session.update();
+      if (data.userId === session.data?.user?.id) session.update();
       showSuccessToast({
         title: t("organization.members.actions.saved"),
         description: t("organization.members.actions.orgRoleUpdated"),
@@ -553,7 +553,7 @@ const ProjectRoleDropdown = ({
   const mut = api.members.updateProjectRole.useMutation({
     onSuccess: (data) => {
       utils.members.invalidate();
-      if (data.userId === session.data?.user?.id) void session.update();
+      if (data.userId === session.data?.user?.id) session.update();
       showSuccessToast({
         title: t("organization.members.actions.saved"),
         description: t("organization.members.actions.projectRoleUpdated"),
