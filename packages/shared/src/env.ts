@@ -7,6 +7,8 @@ const EnvSchema = z.object({
   // export cutoff for local testing (e.g. "2020-01-01T00:00:00.000Z" makes
   // every project post-cutoff; "2099-01-01T00:00:00.000Z" grandfathers all).
   NEXT_PUBLIC_LANGFUSE_BLOB_EXPORT_CUTOFF: z.iso.datetime().optional(),
+  // Same, for the integration-level cutoff (BlobStorageIntegration.createdAt).
+  NEXT_PUBLIC_LANGFUSE_BLOB_EXPORTER_CUTOFF: z.iso.datetime().optional(),
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),
@@ -106,12 +108,12 @@ const EnvSchema = z.object({
   CLICKHOUSE_UPDATE_PARALLEL_MODE: z
     .enum(["sync", "async", "auto"])
     .default("auto"),
-  // Workaround for a 25.12 bug where lightweight updates/deletes interact
-  // incorrectly with lazy materialization. Remove after ClickHouse 26.4, or
-  // earlier if the fix is backported.
+  // Workaround for ClickHouse analyzer/lazy materialization bugs. In "auto",
+  // Langfuse detects the ClickHouse version on startup and applies known
+  // compatibility settings for affected version bands.
   CLICKHOUSE_DISABLE_LAZY_MATERIALIZATION: z
-    .enum(["true", "false"])
-    .default("false"),
+    .enum(["auto", "true", "false"])
+    .default("auto"),
   CLICKHOUSE_MAX_BYTES_BEFORE_EXTERNAL_GROUP_BY: z.coerce
     .number()
     .default(32_000_000_000), // ~32GB
