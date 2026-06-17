@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: langfuse
+  title: client
   version: ""
 paths:
   /api/public/scores:
@@ -71,7 +71,6 @@ components:
           description: >-
             The name of the score. Always overrides "output" for correction
             scores.
-          example: novelty
         value:
           $ref: "#/components/schemas/CreateScoreValue"
           description: >-
@@ -99,7 +98,7 @@ components:
             config category. Numeric scores might be constrained by the score
             config's max and min values
         source:
-          $ref: '#/components/schemas/CreateScoreSource'
+          $ref: "#/components/schemas/CreateScoreSource"
           nullable: true
           description: >-
             The source of the score. Defaults to API. Set to ANNOTATION to

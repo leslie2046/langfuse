@@ -133,7 +133,6 @@ export const ROUTES: Route[] = [
     pathname: "/project/[projectId]/monitors",
     icon: BellRing,
     projectRbacScopes: ["monitors:read"],
-    featureFlag: "monitors",
     show: ({ isLangfuseCloud }) => isLangfuseCloud,
     group: RouteGroup.Observability,
     section: RouteSection.Main,
@@ -246,7 +245,7 @@ export const ROUTES: Route[] = [
     menuNode: <BookACallButton />,
   },
   {
-    title: "AI Assistant",
+    title: "Assistant",
     section: RouteSection.Secondary,
     pathname: "",
     featureFlag: "inAppAgent",

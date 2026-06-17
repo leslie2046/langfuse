@@ -30,6 +30,9 @@ export type DeleteButtonProps = {
   variant?: ButtonProps["variant"];
   title?: string;
   className?: string;
+  // forwarded explicitly because the base component does not spread unknown
+  // props onto the rendered button
+  "aria-label"?: string;
 };
 
 type BaseDeleteButtonProps = Omit<DeleteButtonProps, "itemId"> & {
@@ -49,6 +52,9 @@ type BaseDeleteButtonProps = Omit<DeleteButtonProps, "itemId"> & {
   executeDeleteMutation: (onSuccess: () => void) => Promise<void>;
   isDeleteMutationLoading: boolean;
   itemId?: string;
+  // when set, the popover explains why deletion is blocked instead of asking for confirmation
+  deleteBlocker?: React.ReactNode;
+  onPopoverOpenChange?: (open: boolean) => void;
 };
 
 export function DeleteButton({
@@ -70,6 +76,9 @@ export function DeleteButton({
   executeDeleteMutation,
   isDeleteMutationLoading,
   customDeletePrompt,
+  deleteBlocker,
+  onPopoverOpenChange,
+  "aria-label": ariaLabel,
 }: BaseDeleteButtonProps) {
   const [isDeleted, setIsDeleted] = useState(false);
   const router = useRouter();
@@ -97,12 +106,13 @@ export function DeleteButton({
   ]);
 
   return (
-    <Popover key={itemId ?? "delete-action"}>
+    <Popover key={itemId ?? "delete-action"} onOpenChange={onPopoverOpenChange}>
       <PopoverTrigger asChild>
         <Button
           variant={variant ?? (icon ? "outline-solid" : "ghost")}
           size={icon ? "icon" : "default"}
           title={title}
+          aria-label={ariaLabel}
           className={className}
           disabled={!hasAccess || !enabled}
           onClick={(e) => {
@@ -125,47 +135,51 @@ export function DeleteButton({
         </Button>
       </PopoverTrigger>
       <PopoverContent onClick={(e) => e.stopPropagation()}>
-        <h2 className="text-md mb-3 font-semibold">
-          {t("common.deleteAction.pleaseConfirm")}
-        </h2>
-        <p className="mb-3 max-w-72 text-sm">
-          {customDeletePrompt ??
-            `${t("common.deleteAction.cannotBeUndone")} ${entityToDeleteName}.`}
-        </p>
-        {deleteConfirmation && (
-          <div className="mb-4 grid w-full gap-1.5">
-            <Label htmlFor="delete-confirmation">
-              {t("common.deleteAction.typeToConfirm").replace(
-                "{confirmation}",
-                deleteConfirmation,
-              )}
-            </Label>
-            <Input
-              id="delete-confirmation"
-              value={deleteConfirmationInput}
-              onChange={(e) => setDeleteConfirmationInput(e.target.value)}
-            />
-          </div>
+        {deleteBlocker ?? (
+          <>
+            <h2 className="text-md mb-3 font-semibold">
+              {t("common.deleteAction.pleaseConfirm")}
+            </h2>
+            <p className="mb-3 max-w-72 text-sm">
+              {customDeletePrompt ??
+                `${t("common.deleteAction.cannotBeUndone")} ${entityToDeleteName}.`}
+            </p>
+            {deleteConfirmation && (
+              <div className="mb-4 grid w-full gap-1.5">
+                <Label htmlFor="delete-confirmation">
+                  {t("common.deleteAction.typeToConfirm").replace(
+                    "{confirmation}",
+                    deleteConfirmation,
+                  )}
+                </Label>
+                <Input
+                  id="delete-confirmation"
+                  value={deleteConfirmationInput}
+                  onChange={(e) => setDeleteConfirmationInput(e.target.value)}
+                />
+              </div>
+            )}
+            <div className="flex justify-end space-x-4">
+              <Button
+                type="button"
+                variant="destructive"
+                loading={isDeleteMutationLoading || isDeleted}
+                onClick={() => {
+                  if (
+                    deleteConfirmation &&
+                    deleteConfirmationInput !== deleteConfirmation
+                  ) {
+                    alert(t("common.deleteAction.incorrectConfirmation"));
+                    return;
+                  }
+                  executeDeleteMutation(onDeleteSuccess);
+                }}
+              >
+                {t("common.delete")} {entityToDeleteName}
+              </Button>
+            </div>
+          </>
         )}
-        <div className="flex justify-end space-x-4">
-          <Button
-            type="button"
-            variant="destructive"
-            loading={isDeleteMutationLoading || isDeleted}
-            onClick={() => {
-              if (
-                deleteConfirmation &&
-                deleteConfirmationInput !== deleteConfirmation
-              ) {
-                alert(t("common.deleteAction.incorrectConfirmation"));
-                return;
-              }
-              executeDeleteMutation(onDeleteSuccess);
-            }}
-          >
-            {t("common.delete")} {entityToDeleteName}
-          </Button>
-        </div>
       </PopoverContent>
     </Popover>
   );
@@ -467,48 +481,3 @@ export function DeleteEvaluationModelButton(
     />
   );
 }
-
-// TODO: Moved to LFE-4573
-// export function DeleteEvaluatorTemplateButton(props: DeleteButtonProps) {
-//   const utils = api.useUtils();
-//   const { itemId, projectId,
-//     scope = "evalTemplate:CUD",
-//     invalidateFunc = () => void utils.evals.invalidate(),
-//   } = props;
-//   const templateMutation = api.evals.deleteEvalTemplate.useMutation();
-//   const executeDeleteMutation = async (onSuccess: () => void) => {
-//     try {
-//       await templateMutation.mutateAsync({
-//         evalTemplateId: itemId,
-//         projectId,
-//       });
-//     } catch (error) {
-//       return Promise.reject(error);
-//     }
-//     onSuccess();
-//   };
-//   const hasModelBasedEvaluationEntitlement = useHasEntitlement(
-//     "model-based-evaluations",
-//   );
-//   return (
-//     <DeleteButton
-//       {...props}
-//       scope={scope}
-//       invalidateFunc={invalidateFunc}
-//       captureDeleteOpen={(capture, isTableAction) =>
-//         capture("eval_templates:delete_form_open", {
-//           source: isTableAction ? "table-single-row" : "template",
-//         })
-//       }
-//       captureDeleteSuccess={(capture, isTableAction) =>
-//         capture("eval_templates:delete_template_button_click", {
-//           source: isTableAction ? "table-single-row" : "template",
-//         })
-//       }
-//       entityToDeleteName="template"
-//       executeDeleteMutation={executeDeleteMutation}
-//       isDeleteMutationLoading={templateMutation.isLoading}
-//       enabled={hasModelBasedEvaluationEntitlement}
-//     />
-//   );
-// }

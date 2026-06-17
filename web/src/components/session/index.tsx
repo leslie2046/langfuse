@@ -669,12 +669,9 @@ export const SessionEventsPage: React.FC<{
         ...observationEventsFilterConfig.columnDefinitions,
         positionInTraceColumn,
       ],
-      migrateFilterState: undefined,
       facets: observationEventsFilterConfig.facets.filter(
         (facet) =>
-          facet.column !== "sessionId" &&
-          facet.column !== "isRootObservation" &&
-          facet.column !== "environment",
+          facet.column !== "sessionId" && facet.column !== "environment",
       ),
     };
   }, [positionInTraceColumn, sessionEventsTableName]);
@@ -729,7 +726,6 @@ export const SessionEventsPage: React.FC<{
         (column) =>
           column.id !== "sessionId" &&
           column.id !== "hasParentObservation" &&
-          column.id !== "isRootObservation" &&
           column.id !== "environment" &&
           column.id !== "traceId" &&
           column.id !== "traceName" &&
@@ -837,8 +833,6 @@ export const SessionEventsPage: React.FC<{
           filter.column !== "sessionId" &&
           filter.column !== "Has Parent Observation" &&
           filter.column !== "hasParentObservation" &&
-          filter.column !== "Is Root Observation" &&
-          filter.column !== "isRootObservation" &&
           filter.column !== "environment" &&
           filter.column !== "traceId" &&
           filter.column !== "traceName" &&

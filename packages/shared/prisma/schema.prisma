@@ -1007,7 +1007,6 @@ model EvalTemplate {
   sourceCode         String?                         @map("source_code") @db.VarChar(262144)
   sourceCodeLanguage EvalTemplateSourceCodeLanguage? @map("source_code_language")
   JobConfiguration   JobConfiguration[]
-  JobExecution       JobExecution[]
 
   @@unique([projectId, name, version])
   @@index([projectId, id])
@@ -1093,7 +1092,6 @@ model JobExecution {
   jobConfiguration   JobConfiguration @relation(fields: [jobConfigurationId], references: [id], onDelete: Cascade)
 
   jobTemplateId String?       @map("job_template_id")
-  jobTemplate   EvalTemplate? @relation(fields: [jobTemplateId], references: [id], onDelete: SetNull, onUpdate: NoAction)
 
   status    JobExecutionStatus
   startTime DateTime?          @map("start_time")
@@ -1361,8 +1359,6 @@ model Media {
   bucketName       String             @map("bucket_name")
   contentType      String             @map("content_type")
   contentLength    BigInt             @map("content_length")
-  TraceMedia       TraceMedia[]
-  ObservationMedia ObservationMedia[]
 
   @@unique([projectId, id])
   @@unique([projectId, sha256Hash])
@@ -1376,7 +1372,6 @@ model TraceMedia {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
   mediaId   String   @map("media_id")
-  media     Media    @relation(fields: [mediaId, projectId], references: [id, projectId], onDelete: Cascade)
   traceId   String   @map("trace_id")
   field     String   @map("field")
 
@@ -1391,7 +1386,6 @@ model ObservationMedia {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @default(now()) @updatedAt @map("updated_at")
   mediaId       String   @map("media_id")
-  media         Media    @relation(fields: [mediaId, projectId], references: [id, projectId], onDelete: Cascade)
   traceId       String   @map("trace_id")
   observationId String   @map("observation_id")
   field         String   @map("field")

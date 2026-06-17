@@ -215,6 +215,16 @@ const isInputDisabled = (config: ScoreConfigDomain) => {
   return config.isArchived;
 };
 
+const getEmptySelectedConfigIdsStorageKey = (scoreTarget: ScoreTarget) => {
+  if (scoreTarget.type === "session") {
+    return "emptySelectedConfigIds:session";
+  }
+
+  return scoreTarget.observationId
+    ? "emptySelectedConfigIds:observation"
+    : "emptySelectedConfigIds:trace";
+};
+
 function InnerAnnotationForm<Target extends ScoreTarget>({
   scoreTarget,
   initialFormData,
@@ -263,6 +273,8 @@ function InnerAnnotationForm<Target extends ScoreTarget>({
     isInputDisabled,
     insert,
     remove,
+    emptySelectedConfigIdsStorageKey:
+      configControl.emptySelectedConfigIdsStorageKey,
   });
 
   const [showSaving, setShowSaving] = useState(false);
@@ -938,10 +950,13 @@ export function AnnotationForm<Target extends ScoreTarget>({
   configSelection = { mode: "selectable" },
 }: AnnotationFormType<Target>) {
   const { projectId } = scoreMetadata;
+  const emptySelectedConfigIdsStorageKey =
+    getEmptySelectedConfigIdsStorageKey(scoreTarget);
   const { isLoading, availableConfigs, selectedConfigIds } =
     useAnnotationScoreConfigs({
       projectId,
       configSelection,
+      emptySelectedConfigIdsStorageKey,
     });
 
   // Step 1: Transform server scores to annotation scores
@@ -1015,6 +1030,7 @@ export function AnnotationForm<Target extends ScoreTarget>({
       configControl={{
         configs: availableConfigs,
         allowManualSelection: configSelection.mode === "selectable",
+        emptySelectedConfigIdsStorageKey,
       }}
     />
   );
