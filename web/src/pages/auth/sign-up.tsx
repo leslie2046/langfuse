@@ -78,7 +78,7 @@ export default function SignUp({
 function StandardSignupFlow({
   authProviders,
 }: Pick<PageProps, "authProviders" | "emailVerificationRequired">) {
-  const { isLangfuseCloud, region } = useLangfuseCloudRegion();
+  const { isLangfuseCloud } = useLangfuseCloudRegion();
   const router = useRouter();
   const capture = usePostHogClientCapture();
   const { t } = useTranslation();
@@ -214,7 +214,7 @@ function StandardSignupFlow({
         password: values.password,
         callbackUrl:
           targetPath ??
-          (isLangfuseCloud && region !== "DEV"
+          (isLangfuseCloud
             ? `${env.NEXT_PUBLIC_BASE_PATH ?? ""}/onboarding`
             : `${env.NEXT_PUBLIC_BASE_PATH ?? ""}/`),
       });
