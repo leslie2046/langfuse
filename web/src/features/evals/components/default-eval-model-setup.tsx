@@ -24,11 +24,22 @@ import { Label } from "@/src/components/ui/label";
 import { Input } from "@/src/components/ui/input";
 import { useTranslation } from "@/src/features/i18n";
 
-export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
+type DefaultEvalModelSuccessMessage = {
+  title: string;
+  description: string;
+};
+
+function useDefaultEvalModelSetup({
+  projectId,
+  onSuccess,
+  successMessage,
+}: {
+  projectId: string;
+  onSuccess?: () => void;
+  successMessage: DefaultEvalModelSuccessMessage;
+}) {
   const utils = api.useUtils();
-  const [isEditing, setIsEditing] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
-  const { t } = useTranslation();
 
   const hasWriteAccess = useHasProjectAccess({
     projectId,
@@ -53,19 +64,14 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
   const { mutateAsync: upsertDefaultModel, isPending: isUpsertLoading } =
     api.defaultLlmModel.upsertDefaultModel.useMutation({
       onSuccess: () => {
-        showSuccessToast({
-          title: t("pages.evaluators.defaultModel.updatedToastTitle"),
-          description: t(
-            "pages.evaluators.defaultModel.updatedToastDescription",
-          ),
-        });
+        showSuccessToast(successMessage);
 
         utils.defaultLlmModel.fetchDefaultModel.invalidate({ projectId });
         setFormError(null);
-        setIsEditing(false);
+        onSuccess?.();
       },
       onError: (error) => {
-        setFormError(error.message as string);
+        setFormError(error.message);
       },
     });
 
@@ -79,7 +85,83 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
     });
   };
 
-  if (isDefaultModelLoading) {
+  return {
+    availableModels,
+    availableProviders,
+    executeUpsertMutation,
+    formError,
+    hasWriteAccess,
+    isDefaultModelLoading,
+    isUpsertLoading,
+    modelParams,
+    providerModelCombinations,
+    selectedModel,
+    setModelParamEnabled,
+    setFormError,
+    updateModelParamValue,
+  };
+}
+
+function DefaultEvalModelFields({
+  setup,
+  errorClassName = "text-red w-full text-center",
+}: {
+  setup: ReturnType<typeof useDefaultEvalModelSetup>;
+  errorClassName?: string;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <>
+      <ModelParameters
+        customHeader={
+          <p className="leading-none font-medium">
+            {t("pages.evaluators.defaultModel.configuration")}
+          </p>
+        }
+        modelParams={setup.modelParams}
+        availableModels={setup.availableModels}
+        providerModelCombinations={setup.providerModelCombinations}
+        availableProviders={setup.availableProviders}
+        updateModelParamValue={setup.updateModelParamValue}
+        setModelParamEnabled={setup.setModelParamEnabled}
+        formDisabled={!setup.hasWriteAccess}
+      />
+      <p className="text-muted-foreground text-xs">
+        {t("pages.evaluators.defaultModel.functionCalling")}
+      </p>
+      {setup.formError ? (
+        <p className={errorClassName}>
+          <span className="font-bold">{t("common.error")}:</span>{" "}
+          {setup.formError}
+        </p>
+      ) : null}
+    </>
+  );
+}
+
+export function DefaultEvalModelSetup({
+  projectId,
+  onSuccess,
+}: {
+  projectId: string;
+  onSuccess?: () => void;
+}) {
+  const [isEditing, setIsEditing] = useState(false);
+  const { t } = useTranslation();
+  const setup = useDefaultEvalModelSetup({
+    projectId,
+    onSuccess: () => {
+      setIsEditing(false);
+      onSuccess?.();
+    },
+    successMessage: {
+      title: t("pages.evaluators.defaultModel.updatedToastTitle"),
+      description: t("pages.evaluators.defaultModel.updatedToastDescription"),
+    },
+  });
+
+  if (setup.isDefaultModelLoading) {
     return <Skeleton className="h-[500px] w-full" />;
   }
 
@@ -93,7 +175,19 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
           <ManageDefaultEvalModel
             projectId={projectId}
             variant="color-coded"
-            setUpMessage={t("pages.evaluators.defaultModel.setUpMessage")}
+            setUpMessage={
+              <>
+                {t("pages.evaluators.defaultModel.setUpMessage")}{" "}
+                <a
+                  href="https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge#how-llm-as-a-judge-works"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline"
+                >
+                  Learn more.
+                </a>
+              </>
+            }
             className="text-sm font-normal"
             showEditButton={false}
           />
@@ -101,7 +195,7 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
       </Card>
 
       <div className="mt-2 flex justify-end gap-2">
-        {selectedModel && (
+        {setup.selectedModel && (
           <DeleteEvaluationModelButton
             projectId={projectId}
             scope="evalDefaultModel:CUD"
@@ -113,72 +207,93 @@ export function DefaultEvalModelSetup({ projectId }: { projectId: string }) {
           onOpenChange={(open) => {
             setIsEditing(open);
             if (!open) {
-              setFormError(null);
+              setup.setFormError(null);
             }
           }}
         >
           <DialogTrigger asChild>
             <Button
-              disabled={!hasWriteAccess}
+              disabled={!setup.hasWriteAccess}
               onClick={() => {
                 setIsEditing(true);
               }}
             >
               <Pencil className="mr-2 h-4 w-4" />
-              {selectedModel
+              {setup.selectedModel
                 ? t("common.edit")
                 : t("pages.evaluators.defaultModel.setUp")}
             </Button>
           </DialogTrigger>
           <DialogContent className="px-3 py-10">
-            <ModelParameters
-              customHeader={
-                <p className="leading-none font-medium">
-                  {t("pages.evaluators.defaultModel.configuration")}
-                </p>
-              }
-              {...{
-                modelParams,
-                availableModels,
-                providerModelCombinations,
-                availableProviders,
-                updateModelParamValue,
-                setModelParamEnabled,
-              }}
-              formDisabled={!hasWriteAccess}
-            />
-            <div className="text-muted-foreground my-2 text-xs">
-              {t("pages.evaluators.defaultModel.functionCalling")}
-            </div>
             <div className="flex flex-col gap-2">
+              <DefaultEvalModelFields setup={setup} />
               <div className="mt-2 flex justify-end gap-2">
                 <Button variant="outline" onClick={() => setIsEditing(false)}>
                   {t("common.cancel")}
                 </Button>
-                {selectedModel ? (
+                {setup.selectedModel ? (
                   <UpdateButton
                     projectId={projectId}
-                    isLoading={isUpsertLoading}
-                    executeUpsertMutation={executeUpsertMutation}
+                    isLoading={setup.isUpsertLoading}
+                    executeUpsertMutation={setup.executeUpsertMutation}
                   />
                 ) : (
                   <Button
-                    disabled={!hasWriteAccess || !modelParams.provider.value}
-                    onClick={executeUpsertMutation}
+                    disabled={
+                      !setup.hasWriteAccess || !setup.modelParams.provider.value
+                    }
+                    onClick={setup.executeUpsertMutation}
                   >
                     {t("common.save")}
                   </Button>
                 )}
               </div>
-              {formError ? (
-                <p className="text-red w-full text-center">
-                  <span className="font-bold">{t("common.error")}:</span>{" "}
-                  {formError}
-                </p>
-              ) : null}
             </div>
           </DialogContent>
         </Dialog>
+      </div>
+    </>
+  );
+}
+
+export function InlineDefaultEvalModelSetup({
+  projectId,
+  onSuccess,
+  submitLabel = "Save",
+}: {
+  projectId: string;
+  onSuccess?: () => void;
+  submitLabel?: string;
+}) {
+  const setup = useDefaultEvalModelSetup({
+    projectId,
+    onSuccess,
+    successMessage: {
+      title: "Default evaluation model set",
+      description: "LLM-as-a-judge evaluators can now use this model.",
+    },
+  });
+
+  if (setup.isDefaultModelLoading) {
+    return <Skeleton className="h-[360px] w-full" />;
+  }
+
+  return (
+    <>
+      <div className="space-y-3">
+        <DefaultEvalModelFields
+          setup={setup}
+          errorClassName="text-red w-full text-center text-sm"
+        />
+      </div>
+      <div className="flex w-full justify-end">
+        <Button
+          loading={setup.isUpsertLoading}
+          disabled={!setup.hasWriteAccess || !setup.modelParams.provider.value}
+          onClick={setup.executeUpsertMutation}
+        >
+          {submitLabel}
+        </Button>
       </div>
     </>
   );

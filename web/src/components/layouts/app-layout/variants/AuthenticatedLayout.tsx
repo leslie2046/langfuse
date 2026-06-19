@@ -134,7 +134,8 @@ export function AuthenticatedLayout({
     }),
   );
 
-  const hasFeaturePreviews = isLangfuseCloud;
+  // Currently there are no feature previews available
+  const hasFeaturePreviews = false;
 
   // User navigation items for sidebar dropdown
   const userNavProps = {
@@ -215,7 +216,6 @@ export function AuthenticatedLayout({
             </div>
             {hasFeaturePreviews ? (
               <ControlledFeaturePreviewModal
-                session={session}
                 open={featurePreviewOpen}
                 onOpenChange={setFeaturePreviewOpen}
               />
