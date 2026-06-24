@@ -52,7 +52,7 @@ import {
   type OrderByState,
   type FilterState,
   type TableViewPresetTableName,
-  type TableViewPresetDomain,
+  type TableViewPresetState,
 } from "@langfuse/shared";
 import { useCallback, useMemo, useState } from "react";
 import {
@@ -140,7 +140,7 @@ interface TableViewPresetsDrawerProps {
     controllers: {
       selectedViewId: string | null;
       handleSetViewId: (viewId: string | null) => void;
-      applyViewState: (viewData: TableViewPresetDomain) => void;
+      applyViewState: (viewData: TableViewPresetState) => void;
     };
   };
   currentState: {
@@ -156,6 +156,18 @@ interface TableViewPresetsDrawerProps {
 
 function formatOrderBy(orderBy?: OrderByState) {
   return orderBy?.column ? `${orderBy.column} ${orderBy.order}` : "none";
+}
+
+function buildSystemFilterPresetState(
+  preset: SystemFilterPreset,
+): TableViewPresetState {
+  return {
+    filters: preset.filters,
+    columnOrder: [],
+    columnVisibility: {},
+    orderBy: null,
+    searchQuery: "",
+  };
 }
 
 export function TableViewPresetsDrawer({
@@ -190,10 +202,11 @@ export function TableViewPresetsDrawer({
     scope: "TableViewPresets:CUD",
   });
 
-  const { data: currentDefault } = api.TableViewPresets.getDefault.useQuery(
-    { projectId, viewName: tableName },
-    { enabled: !!projectId },
-  );
+  const { data: defaultAssignments } =
+    api.TableViewPresets.getDefaultAssignments.useQuery(
+      { projectId, viewName: tableName },
+      { enabled: !!projectId },
+    );
 
   const { setViewAsDefault, clearViewDefault, isSettingDefault } =
     useDefaultViewMutations({ tableName, projectId });
@@ -238,35 +251,14 @@ export function TableViewPresetsDrawer({
     errorMessage: "View name already exists.",
   });
 
-  const handleSelectView = async (viewId: string) => {
-    // Handle system preset - just select it like any view
-    if (viewId === SYSTEM_PRESETS.DEFAULT.id) {
-      handleSetViewId(null);
-      return;
-    }
-
+  const handleSelectView = (view: TableViewPresetState & { id: string }) => {
     capture("saved_views:view_selected", {
       tableName,
-      viewId,
+      viewId: view.id,
     });
 
-    handleSetViewId(viewId);
-    try {
-      const fetchedViewData = await utils.TableViewPresets.getById.fetch({
-        projectId,
-        viewId,
-      });
-
-      if (fetchedViewData) {
-        applyViewState(fetchedViewData);
-      }
-    } catch {
-      showErrorToast(
-        "Failed to apply view selection",
-        "Please try again",
-        "WARNING",
-      );
-    }
+    handleSetViewId(view.id);
+    applyViewState(view);
   };
 
   const handleSelectSystemFilterPreset = useCallback(
@@ -276,25 +268,10 @@ export function TableViewPresetsDrawer({
         presetId: preset.id,
       });
       handleSetViewId(preset.id);
-      applyViewState({
-        id: preset.id,
-        name: preset.name,
-        filters: preset.filters,
-        columnOrder: [],
-        columnVisibility: {},
-        orderBy: null,
-        searchQuery: "",
-        tableName,
-        projectId,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        createdBy: "",
-        createdByUser: null,
-      } as TableViewPresetDomain);
+      applyViewState(buildSystemFilterPresetState(preset));
     },
-    [capture, tableName, handleSetViewId, applyViewState, projectId],
+    [capture, tableName, handleSetViewId, applyViewState],
   );
-
   const handleCreateView = (createdView: { name: string }) => {
     capture("saved_views:create", {
       tableName,
@@ -399,6 +376,7 @@ export function TableViewPresetsDrawer({
   return (
     <>
       <Drawer
+        forceDirection="responsive-left"
         onOpenChange={(open) => {
           if (open) {
             capture("saved_views:drawer_open", { tableName });
@@ -410,9 +388,17 @@ export function TableViewPresetsDrawer({
         <DrawerTrigger asChild>
           <Button
             variant="outline"
-            title={selectedViewName ?? t("common.toolbar.savedViews")}
+            title={
+              selectedViewName
+                ? `View: ${selectedViewName}`
+                : t("common.toolbar.savedViews")
+            }
           >
-            <span>{selectedViewName ?? t("common.toolbar.savedViews")}</span>
+            <span>
+              {selectedViewName
+                ? `View: ${selectedViewName}`
+                : t("common.toolbar.savedViews")}
+            </span>
             {selectedViewId ? (
               <ChevronDown className="ml-1 h-4 w-4" />
             ) : (
@@ -451,15 +437,13 @@ export function TableViewPresetsDrawer({
                 className="h-9 border-none focus:ring-0"
               />
               <CommandList className="max-h-[calc(100vh-150px)]">
-                <CommandEmpty>No saved views found</CommandEmpty>
+                <CommandEmpty>No views found</CommandEmpty>
                 <CommandGroup className="pb-0">
                   {/* System Preset: Langfuse Default - hidden when page-specific presets exist */}
                   {!systemFilterPresets?.length && (
                     <CommandItem
                       key={SYSTEM_PRESETS.DEFAULT.id}
-                      onSelect={() =>
-                        handleSelectView(SYSTEM_PRESETS.DEFAULT.id)
-                      }
+                      onSelect={() => handleSetViewId(null)}
                       className={cn(
                         "hover:bg-muted/50 group mt-1 flex cursor-pointer items-center justify-between rounded-md p-2 transition-colors",
                         selectedViewId === null && "bg-muted",
@@ -515,17 +499,15 @@ export function TableViewPresetsDrawer({
                   {/* User Presets */}
                   {TableViewPresetsList?.map((view) => {
                     const isUserDefault =
-                      currentDefault?.viewId === view.id &&
-                      currentDefault?.scope === "user";
+                      defaultAssignments?.userDefaultViewId === view.id;
                     const isProjectDefault =
-                      currentDefault?.viewId === view.id &&
-                      currentDefault?.scope === "project";
+                      defaultAssignments?.projectDefaultViewId === view.id;
                     const previewText = summarizeTableViewPreset(view);
 
                     return (
                       <CommandItem
                         key={view.id}
-                        onSelect={() => handleSelectView(view.id)}
+                        onSelect={() => handleSelectView(view)}
                         className={cn(
                           "hover:bg-muted/50 group mt-1 flex cursor-pointer items-center justify-between rounded-md p-2 transition-colors",
                           selectedViewId === view.id && "bg-muted",
@@ -647,9 +629,7 @@ export function TableViewPresetsDrawer({
                                   <PopoverContent
                                     onClick={(e) => e.stopPropagation()}
                                   >
-                                    <h2 className="text-md mb-3 font-semibold">
-                                      Edit
-                                    </h2>
+                                    <h2 className="mb-3 font-semibold">Edit</h2>
                                     <Form {...form}>
                                       <form
                                         onSubmit={form.handleSubmit(
@@ -739,7 +719,7 @@ export function TableViewPresetsDrawer({
                                   itemId={view.id}
                                   projectId={projectId}
                                   scope="TableViewPresets:CUD"
-                                  entityToDeleteName="saved view"
+                                  entityToDeleteName="view"
                                   executeDeleteMutation={async () => {
                                     await handleDeleteView(view.id);
                                   }}

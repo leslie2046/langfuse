@@ -83,7 +83,7 @@ export function DeleteWidget({
         </Button>
       </PopoverTrigger>
       <PopoverContent>
-        <h2 className="text-md mb-3 font-semibold">
+        <h2 className="mb-3 font-semibold">
           {t("dashboard.widgets.delete.confirmTitle")}
         </h2>
         <p className="mb-3 text-sm">

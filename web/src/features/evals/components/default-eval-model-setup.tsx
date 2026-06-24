@@ -104,7 +104,7 @@ function useDefaultEvalModelSetup({
 
 function DefaultEvalModelFields({
   setup,
-  errorClassName = "text-red w-full text-center",
+  errorClassName = "w-full text-center",
 }: {
   setup: ReturnType<typeof useDefaultEvalModelSetup>;
   errorClassName?: string;
@@ -283,7 +283,7 @@ export function InlineDefaultEvalModelSetup({
       <div className="space-y-3">
         <DefaultEvalModelFields
           setup={setup}
-          errorClassName="text-red w-full text-center text-sm"
+          errorClassName="w-full text-center text-sm"
         />
       </div>
       <div className="flex w-full justify-end">
@@ -333,7 +333,7 @@ function UpdateButton({
         onClick={(e) => e.stopPropagation()}
         className="w-fit max-w-[500px]"
       >
-        <h2 className="text-md mb-3 font-semibold">
+        <h2 className="mb-3 font-semibold">
           {t("pages.evaluators.defaultModel.updateConfirmationTitle")}
         </h2>
         <p className="mb-3 text-sm">

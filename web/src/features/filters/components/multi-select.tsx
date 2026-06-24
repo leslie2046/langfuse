@@ -211,7 +211,7 @@ export function MultiSelect({
                           : "opacity-50 [&_svg]:invisible",
                       )}
                     >
-                      <Check className={cn("h-4 w-4")} />
+                      <Check className="h-4 w-4" />
                     </div>
                     <div className="font-medium">
                       {allSelectedState
@@ -253,7 +253,7 @@ export function MultiSelect({
                           : "opacity-50 [&_svg]:invisible",
                       )}
                     >
-                      <Check className={cn("h-4 w-4")} />
+                      <Check className="h-4 w-4" />
                     </div>
                     <div
                       className={cn(

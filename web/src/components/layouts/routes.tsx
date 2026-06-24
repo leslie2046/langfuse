@@ -184,6 +184,7 @@ export const ROUTES: Route[] = [
     pathname: `/project/[projectId]/datasets`,
     icon: Database,
     productModule: "datasets",
+    projectRbacScopes: ["datasets:read"],
     group: RouteGroup.Evaluation,
     section: RouteSection.Main,
   },

@@ -142,7 +142,7 @@ export const NewDatasetItemFromExistingObject = (props: {
                   setIsFormOpen(true);
                 }}
               >
-                <PlusIcon size={16} className={cn("mr-2")} aria-hidden="true" />
+                <PlusIcon size={16} className="mr-2" aria-hidden="true" />
                 Add to more datasets
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -171,7 +171,7 @@ export const NewDatasetItemFromExistingObject = (props: {
           ) : null}
           {t("pages.datasets.addToDataset")}
           {!hasAccess ? (
-            <LockIcon className={cn("ml-1.5 h-3 w-3")} aria-hidden="true" />
+            <LockIcon className="ml-1.5 h-3 w-3" aria-hidden="true" />
           ) : null}
         </Button>
       )}

@@ -178,7 +178,7 @@ export function DeleteButton({
       <PopoverContent onClick={(e) => e.stopPropagation()}>
         {deleteBlocker ?? (
           <>
-            <h2 className="text-md mb-3 font-semibold">
+            <h2 className="mb-3 font-semibold">
               {t("common.deleteAction.pleaseConfirm")}
             </h2>
             <p className="mb-3 max-w-72 text-sm">

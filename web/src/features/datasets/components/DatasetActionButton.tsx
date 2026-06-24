@@ -195,7 +195,7 @@ export const DatasetActionButton = forwardRef<
                 : t("common.datasetActionButton.update")}
           </DialogTitle>
           {props.mode === "delete" && (
-            <DialogDescription className="text-md p-0">
+            <DialogDescription className="p-0">
               {t("common.datasetActionButton.deleteDescription")}
             </DialogDescription>
           )}
@@ -235,4 +235,3 @@ export const DatasetActionButton = forwardRef<
 });
 
 DatasetActionButton.displayName = "DatasetActionButton";
-
