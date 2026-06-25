@@ -505,18 +505,17 @@ export function DataTableColumnVisibilityFilter<TData, TValue>({
                           </div>
                         </GroupVisibilityHeader>
                       );
-                    } else {
-                      // Single columns
-                      return (
-                        <ColumnVisibilityListItem
-                          key={column.accessorKey}
-                          column={column}
-                          columnVisibility={columnVisibility}
-                          toggleColumn={toggleColumn}
-                          isOrderable={isColumnOrderingEnabled}
-                        />
-                      );
                     }
+                    // Single columns
+                    return (
+                      <ColumnVisibilityListItem
+                        key={column.accessorKey}
+                        column={column}
+                        columnVisibility={columnVisibility}
+                        toggleColumn={toggleColumn}
+                        isOrderable={isColumnOrderingEnabled}
+                      />
+                    );
                   })}
                 </div>
               </SortableContext>

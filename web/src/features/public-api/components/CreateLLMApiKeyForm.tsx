@@ -1394,7 +1394,7 @@ export function CreateLLMApiKeyForm({
         </DialogBody>
 
         <DialogFooter>
-          <div className="flex flex-col gap-4">
+          <div className="flex min-w-0 flex-col gap-4">
             {showOtherModelInfo ? (
               <Button
                 type="button"
@@ -1415,7 +1415,11 @@ export function CreateLLMApiKeyForm({
               </Button>
             )}
             {form.formState.errors.root && (
-              <FormMessage>{form.formState.errors.root.message}</FormMessage>
+              <div className="max-h-32 overflow-y-auto">
+                <FormMessage className="break-words wrap-anywhere">
+                  {form.formState.errors.root.message}
+                </FormMessage>
+              </div>
             )}
           </div>
         </DialogFooter>
