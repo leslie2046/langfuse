@@ -13,7 +13,7 @@ import {
 import { cn } from "@/src/utils/tailwind";
 import { type DateRange as RDPDateRange } from "react-day-picker";
 import { format } from "date-fns";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { setBeginningOfDay, setEndOfDay } from "@/src/utils/dates";
 import { TimePicker } from "@/src/components/ui/time-picker";
 import { DashboardDateRangeDropdown } from "@/src/components/date-range-dropdowns";
@@ -102,6 +102,38 @@ export type DatePickerWithRangeProps = {
   ) => void;
 };
 
+/**
+ * Computes the next range for a calendar day click so the FIRST click always
+ * starts a new range and the SECOND click sets the end (LFE-8156). The decision
+ * is driven by the clicked day, not by react-day-picker's range state machine,
+ * which otherwise extends a complete range (the original "sticky" bug), clears
+ * the selection when the single day of a same-day range is re-clicked, or
+ * extends a left-over start that survived a closed popover.
+ */
+export function nextRangeForDayClick(
+  current: RDPDateRange | undefined,
+  clickedDay: Date,
+): { from: Date; to: Date | undefined } {
+  // Mid-selection 鈥?a start without an end 鈫?this click sets the end (swapping
+  // if the click lands before the start).
+  if (current?.from && !current.to) {
+    return clickedDay < current.from
+      ? { from: clickedDay, to: current.from }
+      : { from: current.from, to: clickedDay };
+  }
+  // Empty or a complete range 鈫?start a fresh range; the end stays orphaned
+  // until the next click.
+  return { from: clickedDay, to: undefined };
+}
+
+export function isRangeWithinMaxDuration(
+  range: RDPDateRange | undefined,
+  maxDurationMs: number | undefined,
+): boolean {
+  if (!range?.from || !range.to || maxDurationMs === undefined) return true;
+  return range.to.getTime() - range.from.getTime() <= maxDurationMs;
+}
+
 export function DatePickerWithRange({
   className,
   dateRange,
@@ -150,14 +182,13 @@ export function DatePickerWithRange({
     }
   };
 
-  const onCalendarSelection = (range?: RDPDateRange) => {
-    const newRange = range
-      ? {
-          from: range.from ? setBeginningOfDay(range.from) : undefined,
-          to: range.to ? setEndOfDay(range.to) : undefined,
-        }
-      : undefined;
-
+  const onCalendarSelection = (triggerDay?: Date) => {
+    if (!triggerDay) return;
+    const next = nextRangeForDayClick(internalDateRange, triggerDay);
+    const newRange: RDPDateRange = {
+      from: setBeginningOfDay(next.from),
+      to: next.to ? setEndOfDay(next.to) : undefined,
+    };
     setInternalDateRange(newRange);
     updateDashboardDateRange(newRange, setDateRangeAndOption);
   };
@@ -188,7 +219,15 @@ export function DatePickerWithRange({
     <div
       className={cn("my-3 flex flex-col-reverse gap-2 md:flex-row", className)}
     >
-      <Popover>
+      <Popover
+        onOpenChange={(open) => {
+          // Discard an abandoned first click on close so the next open starts
+          // fresh instead of extending a left-over start (LFE-8156).
+          if (!open && internalDateRange?.from && !internalDateRange.to) {
+            setInternalDateRange(dateRange);
+          }
+        }}
+      >
         <PopoverTrigger asChild>
           <Button
             id="date"
@@ -217,37 +256,49 @@ export function DatePickerWithRange({
           <Calendar
             autoFocus={true}
             mode="range"
+            // First click starts a new range, second sets the end 鈥?see
+            // onCalendarSelection / nextRangeForDayClick (LFE-8156).
             defaultMonth={internalDateRange?.from}
             selected={internalDateRange}
-            onSelect={onCalendarSelection}
+            onSelect={(_, triggerDay) => onCalendarSelection(triggerDay)}
             numberOfMonths={2}
-            className="[&>div]:hidden sm:[&>div]:block [&>div:first-child]:block"
+            // react-day-picker v9 lays the two months out in a flex row; on
+            // narrow screens drop the second month rather than overriding that
+            // flex (the old `[&>div]` rule stacked them vertically). LFE-8156.
+            className="max-sm:[&>div>div:last-child]:hidden"
             disabled={disabled}
           />
-          <div className="flex flex-col gap-2 border-t-2 py-1.5 sm:flex-row sm:gap-0">
-            <div className="px-3">
-              <p className="px-1 text-sm font-medium">
-                {t("common.datePicker.start")}
-                <span className="hidden sm:inline"> time</span>
-              </p>
-              <TimePicker
-                date={internalDateRange?.from}
-                setDate={onStartTimeSelection}
-                className="border-0 px-0 pt-1"
-              />
+          {/* Time pickers tune the boundaries of a *complete* range. During
+              the partial range (after the first click, before the second) they
+              are hidden: the End-time input would silently ignore edits, and a
+              typed Start time would be clobbered by setBeginningOfDay on the
+              next calendar click. See LFE-8156. */}
+          {internalDateRange?.from && internalDateRange.to && (
+            <div className="flex flex-col gap-2 border-t-2 py-1.5 sm:flex-row sm:gap-0">
+              <div className="px-3">
+                <p className="px-1 text-sm font-medium">
+                  {t("common.datePicker.start")}
+                  <span className="hidden sm:inline"> time</span>
+                </p>
+                <TimePicker
+                  date={internalDateRange?.from}
+                  setDate={onStartTimeSelection}
+                  className="border-0 px-0 pt-1"
+                />
+              </div>
+              <div className="px-3">
+                <p className="px-1 text-sm font-medium">
+                  {t("common.datePicker.end")}
+                  <span className="hidden sm:inline"> time</span>
+                </p>
+                <TimePicker
+                  date={internalDateRange?.to}
+                  setDate={onEndTimeSelection}
+                  className="border-0 px-0 pt-1"
+                />
+              </div>
             </div>
-            <div className="px-3">
-              <p className="px-1 text-sm font-medium">
-                {t("common.datePicker.end")}
-                <span className="hidden sm:inline"> time</span>
-              </p>
-              <TimePicker
-                date={internalDateRange?.to}
-                setDate={onEndTimeSelection}
-                className="border-0 px-0 pt-1"
-              />
-            </div>
-          </div>
+          )}
         </PopoverContent>
       </Popover>
       <DashboardDateRangeDropdown
@@ -264,6 +315,7 @@ export type TimeRangePickerProps = {
   timeRangePresets: readonly string[];
   className?: string;
   disabled?: boolean | { before?: Date; after?: Date } | Date | Date[];
+  maxRangeMs?: number;
 };
 
 export function TimeRangePicker({
@@ -272,6 +324,7 @@ export function TimeRangePicker({
   timeRangePresets,
   onTimeRangeChange,
   disabled,
+  maxRangeMs,
 }: TimeRangePickerProps) {
   const { t } = useTranslation();
   // Determine the range type
@@ -281,19 +334,6 @@ export function TimeRangePicker({
       : "named"
     : null;
 
-  // Disable future dates by default, plus any additional disabled prop
-  const calendarDisabled = React.useMemo(() => {
-    const futureDisabled = { after: new Date() };
-
-    if (!disabled) return futureDisabled;
-    if (typeof disabled === "boolean") return disabled;
-
-    // Always return an array when combining with additional restrictions
-    const disabledArray = Array.isArray(disabled) ? disabled : [disabled];
-    return [...disabledArray, futureDisabled] as React.ComponentProps<
-      typeof Calendar
-    >["disabled"];
-  }, [disabled]);
   const namedRangeValue =
     rangeType === "named" && timeRange && "range" in timeRange
       ? timeRange.range
@@ -302,31 +342,72 @@ export function TimeRangePicker({
   // Convert TimeRange to DateRange for internal use
   const dateRange = timeRange && "from" in timeRange ? timeRange : undefined;
 
-  const [internalDateRange, setInternalDateRange] = useState<
-    RDPDateRange | undefined
-  >(dateRange);
-
-  // Update internal date range when timeRange changes
-  useEffect(() => {
+  // The committed range expressed as a react-day-picker DateRange: a custom
+  // range as-is, a named preset as its current absolute window (presets
+  // re-evaluate to "now"), otherwise none. Reused to reset the editable range
+  // when the popover closes mid-selection.
+  const committedDateRange = useMemo<RDPDateRange | undefined>(() => {
     if (rangeType === "custom") {
-      // Custom range - use as is
-      setInternalDateRange(dateRange);
-    } else if (rangeType === "named" && timeRange && "range" in timeRange) {
-      // Preset range - look up in generic time ranges
+      return dateRange;
+    }
+    if (rangeType === "named" && timeRange && "range" in timeRange) {
       const setting = TIME_RANGES[timeRange.range as keyof typeof TIME_RANGES];
       if (setting && setting.minutes) {
         const now = new Date();
-        setInternalDateRange({
-          from: addMinutes(now, -setting.minutes),
-          to: now,
-        });
-      } else {
-        setInternalDateRange(undefined);
+        return { from: addMinutes(now, -setting.minutes), to: now };
       }
-    } else {
-      setInternalDateRange(undefined);
     }
-  }, [timeRange, dateRange, rangeType]);
+    return undefined;
+  }, [rangeType, timeRange, dateRange]);
+
+  const [internalDateRange, setInternalDateRange] = useState<
+    RDPDateRange | undefined
+  >(committedDateRange);
+
+  // Re-sync the editable range whenever the committed selection changes.
+  useEffect(() => {
+    setInternalDateRange(committedDateRange);
+  }, [committedDateRange]);
+
+  // Disable future dates by default, plus any additional disabled prop.
+  // When a custom range is mid-selection, also disable days that would complete
+  // a range longer than the caller's maximum duration.
+  const calendarDisabled = React.useMemo(() => {
+    const futureDisabled = { after: new Date() };
+
+    if (typeof disabled === "boolean") return disabled;
+
+    const disabledArray = disabled
+      ? Array.isArray(disabled)
+        ? disabled
+        : [disabled]
+      : [];
+    const maxRangeDisabled =
+      maxRangeMs !== undefined &&
+      internalDateRange?.from &&
+      !internalDateRange.to
+        ? [
+            {
+              before: new Date(
+                setEndOfDay(internalDateRange.from).getTime() - maxRangeMs + 1,
+              ),
+            },
+            {
+              after: new Date(
+                setBeginningOfDay(internalDateRange.from).getTime() +
+                  maxRangeMs -
+                  1,
+              ),
+            },
+          ]
+        : [];
+
+    return [
+      ...disabledArray,
+      futureDisabled,
+      ...maxRangeDisabled,
+    ] as React.ComponentProps<typeof Calendar>["disabled"];
+  }, [disabled, internalDateRange, maxRangeMs]);
 
   const setNewDateRange = (
     internalDateRange: RDPDateRange | undefined,
@@ -343,6 +424,8 @@ export function TimeRangePicker({
 
   const updateDateRange = (newRange: RDPDateRange | undefined) => {
     if (newRange && newRange.from && newRange.to) {
+      if (!isRangeWithinMaxDuration(newRange, maxRangeMs)) return;
+
       onTimeRangeChange({
         from: newRange.from,
         to: newRange.to,
@@ -350,13 +433,14 @@ export function TimeRangePicker({
     }
   };
 
-  const onCalendarSelection = (range?: RDPDateRange) => {
-    const newRange = range
-      ? {
-          from: range.from ? setBeginningOfDay(range.from) : undefined,
-          to: range.to ? setEndOfDay(range.to) : undefined,
-        }
-      : undefined;
+  const onCalendarSelection = (triggerDay?: Date) => {
+    if (!triggerDay) return;
+    const next = nextRangeForDayClick(internalDateRange, triggerDay);
+    const newRange: RDPDateRange = {
+      from: setBeginningOfDay(next.from),
+      to: next.to ? setEndOfDay(next.to) : undefined,
+    };
+    if (!isRangeWithinMaxDuration(newRange, maxRangeMs)) return;
 
     setInternalDateRange(newRange);
     updateDateRange(newRange);
@@ -369,6 +453,8 @@ export function TimeRangePicker({
       newDateTime,
       internalDateRange?.to,
     );
+    if (!isRangeWithinMaxDuration(newRange, maxRangeMs)) return;
+
     setInternalDateRange(newRange);
     updateDateRange(newRange);
   };
@@ -380,6 +466,8 @@ export function TimeRangePicker({
       internalDateRange?.from,
       newDateTime,
     );
+    if (!isRangeWithinMaxDuration(newRange, maxRangeMs)) return;
+
     setInternalDateRange(newRange);
     updateDateRange(newRange);
   };
@@ -393,12 +481,19 @@ export function TimeRangePicker({
   const [isOpen, setIsOpen] = useState(false);
   const [tab, setTab] = useState<"presets" | "calendar">("presets");
 
-  const handleOpenChange = useCallback((open: boolean) => {
-    setIsOpen(open);
-    if (open) {
-      setTab("presets");
-    }
-  }, []);
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      setIsOpen(open);
+      if (open) {
+        setTab("presets");
+      } else if (internalDateRange?.from && !internalDateRange.to) {
+        // Discard an abandoned first click so the next open starts fresh
+        // instead of extending a left-over start (LFE-8156).
+        setInternalDateRange(committedDateRange);
+      }
+    },
+    [internalDateRange, committedDateRange],
+  );
 
   const getDisplayContent = () => {
     if (rangeType === "custom") {
@@ -461,34 +556,43 @@ export function TimeRangePicker({
             <>
               <Calendar
                 mode="range"
+                // First click starts a new range, second sets the end 鈥?see
+                // onCalendarSelection / nextRangeForDayClick (LFE-8156).
                 defaultMonth={internalDateRange?.from || new Date()}
                 selected={internalDateRange}
-                onSelect={onCalendarSelection}
+                onSelect={(_, triggerDay) => onCalendarSelection(triggerDay)}
                 numberOfMonths={1}
                 disabled={calendarDisabled}
               />
-              <div className="flex flex-col gap-3 border-t p-3">
-                <div className="flex flex-col gap-1">
-                  <p className="px-1 text-sm font-medium">
-                    {t("common.datePicker.startTime")}
-                  </p>
-                  <TimePicker
-                    date={internalDateRange?.from}
-                    setDate={onStartTimeSelection}
-                    className="border-0 px-0 py-0"
-                  />
+              {/* Time pickers tune the boundaries of a *complete* range.
+                  During the partial range (after the first click, before the
+                  second) they are hidden: the End-time input would silently
+                  ignore edits, and a typed Start time would be clobbered by
+                  setBeginningOfDay on the next calendar click. See LFE-8156. */}
+              {internalDateRange?.from && internalDateRange.to && (
+                <div className="flex flex-col gap-3 border-t p-3">
+                  <div className="flex flex-col gap-1">
+                    <p className="px-1 text-sm font-medium">
+                      {t("common.datePicker.startTime")}
+                    </p>
+                    <TimePicker
+                      date={internalDateRange?.from}
+                      setDate={onStartTimeSelection}
+                      className="border-0 px-0 py-0"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p className="px-1 text-sm font-medium">
+                      {t("common.datePicker.endTime")}
+                    </p>
+                    <TimePicker
+                      date={internalDateRange?.to}
+                      setDate={onEndTimeSelection}
+                      className="border-0 px-0 py-0"
+                    />
+                  </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p className="px-1 text-sm font-medium">
-                    {t("common.datePicker.endTime")}
-                  </p>
-                  <TimePicker
-                    date={internalDateRange?.to}
-                    setDate={onEndTimeSelection}
-                    className="border-0 px-0 py-0"
-                  />
-                </div>
-              </div>
+              )}
             </>
           ) : (
             /* Always show preset options dropdown */

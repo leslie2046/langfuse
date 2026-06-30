@@ -3,14 +3,7 @@ import { useState } from "react";
 import Header from "@/src/components/layouts/header";
 import { Button } from "@/src/components/ui/button";
 import { Card } from "@/src/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/src/components/ui/dialog";
+import { ConfirmDialog } from "@/src/components/ui/confirm-dialog";
 import {
   Table,
   TableBody,
@@ -22,7 +15,6 @@ import {
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
 import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAccess";
 import { api } from "@/src/utils/api";
-import { DialogDescription } from "@radix-ui/react-dialog";
 import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
 import { CreateLLMApiKeyDialog } from "./CreateLLMApiKeyDialog";
 import { UpdateLLMApiKeyDialog } from "./UpdateLLMApiKeyDialog";
@@ -184,48 +176,33 @@ function DeleteApiKeyButton(props: { projectId: string; apiKeyId: string }) {
   if (!hasAccess) return null;
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+    <ConfirmDialog
+      open={open}
+      onOpenChange={setOpen}
+      trigger={
         <Button variant="ghost" size="icon">
           <TrashIcon className="h-4 w-4" />
         </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle className="mb-5">
-            {t("llmApiKeys.deleteTitle")}
-          </DialogTitle>
-          <DialogDescription>
-            {t("llmApiKeys.deleteDescription")}
-          </DialogDescription>
-        </DialogHeader>
-
-        <DialogFooter>
-          <Button
-            variant="destructive"
-            onClick={() => {
-              mutDeleteApiKey
-                .mutateAsync({
-                  projectId: props.projectId,
-                  id: props.apiKeyId,
-                })
-                .then(() => {
-                  capture("project_settings:llm_api_key_delete");
-                  setOpen(false);
-                })
-                .catch((error) => {
-                  console.error(error);
-                });
-            }}
-            loading={mutDeleteApiKey.isPending}
-          >
-            {t("apiKeys.permanentlyDelete")}
-          </Button>
-          <Button variant="ghost" onClick={() => setOpen(false)}>
-            {t("common.cancel")}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      }
+      title={t("llmApiKeys.deleteTitle")}
+      description={t("llmApiKeys.deleteDescription")}
+      confirmLabel={t("apiKeys.permanentlyDelete")}
+      cancelLabel={t("common.cancel")}
+      loading={mutDeleteApiKey.isPending}
+      onConfirm={() => {
+        mutDeleteApiKey
+          .mutateAsync({
+            projectId: props.projectId,
+            id: props.apiKeyId,
+          })
+          .then(() => {
+            capture("project_settings:llm_api_key_delete");
+            setOpen(false);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }}
+    />
   );
 }

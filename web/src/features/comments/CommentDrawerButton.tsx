@@ -10,7 +10,10 @@ import {
 import { CommentList } from "@/src/features/comments/CommentList";
 import { useHasProjectAccess } from "@/src/features/rbac/utils/checkProjectAccess";
 import { type CommentObjectType } from "@langfuse/shared";
-import { MessageCircleIcon, MessageCircleOff } from "lucide-react";
+// LFE-7628: general (trace/observation/session) comments use a square speech
+// bubble to stay visually distinct from per-score comments, which use the round
+// MessageCircle bubble in the annotation form.
+import { MessageSquare, MessageSquareOff } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { type SelectionData } from "./contexts/InlineCommentSelectionContext";
@@ -115,7 +118,7 @@ export function CommentDrawerButton({
         className={className}
         disabled
       >
-        <MessageCircleOff
+        <MessageSquareOff
           className={
             size === "sm"
               ? "text-muted-foreground h-3.5 w-3.5"
@@ -166,7 +169,7 @@ export function CommentDrawerButton({
         >
           {!!count ? (
             <div className="flex items-center gap-1">
-              <MessageCircleIcon
+              <MessageSquare
                 className={size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4"}
               />
               <span>{t("comments.addComment")}</span>
@@ -176,7 +179,7 @@ export function CommentDrawerButton({
             </div>
           ) : (
             <div className="flex items-center gap-1">
-              <MessageCircleIcon
+              <MessageSquare
                 className={size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4"}
               />
               <span>{t("comments.addComment")}</span>
