@@ -1309,7 +1309,9 @@ export default function TracesTable({
       itemType: "TRACE" as const,
       detailNavigationKey: detailPageListKeys.traces,
       peekEventOptions: {
-        ignoredSelectors: ['[role="checkbox"]', '[aria-label="bookmark"]'],
+        // Stable hook (decoupled from the star's state-aware aria-label) so
+        // clicking a row's bookmark toggles it without dismissing the peek.
+        ignoredSelectors: ['[role="checkbox"]', "[data-bookmark-toggle]"],
       },
       ...peekNavigationProps,
     };
