@@ -78,7 +78,9 @@ const StaticHeader: React.FC<{
   return (
     <TableHead className={cn("p-1", className)}>
       <div className="flex items-center select-none">
-        <span className="truncate">{label}</span>
+        <span className="truncate" title={label}>
+          {label}
+        </span>
       </div>
     </TableHead>
   );
@@ -118,7 +120,9 @@ const SortableHeader: React.FC<{
           rightAlign ? "justify-end" : "justify-start",
         )}
       >
-        <span className="truncate">{label}</span>
+        <span className="truncate" title={label}>
+          {label}
+        </span>
         {isSorted && (
           <span
             className="ml-1"

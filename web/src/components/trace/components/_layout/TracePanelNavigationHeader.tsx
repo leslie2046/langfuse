@@ -45,6 +45,7 @@ import {
   downloadServerTraceAsJson,
 } from "../../lib/download-trace";
 import { TracePanelNavigationButton } from "./TracePanelNavigationButton";
+import { PlaybackControls } from "../PlaybackControls";
 import { useDesktopLayoutContextOptional } from "./TraceLayoutDesktop";
 import { useTranslation } from "@/src/features/i18n";
 import { toast } from "sonner";
@@ -264,6 +265,10 @@ function TracePanelNavigationHeaderExpanded({
               />
             </DropdownMenuContent>
           </DropdownMenu>
+
+          {/* Playback transport + circular time-progress ring. View-agnostic:
+              shown in both Tree and Timeline views (see PlaybackControls). */}
+          <PlaybackControls />
 
           {/* Tree / Timeline segmented switch (labels collapse to icons when
               the panel is narrow 閳?see @container/navheader). */}
