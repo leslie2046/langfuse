@@ -18,13 +18,16 @@ function parseSkillMarkdown(
     );
   }
 
-  const frontmatterMatch = markdown.match(/^---\n([\s\S]*?)\n---\n?/);
+  const normalizedMarkdown = markdown.replace(/\r\n?/g, "\n");
+  const frontmatterMatch = normalizedMarkdown.match(/^---\n([\s\S]*?)\n---\n?/);
   if (!frontmatterMatch) {
     throw new Error("In-app agent skill is missing frontmatter.");
   }
 
   const metadata = parseFrontmatter(frontmatterMatch[1] ?? "");
-  const instructions = markdown.slice(frontmatterMatch[0].length).trim();
+  const instructions = normalizedMarkdown
+    .slice(frontmatterMatch[0].length)
+    .trim();
 
   if (!metadata.name) {
     throw new Error("In-app agent skill frontmatter is missing name.");

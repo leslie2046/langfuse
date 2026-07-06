@@ -67,6 +67,7 @@ import {
 import {
   SESSION_DETAIL_SYSTEM_PRESETS,
   type SessionDetailSystemPreset,
+  findSessionDetailViewByFilters,
   getSessionDetailPresetToApply,
 } from "@/src/components/session/session-detail-presets";
 import { downloadSessionAsJson } from "@/src/components/session/actions/downloadSessionAsJson";
@@ -893,6 +894,10 @@ const LoadedSessionEventsPage: React.FC<{
     () => JSON.stringify(visibleFilterState),
     [visibleFilterState],
   );
+  const visibleViewLabel = React.useMemo(
+    () => findSessionDetailViewByFilters(visibleFilterState)?.name ?? null,
+    [visibleFilterState],
+  );
 
   // Stub state for Saved Views (no actual table columns in this view)
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([]);
@@ -1133,6 +1138,7 @@ const LoadedSessionEventsPage: React.FC<{
                         traceCommentCounts.data,
                       )}
                       index={virtualItem.index}
+                      viewLabel={visibleViewLabel}
                       filterState={visibleFilterState}
                     />
                   </SessionVirtualizedRow>

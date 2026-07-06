@@ -9,7 +9,7 @@ import {
   Lock,
 } from "lucide-react";
 import { Badge } from "@/src/components/ui/badge";
-import { LangfuseIcon } from "@/src/components/LangfuseLogo";
+import { LangfuseIcon } from "@/src/components/design-system/LangfuseIcon/LangfuseIcon";
 import {
   DrawerTrigger,
   DrawerContent,
@@ -310,7 +310,7 @@ export function TableViewPresetsDrawer({
     // Column order/visibility are the visitor's per-table localStorage, which
     // only reflects this view when the view was actually applied this session.
     // On a shared-link visit the view is intentionally not applied, so
-    // `currentState`'s columns are the visitor's own unrelated layout — sending
+    // `currentState`'s columns are the visitor's own unrelated layout - sending
     // them would silently overwrite the saved view's columns. In that case keep
     // the view's stored column layout instead (LFE-10486). Filters/sort/search
     // always come from the live state, since updating those to what the visitor
@@ -385,9 +385,9 @@ export function TableViewPresetsDrawer({
     });
 
     // For the view that is currently active, the page URL already encodes the
-    // applied filters, sort and search — the URL is the source of truth. Share
+    // applied filters, sort and search - the URL is the source of truth. Share
     // it verbatim so in-view edits travel with the link. A server-built
-    // `?viewId=…` permalink points at the saved view's stored state and would
+    // `?viewId=...` permalink points at the saved view's stored state and would
     // silently drop those edits, which is the recipient-gets-stale-filters bug
     // (LFE-10486). Non-active views still get a clean link to the saved view.
     if (

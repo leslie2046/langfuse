@@ -38,6 +38,7 @@ export const ModelUsageChart = ({
   isLoading = false,
   metricsVersion,
   schedulerId,
+  syncId,
 }: {
   className?: string;
   projectId: string;
@@ -49,6 +50,7 @@ export const ModelUsageChart = ({
   isLoading?: boolean;
   metricsVersion?: ViewVersion;
   schedulerId?: string;
+  syncId?: string;
 }) => {
   const { t } = useTranslation();
   const {
@@ -392,6 +394,7 @@ export const ModelUsageChart = ({
                       legendPosition="above"
                       // Token/cost totals are additive sums. (LFE-10498)
                       legendSummary="sum"
+                      syncId={syncId}
                     />
                   </div>
                 )}

@@ -26,6 +26,7 @@ export const TracesAndObservationsTimeSeriesChart = ({
   isLoading = false,
   metricsVersion,
   schedulerId,
+  syncId,
 }: {
   className?: string;
   projectId: string;
@@ -36,6 +37,7 @@ export const TracesAndObservationsTimeSeriesChart = ({
   isLoading?: boolean;
   metricsVersion?: ViewVersion;
   schedulerId?: string;
+  syncId?: string;
 }) => {
   const { t } = useTranslation();
   const isV2 = metricsVersion === "v2";
@@ -225,6 +227,7 @@ export const TracesAndObservationsTimeSeriesChart = ({
                       // Counts are additive: the legend total reconciles with
                       // the card headline. (LFE-10498)
                       legendSummary="sum"
+                      syncId={syncId}
                     />
                   </div>
                 ) : (

@@ -16,6 +16,7 @@ type HistogramBinLike = { binLabel: string; [key: string]: string | number };
  */
 export function timeSeriesToDataPoints(
   data: TimeSeriesChartDataPoint[],
+  _legacyAggregation?: unknown,
 ): DataPoint[] {
   const result: DataPoint[] = [];
   for (const point of data) {
